@@ -672,7 +672,9 @@ const dispOff=(E,f)=>{if(f.off===''||f.off==null)return '';const off=N(f.off);if
 /* ---------- editor actions ---------- */
 const snap=E=>JSON.stringify({pts:E.pts,closed:E.closed,ops:E.ops,cnt:E.cnt,H:E.H,fm:E.fin.mats,fu:E.fur.items,es:{swap:E.est.swap,off:E.est.off}});
 const load=(E,s)=>{Object.assign(E,JSON.parse(s));if(E.es){E.est.swap=E.es.swap;E.est.off=E.es.off;delete E.es}E.est.mode='view';if(E.fm){E.fin.mats=E.fm;delete E.fm}if(E.fu){E.fur.items=E.fu;delete E.fu;E.fur.mode=E.fur.mode==='lib'?'lib':'view';E.fur.ghost=null;E.fur.menu=null;E.fur.errs={};if(!E.fur.items.some(i=>i.id===E.fur.sel))E.fur.sel=null;syncForm(E)}E.fin.mode='view';E.fin.zform=null;E.fin.zerrs={};E.sel=null;E.tool=null;E.form=null;E.errs={}};
-const commit=(E,label)=>{E.hist.push({t:Date.now(),s:snap(E),label});E.fut=[];autosave(E)};
+const HIST_MAX=20;
+const histPush=(E,x)=>{E.hist.push(x);if(E.hist.length>HIST_MAX){E.hist.splice(0,E.hist.length-HIST_MAX);E.histCut=true}};
+const commit=(E,label)=>{histPush(E,{t:Date.now(),s:snap(E),label});E.fut=[];autosave(E)};
 let svT=0;
 function syncRoom(s){
  const E=s.E;if(!E.ref||!s.objs[E.ref[0]])return;
@@ -682,12 +684,12 @@ function syncRoom(s){
  r.area=Math.round(area(E)*10)/10;r.W=E.W;r.L=E.L;r.H=E.H;r.mode=E.mode;r.tpl=E.tpl;
  r.pts=JSON.stringify(E.pts);r.ops=JSON.stringify(E.ops);r.cnt=JSON.stringify(E.cnt);
  r.fm=JSON.stringify(E.fin.mats);r.fin=JSON.stringify(E.fin);
- r.fu=JSON.stringify(E.fur.items);r.furSel=E.fur.sel;
+ {const bad=new Set(furBad(E).map(x=>x[0].id));r.fu=JSON.stringify(E.fur.items.filter(it=>!bad.has(it.id)));r.furSel=bad.has(E.fur.sel)?null:E.fur.sel}
  r.view=E.view;r.cam=JSON.stringify(E.cam||null);
  r.hist=JSON.stringify(E.hist);r.fut=JSON.stringify(E.fut);r.chat=JSON.stringify(E.chat);r.rtab=E.rtab;
  o.est=JSON.stringify(E.est);
 }
-function svHTML(){const E=S.E;if(E.phase!=='edit')return'';return E.saving?`<span class="saved ing" role="status">${I('load')}Сохранение…</span>`:`<span class="saved" role="status">${I('check')}Сохранено</span>`}
+function svHTML(){const E=S.E;if(E.phase!=='edit')return'';return false&&E.saving?`<span class="saved ing" role="status">${I('load')}Сохранение…</span>`:`<span class="saved" role="status">${I('check')}Сохранено</span>`}
 function autosave(E){if(E.phase!=='edit'||E.saving==='hold')return;E.saving=true;clearTimeout(svT);svT=setTimeout(()=>{if(S.E!==E)return;E.saving=false;syncRoom(S);const el=document.querySelector('#ui .saved');if(el)el.outerHTML=svHTML()},450)}
 function loadRoom(s,oi,ri){
  const r=s.objs[oi].rooms[ri],d=ROOMS[r.key]||ROOMS.veranda,E=mkE();
@@ -774,12 +776,12 @@ function histHTML(){
  if(!n&&!F.length)return '<p class="mut">Изменений пока нет. Здесь появится список последних действий.</p>';
  const row=(label,t,right,act,k,cls)=>`<li class="${cls||''}">${act?`<button type="button" data-act="${act}" data-n="${k}"><span class="hn">${esc(cap(label))}</span><span class="ht">${tm(t)}</span><span class="hr">${right}</span></button>`:`<div><span class="hn">${esc(cap(label))}</span><span class="ht">${tm(t)}</span><span class="hr">${right}</span></div>`}</li>`;
  let h=F.map((f,j)=>row(f.label,f.t,'Вернуть','hist-redo',F.length-j,'fu')).join('');
- for(let i=n-1;i>=Math.max(0,n-12);i--)h+=i===n-1?row(H[i].label,H[i].t,'Сейчас','',0,'cur'):row(H[i].label,H[i].t,'Откатить сюда','hist-go',n-1-i);
- if(n<=12)h+=row('начало работы',0,n?'Откатить сюда':'Сейчас',n?'hist-go':'',n,n?'':'cur');
+ for(let i=n-1;i>=Math.max(0,n-HIST_MAX);i--)h+=i===n-1?row(H[i].label,H[i].t,'Сейчас','',0,'cur'):row(H[i].label,H[i].t,'Откатить сюда','hist-go',n-1-i);
+ if(!E.histCut)h+=row('начало работы',0,n?'Откатить сюда':'Сейчас',n?'hist-go':'',n,n?'':'cur');
  return `<ol class="hl">${h}</ol>`;
 }
 function undo(E){if(!E.hist.length){E.status='Отменять нечего.';return}const h=E.hist.pop();E.fut.push({t:h.t,s:snap(E),label:h.label});load(E,h.s);autosave(E);E.status=`Отменено: ${h.label}.`;E.saved=''}
-function redo(E){if(!E.fut.length){E.status='Повторять нечего.';return}const f=E.fut.pop();E.hist.push({t:f.t,s:snap(E),label:f.label});load(E,f.s);autosave(E);E.status=`Возвращено: ${f.label}.`;E.saved=''}
+function redo(E){if(!E.fut.length){E.status='Повторять нечего.';return}const f=E.fut.pop();histPush(E,{t:f.t,s:snap(E),label:f.label});load(E,f.s);autosave(E);E.status=`Возвращено: ${f.label}.`;E.saved=''}
 function closeContour(E){
  E.errs={};
  if(E.pts.length<3){E.errs.contour='Поставьте минимум три точки.';return false}
@@ -836,11 +838,11 @@ function planSVG(){
   let g=`<g ${act} class="hv" style="cursor:pointer"><line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#000" stroke-opacity="0" stroke-width="${34*k}"/>${f.id&&!sel?hvLine(a,b,-w.n[0]*15*k,-w.n[1]*15*k,k):''}`;
   if(f.kind==='niche'){const dp=N(f.depth)||0,c=[b[0]+w.n[0]*dp,b[1]+w.n[1]*dp],d=[a[0]+w.n[0]*dp,a[1]+w.n[1]*dp];
    g+=`<polygon points="${[a,b,c,d].map(p=>p.join(',')).join(' ')}" fill="#fff" stroke="${dr?SELC:'#183C43'}" stroke-width="${3*k}" ${dr?`stroke-dasharray="${8*k} ${6*k}"`:''}/>`;
-   if(sel)g+=ring(segBox(a,b,w.d,w.n,7*k,-9*k,dp+7*k),k)}
+   if(sel)g+=ring([a,b,c,d],k)}
   else{
    g+=`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${f.kind==='win'?'#19CBD8':'#fff'}" stroke-width="${12*k}"/>`;
    if(f.kind==='door'){const c=[a[0]+w.n[0]*ww,a[1]+w.n[1]*ww];g+=`<path d="M${a} L${c} A${ww} ${ww} 0 0 0 ${b}" fill="none" stroke="#536467" stroke-width="${1.5*k}"/>`}
-   const q=segBox(a,b,w.d,w.n,6*k,-11*k,11*k);
+   const q=segBox(a,b,w.d,w.n,0,-6*k,6*k);
    if(sel)g+=ring(q,k);else if(dr)g+=`<polygon points="${q.map(x=>x.join(',')).join(' ')}" fill="none" stroke="${SELC}" stroke-width="${1.6*k}" stroke-dasharray="${6*k} ${4*k}" pointer-events="none"/>`;
   }
   if((sel||dr)&&off>=0){const rv=refRev(E,+f.wall),dv=rv?w.len-off-ww:off,c0=rv?w.b:w.a,c1=rv?b:a,ox=-w.n[0]*30*k,oy=-w.n[1]*30*k;
@@ -853,7 +855,7 @@ function planSVG(){
  for(let i=0;i<nW;i++){
   const w=wall(E,i),sel=E.sel&&E.sel.t==='wall'&&E.sel.i===i,mx=(w.a[0]+w.b[0])/2,my=(w.a[1]+w.b[1])/2;
   o+=`<line x1="${w.a[0]}" y1="${w.a[1]}" x2="${w.b[0]}" y2="${w.b[1]}" stroke="${pick?'#006B79':'#183C43'}" stroke-width="${5*k}" stroke-linecap="round" ${pick?`stroke-dasharray="${12*k} ${8*k}"`:''}/>`;
-  if(sel)o+=ring(segBox(w.a,w.b,w.d,w.n,9*k,-11*k,11*k),k);
+  if(sel)o+=ring(segBox(w.a,w.b,w.d,w.n,2.5*k,-2.5*k,2.5*k),k);
   o+=lab(mx,my,-w.n[0],-w.n[1],14,k,Math.round(w.len)+' см','dim');
   if(pick||sel)o+=lab(mx,my,w.n[0],w.n[1],16,k,'Стена '+(i+1),'sel');
  }
@@ -1085,11 +1087,11 @@ function elevSVG(){
  if(F.zform&&!F.zform.id)zs.push({id:0,n:0,from:N(F.zform.from),h:N(F.zform.h),mat:null,draft:1});
  zs.forEach(z=>{if(!(z.from>=0)||!(z.h>0))return;const pid='pz'+z.id,id=tr&&+F.target===z.id?F.tryMat:z.mat,y=H-z.from-z.h;
   defs+=patDef(id,pid,0);
-  o+=`<g ${z.draft?'':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="0" y="${y}" width="${W}" height="${z.h}" fill="url(#${pid})" stroke="${z.draft?SELC:'#183C43'}" stroke-width="${2*kk}" ${z.draft?`stroke-dasharray="${8*kk} ${6*kk}"`:''}/>${z.sel?ring([[6*kk,y+6*kk],[W-6*kk,y+6*kk],[W-6*kk,y+z.h-6*kk],[6*kk,y+z.h-6*kk]],kk):''}
+  o+=`<g ${z.draft?'':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="0" y="${y}" width="${W}" height="${z.h}" fill="url(#${pid})" stroke="${z.draft?SELC:'#183C43'}" stroke-width="${2*kk}" ${z.draft?`stroke-dasharray="${8*kk} ${6*kk}"`:''}/>${z.sel?ring([[0,y],[W,y],[W,y+z.h],[0,y+z.h]],kk):''}
   ${lab(10*kk,y+14*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(id||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
  E.ops.filter(p=>p.wall===i&&p.kind!=='niche').forEach(p=>{const b=p.kind==='win'?p.sill:0,y=H-b-p.h;
-  const x=rv?W-p.off-p.w:p.off,on=F.op===p.id;o+=`<g data-act="f-op" data-id="${p.id}" tabindex="0" role="button" aria-label="${opName(p)}" style="cursor:pointer"><rect x="${x}" y="${y}" width="${p.w}" height="${p.h}" fill="${p.kind==='win'?'#19CBD833':'#fff'}" stroke="#183C43" stroke-width="${2*kk}"/>${on?ring([[x-7*kk,y-7*kk],[x+p.w+7*kk,y-7*kk],[x+p.w+7*kk,y+p.h+7*kk],[x-7*kk,y+p.h+7*kk]],kk):''}${lab(x+p.w/2,y+p.h/2,0,0,0,kk,opName(p),on?'sel':'name',12)}</g>`});
- o+=ring([[-11*kk,-11*kk],[W+11*kk,-11*kk],[W+11*kk,H+11*kk],[-11*kk,H+11*kk]],kk);
+  const x=rv?W-p.off-p.w:p.off,on=F.op===p.id;o+=`<g data-act="f-op" data-id="${p.id}" tabindex="0" role="button" aria-label="${opName(p)}" style="cursor:pointer"><rect x="${x}" y="${y}" width="${p.w}" height="${p.h}" fill="${p.kind==='win'?'#19CBD833':'#fff'}" stroke="#183C43" stroke-width="${2*kk}"/>${on?ring([[x,y],[x+p.w,y],[x+p.w,y+p.h],[x,y+p.h]],kk):''}${lab(x+p.w/2,y+p.h/2,0,0,0,kk,opName(p),on?'sel':'name',12)}</g>`});
+ o+=ring([[0,0],[W,0],[W,H],[0,H]],kk);
  o+=lab(W/2,H,0,1,22,kk,W+' см','dim')+lab(0,H/2,-1,0,18,kk,H+' см','dim');
  o+=`<text x="0" y="${H+46*kk}" font-size="${11*kk}" fill="#536467" pointer-events="none">${hz?'левый угол':'верхний угол'}</text><text x="${W}" y="${H+40*kk}" font-size="${11*kk}" fill="#536467" text-anchor="end" pointer-events="none">${hz?'правый угол':'нижний угол'}</text>`.replace(`y="${H+40*kk}"`,`y="${H+46*kk}"`);
  return `<svg viewBox="${vb.join(' ')}" role="group" aria-label="Развёртка: ${surfName(k)}"><defs>${defs}</defs>${o}</svg>`;
@@ -1103,7 +1105,7 @@ function flatSVG(ceil,pick){
  let zdefs='';const zs=m.zones.map(z=>F.zform&&F.zform.id===z.id?{...z,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),sel:1}:z);
  if(!pick&&F.zform&&!F.zform.id&&F.surf===k)zs.push({id:0,n:0,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),mat:null,draft:1});
  zs.forEach(z=>{if(!(z.w>0)||!(z.l>0)||!(z.x>=0)||!(z.y>=0))return;const zid=!pick&&F.mode==='try'&&+F.target===z.id?F.tryMat:z.mat,x0=ceil?b.x+b.w-z.x-z.w:b.x+z.x,y0=b.y+z.y;zdefs+=patDef(zid,'pz'+z.id,0);
-  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="${z.draft?SELC:'#183C43'}" stroke-width="${1.5*kk}" ${z.draft?`stroke-dasharray="${8*kk} ${6*kk}"`:''}/>${z.sel?ring([[x0+5*kk,y0+5*kk],[x0+z.w-5*kk,y0+5*kk],[x0+z.w-5*kk,y0+z.l-5*kk],[x0+5*kk,y0+z.l-5*kk]],kk):''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
+  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="${z.draft?SELC:'#183C43'}" stroke-width="${1.5*kk}" ${z.draft?`stroke-dasharray="${8*kk} ${6*kk}"`:''}/>${z.sel?ring([[x0,y0],[x0+z.w,y0],[x0+z.w,y0+z.l],[x0,y0+z.l]],kk):''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
  E.ops.forEach(p=>{const w=wall(E,p.wall),a0=[w.a[0]+w.d[0]*p.off,w.a[1]+w.d[1]*p.off],c0=[a0[0]+w.d[0]*p.w,a0[1]+w.d[1]*p.w],a=fx(a0),c=fx(c0);
   if(p.kind==='win')o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}" stroke="#19CBD8" stroke-width="${10*kk}"/>`;
   else if(p.kind==='niche'){const q=[a0,c0,[c0[0]+w.n[0]*p.depth,c0[1]+w.n[1]*p.depth],[a0[0]+w.n[0]*p.depth,a0[1]+w.n[1]*p.depth]].map(fx);o+=`<polygon points="${q.map(x=>x.join(',')).join(' ')}" fill="#fff" stroke="#183C43" stroke-width="${3*kk}" pointer-events="none"/>`}
@@ -1131,7 +1133,7 @@ function catalogHTML(){
  ${list.length?`<div class="pgrid">${list.map(id=>{const M=MAT[id],c=cost(E,id,F.surf,F.target);return `<article class="pcd"><div class="pcd-img">${pthumb(id,'c'+id,112)}${M.st?'':'<span class="pcd-tag">Под заказ</span>'}</div>
   <h3 class="pcd-n" title="${esc(M.name)}">${M.name}</h3><p class="pcd-d">${M.d}</p><p class="pcd-d">${id}</p><p class="pcd-f">Фасовка: ${M.pack}</p>
   <div class="pcd-p"><p class="pcd-pr">${rub(M.price)}</p><p class="pcd-d">${M.unit}</p><p class="pcd-need">На поверхность: ${c.qty}, <b>${rub(c.sum)}</b></p>
-  <div class="pcd-a"><button type="button" class="btn" data-act="f-try" data-id="${id}">Примерить</button><button type="button" class="btn pri" data-act="f-apply-now" data-id="${id}">Применить</button></div></div></article>`}).join('')}</div>`
+  <div class="pcd-a"><button type="button" class="btn" data-act="f-try" data-id="${id}">Подробнее</button><button type="button" class="btn pri" data-act="f-apply-now" data-id="${id}">Примерить</button></div></div></article>`}).join('')}</div>`
  :`<div class="empty" style="background:var(--paper)"><h3>Ничего не нашлось</h3><p class="mut">Проверьте запрос или снимите часть фильтров.</p><button type="button" class="btn" data-act="f-reset">Сбросить фильтры</button></div>`}`;
 }
 function finCenter(){
@@ -1163,7 +1165,7 @@ function finParams(){
  if(!k)return `<h3>Отделка</h3><p class="mut">Выберите поверхность в списке или нажмите на стену или пол на плане. Потолок выбирается в списке. В режиме 3D комнату можно вращать.</p>`;
  const m=sm(E,k),kind=surfKind(k),fx=x=>E.kb===x,word={wall:'стены',floor:'пола',ceil:'потолка'}[kind];
  const rows=(id,target)=>{const c=cost(E,id,k,target);return[['К покупке',c.qty],['Сумма',rub(c.sum)],['Расчёт',c.note]]};
- if(F.mode==='try')return `<h3>Примерка</h3><p class="mut">${MAT[F.tryMat].name} · ${targetName(E)}, ${fmtN(targetGeo(E,k,F.target).area)} м². Текстура показана на стене.</p><div class="note"><b>${MAT[F.tryMat].name}</b><p class="mut sm">${MAT[F.tryMat].d}</p>${rows(F.tryMat,F.target).map(r=>`<p class="sm">${r[0]}: ${r[1]}</p>`).join('')}</div><div class="stack gap8"><button type="button" class="btn pri wide" data-act="f-apply">Применить покрытие</button><div class="half"><button type="button" class="btn" data-act="f-cat-open" data-t="${F.target}">В каталог</button><button type="button" class="btn" data-act="f-reject">Отменить</button></div></div>`;
+ if(F.mode==='try')return `<h3>Подробнее</h3><p class="mut">${targetName(E)}, ${fmtN(targetGeo(E,k,F.target).area)} м². Текстура показана на плане, проект пока не изменён.</p>${prodCard(F.tryMat,{pid:'ct',rows:rows(F.tryMat,F.target)})}<div class="stack gap8"><button type="button" class="btn pri wide" data-act="f-apply">Примерить</button><div class="half"><button type="button" class="btn" data-act="f-cat-open" data-t="${F.target}">В каталог</button><button type="button" class="btn" data-act="f-reject">Закрыть</button></div></div>`;
  if(F.zform){const f=F.zform,ex=!!f.id,z=ex&&m.zones.find(z=>z.id===f.id),e=F.zerrs;
   const flds=kind==='wall'?fld('zone','from','Нижний край от пола, см',f.from,e.from,{num:1})+fld('zone','h','Высота зоны, см',f.h,e.h,{num:1,fx:fx('h')})
    :`<div class="row2">${fld('zone','x','От левой стены, см',f.x,e.x,{num:1})}${fld('zone','y','От верхней стены, см',f.y,e.y,{num:1})}</div><div class="row2">${fld('zone','w','Ширина, см',f.w,e.w,{num:1,fx:fx('h')})}${fld('zone','l','Длина, см',f.l,e.l,{num:1})}</div>${kind==='ceil'?fld('zone','drop','Ниже основного потолка, см',f.drop,e.drop,{num:1}):''}`;
@@ -1276,13 +1278,14 @@ function freeSpot(E,it){
 function syncForm(E){const t=furTarget(E);E.fur.form=t?{x:t.x,y:t.y,w:t.w,d:t.d,h:t.h,rot:t.rot}:null}
 function furSelect(E,id){const F=E.fur;F.sel=id;F.menu=null;F.errs={};F.mode='view';F.ghost=null;syncForm(E);E.rtab='params'}
 function furRotate(E,it,dir){const [fw,fd]=fp(it),cx=it.x+fw/2,cy=it.y+fd/2,n={...it,rot:(it.rot+dir+360)%360},[nw,nd]=fp(n);n.x=Math.round((cx-nw/2)/5)*5;n.y=Math.round((cy-nd/2)/5)*5;return n}
-function furApply(E,it,n,label){const F=E.fur,ghost=it===F.ghost,why=fvalid(E,n);F.errs={};
- if(why&&!ghost){F.errs.x=why+' Предмет не изменён.';return false}
+function furApply(E,it,n,label){const F=E.fur,ghost=it===F.ghost,why='';F.errs={};
  if(!ghost)commit(E,label);Object.assign(it,n);if(why)F.errs.x=why;syncForm(E);return true}
 function furPick(E,t){const F=E.fur,m=LIB.find(l=>l.t===t),g={id:0,t,n:m.n,w:m.w,d:m.d,h:m.h,color:m.c,flat:m.flat||0,x:0,y:0,rot:0},b=bbox(E.pts),p=freeSpot(E,g)||[Math.round(b.x+b.w/2-m.w/2),Math.round(b.y+b.h/2-m.d/2)];
  g.x=p[0];g.y=p[1];F.ghost=g;F.mode='place';F.sel=null;F.menu=null;F.errs={};const why=fvalid(E,g);if(why)F.errs.x=why;E.view='2d';E.rtab='params';syncForm(E)}
-function furPlace(E){const F=E.fur,g=F.ghost,why=fvalid(E,g);if(why){F.errs={x:why+' Передвиньте предмет или измените размер.'};return false}
+function furPlace(E,force){const F=E.fur,g=F.ghost,why=fvalid(E,g);if(why&&!force){F.errs={x:why+' Передвиньте предмет или измените размер.'};return false}
  commit(E,'добавление: '+g.n.toLowerCase());const it={...g,id:++FID};F.items.push(it);F.ghost=null;F.mode='view';F.sel=it.id;F.errs={};syncForm(E);return true}
+/* Items that overlap another item or stand outside the walls. */
+function furBad(E){return E.fur.items.map(it=>[it,fvalid(E,it)]).filter(x=>x[1])}
 function furDel(E,id){const F=E.fur,it=F.items.find(i=>i.id===id);if(!it)return;commit(E,'удаление: '+it.n.toLowerCase());F.items=F.items.filter(i=>i!==it);F.sel=null;F.menu=null;F.form=null;F.errs={}}
 function furDup(E,id){const F=E.fur,it=F.items.find(i=>i.id===id),p=freeSpot(E,{...it,id:0});F.menu=null;
  if(!p){furSelect(E,id);F.errs={x:'Для копии нет свободного места. Освободите место или уменьшите предмет.'};return}
@@ -1339,11 +1342,13 @@ function furSVG(){
   if(p.kind==='win')o+=`<line x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}" stroke="#19CBD8" stroke-width="${10*kk}"/>`;
   else if(p.kind==='niche')o+=`<polygon points="${[a,c,[c[0]+w.n[0]*p.depth,c[1]+w.n[1]*p.depth],[a[0]+w.n[0]*p.depth,a[1]+w.n[1]*p.depth]].map(x=>x.join(',')).join(' ')}" fill="#fff" stroke="#183C43" stroke-width="${3*kk}"/>`;
   else{const e=[a[0]+w.n[0]*p.w,a[1]+w.n[1]*p.w],bad=F.items.concat(F.ghost?[F.ghost]:[]).some(it=>doorHits(E,it,p));o+=`<g pointer-events="none"><line x1="${a[0]}" y1="${a[1]}" x2="${c[0]}" y2="${c[1]}" stroke="#fff" stroke-width="${10*kk}"/><path d="M${a} L${e} A${p.w} ${p.w} 0 0 0 ${c}Z" fill="${bad?'#A32637':'#fff'}" fill-opacity="${bad?.14:0}" stroke="${bad?'#A32637':'#536467'}" stroke-width="${(bad?2.5:1.5)*kk}"/></g>`}});
- const draw=(it,ghost)=>{const [fw,fd]=fp(it),sel=!ghost&&F.sel===it.id,bad=ghost&&Object.keys(F.errs).length,st=bad?'#A32637':sel||ghost?'#006B79':'#183C43',cx=it.x+fw/2,cy=it.y+fd/2;
+ const badIds=new Set(furBad(E).map(x=>x[0].id));
+ const draw=(it,ghost)=>{const [fw,fd]=fp(it),sel=!ghost&&F.sel===it.id,cf=!ghost&&badIds.has(it.id),bad=ghost&&Object.keys(F.errs).length,st=bad?'#A32637':sel||ghost?'#006B79':'#183C43',cx=it.x+fw/2,cy=it.y+fd/2;
   const w1=it.n.split(' ')[0],room=Math.min(fw,it.rot%180?it.d:it.w)-8*kk,txt=fd<18*kk?'':it.n.length*7*kk<=room?it.n:w1.length*7*kk<=room?w1:'';
-  return `<g data-drag="${it.id}" style="cursor:grab;touch-action:none"><title>${esc(it.n)}, ${it.w} × ${it.d} см</title><g transform="rotate(${it.rot} ${cx} ${cy})" opacity="${ghost?.6:1}"><rect x="${cx-it.w/2}" y="${cy-it.d/2}" width="${it.w}" height="${it.d}" fill="#000" fill-opacity="0"/>${planModel(it,cx-it.w/2,cy-it.d/2,kk)}${ghost?`<rect x="${cx-it.w/2}" y="${cy-it.d/2}" width="${it.w}" height="${it.d}" fill="none" stroke="${bad?'#A32637':SELC}" stroke-width="${2*kk}" stroke-dasharray="${8*kk} ${5*kk}"/>`:''}${sel?ring([[cx-it.w/2-7*kk,cy-it.d/2-7*kk],[cx+it.w/2+7*kk,cy-it.d/2-7*kk],[cx+it.w/2+7*kk,cy+it.d/2+7*kk],[cx-it.w/2-7*kk,cy+it.d/2+7*kk]],kk):''}</g>${txt?lab(cx,cy,0,0,0,kk,esc(txt),'name'):''}${sel||ghost?lab(cx,it.y+fd,0,1,14,kk,it.w+' × '+it.d+' см','sel'):''}</g>`};
+  return `<g data-drag="${it.id}" style="cursor:grab;touch-action:none"><title>${esc(it.n)}, ${it.w} × ${it.d} см</title><g transform="rotate(${it.rot} ${cx} ${cy})" opacity="${ghost?.6:1}"><rect x="${cx-it.w/2}" y="${cy-it.d/2}" width="${it.w}" height="${it.d}" fill="#000" fill-opacity="0"/>${planModel(it,cx-it.w/2,cy-it.d/2,kk)}${ghost?`<rect x="${cx-it.w/2}" y="${cy-it.d/2}" width="${it.w}" height="${it.d}" fill="none" stroke="${bad?'#A32637':SELC}" stroke-width="${2*kk}" stroke-dasharray="${8*kk} ${5*kk}"/>`:''}${sel||cf?ring([[cx-it.w/2,cy-it.d/2],[cx+it.w/2,cy-it.d/2],[cx+it.w/2,cy+it.d/2],[cx-it.w/2,cy+it.d/2]],kk,cf?'#A32637':SELC):''}</g>${txt?lab(cx,cy,0,0,0,kk,esc(txt),'name'):''}${sel||ghost?lab(cx,it.y+fd,0,1,14,kk,it.w+' × '+it.d+' см','sel'):''}</g>`};
  const handles=()=>{const t=furTarget(E);if(!t)return'';const [fw,fd]=fp(t),cx=t.x+fw/2,hy=t.y-24*kk,px=t.x+fw+24*kk,py=t.y+fd/2,ic=(n,x,y,c)=>`<g transform="translate(${x-8*kk} ${y-8*kk}) scale(${16*kk/24})" fill="none" stroke="${c}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" pointer-events="none">${ICONS[n]}</g>`;
-  return `<g data-roth="1" tabindex="0" role="button" aria-label="Повернуть предмет: потяните" style="cursor:grab;touch-action:none"><circle cx="${cx}" cy="${hy}" r="${20*kk}" fill="#000" fill-opacity="0"/><circle cx="${cx}" cy="${hy}" r="${13*kk}" fill="#fff" stroke="#006B79" stroke-width="${1.5*kk}"/>${ic('rot',cx,hy,'#006B79')}</g>`};
+  const rx=t===F.ghost?cx:cx-17*kk,dx=cx+17*kk;
+  return `<g data-roth="1" tabindex="0" role="button" aria-label="Повернуть предмет: нажмите или потяните" style="cursor:grab;touch-action:none"><circle cx="${rx}" cy="${hy}" r="${16*kk}" fill="#000" fill-opacity="0"/><circle cx="${rx}" cy="${hy}" r="${13*kk}" fill="#fff" stroke="#006B79" stroke-width="${1.5*kk}"/>${ic('rot',rx,hy,'#006B79')}</g>${t===F.ghost?'':`<g data-act="u-del" data-id="${t.id}" tabindex="0" role="button" aria-label="Удалить предмет" style="cursor:pointer"><circle cx="${dx}" cy="${hy}" r="${16*kk}" fill="#000" fill-opacity="0"/><circle cx="${dx}" cy="${hy}" r="${13*kk}" fill="#fff" stroke="#A32637" stroke-width="${1.5*kk}"/>${ic('x',dx,hy,'#A32637')}</g>`}`};
  const its=F.items.slice().sort((a,c)=>(c.flat-a.flat)||((a.id===F.sel)-(c.id===F.sel)));
  its.forEach(it=>o+=draw(it));if(F.ghost)o+=draw(F.ghost,true);o+=handles();
  return `<svg viewBox="${vb.join(' ')}" role="group" aria-label="План комнаты с предметами"><defs>${patDef(fid,'pf',dirAng(sm(E,'floor').dir))}</defs>${o}</svg>`;
@@ -1368,7 +1373,8 @@ function furCenter(){
  <button type="button" class="icb" data-act="undo" aria-label="Отменить действие" ${E.hist.length?'':'disabled'}>${I('undo')}</button><button type="button" class="icb" data-act="redo" aria-label="Повторить действие" ${E.fut.length?'':'disabled'}>${I('redo')}</button>${histBtn()}${svHTML()}</div>`;
  const hint=F.mode==='place'?`<p class="hint">Перетащите «${esc(F.ghost.n)}» на место или задайте положение в параметрах. Предмет появится в комнате после кнопки «Разместить здесь».</p>`:!F.items.length?'<p class="hint">В комнате пока нет предметов. Нажмите «Добавить предмет», чтобы открыть библиотеку.</p>':'';
  const dc=F.items.concat(F.ghost?[F.ghost]:[]).map(it=>[it,doorHit(E,it)]).filter(x=>x[1]),warn=dc.length?`<p class="hint warnh">${I('alert')}<span>${dc.map(x=>`«${esc(x[0].n)}» мешает открыть ${opName(x[1]).toLowerCase()}`).join('. ')}. Дверь открывается внутрь комнаты на свою ширину.</span></p>`:'';
- return `${tb}${F.items.length||F.mode==='place'?'':`<p class="hint">В комнате пока нет предметов. Откройте «Инструменты», чтобы добавить мебель.</p>`}<div class="plan">${E.view==='3d'?isoFur():furSVG()}</div><p class="status sr" role="status">${esc(E.status)}</p>`;
+ const bd=[],warnc=bd.length?`<p class="hint warnh">${I('alert')}<span>${bd.length===1?`«${esc(bd[0][0].n)}»: ${esc(bd[0][1].replace(/\.$/,'').toLowerCase())}`:`Пересекаются предметы: ${bd.map(x=>'«'+esc(x[0].n)+'»').join(', ')}`}. Передвиньте мебель или удалите предмет крестиком — пока пересечения есть, расстановка не сохраняется, а смета недоступна.</span></p>`:'';
+ return `${tb}${warnc}${F.items.length||F.mode==='place'?'':`<p class="hint">В комнате пока нет предметов. Откройте «Инструменты», чтобы добавить мебель.</p>`}<div class="plan">${E.view==='3d'?isoFur():furSVG()}</div><p class="status sr" role="status">${esc(E.status)}</p>`;
 }
 function furTools(){
  const E=S.E,F=E.fur;
@@ -1383,7 +1389,7 @@ function furParams(){
  if(F.mode==='lib')return `<h3>Библиотека предметов</h3><p class="mut">Выбирайте мебель и предметы интерьера, настраивайте размеры и примеряйте их в комнате.</p>`;
  if(!t){const dc=F.items.map(it=>[it,doorHit(E,it)]).filter(x=>x[1]);return `<h3>Обстановка</h3><p class="mut">${F.items.length?'Предметов в комнате: '+F.items.length+'. Нажмите на предмет на плане или в списке, чтобы изменить его.':'В комнате пока нет предметов. Откройте «Инструменты», чтобы добавить мебель.'}</p>${dc.map(x=>`<p class="warnp" role="status">${I('alert')}<span>${esc(x[0].n)} мешает открыванию двери ${x[1].n}.</span></p>`).join('')}`}
  const b=bbox(E.pts),[fw,fd]=fp(t),place=F.mode==='place';
- return `<h3>${esc(t.n)}</h3><p class="mut">${place?'Перетащите предмет на место или задайте положение. Он появится в комнате после кнопки «Разместить здесь».':'Справочная модель. Перетащите предмет на плане, круглая ручка над ним поворачивает.'}</p>
+ return `<h3>${esc(t.n)}</h3>
  <div class="grp gap12"><h4>Размер</h4><div class="row3">${fld('fu','w','Ширина, см',f.w,e.w,{num:1,fx:fx('w')})}${fld('fu','d','Глубина, см',f.d,e.d,{num:1})}${fld('fu','h','Высота, см',f.h,e.h,{num:1})}</div></div>
  <div class="grp gap12"><h4>Положение</h4><div class="row2">${fld('fu','x','От левой стены, см',f.x,e.x,{num:1})}${fld('fu','y','От верхней стены, см',f.y,e.y,{num:1})}</div>${(()=>{const dh=doorHit(E,t);return dh?`<p class="warnp" role="status">${I('alert')}<span>${esc(t.n)} мешает открыванию двери ${dh.n}. Дверь шириной ${dh.w} см открывается внутрь комнаты. Передвиньте предмет.</span></p>`:''})()}
  ${fld('fu','rot','Поворот, градусы',f.rot,e.rot,{num:1})}<p class="mut sm">До стен: слева ${t.x-b.x}, справа ${b.x+b.w-t.x-fw}, сверху ${t.y-b.y}, снизу ${b.y+b.h-t.y-fd} см</p></div>
@@ -1400,7 +1406,7 @@ function furAct(a,d){
   case 'u-search':{const i=$('#u-q');F.q=i?i.value:'';break}
   case 'u-chip-x':if(String(d.k).startsWith('fr:'))F.fr=F.fr.filter(r=>r!==d.k.slice(3));else F[d.k]='';break;
   case 'u-reset':F.q='';F.fw='';F.fr=[];break;
-  case 'u-pick':furPick(E,d.t);if(!Object.keys(E.fur.errs).length)furPlace(E);E.sheet=null;break;
+  case 'u-pick':furPick(E,d.t);furPlace(E,true);E.sheet=null;break;
   case 'u-place-ok':if(furPlace(E))E.sheet=null;break;
   case 'u-place-x':F.ghost=null;F.mode='view';F.form=null;F.errs={};E.sheet=null;E.kb=false;break;
   case 'u-sel':if(F.mode!=='place'){furSelect(E,+d.id);if(mob&&E.sheet==='tools')E.sheet=null}break;
@@ -1426,7 +1432,7 @@ function furChange(m,k,v,el){
  else if(k==='x'||k==='y'){if(!isFinite(val)){F.errs[k]='Введите расстояние в сантиметрах.';return true}n[k]=Math.round(val)}
  else{const lim={w:[10,400,'ширину'],d:[10,400,'глубину'],h:[2,300,'высоту']}[k];if(!(val>=lim[0]&&val<=lim[1])){F.errs[k]=`От ${lim[0]} до ${lim[1]} см.`;return true}n[k]=Math.round(val)}
  const label={x:'перемещение',y:'перемещение',rot:'поворот'}[k]||'размер';
- if(!furApply(E,t,n,label+': '+t.n.toLowerCase())){const keep=(F.errs.x||'').replace(' Предмет не изменён.','');syncForm(E);F.form[k]=v;F.errs={[k]:keep}}
+ furApply(E,t,n,label+': '+t.n.toLowerCase());if(F.errs.x&&k!=='x'&&k!=='y')F.errs={[k]:F.errs.x};
  return true;
 }
 let DR=null;
@@ -1442,7 +1448,7 @@ document.addEventListener('pointerup',()=>{
  if(!DR)return;const d=DR,E=S.E,F=E.fur;DR=null;
  if(!d.id){F.errs={};const why=fvalid(E,d.it);if(why)F.errs.x=why;syncForm(E);render();return}
  F.sel=d.id;F.menu=null;F.errs={};if(S.dev==='m'&&E.sheet==='tools')E.sheet=null;
- if(d.moved){const why=fvalid(E,d.it);if(why){d.it.x=d.x0;d.it.y=d.y0;F.errs.x=why+' Предмет вернулся на место.'}else{E.hist.push({t:Date.now(),s:d.snap,label:'перемещение: '+d.it.n.toLowerCase()});E.fut=[];autosave(E)}}
+ if(d.moved){histPush(E,{t:Date.now(),s:d.snap,label:'перемещение: '+d.it.n.toLowerCase()});E.fut=[];autosave(E)}
  syncForm(E);E.rtab='params';if(d.moved)NOCLK=Date.now();render()});
 
 /* ---------- contour editing in a finished room ---------- */
@@ -1516,7 +1522,7 @@ document.addEventListener('pointermove',ev=>{
  DRP.moved=true;E.pts=pts;E.errs={};rafRender()});
 document.addEventListener('pointerup',()=>{
  if(!DRP)return;const d=DRP,E=S.E;DRP=null;E.vbLock=null;
- NOCLK=Date.now();if(d.moved){E.hist.push({t:Date.now(),s:d.snap,label:'перемещение точки '+(d.i+1)});E.fut=[];autosave(E);render();return}ptTap(d.i)});
+ NOCLK=Date.now();if(d.moved){histPush(E,{t:Date.now(),s:d.snap,label:'перемещение точки '+(d.i+1)});E.fut=[];autosave(E);render();return}ptTap(d.i)});
 /* A tap on a point: the pointerdown handler swallows the click, so the tap is handled here. Tapping point 1 closes the contour. */
 function ptTap(i){const E=S.E;
  if(E.phase==='create'){if(E.mode==='own'&&!E.closed&&i===0&&E.pts.length>=3&&closeContour(E)){createRoom(S);E.sheet=null}render();return}
@@ -1711,7 +1717,7 @@ function cardHTML(m,idx,last){
 function chatHTML(){
  const E=S.E;
  return `<span class="ctx">${esc(E.name||'Новая комната')}</span><div class="chat" aria-live="polite">${E.chat.map((m,i)=>m.c?cardHTML(m,i,i===E.chat.length-1):`<div class="msg ${m.w}">${esc(m.t)}</div>`).join('')}</div>
- ${E.mic?`<div class="cmp rec" role="status"><span class="wave" aria-hidden="true">${'<i></i>'.repeat(9)}</span><span class="rt">Слушаю вас...</span><button type="button" class="stopb" data-act="ai-mic" aria-label="Остановить запись">${I('stop')}</button><button type="button" class="on pulse" data-act="ai-mic" aria-label="Микрофон включён" aria-pressed="true">${I('mic')}</button></div>`:''}
+ ${E.mic?`<div class="cmp rec" role="status"><span class="rt"><span class="wave" aria-hidden="true">${'<i></i>'.repeat(7)}</span>Слушаю вас…</span><button type="button" class="go" data-act="ai-mic" aria-label="Остановить запись">${I('stop')}</button><button type="button" class="on" data-act="ai-mic" aria-label="Микрофон включён, остановить" aria-pressed="true">${I('mic')}</button></div>`:''}
  <div class="cmp" ${E.mic?'hidden':''}><input id="chat-in" data-m="chat" placeholder="Напишите сообщение" autocomplete="off" aria-label="Сообщение помощнику"><button type="button" class="go" data-act="ai-send" aria-label="Отправить">${I('send')}</button><button type="button" class="${E.mic?'on':''}" data-act="ai-mic" aria-label="${E.mic?'Остановить запись':'Сказать голосом'}" aria-pressed="${E.mic}">${I('mic')}</button></div>`;
 }
 const AQ={W:['Какая ширина комнаты?',['3 м','3,5 м','4 м','5 м'],100,2000,'Ширина'],L:['Какая длина комнаты?',['3 м','3,5 м','4 м','5 м'],100,2000,'Длина'],H:['Какая высота потолка?',['2,5 м','2,7 м','3,0 м'],200,400,'Высота потолка']};
@@ -1783,19 +1789,21 @@ function finAi(s,text){
  if(!F.surf){aSay(E,'ask','Для какой поверхности подобрать покрытие?',{o:['floor','ceil',...E.pts.map((p,i)=>'w'+i)].map(k=>[surfName(k),'fsurf:'+k,sm(E,k).base?'Покрытие выбрано':'Без покрытия'])});return}
  const k=F.surf,base=sm(E,k).base,cur=MAT[base],dir=/светл/.test(t)?1:/темн/.test(t)?-1:0,cheap=/дешев|эконом/.test(t),other=/замен|друг|вариант|подбер|покаж|выбер|предлож/.test(t);
  const pool=Object.keys(MAT).filter(id=>MAT[id].ks.includes(surfKind(k))&&MAT[id].st&&id!==base&&(!cur||MAT[id].cat===cur.cat)),c0=base?cost(E,base,k,'base').sum:0;
+ const wide=Object.keys(MAT).filter(id=>MAT[id].ks.includes(surfKind(k))&&MAT[id].st&&id!==base).sort((x,y)=>(cur&&MAT[x].cat===cur.cat?0:1)-(cur&&MAT[y].cat===cur.cat?0:1));
  const offer=(ids,title,empty)=>{if(!ids.length){aSay(E,'no',empty,{prod:base,rows:[['Поверхность',surfName(k)]],o:pool.length?[['Показать другие варианты','say:Покажи другие варианты']]:null});return}
-  F.target='base';aSay(E,'ask',title,{o:ids.slice(0,6).map(id=>{const q=cost(E,id,k,'base');return[MAT[id].name,'ftry:'+id,'На поверхность: '+q.qty+', '+rub(q.sum)+(base?(q.sum<c0?' · дешевле на '+rub(c0-q.sum):q.sum>c0?' · дороже на '+rub(q.sum-c0):''):''),id,'Примерить']})})};
+  F.target='base';aSay(E,'ask',title,{o:ids.slice(0,3).map(id=>{const q=cost(E,id,k,'base');return[MAT[id].name,'ftry:'+id,'На поверхность: '+q.qty+', '+rub(q.sum)+(base?(q.sum<c0?' · дешевле на '+rub(c0-q.sum):q.sum>c0?' · дороже на '+rub(q.sum-c0):''):''),id,'Примерить']})})};
  if(cur&&dir){offer(pool.filter(id=>(MAT[id].lum-cur.lum)*dir>0),`${surfName(k)}: какой вариант примерить?`,`${dir>0?'Светлее':'Темнее'} вариантов в категории «${cur.cat}» нет`);return}
- if(cur&&cheap){offer(pool.filter(id=>cost(E,id,k,'base').sum<c0).sort((a,b)=>cost(E,a,k,'base').sum-cost(E,b,k,'base').sum),`${surfName(k)}: варианты дешевле`,`Дешевле вариантов в категории «${cur.cat}» нет`);return}
- if(other||!cur){offer(pool,`${surfName(k)}: какой вариант примерить?`,'Других вариантов в каталоге нет');return}
+ if(cur&&cheap){offer(wide.filter(id=>cost(E,id,k,'base').sum<c0).sort((a,b)=>cost(E,a,k,'base').sum-cost(E,b,k,'base').sum),`${surfName(k)}: варианты дешевле`,`Дешевле вариантов в категории «${cur.cat}» нет`);return}
+ if(other||!cur){offer(wide,`${surfName(k)}: какой вариант примерить?`,'Других вариантов в каталоге нет');return}
  aSay(E,'ask','Что сделать с покрытием?',{prod:base,rows:[['Поверхность',surfName(k)]],o:[['Светлее','fdir:1'],['Темнее','fdir:-1'],['Дешевле','say:Подбери дешевле'],['Другие варианты','say:Покажи другие варианты']]});
 }
 function finAiOpt(s,p){
  const E=s.E,F=E.fin,k=F.surf;
  if(p[0]==='fsurf'){const key=p.slice(1).join(':');F.surf=key;F.mode='view';F.zform=null;E.view='2d';aUser(E,surfName(key));const b=sm(E,key).base;aSay(E,'ask',b?'Сделать покрытие светлее или темнее?':'На этой поверхности нет покрытия',{prod:b,rows:[['Поверхность',surfName(key)]],o:b?[['Светлее','fdir:1'],['Темнее','fdir:-1']]:null,note:b?'':'Откройте каталог кнопкой «Выбрать покрытие».'})}
  else if(p[0]==='fdir'){E.chat.push({w:'u',t:+p[1]>0?'Светлее':'Темнее'});E.chat.pop();finAi(s,+p[1]>0?'Светлее':'Темнее')}
- else if(p[0]==='ftry'){const id=p.slice(1).join(':'),c=cost(E,id,k,'base');F.target='base';tryOn(E,id);E.rtab='ai';E.view='2d';aUser(E,MAT[id].name);
-  aSay(E,'conf',`Применить покрытие ${surfTo(k)}?`,{prod:id,rows:[['К покупке',c.qty],['Сумма',rub(c.sum)]],o:[['Применить','fapply'],['Отказаться','freject']]})}
+ else if(p[0]==='ftry'){const id=p.slice(1).join(':'),c=cost(E,id,k,'base');F.target='base';F.tryMat=id;applyTry(E);E.rtab='ai';E.view='2d';aUser(E,'Примерить: '+MAT[id].name);
+  aSay(E,'ok','Применено',{prod:id,note:'Если захотите заменить, просто скажите.'})}
+ else if(p[0]==='fundo'){aUser(E,'Вернуть как было');aUndo(E)}
  else if(p[0]==='fapply'){if(F.mode==='try'){const id=F.tryMat;applyTry(E);aUser(E,'Применить');aSay(E,'ok',`Готово! Покрытие применено ${surfTo(k)}`,{prod:id})}}
  else if(p[0]==='freject'){if(F.mode==='try'){rejectTry(E);aUser(E,'Отказаться');aSay(E,'info',`Примерка отменена, ${surfName(k).toLowerCase()} без изменений`)}}
  else return false;
@@ -1862,7 +1870,7 @@ function estCalcCard(E,l){const pr=ACC[l.eff]?null:l.eff;aSay(E,'calc',pr?'Со�
 function estAlts(E,l,cheap){
  const all=alts(l).filter(a=>a.id!==l.eff),A=cheap?all.filter(a=>a.sum<l.sum):all,show=A.length?A:all,dt=a=>a.sum<l.sum?'дешевле на '+rub(l.sum-a.sum):a.sum>l.sum?'дороже на '+rub(a.sum-l.sum):'та же сумма';
  if(!show.length){aSay(E,'no','Для этого товара нет аналогов в каталоге',{prod:ACC[l.eff]?null:l.eff,rows:[['К покупке',l.buy],['Сумма',rub(l.sum)]]});return}
- aSay(E,'ask',cheap&&!A.length?'Дешевле на всю площадь нет. Заменить на другой вариант?':'На что заменить товар в смете?',{rows:[['Сейчас',l.name],['Сумма',rub(l.sum)]],o:[...show.map(a=>[MAT[a.id].name,'eswap:'+l.id+':'+a.id,`${a.buy}, ${rub(a.sum)} · ${dt(a)}`,a.id,a.id===l.id?'Вернуть исходный':'Заменить']),['Оставить как есть','no']]});
+ aSay(E,'ask',cheap&&!A.length?'Дешевле на всю площадь нет. Заменить на другой вариант?':'На что заменить товар в смете?',{rows:[['Сейчас',l.name],['Сумма',rub(l.sum)]],o:[...show.slice(0,3).map(a=>[MAT[a.id].name,'eswap:'+l.id+':'+a.id,`${a.buy}, ${rub(a.sum)} · ${dt(a)}`,a.id,a.id===l.id?'Вернуть исходный':'Заменить']),['Оставить как есть','no']]});
 }
 function estAiOpt(s,p){
  const E=s.E,T=E.est;
@@ -1903,7 +1911,7 @@ function roomIso(E,o){
   return `url(#${pid})`;
  };
  const btn=(k,l)=>o.selectFurniture?`data-act="u-desel" tabindex="0" role="button" aria-label="Снять выделение предмета" style="cursor:pointer"`:o.click?`data-act="f-surf" data-k="${k}" data-v3="1" tabindex="0" role="button" aria-label="${l}" style="cursor:pointer"`:'',cur=o.click?F.surf:null,bb=bbox(P);
- let s=`${o.selectFurniture?`<rect x="${C.vb[0]}" y="${C.vb[1]}" width="${C.vb[2]}" height="${C.vb[3]}" fill="#fff" fill-opacity="0" pointer-events="all" data-act="u-desel" aria-label="Снять выделение предмета"/>`:''}<polygon ${btn('floor','Пол')} points="${pts(P)}" fill="${(()=>{const fm=sm(E,'floor'),fid=tryId('floor','base')||fm.base,rot=dirAng(fm.dir);return tryId('floor','base')||o.mats?texFill(fid,'r3floor',floorTf(rot),col(fm.base,'#F3F1EB')):col(fm.base,'#F3F1EB')})()}" stroke="#183C43" stroke-width="2" stroke-linejoin="round"/>${cur==='floor'?`<polygon points="${pts(P)}" fill="#19CBD8" fill-opacity=".14" ${dots(1,'#19CBD8',3.2)}/>`:''}`;
+ let s=`${o.selectFurniture?`<rect x="${C.vb[0]}" y="${C.vb[1]}" width="${C.vb[2]}" height="${C.vb[3]}" fill="#fff" fill-opacity="0" pointer-events="all" data-act="u-desel" aria-label="Снять выделение предмета"/>`:''}<polygon ${btn('floor','Пол')} points="${pts(P)}" fill="${(()=>{const fm=sm(E,'floor'),fid=tryId('floor','base')||fm.base,rot=dirAng(fm.dir);return tryId('floor','base')||o.mats?texFill(fid,'r3floor',floorTf(rot),col(fm.base,'#F3F1EB')):col(fm.base,'#F3F1EB')})()}" stroke="#183C43" stroke-width="2" stroke-linejoin="round"/>${cur==='floor'?`<polygon points="${pts(P)}" ${dots(1,'#19CBD8',3.2)}/>`:''}`;
  if(o.mats)sm(E,'floor').zones.forEach(z=>{const x=bb.x+z.x,y=bb.y+z.y;const zf=texFill(tryId('floor',z.id)||z.mat,'r3fz'+z.id,floorTf(0),col(z.mat,'#fff'));s+=`<polygon points="${pts([[x,y],[x+z.w,y],[x+z.w,y+z.l],[x,y+z.l]])}" fill="${zf}" stroke="#536467" pointer-events="none"/>`});
  P.map((p,i)=>({i,w:wall(E,i)})).filter(x=>x.w.n[0]*C.vx+x.w.n[1]*C.vy>0).sort((a,c)=>C.dep((a.w.a[0]+a.w.b[0])/2,(a.w.a[1]+a.w.b[1])/2)-C.dep((c.w.a[0]+c.w.b[0])/2,(c.w.a[1]+c.w.b[1])/2)).forEach(({i,w})=>{
   const k='w'+i,m=sm(E,k),q=(z0,z1,o0,o1)=>{const a=[w.a[0]+w.d[0]*o0,w.a[1]+w.d[1]*o0],c=[w.a[0]+w.d[0]*o1,w.a[1]+w.d[1]*o1];return pts([[a[0],a[1],z0],[c[0],c[1],z0],[c[0],c[1],z1],[a[0],a[1],z1]])};
@@ -1912,9 +1920,9 @@ function roomIso(E,o){
   if(o.mats)m.zones.forEach(z=>{const zoneFill=previewFill(k,z.id,F.tryMat,texFill(z.mat,'r3'+k+'z'+z.id,tf,col(z.mat,'#fff')),tf);s+=`<polygon points="${q(z.from,z.from+z.h,0,w.len)}" fill="${zoneFill}" stroke="#536467"/>`});
   s+=`<polygon points="${q(0,H,0,w.len)}" fill="#183C43" fill-opacity="${(.1*(1-(w.n[0]*C.vx+w.n[1]*C.vy))).toFixed(3)}"/>`;
   E.ops.filter(f=>f.wall===i&&f.kind!=='niche').forEach(f=>{const z0=f.kind==='win'?f.sill:0;s+=`<polygon points="${q(z0,z0+f.h,f.off,f.off+f.w)}" fill="${f.kind==='win'?'#19CBD833':'#fff'}" stroke="#536467"/>`});
-  if(cur===k)s+=`<polygon points="${q(0,H,0,w.len)}" fill="#10838C" fill-opacity=".12" ${dots(1,'#10838C',3.2)}/>`;
+  if(cur===k)s+=`<polygon points="${q(0,H,0,w.len)}" ${dots(1,'#10838C',3.2)}/>`;
   s+='</g>'});
- if(cur==='ceil')s+=`<polygon points="${pts(P.map(p=>[p[0],p[1],H]))}" fill="#006B79" fill-opacity=".08" ${dots(1,'#006B79',3.2)}/>`;
+ if(cur==='ceil')s+=`<polygon points="${pts(P.map(p=>[p[0],p[1],H]))}" ${dots(1,'#006B79',3.2)}/>`;
  if(o.extra)s+=o.extra(C,pts);
  const ax=[['X',C.vy,C.vx*C.sp,'#006B79'],['Y',-C.vx,C.vy*C.sp,'#183C43'],['Z',0,-C.cp,'#536467']];
  return `<svg data-cam="1" viewBox="${C.vb.join(' ')}" role="group" aria-label="Комната в 3D, потяните для вращения" style="cursor:grab;touch-action:none"><defs>${previewDefs}</defs>${s}</svg>
@@ -1934,8 +1942,8 @@ function isoFur(){
    const ghost=it===F.ghost,cs=corners(it),mx=cs.reduce((a,p)=>a+p[0],0)/4,my=cs.reduce((a,p)=>a+p[1],0)/4;
    const st=`stroke="#183C43" stroke-opacity="${ghost?'.45':'.35'}" stroke-linejoin="round"${ghost?' stroke-dasharray="5 4"':''}`;
    const sides=cs.map((a,i)=>{const b=cs[(i+1)%4],ex=(a[0]+b[0])/2-mx,ey=(a[1]+b[1])/2-my;return{a,b,vis:ex*C.vx+ey*C.vy>0,d:C.dep((a[0]+b[0])/2,(a[1]+b[1])/2),i}}).filter(x=>x.vis).sort((x,y)=>x.d-y.d);
-   const on=!ghost&&F.sel===it.id;
-   return `<g ${ghost?'pointer-events="none"':`data-act="u-sel" data-id="${it.id}" tabindex="0" role="button" aria-label="${esc(it.n)}" style="cursor:pointer"`} opacity="${ghost?'.58':'1'}">${on?`<polygon points="${pts(cs.map(p=>[p[0],p[1],0]))}" fill="#19CBD8" fill-opacity=".16" ${dots(1,SELC,3)}/>`:''}${drawBoxes(worldBoxes(it),it.color,(x,y,z)=>C.pr(x,y,z),[C.vx,C.vy],st)}${on?`<polygon points="${pts(cs.map(p=>[p[0],p[1],it.h]))}" ${dots(1,SELC,3)}/>`:''}</g>`;
+   const on=!ghost&&F.sel===it.id,cf3=!ghost&&furBad(E).some(x=>x[0].id===it.id);
+   return `<g ${ghost?'pointer-events="none"':`data-act="u-sel" data-id="${it.id}" tabindex="0" role="button" aria-label="${esc(it.n)}" style="cursor:pointer"`} opacity="${ghost?'.58':'1'}">${drawBoxes(worldBoxes(it),it.color,(x,y,z)=>C.pr(x,y,z),[C.vx,C.vy],st)}${on||cf3?`<polygon points="${pts(cs.map(p=>[p[0],p[1],it.h]))}" ${dots(1,cf3?'#A32637':SELC,3)}/>`:''}</g>`;
   }).join('');
  }});
 }
@@ -1947,11 +1955,11 @@ document.addEventListener('pointermove',ev=>{
  if(!DRR)return;const E=S.E,sv=document.querySelector('#ui .plan svg');if(!sv)return;const q=svgPt(sv,ev),d=DRR;
  const ang=((Math.round((Math.atan2(q.y-d.cy,q.x-d.cx)*180/Math.PI+90)/5)*5)%360+360)%360;if(ang===d.it.rot)return;
  const n={...d.it,rot:ang},[nw,nd]=fp(n);n.x=Math.round(d.cx-nw/2);n.y=Math.round(d.cy-nd/2);
- const why=fvalid(E,n);if(why&&!d.ghost)return;
- Object.assign(d.it,n);d.moved=true;E.fur.errs=why?{x:why}:{};syncForm(E);rafRender()});
+ const why=fvalid(E,n);
+ Object.assign(d.it,n);d.moved=true;E.fur.errs={};syncForm(E);rafRender()});
 document.addEventListener('pointerup',()=>{
  if(!DRR)return;const d=DRR,E=S.E;DRR=null;
- if(d.moved&&!d.ghost){E.hist.push({t:Date.now(),s:d.snap,label:'поворот: '+d.it.n.toLowerCase()});E.fut=[];autosave(E)}
+ if(d.moved&&!d.ghost){histPush(E,{t:Date.now(),s:d.snap,label:'поворот: '+d.it.n.toLowerCase()});E.fut=[];autosave(E)}
  NOCLK=Date.now();if(!d.moved){furAct('u-rot',{id:d.it.id});render();return}render()});
 let DC=null;
 document.addEventListener('pointerdown',ev=>{const sv=ev.target.closest&&ev.target.closest('svg[data-cam]');if(!sv)return;const c=S.E.cam||(S.E.cam={yaw:45,pitch:30});DC={x:ev.clientX,y:ev.clientY,yaw:c.yaw,pitch:c.pitch,moved:false}});
@@ -2840,5 +2848,31 @@ svg *:focus-visible{outline:none!important}
 .dirdd .room-option{min-height:44px;font-size:15px}
 .dirdd .dl{display:inline-flex;align-items:center;gap:10px;min-width:0}
 #ui .dirdd .dl .ic{width:20px;height:20px;color:#006B79;flex:none}
+</style>
+<style>
+/* Text fields: no focus outline, only the border turns teal */
+#ui input:not([type=checkbox]):focus,#ui input:not([type=checkbox]):focus-visible,#ui select:focus,#ui select:focus-visible,#ui textarea:focus-visible{outline:none!important;box-shadow:none!important}
+#ui .cmp:focus-within{outline:none!important;box-shadow:none!important;border-color:var(--action)}
+#ui .fld input:focus,#ui .fld select:focus{border-color:var(--action)}
+
+/* Recording bar = the same composer: same height, same 44 px buttons in the same places, same 16 px text */
+#ui .cmp.rec{padding:2px 4px 2px 14px;gap:4px;border-color:var(--action)}
+#ui .cmp .rt{flex:1;min-width:0;height:48px;display:flex;align-items:center;gap:10px;font:400 16px/24px var(--font);color:var(--muted);white-space:nowrap;overflow:hidden}
+#ui .cmp .rt .wave{height:24px;gap:3px}
+#ui .cmp .rt .wave i{width:3px}
+@keyframes wv{0%,100%{height:6px}50%{height:20px}}
+#ui .cmp button.on{background:var(--wash);color:var(--action)}
+#ui .cmp button.go .ic[aria-hidden]{fill:none}
+
+/* Furniture conflicts */
+.saved.bad{color:var(--error)}
+#ui .saved.bad .ic{width:20px;height:20px}
+.stg.blocked{position:relative}
+.stg.blocked::after{content:"";position:absolute;top:8px;right:8px;width:8px;height:8px;border-radius:4px;background:var(--error)}
+</style>
+
+<style>
+/* Calm, minimal: no warning colours on the stage tabs */
+.stg.blocked::after{display:none}
 </style>
 </body></html>
