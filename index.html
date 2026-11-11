@@ -2,7 +2,7 @@
 
 
 </head><body>
-<title>Desiign — Конструктор, ПК</title>
+<title>Desiign — Конструктор, телефон</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap">
 <style>
@@ -1623,7 +1623,7 @@ function estCenter(){
  const cb=l=>`<input type="checkbox" id="eon-${l.id}" data-m="eon" data-k="${l.id}" ${l.on?'checked':''} aria-label="В корзину: ${esc(l.name)}">`;
  const nm=l=>{const badges=`${l.swapped?'<span class="rb">Аналог</span>':''}${tags[l.id]?`<span class="rb chg">${tags[l.id]}</span>`:''}`;return `<button type="button" class="ln" data-act="e-sel" data-id="${l.id}" title="${esc(l.name)}">${l.name}</button><span class="mut sm">${l.eff}</span>${badges?`<span class="rbs">${badges}</span>`:''}`}; 
  const all=`<input type="checkbox" id="eall" data-m="eall" data-k="all" ${C.lines.length&&C.on===C.lines.length?'checked':''} aria-label="Выбрать все" title="Выбрать все">`;
- const productRow=l=>`<article class="eline estimate-product${T.sel===l.id?' cur':''}${tags[l.id]?' chg':''}"><div class="estimate-row">${cb(l)}<div class="estimate-name">${nm(l)}</div><b class="estimate-sum">${nb(rub(l.sum))}</b><button type="button" class="estimate-toggle" data-act="e-details" data-id="${l.id}" aria-expanded="${!!T.open[l.id]}" aria-label="${T.open[l.id]?'Скрыть':'Показать'} параметры товара">${I('up')}</button></div>${T.open[l.id]?`<div class="estimate-detail"><dl class="erows"><div><dt>Фасовка</dt><dd>${l.pack}</dd></div><div><dt>Общее кол-во</dt><dd>${nb(l.need)}</dd></div><div><dt>К покупке</dt><dd>${nb(l.buy)}</dd></div></dl></div>`:''}</article>`;
+ const productRow=l=>`<article class="eline estimate-product${T.sel===l.id?' cur':''}${tags[l.id]?' chg':''}"><div class="estimate-row">${cb(l)}<div class="estimate-name">${nm(l)}</div><b class="estimate-sum">${nb(rub(l.sum))}</b><button type="button" class="estimate-toggle" data-act="e-details" data-id="${l.id}" aria-expanded="${!!T.open[l.id]}" aria-label="${T.open[l.id]?'Скрыть':'Показать'} параметры товара">${I('down')}</button></div>${T.open[l.id]?`<div class="estimate-detail"><dl class="erows"><div><dt>Фасовка</dt><dd>${l.pack}</dd></div><div><dt>Общее кол-во</dt><dd>${nb(l.need)}</dd></div><div><dt>К покупке</dt><dd>${nb(l.buy)}</dd></div></dl></div>`:''}</article>`;
  let body;
  if(!lines.length)body=`<div class="empty" style="background:var(--paper)"><h3>Здесь нет материалов</h3><p class="mut">Для выбранной комнаты и группы покрытия ещё не выбраны.</p><button type="button" class="btn" data-act="e-all">Показать всю смету</button></div>`;
  else body=`<div class="estimate-list"><label class="estimate-list-head">${all}<span>Выбрать все позиции</span><small>${C.on} из ${C.lines.length}</small></label>${EGRP.filter(g=>lines.some(l=>l.grp===g)).map(g=>`<section class="estimate-group"><h4 class="eg">${g}</h4>${lines.filter(l=>l.grp===g).map(productRow).join('')}</section>`).join('')}</div>`;
@@ -1955,7 +1955,7 @@ document.addEventListener('pointerup',()=>{
  NOCLK=Date.now();if(!d.moved){furAct('u-rot',{id:d.it.id});render();return}render()});
 let DC=null;
 document.addEventListener('pointerdown',ev=>{const sv=ev.target.closest&&ev.target.closest('svg[data-cam]');if(!sv)return;const c=S.E.cam||(S.E.cam={yaw:45,pitch:30});DC={x:ev.clientX,y:ev.clientY,yaw:c.yaw,pitch:c.pitch,moved:false}});
-document.addEventListener('pointermove',ev=>{if(!DC)return;const dx=ev.clientX-DC.x,dy=ev.clientY-DC.y;if(!DC.moved&&Math.abs(dx)+Math.abs(dy)<5)return;DC.moved=true;const c=S.E.cam;c.yaw=((DC.yaw-dx*.5)%360+360)%360;c.pitch=Math.max(12,Math.min(75,DC.pitch+dy*.3));rafRender()});
+document.addEventListener('pointermove',ev=>{if(!DC)return;const dx=ev.clientX-DC.x,dy=ev.clientY-DC.y;if(!DC.moved&&Math.abs(dx)+Math.abs(dy)<5)return;DC.moved=true;const c=S.E.cam;c.yaw=((DC.yaw+dx*.5)%360+360)%360;c.pitch=Math.max(12,Math.min(75,DC.pitch+dy*.3));rafRender()});
 document.addEventListener('pointerup',()=>{if(!DC)return;if(DC.moved)NOCLK=Date.now();DC=null});
 
 /* ---------- presets (index) ---------- */
@@ -2030,7 +2030,7 @@ const IDX=[
   ['m-tools','Панель «Инструменты»',s=>{room(s);s.E.sheet='tools'},'',1],
   ['m-kb','Клавиатура открыта',s=>{win(s,{wall:1,off:'10',w:120});s.E.sheet='params';s.E.kb='off'},'',1]]]
 ];
-const DEFAULT_DEVICE='d';
+const DEFAULT_DEVICE='m';
 let SECTION='objs';
 const fin=(s,k)=>{room(s);s.E.stage='finish';s.E.fin.surf=k;return s.E};
 const zoneDemo=(s,mat)=>{const E=fin(s,'w1');sm(E,'w1').base='KR-005';E.fin.zform={from:0,h:120};zoneAdd(E);if(mat){zoneOf(E,E.fin.zform.id).mat=mat;E.status=''}return E};
