@@ -1374,7 +1374,7 @@ function furCenter(){
  const hint=F.mode==='place'?`<p class="hint">Перетащите «${esc(F.ghost.n)}» на место или задайте положение в параметрах. Предмет появится в комнате после кнопки «Разместить здесь».</p>`:!F.items.length?'<p class="hint">В комнате пока нет предметов. Нажмите «Добавить предмет», чтобы открыть библиотеку.</p>':'';
  const dc=F.items.concat(F.ghost?[F.ghost]:[]).map(it=>[it,doorHit(E,it)]).filter(x=>x[1]),warn=dc.length?`<p class="hint warnh">${I('alert')}<span>${dc.map(x=>`«${esc(x[0].n)}» мешает открыть ${opName(x[1]).toLowerCase()}`).join('. ')}. Дверь открывается внутрь комнаты на свою ширину.</span></p>`:'';
  const bd=[],warnc=bd.length?`<p class="hint warnh">${I('alert')}<span>${bd.length===1?`«${esc(bd[0][0].n)}»: ${esc(bd[0][1].replace(/\.$/,'').toLowerCase())}`:`Пересекаются предметы: ${bd.map(x=>'«'+esc(x[0].n)+'»').join(', ')}`}. Передвиньте мебель или удалите предмет крестиком — пока пересечения есть, расстановка не сохраняется, а смета недоступна.</span></p>`:'';
- return `${tb}${warnc}${F.items.length||F.mode==='place'?'':`<p class="hint">В комнате пока нет предметов. Откройте «Инструменты», чтобы добавить мебель.</p>`}<div class="plan">${E.view==='3d'?isoFur():furSVG()}</div><p class="status sr" role="status">${esc(E.status)}</p>`;
+ return `${tb}${warnc}<div class="plan">${E.view==='3d'?isoFur():furSVG()}</div><p class="status sr" role="status">${esc(E.status)}</p>`;
 }
 function furTools(){
  const E=S.E,F=E.fur;
@@ -1387,7 +1387,7 @@ function furTools(){
 function furParams(){
  const E=S.E,F=E.fur,t=furTarget(E),f=F.form,e=F.errs,fx=k=>E.kb===k;
  if(F.mode==='lib')return `<h3>Библиотека предметов</h3><p class="mut">Выбирайте мебель и предметы интерьера, настраивайте размеры и примеряйте их в комнате.</p>`;
- if(!t){const dc=F.items.map(it=>[it,doorHit(E,it)]).filter(x=>x[1]);return `<h3>Обстановка</h3><p class="mut">${F.items.length?'Предметов в комнате: '+F.items.length+'. Нажмите на предмет на плане или в списке, чтобы изменить его.':'В комнате пока нет предметов. Откройте «Инструменты», чтобы добавить мебель.'}</p>${dc.map(x=>`<p class="warnp" role="status">${I('alert')}<span>${esc(x[0].n)} мешает открыванию двери ${x[1].n}.</span></p>`).join('')}`}
+ if(!t){const dc=F.items.map(it=>[it,doorHit(E,it)]).filter(x=>x[1]);return `<h3>Обстановка</h3><p class="mut">${F.items.length?'Предметов в комнате: '+F.items.length+'. Нажмите на предмет на плане или в списке, чтобы изменить его.':''}</p>${dc.map(x=>`<p class="warnp" role="status">${I('alert')}<span>${esc(x[0].n)} мешает открыванию двери ${x[1].n}.</span></p>`).join('')}`}
  const b=bbox(E.pts),[fw,fd]=fp(t),place=F.mode==='place';
  return `<h3>${esc(t.n)}</h3>
  <div class="grp gap12"><h4>Размер</h4><div class="row3">${fld('fu','w','Ширина, см',f.w,e.w,{num:1,fx:fx('w')})}${fld('fu','d','Глубина, см',f.d,e.d,{num:1})}${fld('fu','h','Высота, см',f.h,e.h,{num:1})}</div></div>
