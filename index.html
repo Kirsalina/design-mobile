@@ -8740,7 +8740,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
 const post=RO_POST;
 window.addEventListener('click',e=>{const a=e.target.closest&&e.target.closest('a[href]');if(!a)return;const href=a.getAttribute('href');
   let dest=homeDestinations[href];
-  if(href==='#new-room'&&/Создать комнату/.test(a.textContent)){e.preventDefault();e.stopImmediatePropagation();post({type:'nav',path:'/objects'});return}
+  if(href==='#new-room'&&/Создать комнату/.test(a.textContent)){e.preventDefault();e.stopImmediatePropagation();post({type:'nav',path:'/ctor'});return} /* 23.11: гость – экран «Создайте свой интерьер», не вход */
   if(href==='#projects')dest=constructorPage+'#obj-one';
   const TYPES={KR:'Краска',OB:'Обои',LM:'Ламинат',LN:'Линолеум',KN:'Керамогранит',PL:'Плитка',GR:'Грунтовка',SH:'Шпаклёвка',KL:'Клей',ZT:'Затирка',PD:'Подложка',ML:'Лента',NT:'Натяжной потолок'};
   if(/^Аналоги/.test(a.getAttribute('aria-label')||'')&&TYPES[href.slice(1,3)]){e.preventDefault();e.stopImmediatePropagation();post({type:'nav',path:'/catalog?'+new URLSearchParams({list:'1',type:TYPES[href.slice(1,3)],available:'1'})});return}
@@ -18359,6 +18359,48 @@ document.addEventListener('DOMContentLoaded',function(){
   if(mob()&&a==='f-surf'&&S.E.stage==='finish'){S.E.sheet='params';render()}
   return r};
  window.addEventListener('resize',function(){requestAnimationFrame(fit)});
+});
+<%/script>
+<script id="ro-guest2-ai">
+/* «Начать с помощником» гостем (23.11): маршрут /ctor?ai=1 без входа ведёт на «Создайте свой интерьер»; помощник откроется в первой комнате.
+   Слушатель стоит раньше обработчика конструктора и убирает ai из маршрута для гостя. */
+addEventListener('message',function(e){var d=e.data;if(!d||!d.ro||d.type!=='route')return;var u=typeof S!=='undefined'&&S&&S.auth==='user';if(u)return;
+ if(typeof d.q==='string'){if(/(^|&)ai=1/.test(d.q)){d.q=d.q.replace(/(^|&)ai=1/,'').replace(/^&/,'');window.__roAI=1}}
+ else if(d.q&&typeof d.q==='object'&&d.q.ai){delete d.q.ai;window.__roAI=1}});
+<%/script>
+<style id="ro-guest2-css">
+/* Гость, 23.11 (Алина): «Создать комнату» и «Начать с помощником» ведут сюда, а не ко входу. Экран «Создайте свой интерьер»;
+   окно «Новый объект» объясняет, зачем объект; без входа – один объект, второй – через вход. */
+#ui .gate .ro-gl{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+#ui .gate .ro-gl li{display:flex;gap:10px;align-items:flex-start;font-size:16px;line-height:24px;color:#152A4B}
+#ui .gate .ro-gl li svg{flex:none;width:22px;height:22px;padding:3px;border-radius:50%;background:#19CBD8;color:#152A4B;margin-top:1px}
+#ui .dlg-obj .ro-ointro{margin:-4px 0 4px;font-size:14px;line-height:21px;color:#566273}
+#ui .dlg-obj .ro-onote{margin:0;padding:10px 12px;border-radius:12px;background:#F3F1EB;font-size:14px;line-height:21px;color:#152A4B}
+#ui .dlg-lim p{margin:0;font-size:16px;line-height:24px;color:#566273}
+</style>
+<script id="ro-guest2">
+document.addEventListener('DOMContentLoaded',function(){
+ if(typeof act!=='function'||typeof gatePage!=='function')return;
+ var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
+ var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
+  var body='<h2>Создайте свой интерьер</h2><p>Соберите свою комнату по размерам, примерьте обои, краску и пол — и сразу увидите, как это выглядит и сколько стоит.</p>'+
+   '<ul class="ro-gl"><li>'+I('check')+'Без регистрации — войти можно потом, чтобы сохранить проект</li><li>'+I('check')+'Типовые планировки квартир Тольятти или свои размеры</li><li>'+I('check')+'ИИ-помощник подберёт материалы и посчитает, сколько купить</li></ul>';
+  h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
+  h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">Начать '+I('arrow')+'</button>');
+  return h};
+ var _op=objectsPage;objectsPage=function(){var h=_op.apply(this,arguments);
+  if(S.newObj){var i=h.indexOf('<h3 id="no-t">Новый объект</h3>');if(i>=0){var j=h.indexOf('</div>',i)+6;
+   h=h.slice(0,j)+'<p class="ro-ointro">Объект — это ваша квартира или дом. В нём хранятся все комнаты и общая смета. Назовите его и, если хотите, выберите типовую планировку — комнаты появятся сами.</p>'+(anon()?'<p class="ro-onote">Без входа проект хранится в этом браузере. Войдите, когда захотите его сохранить.</p>':'')+h.slice(j)}}
+  if(S.roLim)h+='<div class="ovl"><div class="dlg dlg-lim" role="dialog" aria-modal="true" aria-labelledby="lim-t"><div class="dlg-h"><h3 id="lim-t">Войдите, чтобы создать ещё объект</h3><button type="button" class="icb" data-act="ro-lim-x" aria-label="Закрыть">'+I('x')+'</button></div><p>Без входа можно вести один объект. После входа объектов может быть сколько угодно, а этот сохранится.</p><div class="acts"><button type="button" class="btn pri" data-act="ro-lim-in">Войти</button><button type="button" class="btn" data-act="ro-lim-x">Отмена</button></div></div></div>';
+  return h};
+ var _a=act;act=function(a,el,ev){
+  if(a==='obj-new'&&anon()&&S.objs.length>=1){S.roLim=true;render();var b=document.querySelector('#ui .dlg-lim .btn.pri');if(b)b.focus();return}
+  if(a==='ro-lim-x'){S.roLim=false;render();return}
+  if(a==='ro-lim-in'){S.roLim=false;return act('login-open',el,ev)}
+  if(a==='ro-gnew'&&anon()&&S.objs.length>=1){S.page='objects';render();return}
+  if(a==='ro-gnew'&&S.auth==='user'&&!S.anon){return _a.call(this,'obj-new',el,ev)}
+  return _a.apply(this,arguments)};
+ var _r=render;render=function(){var x=_r.apply(this,arguments);try{if(window.__roAI){S.roAI=1;window.__roAI=0}if(S.roAI&&S.page==='editor'&&S.E){S.roAI=0;if(S.dev==='m')S.E.sheet='ai';else S.E.rtab='ai';_r()}}catch(e){}return x};
 });
 <%/script>
 </head><body>
