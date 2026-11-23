@@ -18369,7 +18369,7 @@ addEventListener('message',function(e){var d=e.data;if(!d||!d.ro||d.type!=='rout
  /* «Создать комнату» с главной: ?new=room */
  var hasNew=typeof d.q==='string'?/(^|&)new=room/.test(d.q):!!(d.q&&d.q.new==='room');
  if(hasNew){if(typeof d.q==='string')d.q=d.q.replace(/(^|&)new=room/,'').replace(/^&/,'');else delete d.q.new;
-  if(u&&S.objs&&S.objs.length){d.path='/objects';window.__roAddRoom=1}else{d.path='/ctor'}}
+  if(u&&!S.anon&&S.objs&&S.objs.length){d.path='/objects';window.__roAddRoom=1}else{d.path='/ctor';window.__roGate=1}}
  if(u)return;
  if(typeof d.q==='string'){if(/(^|&)ai=1/.test(d.q)){d.q=d.q.replace(/(^|&)ai=1/,'').replace(/^&/,'');window.__roAI=1}}
  else if(d.q&&typeof d.q==='object'&&d.q.ai){delete d.q.ai;window.__roAI=1}});
@@ -18392,8 +18392,9 @@ document.addEventListener('DOMContentLoaded',function(){
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
   var body='<h2>Создайте свой интерьер</h2><p>Комната, отделка и смета — в одном месте.</p>';
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
-  h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">Создать объект '+I('arrow')+'</button>');
-  h=h.replace(/(<div class="acts">[\s\S]*?<\/div>)/,'$1<p class="ro-gnote">Можно без регистрации</p>');
+  var has=anon()&&S.objs&&S.objs.length;
+  h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">'+(has?'Продолжить проект':'Создать объект')+' '+I('arrow')+'</button>');
+  h=h.replace(/(<div class="acts">[\s\S]*?<\/div>)/,'$1<p class="ro-gnote">'+(has?'Проект сохранён в этом браузере':'Можно без регистрации')+'</p>');
   return h};
  var _op=objectsPage;objectsPage=function(){var h=_op.apply(this,arguments);
   if(S.newObj){var i=h.indexOf('<h3 id="no-t">Новый объект</h3>');if(i>=0){var j=h.indexOf('</div>',i)+6;
@@ -18407,7 +18408,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(a==='ro-gnew'&&anon()&&S.objs.length>=1){S.page='objects';render();return}
   if(a==='ro-gnew'&&S.auth==='user'&&!S.anon){return _a.call(this,'obj-new',el,ev)}
   return _a.apply(this,arguments)};
- var _r=render;render=function(){var x=_r.apply(this,arguments);try{if(window.__roAddRoom&&S.page==='objects'&&S.objs&&S.objs.length){window.__roAddRoom=0;setTimeout(function(){act('room-add',{dataset:{}})},0)}}catch(e){}try{if(window.__roAI){S.roAI=1;window.__roAI=0}if(S.roAI&&S.page==='editor'&&S.E){S.roAI=0;if(S.dev==='m')S.E.sheet='ai';else S.E.rtab='ai';_r()}}catch(e){}return x};
+ var _r=render;render=function(){if(window.__roGate){window.__roGate=0;if(S.page!=='gate'){S.page='gate';S.newObj=null}}var x=_r.apply(this,arguments);try{if(window.__roAddRoom&&S.page==='objects'&&S.objs&&S.objs.length){window.__roAddRoom=0;setTimeout(function(){act('room-add',{dataset:{}})},0)}}catch(e){}try{if(window.__roAI){S.roAI=1;window.__roAI=0}if(S.roAI&&S.page==='editor'&&S.E){S.roAI=0;if(S.dev==='m')S.E.sheet='ai';else S.E.rtab='ai';_r()}}catch(e){}return x};
 });
 <%/script>
 <style id="ro-steps-css">
