@@ -18375,6 +18375,7 @@ addEventListener('message',function(e){var d=e.data;if(!d||!d.ro||d.type!=='rout
 #ui .gate .ro-gl{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
 #ui .gate .ro-gl li{display:flex;gap:10px;align-items:flex-start;font-size:16px;line-height:24px;color:#152A4B}
 #ui .gate .ro-gl li svg{flex:none;width:22px;height:22px;padding:3px;border-radius:50%;background:#19CBD8;color:#152A4B;margin-top:1px}
+#ui .gate .ro-gnote{margin:-12px 0 0;font-size:14px;line-height:21px;color:#566273}
 #ui .dlg-obj .ro-ointro{margin:-4px 0 4px;font-size:14px;line-height:21px;color:#566273}
 #ui .dlg-obj .ro-onote{margin:0;padding:10px 12px;border-radius:12px;background:#F3F1EB;font-size:14px;line-height:21px;color:#152A4B}
 #ui .dlg-lim p{margin:0;font-size:16px;line-height:24px;color:#566273}
@@ -18384,15 +18385,15 @@ document.addEventListener('DOMContentLoaded',function(){
  if(typeof act!=='function'||typeof gatePage!=='function')return;
  var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
-  var body='<h2>Создайте свой интерьер</h2><p>Соберите свою комнату по размерам, примерьте обои, краску и пол — и сразу увидите, как это выглядит и сколько стоит.</p>'+
-   '<ul class="ro-gl"><li>'+I('check')+'Без регистрации — войти можно потом, чтобы сохранить проект</li><li>'+I('check')+'Типовые планировки квартир Тольятти или свои размеры</li><li>'+I('check')+'ИИ-помощник подберёт материалы и посчитает, сколько купить</li></ul>';
+  var body='<h2>Создайте свой интерьер</h2><p>Комната, отделка и смета — в одном месте.</p>';
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
-  h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">Начать '+I('arrow')+'</button>');
+  h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">Создать объект '+I('arrow')+'</button>');
+  h=h.replace(/(<div class="acts">[\s\S]*?<\/div>)/,'$1<p class="ro-gnote">Можно без регистрации</p>');
   return h};
  var _op=objectsPage;objectsPage=function(){var h=_op.apply(this,arguments);
   if(S.newObj){var i=h.indexOf('<h3 id="no-t">Новый объект</h3>');if(i>=0){var j=h.indexOf('</div>',i)+6;
-   h=h.slice(0,j)+'<p class="ro-ointro">Объект — это ваша квартира или дом. В нём хранятся все комнаты и общая смета. Назовите его и, если хотите, выберите типовую планировку — комнаты появятся сами.</p>'+(anon()?'<p class="ro-onote">Без входа проект хранится в этом браузере. Войдите, когда захотите его сохранить.</p>':'')+h.slice(j)}}
-  if(S.roLim)h+='<div class="ovl"><div class="dlg dlg-lim" role="dialog" aria-modal="true" aria-labelledby="lim-t"><div class="dlg-h"><h3 id="lim-t">Войдите, чтобы создать ещё объект</h3><button type="button" class="icb" data-act="ro-lim-x" aria-label="Закрыть">'+I('x')+'</button></div><p>Без входа можно вести один объект. После входа объектов может быть сколько угодно, а этот сохранится.</p><div class="acts"><button type="button" class="btn pri" data-act="ro-lim-in">Войти</button><button type="button" class="btn" data-act="ro-lim-x">Отмена</button></div></div></div>';
+   h=h.slice(0,j)+'<p class="ro-ointro">Объект — ваша квартира или дом. В нём будут все комнаты и общая смета.</p>'+(anon()?'<p class="ro-onote">Без входа проект хранится только в этом браузере.</p>':'')+h.slice(j)}}
+  if(S.roLim)h+='<div class="ovl"><div class="dlg dlg-lim" role="dialog" aria-modal="true" aria-labelledby="lim-t"><div class="dlg-h"><h3 id="lim-t">Нужен вход</h3><button type="button" class="icb" data-act="ro-lim-x" aria-label="Закрыть">'+I('x')+'</button></div><p>Без регистрации доступен один объект. Войдите, чтобы создать ещё — текущий проект сохранится в кабинете.</p><div class="acts"><button type="button" class="btn pri" data-act="ro-lim-in">Войти</button><button type="button" class="btn" data-act="ro-lim-x">Отмена</button></div></div></div>';
   return h};
  var _a=act;act=function(a,el,ev){
   if(a==='obj-new'&&anon()&&S.objs.length>=1){S.roLim=true;render();var b=document.querySelector('#ui .dlg-lim .btn.pri');if(b)b.focus();return}
@@ -29467,6 +29468,8 @@ post({type:'ready'});
 .shop .acc-login .acc-seg button{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:10px;transition:background .15s,box-shadow .15s,color .15s}
 .shop .acc-login .acc-seg button svg{flex:none;opacity:.8}
 .shop .acc-login .acc-seg button[aria-pressed="true"]{background:#fff;box-shadow:0 1px 2px rgba(21,42,75,.08),0 2px 8px rgba(21,42,75,.08)}
+.shop .acc-login .acc-seg button,.shop .acc-login .acc-seg button[aria-pressed="true"]{font-weight:600!important}
+.shop .acc-login .acc-seg button svg{opacity:1!important;color:#566273;transition:color .15s}
 .shop .acc-login .acc-seg button[aria-pressed="true"] svg{opacity:1;color:#006B79}
 </style>
 <script id="ro-login-mail">
