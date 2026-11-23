@@ -16926,7 +16926,7 @@ post({type:'ready'});
  };
  var ALT=[['KL-01','KL-02'],['GR-010','GR-D02'],['SH-020','SH-D02'],['ZT-101','ZT-102']];
  /* связь «сопутствующий → основной» для корзины; в работе хранится в строке корзины на сервере */
- var PAR={};try{PAR=JSON.parse(localStorage.getItem('ro-kit-par')||'{}')||{}}catch(e){}
+ var PAR={};try{PAR=JSON.parse(localStorage.getItem('ro-kit-par')||'{}')||{}}catch(e){}window.roPAR=PAR;
  var savePar=function(){try{localStorage.setItem('ro-kit-par',JSON.stringify(PAR))}catch(e){}};
  var ROLE={need:0,rec:1,opt:2},st={area:'',on:{},open:false,item:null};
  var find=function(sku){return products.filter(function(p){return p.sku===sku&&p.availability==='available'})[0]};
@@ -16981,29 +16981,19 @@ post({type:'ready'});
 })();
 <%/script>
 <style id="ro-build-css">
-/* Главная каталога (22.11, фидбэк ребят п.6): сначала «Отделка» (Стены, Пол, Потолок), следом «Стройматериалы» – вместо баннеров «Напольные покрытия» и «Отделка ванной».
-   Отделка – фотокарточки разделов (.category). Стройматериалы – текстовые плитки категорий (.top3-tile): новая категория = новая плитка, без картинок от дизайнера. */
-.shop .ro-dept{margin-top:40px}
-.shop .ro-dept:first-of-type{margin-top:32px}
-.shop .ro-dept .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px}
-.shop .ro-fin{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:16px}
-.shop .ro-fin .category>span{grid-template-columns:minmax(0,1fr) 24px;align-items:center}
-.shop .ro-fin .category small{grid-column:1}
-.shop .ro-fin .category>span>svg{grid-column:2;grid-row:1/3;width:24px;height:24px}
-.shop .ro-bld{grid-template-columns:repeat(4,minmax(0,1fr));margin:16px 0 0}
-@container shop (max-width:1100px){.shop .ro-bld{grid-template-columns:repeat(2,minmax(0,1fr))}}
-/* текстовые плитки: без картинок, чтобы новые категории не ждали фото */
-.shop .ro-bld .top3-tile{grid-template-columns:minmax(0,1fr) 20px;min-height:64px;padding:10px 12px 10px 16px}
-.shop .ro-bld .top3-media{display:none}
-@container shop (max-width:700px){.shop .ro-dept{margin-top:32px}.shop .ro-fin{grid-template-columns:1fr;gap:8px}.shop .ro-bld{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.shop .ro-bld .top3-tile{min-height:64px;padding:8px 8px 8px 12px}.shop .ro-bld .top3-text b{font-size:15px;line-height:20px}.shop .ro-bld .top3-text small{font-size:13px;line-height:18px}}
+/* Каталог (23.11, фидбэк Алины): главная каталога как раньше (помощник, баннеры, задачи, полки разделов) + баннер «Весь каталог» вторым блоком.
+   «Расходники» → «Стройматериалы»: тот же баннер с картинкой и топ-3 подкатегориями. */
+#overview .ro-allsec{margin-top:40px}
+@container shop (max-width:700px){#overview .ro-allsec{margin-top:32px}}
 </style>
 <script id="ro-build">
-/* Стройматериалы в каталоге (22.11). Раздел prep «Расходники» → «Стройматериалы»: туда же новые категории (демо-товары ниже).
-   Главная каталога: «Отделка» и «Стройматериалы» сразу под помощником. Плитки строятся из данных: тип с товарами в наличии = плитка. */
 (function(){
  if(typeof products==='undefined'||typeof departmentTitles==='undefined')return;
- var add=function(sku,name,type,pack,price,unit,variant,sw){if(!products.some(function(p){return p.sku===sku}))products.push(makeProduct(sku,name,type,['Подготовка'],null,pack,price,unit,'available',{variant:variant,swatch:sw,demo:true}))};
- add('ST-01','Штукатурка «Гипсовая»','Штукатурка','Мешок 30 кг',520,'pack','Для стен и потолков в сухих комнатах','#E3E0D6');
+ /* демо-товары стройматериалов */
+ var face=function(t){var p=products.filter(function(x){return x.type===t&&x.image})[0];return p?p.image:null};
+ var putty=face('Шпаклёвка'),primer=face('Грунтовка');
+ var add=function(sku,name,type,pack,price,unit,variant,sw,img){if(!products.some(function(p){return p.sku===sku}))products.push(makeProduct(sku,name,type,['Подготовка'],img||null,pack,price,unit,'available',{variant:variant,swatch:sw,demo:true}))};
+ add('ST-01','Штукатурка «Гипсовая»','Штукатурка','Мешок 30 кг',520,'pack','Для стен и потолков в сухих комнатах','#E3E0D6',putty);
  add('ST-02','Штукатурка «Цементная»','Штукатурка','Мешок 25 кг',390,'pack','Для ванной и кухни','#CFCBC2');
  add('SZ-01','Стяжка «Основа»','Стяжка и ровнители','Мешок 25 кг',340,'pack','Слой 10–80 мм','#C9C4BA');
  add('SZ-02','Наливной пол «Ровный»','Стяжка и ровнители','Мешок 20 кг',590,'pack','Слой 2–30 мм','#D8D4CB');
@@ -17012,117 +17002,118 @@ post({type:'ready'});
  add('PF-01','Профиль стоечный 50 × 50','Профиль','3 м',260,'piece','Для каркаса под гипсокартон','#C7CCCF');
  add('GI-01','Гидроизоляция обмазочная','Гидроизоляция','Ведро 4 кг',1290,'bucket','Под плитку во влажных зонах','#C8D3D8');
  if(typeof saleUnits==='object'&&!saleUnits.piece)saleUnits.piece='за штуку';
- /* раздел и его категории (порядок = порядок плиток) */
- var BUILD=['Штукатурка','Шпаклёвка','Стяжка и ровнители','Грунтовка','Клей','Затирка','Гипсокартон','Профиль','Гидроизоляция','Подложка','Плёнка','Лента','Расходники','Инструмент'];
- var NAMES={'Штукатурка':'Штукатурки','Стяжка и ровнители':'Стяжки и ровнители','Гипсокартон':'Гипсокартон','Профиль':'Профиль','Гидроизоляция':'Гидроизоляция','Плёнка':'Плёнки','Расходники':'Расходники','Инструмент':'Инструмент','Клей':'Клей','Плинтус':'Плинтусы','Порожек':'Порожки'};
- BUILD.concat(['Плинтус','Порожек']).forEach(function(t){typeSection[t]='prep';if(NAMES[t])typeNames[t]=NAMES[t]});
+ var NAMES={'Штукатурка':'Штукатурки','Стяжка и ровнители':'Стяжки и ровнители','Гипсокартон':'Гипсокартон','Профиль':'Профиль','Гидроизоляция':'Гидроизоляция','Плёнка':'Плёнки','Расходники':'Расходники','Инструмент':'Инструмент','Плинтус':'Плинтусы','Порожек':'Порожки'};
+ ['Штукатурка','Стяжка и ровнители','Гипсокартон','Профиль','Гидроизоляция','Плёнка','Расходники','Инструмент','Плинтус','Порожек'].forEach(function(t){typeSection[t]='prep';if(NAMES[t])typeNames[t]=NAMES[t]});
+ /* картинка баннера «Расходники» (Р91 ставит её по заголовку) – запоминаем до переименования */
+ var oldImg=document.querySelector('#dept-prep .department-banner>img');
+ var prepSrc=oldImg&&oldImg.getAttribute('src');
  departmentTitles.prep='Стройматериалы';
  if(categoryMeta.prep){categoryMeta.prep.title='Стройматериалы';categoryMeta.prep.copy='Смеси, грунтовки, гипсокартон и всё, что нужно до отделки.'}
- var sd=shelfDepartments.filter(function(g){return g.id==='prep'})[0];if(sd)sd.types=['Штукатурка','Шпаклёвка','Грунтовка','Клей','Гипсокартон','Затирка'];
- var pl3=function(n,f){var a=n%10,b=n%100;return f[a===1&&b!==11?0:a>=2&&a<=4&&(b<12||b>14)?1:2]};
- var cnt=function(n){return n+' '+pl3(n,['товар','товара','товаров'])};
- var pool=function(t){return products.filter(function(p){return p.published!==false&&p.type===t})};
- function fin(){var D=[['walls','Стены'],['floor','Пол'],['ceiling','Потолок']];
-  return D.map(function(d){var m=categoryMeta[d[0]],n=products.filter(function(p){return p.published!==false&&typeSection[p.type]===d[0]||(d[0]==='walls'&&typeSection[p.type]==='bath'&&p.surfaces.indexOf('Стены')>=0)||(d[0]==='floor'&&typeSection[p.type]==='bath'&&p.surfaces.indexOf('Пол')>=0)}).length;
-   return '<a class="category" href="#'+catalogRoute({surface:d[0]})+'" data-route><img src="'+assets[m.image]+'" style="object-position:'+(m.imagePosition||'center')+'" alt="" loading="lazy"><span><strong>'+d[1]+'</strong><small>'+cnt(n)+'</small>'+icon('right')+'</span></a>'}).join('')}
- function bld(){return BUILD.map(function(t){var P=pool(t).filter(function(p){return p.availability==='available'});if(!P.length)return '';var face=P.filter(function(p){return p.image})[0]||P[0];
-   return '<a class="top3-tile" href="#'+catalogRoute({surface:'prep',type:t})+'" data-route><span class="top3-media" aria-hidden="true">'+productVisual(face)+'</span><span class="top3-text"><b>'+(typeNames[t]||t)+'</b><small>'+cnt(pool(t).length)+'</small></span>'+icon('right')+'</a>'}).filter(Boolean).slice(0,8).join('')}
- function place(){var c=document.querySelector('#overview .campaign');if(!c)return;
-  var h='<section class="retail-section ro-dept" aria-labelledby="ro-fin-t"><div class="section-head"><h2 id="ro-fin-t">Отделка</h2></div><div class="ro-fin">'+fin()+'</div></section>'+
-   '<section class="retail-section ro-dept" aria-labelledby="ro-bld-t"><div class="section-head"><h2 id="ro-bld-t">Стройматериалы</h2><a class="text-link" href="#'+catalogRoute({surface:'prep'})+'" data-route>Все стройматериалы '+icon('arrow')+'</a></div><nav class="top3 ro-bld" aria-label="Стройматериалы: категории">'+bld()+'</nav></section>';
-  var w=document.createElement('div');w.className='ro-depts';w.innerHTML=h;c.replaceWith(w)}
- place();
+ var sd=shelfDepartments.filter(function(g){return g.id==='prep'})[0];if(sd)sd.types=['Штукатурка','Шпаклёвка','Грунтовка','Клей','Затирка','Подложка'];
+ window.roImgs={};
+ function fixImgs(){var a=document.querySelectorAll('.department-banner');for(var i=0;i<a.length;i++){var h=a[i].querySelector('h2'),im=a[i].querySelector(':scope>img');if(!h||!im)continue;var t=h.textContent.trim();
+   if(t==='Стройматериалы'&&prepSrc&&im.getAttribute('src')!==prepSrc){im.src=prepSrc;im.style.objectPosition='50% 50%'}
+   if(a[i].closest('#department-shelves'))roImgs[t]=im.getAttribute('src')}}
+ new MutationObserver(fixImgs).observe(document.documentElement,{childList:true,subtree:true});
+ /* «Весь каталог» – вторым блоком, тем же баннером, что разделы */
+ function allBanner(){var hero=document.querySelector('#overview .assistant-hero');if(!hero||document.getElementById('dept-all'))return;
+  var s=document.createElement('section');s.className='retail-section shop-department ro-allsec';s.id='dept-all';s.setAttribute('aria-labelledby','dept-title-all');
+  s.innerHTML='<div class="category-banner department-banner"><div class="category-copy"><h2 id="dept-title-all" tabindex="-1">Весь каталог</h2><p>Перейдите в любую категорию, чтобы найти нужные материалы, или воспользуйтесь поиском.</p><a class="text-link" href="#all=1" data-route>Весь раздел '+icon('arrow')+'</a></div><img src="'+assets['surface-prep']+'" alt="" loading="lazy"></div>';
+  hero.after(s)}
+ allBanner();
  try{if(typeof renderShelf==='function')renderShelf()}catch(e){}
  try{if(typeof renderDepartments==='function')renderDepartments()}catch(e){}
+ fixImgs();
 })();
 <%/script>
 <style id="ro-allcat-css">
-/* Весь каталог (22.11): баннер на главной каталога + страница «Все категории» (#all=1). Всё строится из данных: новый тип товара = новая строка, дизайнер не нужен. */
-.shop .ro-allb{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:40px;padding:28px 32px;border-radius:16px;background:#F3F1EB;color:#152A4B;text-decoration:none!important}
-.shop .ro-allb b{display:block;font-size:28px;line-height:1.15;font-weight:600;letter-spacing:-.02em}
-.shop .ro-allb small{display:block;margin-top:6px;font-size:16px;line-height:24px;color:#566273}
-.shop .ro-allb .button{flex:none;min-height:52px;gap:8px}
-@media (hover:hover) and (pointer:fine){.shop .ro-allb:hover{box-shadow:0 6px 20px rgba(21,42,75,.10)}}
-.shop .ro-allb:focus-visible{outline:3px solid #006B79;outline-offset:2px}
-#ro-all{padding-top:24px;padding-bottom:64px}
-#ro-all .crumbs-ro{font-size:14px;color:#566273;margin-bottom:8px}
-#ro-all .crumbs-ro a{color:#006B79;text-decoration:none}
-#ro-all h1{font-size:clamp(32px,4cqw,44px);line-height:1.1;letter-spacing:-.03em;margin:0}
-#ro-all .ro-allsum{color:#566273;margin:8px 0 0}
-#ro-all .ro-allq{display:block;position:relative;max-width:520px;margin:24px 0 8px}
-#ro-all .ro-allq input{width:100%;height:48px;border:1px solid #DCE4E2;border-radius:12px;padding:0 16px 0 44px;font:inherit;font-size:16px;color:#152A4B;background:#fff}
-#ro-all .ro-allq input:focus{outline:3px solid #006B79;outline-offset:1px}
-#ro-all .ro-allq svg{position:absolute;left:14px;top:50%;margin-top:-10px;width:20px;height:20px;color:#566273}
-#ro-all .ro-allg{margin-top:32px}
-#ro-all .ro-allg>h2{font-size:22px;line-height:1.25;margin:0 0 4px;color:#566273;font-weight:500}
-#ro-all .ro-allg>h2 a{color:inherit;text-decoration:none}
-#ro-all .ro-one ul{columns:4 200px;column-gap:32px}
-#ro-all .ro-one li{break-inside:avoid}
-#ro-all .ro-allcols{columns:4 220px;column-gap:32px}
-#ro-all .ro-alls{break-inside:avoid;padding:16px 0 8px}
-#ro-all .ro-alls h3{font-size:18px;line-height:1.3;margin:0 0 8px}
-#ro-all .ro-alls h3 a{color:#152A4B;text-decoration:none}
-#ro-all .ro-alls ul{list-style:none;margin:0;padding:0}
-#ro-all .ro-alls li a{display:flex;gap:6px;padding:5px 0;font-size:16px;line-height:24px;color:#152A4B;text-decoration:none}
-#ro-all .ro-alls li small{color:#8A94A3;font-size:14px}
-@media (hover:hover){#ro-all a:hover{color:#006B79}}
-#ro-all .ro-allnone{margin-top:24px;color:#566273}
-@container shop (max-width:700px){#ro-all .ro-one ul{columns:1}.shop .ro-allb{flex-direction:column;align-items:stretch;padding:20px;margin-top:32px}.shop .ro-allb b{font-size:24px}.shop .ro-allb .button{width:100%;justify-content:center}#ro-all .ro-allcols{columns:1}#ro-all .ro-alls{border-bottom:1px solid #E6EBEA}}
+/* «Все категории» (#all=1, 23.11): карточки разделов – фото, название, подкатегории, «Весь раздел». Все названия кликабельные.
+   Навигация как в каталоге: «← Назад» + крошки. Всё из данных: новый тип товара = новая строка в карточке раздела. */
+#ro-all{padding-bottom:64px}
+#ro-all .catalog-location{display:flex;align-items:center;flex-wrap:wrap;gap:0 16px;margin-top:8px}
+#ro-all .crumbs [aria-current]{color:#152A4B}
+#ro-all h1{font-size:clamp(32px,4cqw,44px);line-height:1.1;letter-spacing:-.03em;margin:16px 0 0}
+#ro-all .ro-alllead{color:#566273;margin:8px 0 0;font-size:16px;line-height:24px;max-width:60ch}
+#ro-all .ro-allgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px;align-items:stretch}
+#ro-all .ro-card{display:flex;flex-direction:column;background:#F3F1EB;border-radius:16px;overflow:hidden}
+#ro-all .ro-card>a.ro-ph{display:block;height:148px;overflow:hidden}
+#ro-all .ro-card>a.ro-ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .15s}
+#ro-all .ro-cb{padding:20px 24px 24px;display:flex;flex-direction:column;gap:12px;flex:1}
+#ro-all .ro-cb>.text-link{margin-top:auto!important;align-self:flex-start}
+#ro-all .ro-more{background:none;border:0;padding:6px 0;font:inherit;font-size:16px;line-height:24px;color:#006B79;cursor:pointer;text-align:left}
+#ro-all li[hidden]{display:none}
+#ro-all .ro-cb h2{font-size:24px;line-height:1.2;font-weight:600;margin:0}
+#ro-all .ro-cb h2 a{color:#152A4B;text-decoration:none}
+#ro-all .ro-cb ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+#ro-all .ro-card.ro-wide{grid-column:span 2}
+#ro-all .ro-card.ro-wide .ro-cb ul{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}
+#ro-all .ro-cb li a{display:block;padding:6px 0;font-size:16px;line-height:24px;color:#152A4B;text-decoration:none}
+#ro-all .ro-cb .text-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;line-height:21px;font-weight:600;color:#006B79;text-decoration:none;margin-top:4px}
+#ro-all .ro-cb .text-link svg{width:18px;height:18px}
+@media (hover:hover) and (pointer:fine){#ro-all .ro-cb li a:hover,#ro-all .ro-cb h2 a:hover{color:#006B79}#ro-all .ro-card:hover>a.ro-ph img{transform:scale(1.04)}}
+#ro-all a:focus-visible{outline:3px solid #006B79;outline-offset:2px;border-radius:4px}
+@container shop (max-width:1100px){#ro-all .ro-allgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@container shop (max-width:700px){#ro-all .ro-allgrid{grid-template-columns:1fr;gap:12px;margin-top:24px}#ro-all .ro-card>a.ro-ph{height:120px}#ro-all .ro-cb{padding:16px 20px 20px;gap:8px}#ro-all .ro-cb h2{font-size:22px}#ro-all .ro-card.ro-wide{grid-column:span 2}
+#ro-all .ro-card.ro-wide .ro-cb ul{grid-template-columns:1fr}#ro-all .ro-card.ro-wide{grid-column:auto}}
 </style>
 <script id="ro-allcat">
 (function(){
  if(typeof products==='undefined'||typeof syncRoute!=='function')return;
- var pl=function(n,f){var a=n%10,b=n%100;return f[a===1&&b!==11?0:a>=2&&a<=4&&(b<12||b>14)?1:2]};
  var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
- var GROUPS=[['Отделка',['walls','floor','ceiling','bath']],['Стройматериалы',['prep']]];
- function tree(){var live=products.filter(function(p){return p.published!==false}),by={};
-  live.forEach(function(p){var s=typeSection[p.type];if(!s)return;(by[s]=by[s]||{});by[s][p.type]=(by[s][p.type]||0)+1});
-  var known={};GROUPS.forEach(function(g){g[1].forEach(function(k){known[k]=1})});
-  var extra=Object.keys(by).filter(function(k){return!known[k]});
-  var G=GROUPS.map(function(g){return[g[0],g[1].slice()]});if(extra.length)G.push(['Другое',extra]);
-  return G.map(function(g){return{title:g[0],secs:g[1].filter(function(k){return by[k]}).map(function(k){var m=categoryMeta[k]||{};return{key:k,title:departmentTitles[k]||m.title||k,types:Object.keys(by[k]).map(function(t){return{t:t,name:typeNames[t]||t,n:by[k][t]}})}})}}).filter(function(g){return g.secs.length})}
- function stats(){var T=tree(),c=0;T.forEach(function(g){g.secs.forEach(function(s){c+=s.types.length})});return{cats:c,items:products.filter(function(p){return p.published!==false}).length}}
- /* баннер */
- function banner(){var host=document.querySelector('#overview .ro-depts');if(!host||host.querySelector('.ro-allb'))return;var s=stats();
-  var a=document.createElement('a');a.className='ro-allb';a.href='#all=1';a.setAttribute('data-route','');
-  a.innerHTML='<span><b>Весь каталог</b><small>'+s.cats+' '+pl(s.cats,['категория','категории','категорий'])+' · '+s.items+' '+pl(s.items,['товар','товара','товаров'])+'</small></span><span class="button secondary">Все категории '+icon('arrow')+'</span>';
-  host.appendChild(a)}
- banner();
- /* страница */
+ var ORDER=['walls','floor','ceiling','bath','prep'],MAX=8;
+ function secs(){var by={},ord={};products.forEach(function(p){if(p.published===false)return;var s=typeSection[p.type];if(!s)return;by[s]=by[s]||[];if(by[s].indexOf(p.type)<0)by[s].push(p.type)});
+  var keys=ORDER.filter(function(k){return by[k]}).concat(Object.keys(by).filter(function(k){return ORDER.indexOf(k)<0}));
+  return keys.map(function(k){var m=categoryMeta[k]||{};return{key:k,title:departmentTitles[k]||m.title||k,img:(window.roImgs&&roImgs[departmentTitles[k]||m.title])||(m.image&&assets[m.image])||'',types:by[k]}})}
+ function card(s){var url='#'+catalogRoute({surface:s.key}),more=s.types.length-MAX,wide=s.types.length>5;
+  return '<article class="ro-card'+(wide?' ro-wide':'')+'"><a class="ro-ph" href="'+url+'" data-route tabindex="-1" aria-hidden="true">'+(s.img?'<img src="'+s.img+'" alt="" loading="lazy">':'')+'</a><div class="ro-cb"><h2><a href="'+url+'" data-route>'+esc(s.title)+'</a></h2><ul>'+
+   s.types.map(function(t,i){return '<li'+(i>=MAX?' hidden':'')+'><a href="#'+catalogRoute({surface:s.key,type:t})+'" data-route>'+esc(typeNames[t]||t)+'</a></li>'}).join('')+(more>0?'<li class="ro-mli"><button type="button" class="ro-more">Ещё '+more+'</button></li>':'')+'</ul><a class="text-link" href="'+url+'" data-route>Весь раздел '+icon('arrow')+'</a></div></article>'}
  var page=document.createElement('section');page.id='ro-all';page.className='wrap';page.hidden=true;page.setAttribute('aria-labelledby','ro-all-t');
  document.getElementById('detail').before(page);
- function draw(){var s=stats(),T=tree();
-  page.innerHTML='<div class="crumbs-ro"><a href="#" data-route>Каталог</a></div><h1 id="ro-all-t" tabindex="-1">Все категории</h1><p class="ro-allsum">'+s.cats+' '+pl(s.cats,['категория','категории','категорий'])+' · '+s.items+' '+pl(s.items,['товар','товара','товаров'])+'</p>'+
-  '<label class="ro-allq"><span class="visually-hidden sr-only">Найти категорию</span>'+'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'+'<input type="search" placeholder="Найти категорию" autocomplete="off"></label>'+
-  T.map(function(g){var one=g.secs.length===1&&g.secs[0].title===g.title;return '<section class="ro-allg'+(one?' ro-one':'')+'"><h2>'+(one?'<a href="#'+catalogRoute({surface:g.secs[0].key})+'" data-route>'+esc(g.title)+'</a>':esc(g.title))+'</h2><div class="'+(one?'':'ro-allcols')+'">'+g.secs.map(function(sec){
-    return '<div class="ro-alls"><h3'+(one?' hidden':'')+'><a href="#'+catalogRoute({surface:sec.key})+'" data-route>'+esc(sec.title)+'</a></h3><ul>'+sec.types.map(function(t){return '<li data-q="'+esc((t.name+' '+t.t).toLowerCase())+'"><a href="#'+catalogRoute({surface:sec.key,type:t.t})+'" data-route>'+esc(t.name)+' <small>'+t.n+'</small></a></li>'}).join('')+'</ul></div>'}).join('')+'</div></section>'}).join('')+
-  '<p class="ro-allnone" hidden>Такой категории нет. Попробуйте <a href="#" data-route class="ro-allsearch">поиск по товарам</a>.</p>';
-  var inp=page.querySelector('input');inp.addEventListener('input',function(){var q=inp.value.trim().toLowerCase(),any=false;
-   page.querySelectorAll('.ro-alls').forEach(function(sec){var hit=!q||sec.querySelector('h3').textContent.toLowerCase().indexOf(q)>=0,vis=0;
-    sec.querySelectorAll('li').forEach(function(li){var ok=hit||li.dataset.q.indexOf(q)>=0;li.hidden=!ok;if(ok)vis++});sec.hidden=!vis;if(vis)any=true});
-   page.querySelectorAll('.ro-allg').forEach(function(g){g.hidden=!g.querySelector('.ro-alls:not([hidden])')});
-   var none=page.querySelector('.ro-allnone');none.hidden=any;none.querySelector('a').href='#'+catalogRoute({q:inp.value.trim()})})}
+ function draw(){var S=secs();
+  /* широкая карточка (много подкатегорий) – на всю строку в конце */
+  page.innerHTML='<div class="catalog-location"><a class="catalog-back" href="#" data-route><span data-icon="back">'+icon('back')+'</span><span>Назад</span></a><nav class="crumbs" aria-label="Хлебные крошки"><a href="#" data-route>Каталог</a>'+icon('right')+'<span aria-current="page">Все категории</span></nav></div>'+
+   '<h1 id="ro-all-t" tabindex="-1">Все категории</h1><p class="ro-alllead">Перейдите в любую категорию, чтобы найти нужные материалы, или воспользуйтесь поиском.</p>'+
+   '<div class="ro-allgrid">'+S.map(card).join('')+'</div>';
+  page.querySelectorAll('.ro-more').forEach(function(b){b.addEventListener('click',function(){var ul=b.closest('ul');ul.querySelectorAll('li[hidden]').forEach(function(li){li.hidden=false});var first=ul.children[MAX];b.closest('li').remove();if(first)first.querySelector('a').focus()})})}
  var _s=syncRoute;syncRoute=function(route,initial){var p=new URLSearchParams(route);
   if(p.has('all')&&!p.has('list')&&!p.has('product')&&!p.has('cart')&&!p.has('checkout')&&!p.has('order')){
-   var r=new URLSearchParams(route).toString();if(!initial&&r===activeRoute&&!page.hidden)return;
+   var r=p.toString();if(!initial&&r===activeRoute&&!page.hidden)return;
    _s.call(this,'',initial);activeRoute=r;
    ['overview','catalog','detail','transaction'].forEach(function(id){var e=document.getElementById(id);if(e)e.hidden=true});
    draw();page.hidden=false;document.title='Все категории – RemOnLine';
    if(!initial){window.scrollTo(0,0);page.querySelector('h1').focus({preventScroll:true})}return}
-  page.hidden=true;var r2=_s.apply(this,arguments);banner();return r2};
+  page.hidden=true;return _s.apply(this,arguments)};
  var boot=function(h){h=String(h||'');if(h.indexOf('?')>=0)h=h.split('?')[1];if(/(^|&)all=1/.test(h))syncRoute(h,true)};try{boot(location.hash.slice(1))}catch(e){}try{boot(parent.location.hash)}catch(e){}
 })();
 <%/script>
-<style id="ro-shelfhead-css">
-/* Полки разделов на главной каталога (23.11): фото-баннер раздела дублировал плитки «Отделки» – теперь это обычный заголовок полки «Стены · Весь раздел →» */
-html body #overview #department-shelves .shop-department .department-banner{display:flex!important;align-items:baseline!important;justify-content:space-between;background:none!important;min-height:0!important;height:auto!important;padding:0!important;margin:0 0 4px!important;border-radius:0!important;overflow:visible!important}
-html body #overview #department-shelves .shop-department .department-banner>img{display:none!important}
-html body #overview #department-shelves .shop-department .department-banner .category-copy{display:flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:space-between;gap:16px;width:100%;min-height:0!important;padding:0!important;background:none!important}
-html body #overview #department-shelves .shop-department .department-banner .category-copy>p{display:none!important}
-html body #overview #department-shelves .shop-department .department-banner .category-copy>h2{font-size:28px!important;line-height:1.2!important}
-html body #overview #department-shelves .shop-department .department-banner .text-link{border:0!important;background:none!important;padding:0!important;min-height:0!important;font-size:14px!important;line-height:21px!important;font-weight:600!important;color:#006B79!important;flex:none;margin:0!important;align-self:baseline!important}
-@container shop (max-width:700px){html body #overview #department-shelves .shop-department .department-banner .category-copy>h2{font-size:24px!important}}
+<style id="ro-nohome-css">
+/* 23.11: «← Главная» на ПК не дублирует пункт шапки (корзина, заказы, оформление). Телефон – без изменений. */
+@container shop (min-width:701px){.shop .transaction-back[aria-label="На главную"],.shop .transaction-back.ro-back-pc{display:none!important}}
 </style>
+<style id="ro-cartdel-css">
+/* 23.11, фидбэк (телефон, п.1): удаление из корзины – через подтверждение. Окно – как «Проверьте изменения» (.ord-dialog). */
+#ro-del .ro-del-x{display:flex;gap:12px;align-items:flex-start;margin:4px 0 0;font-size:16px;line-height:24px;color:#152A4B;cursor:pointer}
+#ro-del .ro-del-x input{width:22px;height:22px;margin:1px 0 0;accent-color:#19CBD8;flex:none}
+#ro-del .ro-del-x small{display:block;font-size:14px;line-height:21px;color:#566273}
+</style>
+<script id="ro-cartdel">
+(function(){
+ if(typeof cart==='undefined')return;
+ var ok=false,pl3=function(n,f){var a=n%10,b=n%100;return f[a===1&&b!==11?0:a>=2&&a<=4&&(b<12||b>14)?1:2]};
+ var par=function(){return window.roPAR||{}};
+ function ask(btn){var sku=btn.dataset.cartRemove,en=cart.get(sku);if(!en)return true;var P=par(),kids=[...cart.keys()].filter(function(k){return P[k]===sku});
+  var dlg=document.getElementById('ro-del');if(!dlg){dlg=document.createElement('dialog');dlg.id='ro-del';dlg.className='ord-dialog';dlg.setAttribute('aria-labelledby','ro-del-t');(document.getElementById('transaction')||document.body).appendChild(dlg)}
+  dlg.innerHTML='<h2 id="ro-del-t">Удалить из корзины?</h2><p>'+en.item.name+'</p>'+
+   (kids.length?'<label class="ro-del-x"><input type="checkbox" checked><span>И материалы для работы<small>'+kids.map(function(k){return cart.get(k).item.name}).join(', ')+'</small></span></label>':'')+
+   '<div class="ord-dialog-actions"><button class="button" type="button" data-del-ok>Удалить</button><button class="button secondary" type="button" data-del-no>Оставить</button></div>';
+  dlg.onclick=function(e){if(e.target===dlg||e.target.closest('[data-del-no]')){dlg.close();btn.focus();return}
+   if(e.target.closest('[data-del-ok]')){var x=dlg.querySelector('.ro-del-x input'),P2=par();
+    kids.forEach(function(k){if(x&&x.checked)cart.delete(k);delete P2[k]});try{localStorage.setItem('ro-kit-par',JSON.stringify(P2))}catch(_){}
+    dlg.close();ok=true;btn.click();ok=false}};
+  dlg.showModal();dlg.querySelector('[data-del-ok]').focus();return false}
+ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-cart-remove]');if(!b||ok)return;e.preventDefault();e.stopImmediatePropagation();ask(b)},true);
+})();
+<%/script>
 </body>
 </html>
 </script>
@@ -17945,33 +17936,6 @@ document.addEventListener('DOMContentLoaded',function(){
  if(S.anon||S.page==='gate')render();
 });
 <%/script>
-<style id="ro-edback-css">
-/* Возврат «← Мои объекты» из редактора (22.11, фидбэк ребят п.3) – та же кнопка, что «← Главная» на страницах.
-   ПК (≥1200): слева, перед вкладками. Планшет: в начале ряда с комнатой. Телефон: только стрелка 44×44 (подпись – для экранного диктора), чтобы ряд «комната · статус» поместился */
-#ui .sub .in>.ro-edback{flex:none;align-self:center;margin-right:16px}
-#ui .crumbs>.ro-edback{flex:none;align-self:center}
-@media (max-width:700px){
- #ui .crumbs>.btn.back-s.ro-edback{width:44px;min-width:44px;height:44px;min-height:44px;padding:0;justify-content:center;gap:0}
- #ui .crumbs>.ro-edback>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
- html body #ui .crumbs:has(>.ro-edback){gap:8px!important;justify-content:flex-start!important}
- html body #ui .crumbs:has(>.ro-edback)>:is(.ro-svm,.ro-gsv-b){margin-left:auto!important}
- html body #ui .crumbs:has(>.ro-edback)>.rsw{min-width:0;flex:0 1 auto}
- /* гость: «Войдите, чтобы / сохранить» – в две строки справа, чтобы комнате хватило места */
- html body #ui .crumbs:has(>.ro-edback)>.ro-gsv-b{flex:0 1 auto;max-width:116px;white-space:normal;text-align:right;line-height:20px}
-}
-</style>
-<script id="ro-edback">
-/* Возврат «← Мои объекты» из редактора (22.11, фидбэк ребят п.3): заметная кнопка вместо поиска пункта в шапке.
-   Ведёт туда же, куда «Мои объекты» в шапке (nav objs; у гостя-черновика – его объекты). */
-document.addEventListener('DOMContentLoaded',function(){
- if(typeof editorPage!=='function')return;
- var btn=function(){return '<button type="button" class="btn back-s ro-edback" data-act="nav" data-to="objs">'+I('back')+'<span>Мои объекты</span></button>'};
- var _ep=editorPage;editorPage=function(){var h=_ep.apply(this,arguments);
-  if(S.dev==='m')return h.replace('<div class="crumbs">','<div class="crumbs">'+btn());
-  return h.replace('<div class="sub"><div class="in">','<div class="sub"><div class="in">'+btn())};
- if(S.page==='editor')render();
-});
-<%/script>
 <script id="ro-home-nv">
 /* «Главная» первым пунктом шапки на ПК (22.11, фидбэк ребят п.3, вариант 1). Шаблон шапки – const, поэтому пункт ставится после каждой отрисовки. */
 document.addEventListener('DOMContentLoaded',function(){
@@ -18087,6 +18051,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(M.cat==='Плитка')return 'tile';if(M.cat==='Керамогранит')return 'gres';if(M.cat==='Ламинат'||M.tx==='plank')return 'lam';if(M.cat==='Линолеум')return 'lino';return null};
  var g=EGRP.indexOf('Подготовка');if(g>=0)EGRP.splice(g,1);
  var KITG='Подготовка';
+ window.roKit={KIT:KIT,kindOf:kindOf};
 
  var _ec=estCalc;estCalc=function(s){
   var C=_ec.apply(this,arguments),T=s.E.est;if(!T.kon)T.kon={};if(!T.kopen)T.kopen={};
@@ -18170,6 +18135,201 @@ document.addEventListener('DOMContentLoaded',function(){
    return}
   var r=_ao.apply(this,arguments);try{if(!AI_ON&&s&&s.E&&s===S)kitAsk(s.E)}catch(e){}return r};
  if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
+});
+<%/script>
+<style id="ro-nohome-css">
+/* 23.11, Алина: «Главная» теперь в шапке – кнопки «← Главная» на страницах убраны (на ПК; на телефоне шапка свёрнута в меню).
+   В кабинете и конструкторе своих «назад» на ПК нет: переход – через шапку. Телефон: «← Кабинет» / «← Конструктор» остаются. */
+@media (min-width:701px){html body #ui .gtop .back-s{display:none!important}}
+html body #ui .gtop .back-s[data-to="home"]{display:none!important}
+</style>
+<style id="ro-try-css">
+/* Примерка (23.11, Алина), по SYSTEM/DESIGN-SYSTEM.md: строка-вариант (рамка #DCE4E2 r12, выбрана – #006B79 + 1 px), радиокнопка 22,
+   галочка 22 r7, название 16/24 600, подпись 14/21 #566273, цена в строке 16/24 700, итог на тёплой плашке 26/35 700 (тел. 20/28). 15 px не используем. */
+#ui .ro-try{display:flex;flex-direction:column;gap:12px}
+#ui .ro-try .ro-thead{display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+#ui .ro-try h3{margin:0}
+#ui .ro-tl{display:flex;flex-direction:column;gap:8px}
+#ui .ro-tr,#ui .ro-tk{display:grid;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid #DCE4E2;border-radius:12px;background:#fff;font:inherit;text-align:left;cursor:pointer;color:#152A4B}
+#ui .ro-tr{grid-template-columns:22px 48px minmax(0,1fr) auto}
+#ui .ro-tr[aria-pressed="true"],#ui .ro-tk[aria-checked="true"]{border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+#ui .ro-trd{width:22px;height:22px;border-radius:50%;border:2px solid #566273;display:grid;place-items:center}
+#ui .ro-tr[aria-pressed="true"] .ro-trd{border-color:#19CBD8;background:#19CBD8}
+#ui .ro-tr[aria-pressed="true"] .ro-trd::after{content:"";width:8px;height:8px;border-radius:50%;background:#152A4B}
+#ui .ro-tr .ro-tth svg{display:block;width:48px;height:48px}
+#ui .ro-tt,#ui .ro-tkt{display:flex;flex-direction:column;min-width:0}
+#ui .ro-tn,#ui .ro-tkt b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B}
+#ui .ro-tn{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-tq,#ui .ro-tkt span{font-size:14px;line-height:21px;font-weight:400;color:#566273}
+#ui .ro-tp,#ui .ro-tkp{font-size:16px;line-height:24px;font-weight:700;color:#152A4B;white-space:nowrap}
+#ui .ro-tk{grid-template-columns:22px minmax(0,1fr) auto}
+#ui .ro-tkb{width:22px;height:22px;border-radius:7px;border:2px solid #566273;display:grid;place-items:center}
+#ui .ro-tk[aria-checked="true"] .ro-tkb{border-color:#19CBD8;background:#19CBD8;color:#152A4B}
+#ui .ro-tkb svg{width:14px;height:14px}
+@media (hover:hover) and (pointer:fine){#ui .ro-tr:hover,#ui .ro-tk:hover{border-color:#152A4B}#ui .ro-tr[aria-pressed="true"]:hover,#ui .ro-tk[aria-checked="true"]:hover{border-color:#006B79}}
+#ui .ro-tr:focus-visible,#ui .ro-tk:focus-visible{outline:0;border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+#ui .ro-tall{align-self:flex-start;border:0;background:none;padding:0;font:inherit;font-size:14px;line-height:21px;font-weight:600;color:#006B79;cursor:pointer}
+@media (hover:hover){#ui .ro-tall:hover{text-decoration:underline}}
+#ui .ro-tk-in{display:flex;gap:8px;align-items:center;margin:0;padding:11px 12px;border:1px solid #DCE4E2;border-radius:12px;font-size:14px;line-height:21px;color:#152A4B}
+#ui .ro-tk-in svg{width:20px;height:20px;color:#006B79;flex:none}
+#ui .ro-tgone{margin:-4px 0 0;font-size:14px;line-height:21px;color:#566273}
+#ui .ro-ttot{background:#F3F1EB;border-radius:12px;padding:12px 16px;display:flex;flex-direction:column;gap:2px}
+#ui .ro-ttot p{margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#ui .ro-ttot span{font-size:14px;line-height:21px;font-weight:600;color:#152A4B}
+#ui .ro-ttot b{font-size:26px;line-height:35px;font-weight:700;color:#152A4B;white-space:nowrap}
+#ui .ro-ttot small{font-size:14px;line-height:21px;color:#566273}
+#ui .ro-try .pfoot{display:flex;flex-direction:column;gap:8px}
+#ui .ro-try .pfoot>.btn{width:100%}
+#ui .sheet:has(.ro-try){max-height:46%}
+#ui .sheet:has(.ro-try)>.sh{display:none}
+#ui.dev-m .ro-try .ro-ttot{padding:8px 12px;flex-direction:row;justify-content:space-between;align-items:baseline;flex-wrap:wrap;column-gap:8px}
+#ui.dev-m .ro-try .ro-ttot p{gap:8px}
+#ui.dev-m .ro-try .ro-ttot small{order:3;width:100%}
+#ui.dev-m .ro-try .ro-tl+.ro-tall{margin-top:-4px}
+#ui.dev-m .ro-try .ro-thead{flex-direction:row;align-items:center}#ui.dev-m .ro-try .ro-thead h3{font-size:18px;line-height:25px}
+#ui.dev-m .ro-ttot b{font-size:20px;line-height:28px}
+</style>
+<script id="ro-try">
+document.addEventListener('DOMContentLoaded',function(){
+ if(typeof finParams!=='function'||typeof MAT==='undefined')return;
+ /* демо-обои для рекомендаций (в работе – из каталога) */
+ var D=function(id,base,o){if(!MAT[id])MAT[id]=Object.assign({},MAT[base],o)};
+ D('OB-122','OB-101',{name:'Обои «Лён Серый»',c:'#CFCFCB',price:1690,lum:2,v:'Светло-серый лён',cg:'Серый'});
+ D('OB-123','OB-101',{name:'Обои «Рогожка»',c:'#DCCFB6',price:1290,lum:2,v:'Бежевая рогожка',cg:'Бежевый'});
+ D('OB-124','OB-103',{name:'Обои «Лён Плотный»',c:'#D3BE9C',price:2490,lum:2,v:'Плотный флизелин, бежевый',cg:'Бежевый'});
+ D('OB-120','OB-101',{name:'Обои «Шалфей»',c:'#B9C4AE',price:1590,lum:2,v:'Светлый шалфей',cg:'Зелёный'});
+ D('OB-121','OB-110',{name:'Обои «Графит»',c:'#7E8790',price:2290,lum:1,v:'Винил, ромб, графит',cg:'Серый'});
+ var pl3=function(n,f){var a=n%10,b=n%100;return f[a===1&&b!==11?0:a>=2&&a<=4&&(b<12||b>14)?1:2]};
+ var CATN={'Обои':'обои','Краска':'краски','Плитка':'плитку','Ламинат':'ламинат','Керамогранит':'керамогранит','Линолеум':'линолеум','Натяжной':'натяжные потолки'};
+ /* Рекомендации: от товара, с которого начали примерку. Слоты по полям товара: cg – цветовая группа, lum – светлота 1–3, tx – фактура/рисунок, price.
+    Кандидаты: тот же тип (cat), подходит поверхности (ks). Пустой слот пропускаем, добираем «Похожая цена». Максимум 8. */
+ function recs(base,kind){var B=MAT[base];if(!B)return[];
+  var C=Object.keys(MAT).filter(function(id){var M=MAT[id];return id!==base&&M.cat===B.cat&&String(M.ks||'').indexOf(kind)>=0}),used={},out=[];
+  var near=function(a,b){return Math.abs(MAT[a].price-B.price)-Math.abs(MAT[b].price-B.price)};
+  var take=function(why,f,sort,n){var L=C.filter(function(id){return !used[id]&&f(MAT[id])});if(sort)L.sort(sort);L.slice(0,n||1).forEach(function(id){used[id]=1;out.push([id,why])})};
+  var same=function(M){return M.cg===B.cg&&M.tx===B.tx};
+  take('Светлее',function(M){return same(M)&&M.lum===B.lum+1},near);
+  take('Темнее',function(M){return same(M)&&M.lum===B.lum-1},near);
+  take('Дешевле',function(M){return M.cg===B.cg&&M.price<B.price},function(a,b){return MAT[b].price-MAT[a].price});
+  take('Дороже',function(M){return M.cg===B.cg&&M.price>B.price},function(a,b){return MAT[a].price-MAT[b].price});
+  take('Другой цвет',function(M){return M.tx===B.tx&&M.cg!==B.cg},near,2);
+  take(B.calc==='paint'?'Другой оттенок':'Другой рисунок',function(M){return M.tx!==B.tx},near,2);
+  take('Похожая цена',function(){return true},near,8-out.length);
+  return out.slice(0,8)}
+ /* материалы для работы под этот материал на этой поверхности (комплект из ro-kit: «Нужно» и «Рекомендуем») */
+ function kitFor(E,id,k,target,withOpt){var K=window.roKit;if(!K)return[];var kd=K.kindOf(id);if(!kd)return[];var g=targetGeo(E,k,target),kind=surfKind(k);
+  return K.KIT[kd].filter(function(sl){return withOpt||sl[1]!=='opt'}).map(function(sl){var f=sl[2],amt=0;
+   if(f==='area')amt=g.area*sl[3];else if(f==='obj')amt=1;else if(f==='tape'&&kind==='wall')amt=2*(g.W||0)/100;
+   else if((f==='perim'||f==='doors')&&kind==='floor'){var ds=(E.ops||[]).filter(function(o){return o.kind==='door'});if(f==='doors')amt=ds.length;else{var p=0;for(var i=0;i<(E.pts||[]).length;i++)p+=wlen(E,i);amt=Math.max(0,p-ds.reduce(function(a,o){return a+(+o.w||0)},0))/100}}
+   if(!(amt>0)||!ACC[sl[0]])return null;var r=fin1(sl[0],amt,0);return{sku:sl[0],name:ACC[sl[0]].name,sum:r.sum||0}}).filter(Boolean)}
+ var scP=function(el){while(el&&el.id!=='ui'){var o=getComputedStyle(el).overflowY;if((o==='auto'||o==='scroll')&&el.scrollHeight>el.clientHeight)return el;el=el.parentElement}return null};
+ var keep=function(fn){var a=scP(document.querySelector('#ui .ro-tl')),st=a?a.scrollTop:0,cls=a&&a.className;fn();if(cls){var b=scP(document.querySelector('#ui .ro-tl'));if(b)b.scrollTop=st}};
+ var short=function(n){return n.replace(/\s*«.*$/,'').toLowerCase()};
+ var _fp=finParams;finParams=function(){var E=S.E,F=E.fin;if(F.mode!=='try'||!F.surf)return _fp.apply(this,arguments);
+  var k=F.surf,kind=surfKind(k),id=F.tryMat,M=MAT[id];if(!M)return _fp.apply(this,arguments);
+  var base=F.recBase&&MAT[F.recBase]?F.recBase:id;F.recBase=base;
+  var cur=F.target==='base'?sm(E,k).base:(zoneOf(E,F.target)||{}).mat;
+  var L=[[base,'Вы выбрали']].concat(recs(base,kind));
+  var row=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;
+   return '<button type="button" class="ro-tr" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-trd" aria-hidden="true"></span><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'rt'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn" title="'+esc(MAT[x[0]].name)+'">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq">'+esc(c.qty)+(x[0]===cur?' · на стене':'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></button>'};
+  var all=Object.keys(MAT).filter(function(x){return MAT[x].cat===M.cat&&String(MAT[x].ks||'').indexOf(kind)>=0}).length;
+  /* материалы для работы */
+  var T=E.est||{},kon=T.kon||{},kit=kitFor(E,id,k,F.target),old=cur&&cur!==id?kitFor(E,cur,k,F.target):[];
+  var inK=function(s,list){return list.some(function(x){return x.sku===s})};
+  var kitAll=kitFor(E,id,k,F.target,1),oldAll=cur&&cur!==id?kitFor(E,cur,k,F.target,1):[],CL=[];try{CL=estCalc(S).lines}catch(e){}
+  /* уйдёт из сметы: был включён, новому материалу не нужен и нужен только этой поверхности */
+  var gone=oldAll.filter(function(x){if(!kon[x.sku]||inK(x.sku,kitAll))return false;var l=CL.filter(function(z){return z.kit&&z.id===x.sku})[0];return !l||(l.places||[]).every(function(q){return q.R===E&&q.k===k})});
+  var allIn=kit.length&&kit.every(function(x){return kon[x.sku]});
+  var ks=kit.reduce(function(a,x){return a+(kon[x.sku]?0:x.sum)},0),names=kit.filter(function(x){return !kon[x.sku]}).map(function(x){return short(x.name)});
+  var FOR={paper:'поклейки',paint:'покраски',tile:'укладки плитки',gres:'укладки плитки',lam:'укладки ламината',lino:'укладки линолеума'},kd=window.roKit&&roKit.kindOf(id),kdo=cur&&window.roKit&&roKit.kindOf(cur);
+  var kh='';
+  if(kit.length){var nm=names.join(', ').replace(/^./,function(c){return c.toUpperCase()});
+   kh=allIn?'<p class="ro-tk-in">'+I('check')+'Материалы для '+FOR[kd]+' уже в смете</p>':
+    '<button type="button" class="ro-tk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span class="ro-tkt"><b>Материалы для '+FOR[kd]+'</b><span>'+esc(nm)+'</span></span><span class="ro-tkp">+'+rub(ks)+'</span></button>';
+   if(gone.length)kh+='<p class="ro-tgone">Из сметы уберём'+(kdo&&FOR[kdo]?' материалы для '+FOR[kdo]:'')+': '+esc(gone.map(function(x){return short(x.name)}).join(', '))+'</p>'}
+  /* сумма */
+  var cNew=cost(E,id,k,F.target).sum+(F.kitAdd&&!allIn?ks:0),cOld=cur?cost(E,cur,k,F.target).sum:0,d=cNew-cOld;
+  var dm=cost(E,id,k,F.target).sum-cOld,wn=MAT[id].cat==='Обои'?'Обои':MAT[id].cat==='Краска'?'Краска':'Покрытие';
+  var sh='<div class="ro-ttot"><p><span>Итого за '+({wall:'стену',floor:'пол',ceil:'потолок'}[kind])+'</span><b>'+rub(cNew)+'</b></p>'+(cur&&cur!==id&&dm?'<small>'+wn+' на '+rub(Math.abs(dm))+' '+(dm>0?'дороже':'дешевле')+', чем сейчас</small>':'')+'</div>';
+  var cpb=F.target==='base'&&kind!=='ceil'?'<button type="button" class="btn wide" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'';
+  var to=F.target==='base'?{wall:'к стене',floor:'к полу',ceil:'к потолку'}[kind]:'к зоне';
+  return '<div class="ro-try"><div class="ro-thead"><button type="button" class="btn s40" data-act="f-list">'+I('back')+'Каталог</button><h3>Примерка: '+esc(targetName(E))+'</h3></div>'+
+   '<div class="ro-tl" role="group" aria-label="Варианты для примерки">'+L.map(row).join('')+'</div>'+
+   (all>L.length?'<button type="button" class="ro-tall" data-act="f-list">Все '+(CATN[M.cat]||M.cat.toLowerCase())+' в каталоге ('+all+') →</button>':'')+
+   (S.dev==='m'?kh+cpb:'')+'<div class="pfoot">'+(S.dev==='m'?'':kh)+sh+'<button type="button" class="btn pri wide" data-act="f-apply">Применить '+to+'</button>'+
+   (S.dev==='m'?'':cpb)+'</div></div>'};
+ function kitOn(E){var F=E.fin;if(!F.kitAdd)return;var T=E.est||(E.est={});T.kon=T.kon||{};kitFor(E,F.tryMat,F.surf,F.target).forEach(function(x){T.kon[x.sku]=true})}
+ var _a=act;act=function(a,el,ev){var E=S.E,F=E&&E.fin,d=el&&el.dataset||{};
+  if(a==='f-try'&&F){F.recBase=d.id;F.kitAdd=false}
+  if(a==='ro-try'&&F){keep(function(){tryOn(E,d.id);render()});var bt=document.querySelector('#ui .ro-tr[data-id="'+d.id+'"]');if(bt){bt.focus({preventScroll:true});var sp=scP(bt);if(sp){var r=bt.getBoundingClientRect(),f=document.querySelector('#ui .ro-try .pfoot'),lim=f?f.getBoundingClientRect().top:sp.getBoundingClientRect().bottom;if(r.bottom>lim-8)sp.scrollTop+=r.bottom-lim+16}}return}
+  if(a==='ro-kitadd'&&F){keep(function(){F.kitAdd=!F.kitAdd;render()});var t=document.querySelector('#ui .ro-tk');if(t)t.focus({preventScroll:true});return}
+  if(a==='f-apply'&&F&&F.mode==='try'){kitOn(E);F.kitAdd=false;F.recBase=null}
+  if(a==='ro-cp'&&F&&F.mode==='try'){kitOn(E);F.kitAdd=false;F.recBase=null;applyTry(E);E.sheet=null;E.cp={sel:{},open:{}};F.copied=null;render();return}
+  if((a==='f-reject'||a==='f-list')&&F){F.kitAdd=false;if(a==='f-reject')F.recBase=null}
+  return _a.apply(this,arguments)};
+});
+<%/script>
+<style id="ro-msheet-css">
+/* Телефон (23.11, фидбэк п.4 + ТЗ 7.1): шторка не закрывает проект. Тап по стене – короткая карточка; «Заменить» – сразу примерка с вариантами;
+   ручка сверху: тап или свайп вниз сворачивает шторку в строку (что выбрано + главное действие), комната видна целиком. План ужимается над шторкой. */
+#ui .sheet .ro-grab{position:sticky;top:-8px;z-index:3;background:var(--paper,#fff);display:flex;justify-content:center;align-items:center;width:100%;height:24px;margin:-8px -16px -12px;width:calc(100% + 32px);padding:0;border:0;background:none;cursor:grab;touch-action:none}
+#ui .sheet .ro-grab span{width:40px;height:4px;border-radius:2px;background:#C9D1D0}
+#ui .sheet.ro-min{max-height:none!important;overflow:hidden;gap:8px;padding-bottom:12px}
+#ui .sheet.ro-min>*:not(.ro-grab):not(.ro-minbar){display:none!important}
+#ui .sheet:not(.ro-min)>.ro-minbar{display:none}
+#ui .ro-minbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+#ui .ro-minbar .ro-mt{display:flex;flex-direction:column;min-width:0}
+#ui .ro-minbar .ro-mt b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-minbar .ro-mt span{font-size:14px;line-height:21px;color:#566273;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-minbar .btn{min-height:44px;padding:0 16px}
+/* короткая карточка поверхности */
+#ui .ro-mcard{display:flex;flex-direction:column;gap:12px}
+#ui .ro-mcard h3{margin:0}
+#ui .ro-mrow{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center}
+#ui .ro-mrow svg{display:block;width:56px;height:56px}
+#ui .ro-mrow .ro-mt{display:flex;flex-direction:column;min-width:0}
+#ui .ro-mrow .ro-mt b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B}
+#ui .ro-mrow .ro-mt span{font-size:14px;line-height:21px;color:#566273}
+#ui .ro-mrow .ro-mp{font-size:16px;line-height:24px;font-weight:700;color:#152A4B;white-space:nowrap}
+#ui .ro-mbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#ui .ro-mbtns .btn{width:100%}
+#ui .ro-mmore{align-self:flex-start;border:0;background:none;padding:0;font:inherit;font-size:14px;line-height:21px;font-weight:600;color:#006B79;cursor:pointer}
+</style>
+<script id="ro-msheet">
+document.addEventListener('DOMContentLoaded',function(){
+ if(typeof finParams!=='function')return;
+ var mob=function(){return S.dev==='m'};
+ var curOf=function(E){var F=E.fin;return F.surf?(F.target&&F.target!=='base'?(zoneOf(E,F.target)||{}).mat:sm(E,F.surf).base):null};
+ /* короткая карточка выбранной поверхности (телефон, обычный режим) */
+ var _fp=finParams;finParams=function(){var E=S.E,F=E.fin;
+  if(!mob()||!F.surf||F.mode==='try'||F.zform||E.roFull||F.mode==='catalog'||F.mode==='detail')return _fp.apply(this,arguments);
+  var k=F.surf,id=sm(E,k).base,M=id&&MAT[id],c=M?cost(E,id,k,'base'):null;
+  return '<div class="ro-mcard"><h3>'+esc(surfName(k))+'</h3>'+
+   (M?'<div class="ro-mrow"><span aria-hidden="true">'+pthumb(id,'mc',56)+'</span><span class="ro-mt"><b>'+esc(M.name)+'</b><span>'+esc(c.qty)+'</span></span><span class="ro-mp">'+rub(c.sum)+'</span></div>':'<p class="mut">Покрытие не выбрано</p>')+
+   '<div class="ro-mbtns">'+(M?'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Заменить</button><button type="button" class="btn" data-act="ro-full">Подробнее</button>':'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base" style="grid-column:1/-1">Выбрать покрытие</button>')+'</div></div>'};
+ function minbar(){var E=S.E,F=E&&E.fin;if(!F||!F.surf)return '';var k=F.surf;
+  if(F.mode==='try'&&MAT[F.tryMat]){var c=cost(E,F.tryMat,k,F.target);return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(MAT[F.tryMat].name)+'</b><span>'+esc(surfName(k))+' · '+rub(c.sum)+'</span></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'}
+  var id=curOf(E),M=id&&MAT[id];return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(surfName(k))+'</b><span>'+(M?esc(M.name):'Покрытие не выбрано')+'</span></span><button type="button" class="btn" data-act="f-cat-open" data-t="base">'+(M?'Заменить':'Выбрать')+'</button></div>'}
+ function fit(){var ui=document.getElementById('ui');if(!ui)return;var pl=ui.querySelector('.ctr .plan'),sv=pl&&pl.querySelector(':scope>svg, svg');if(!sv)return;sv.style.transform='';sv.style.transformOrigin='';
+  var sh=ui.querySelector('.sheet');if(!mob()||!sh)return;var r=sv.getBoundingClientRect(),top=sh.getBoundingClientRect().top-8,pt=pl.getBoundingClientRect().top+4;if(r.bottom<=top)return;
+  var k=Math.max(.35,Math.min(1,(top-pt)/r.height)),dy=pt-r.top;sv.style.transformOrigin='50% 0';sv.style.transform='translateY('+Math.round(dy)+'px) scale('+k.toFixed(3)+')'}
+ var _r=render;render=function(){var x=_r.apply(this,arguments);try{var E=S.E,sh=document.querySelector('#ui .sheet');
+  if(sh&&mob()&&S.page==='editor'){if(!sh.querySelector(':scope>.ro-grab')){sh.insertAdjacentHTML('afterbegin','<button type="button" class="ro-grab" data-act="ro-shmin" aria-label="'+(E.shMin?'Развернуть':'Свернуть')+' панель"><span></span></button>')}
+   var mb=E.sheet==='params'&&E.stage==='finish'?minbar():'';var old=sh.querySelector(':scope>.ro-minbar');if(old)old.remove();if(mb)sh.querySelector('.ro-grab').insertAdjacentHTML('afterend',mb);
+   sh.classList.toggle('ro-min',!!E.shMin&&!!mb)}
+  requestAnimationFrame(fit)}catch(e){}return x};
+ /* свайп по ручке/заголовку шторки */
+ var y0=null;document.addEventListener('pointerdown',function(e){var g=e.target.closest&&e.target.closest('#ui .sheet .ro-grab, #ui .sheet .sh, #ui .sheet .ro-minbar .ro-mt');if(g&&mob()){y0=e.clientY}},true);
+ document.addEventListener('pointerup',function(e){if(y0==null)return;var dy=e.clientY-y0;y0=null;var E=S.E;if(!E)return;if(dy>40&&!E.shMin){E.shMin=true;render()}else if(dy<-40&&E.shMin){E.shMin=false;render()}},true);
+ var _a=act;act=function(a,el,ev){var E=S.E,F=E&&E.fin,d=el&&el.dataset||{};
+  if(a==='ro-shmin'){E.shMin=!E.shMin;render();var g=document.querySelector('#ui .sheet .ro-grab');if(g)g.focus();return}
+  if(a==='ro-full'){E.roFull=true;render();return}
+  if(mob()&&F&&a==='f-cat-open'&&(d.t==='base'||d.t==null)){var cur=sm(E,F.surf).base;if(cur&&MAT[cur]){F.target='base';tryOn(E,cur);F.recBase=cur;F.kitAdd=false;E.sheet='params';E.shMin=false;E.roFull=false;render();return}}
+  if(a==='f-surf'||a==='sheet-x'||a==='f-list'||a==='f-apply'){E.roFull=false;E.shMin=false}
+  var r=_a.apply(this,arguments);
+  if(mob()&&a==='f-surf'&&S.E.stage==='finish'){S.E.sheet='params';render()}
+  return r};
+ window.addEventListener('resize',function(){requestAnimationFrame(fit)});
 });
 <%/script>
 </head><body>
@@ -29308,6 +29468,10 @@ post({type:'ready'});
 <style id="ro-home-nv-css">
 /* 4 пункта шапки на узком ПК (1101–1240): плотнее, без переноса строки */
 @media (min-width:1101px) and (max-width:1240px){html body .hd{gap:24px!important}html body .hd nav:not(.mmenu){gap:8px!important}html body .hd nav:not(.mmenu) .nv{padding-left:8px!important;padding-right:8px!important;white-space:nowrap!important}}
+</style>
+<style id="ro-nohome-css">
+/* 23.11: «← Главная» на ПК убрана – «Главная» есть в шапке. Телефон – без изменений. */
+@media (min-width:701px){html body .transaction-back[data-nav="/"]{display:none!important}}
 </style>
 </body>
 </html>
