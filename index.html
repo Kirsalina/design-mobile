@@ -18151,7 +18151,7 @@ html body #ui .gtop .back-s[data-to="home"]{display:none!important}
 #ui .ro-try h3{margin:0}
 #ui .ro-tl{display:flex;flex-direction:column;gap:8px}
 #ui .ro-tr,#ui .ro-tk{display:grid;align-items:center;gap:12px;width:100%;padding:11px 12px;border:1px solid #DCE4E2;border-radius:12px;background:#fff;font:inherit;text-align:left;cursor:pointer;color:#152A4B}
-#ui .ro-tr{grid-template-columns:22px 48px minmax(0,1fr) auto}
+#ui .ro-tr{grid-template-columns:48px minmax(0,1fr) auto}
 #ui .ro-tr[aria-pressed="true"],#ui .ro-tk[aria-checked="true"]{border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
 #ui .ro-trd{width:22px;height:22px;border-radius:50%;border:2px solid #566273;display:grid;place-items:center}
 #ui .ro-tr[aria-pressed="true"] .ro-trd{border-color:#19CBD8;background:#19CBD8}
@@ -18188,6 +18188,28 @@ html body #ui .gtop .back-s[data-to="home"]{display:none!important}
 #ui.dev-m .ro-try .ro-tl+.ro-tall{margin-top:-4px}
 #ui.dev-m .ro-try .ro-thead{flex-direction:row;align-items:center}#ui.dev-m .ro-try .ro-thead h3{font-size:18px;line-height:25px}
 #ui.dev-m .ro-ttot b{font-size:20px;line-height:28px}
+
+/* телефон: короткая шторка – ряд карточек вбок, итог и «Применить» в одну строку */
+#ui .sheet:has(.ro-tryp){max-height:none}
+#ui .ro-tryp{gap:10px}
+#ui .ro-ph{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#ui .ro-ph b{font-size:18px;line-height:25px;font-weight:600;color:#152A4B}
+#ui .ro-plink{border:0;background:none;padding:0;font:inherit;font-size:14px;line-height:21px;font-weight:600;color:#006B79;cursor:pointer}
+#ui .ro-pl{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;margin:0 -16px;padding:2px 16px 4px;scrollbar-width:none}
+#ui .ro-pl::-webkit-scrollbar{display:none}
+#ui .ro-pc{flex:none;width:208px;scroll-snap-align:start;display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;align-items:center;padding:8px 10px 8px 8px;border:1px solid #DCE4E2;border-radius:12px;background:#fff;font:inherit;text-align:left;color:#152A4B}
+#ui .ro-pc[aria-pressed="true"]{border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+#ui .ro-pc .ro-tth svg{display:block;width:48px;height:48px}
+#ui .ro-pc .ro-tq b{font-weight:700;color:#152A4B}
+#ui .ro-pk{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:10px;align-items:center;width:100%;padding:0;border:0;background:none;font:inherit;font-size:14px;line-height:21px;color:#152A4B;text-align:left}
+#ui .ro-pk b{font-weight:700}
+#ui .ro-pk[aria-checked="true"] .ro-tkb{border-color:#19CBD8;background:#19CBD8;color:#152A4B}
+#ui .ro-pf{display:flex;justify-content:space-between;align-items:center;gap:12px}
+#ui .ro-pt{display:flex;flex-direction:column}
+#ui .ro-pt small{font-size:14px;line-height:21px;color:#566273}
+#ui .ro-pt b{font-size:20px;line-height:28px;font-weight:700;color:#152A4B}
+#ui .ro-pf .btn{min-width:160px}
+#ui .ro-pcp{align-self:center}
 </style>
 <script id="ro-try">
 document.addEventListener('DOMContentLoaded',function(){
@@ -18223,7 +18245,7 @@ document.addEventListener('DOMContentLoaded',function(){
    else if((f==='perim'||f==='doors')&&kind==='floor'){var ds=(E.ops||[]).filter(function(o){return o.kind==='door'});if(f==='doors')amt=ds.length;else{var p=0;for(var i=0;i<(E.pts||[]).length;i++)p+=wlen(E,i);amt=Math.max(0,p-ds.reduce(function(a,o){return a+(+o.w||0)},0))/100}}
    if(!(amt>0)||!ACC[sl[0]])return null;var r=fin1(sl[0],amt,0);return{sku:sl[0],name:ACC[sl[0]].name,sum:r.sum||0}}).filter(Boolean)}
  var scP=function(el){while(el&&el.id!=='ui'){var o=getComputedStyle(el).overflowY;if((o==='auto'||o==='scroll')&&el.scrollHeight>el.clientHeight)return el;el=el.parentElement}return null};
- var keep=function(fn){var a=scP(document.querySelector('#ui .ro-tl')),st=a?a.scrollTop:0,cls=a&&a.className;fn();if(cls){var b=scP(document.querySelector('#ui .ro-tl'));if(b)b.scrollTop=st}};
+ var keep=function(fn){var a=scP(document.querySelector('#ui .ro-tl')),st=a?a.scrollTop:0,cls=a&&a.className,h=document.querySelector('#ui .ro-pl'),hl=h?h.scrollLeft:0;fn();if(cls){var b=scP(document.querySelector('#ui .ro-tl'));if(b)b.scrollTop=st}var h2=document.querySelector('#ui .ro-pl');if(h2)h2.scrollLeft=hl};
  var short=function(n){return n.replace(/\s*«.*$/,'').toLowerCase()};
  var _fp=finParams;finParams=function(){var E=S.E,F=E.fin;if(F.mode!=='try'||!F.surf)return _fp.apply(this,arguments);
   var k=F.surf,kind=surfKind(k),id=F.tryMat,M=MAT[id];if(!M)return _fp.apply(this,arguments);
@@ -18231,7 +18253,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var cur=F.target==='base'?sm(E,k).base:(zoneOf(E,F.target)||{}).mat;
   var L=[[base,'Вы выбрали']].concat(recs(base,kind));
   var row=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;
-   return '<button type="button" class="ro-tr" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-trd" aria-hidden="true"></span><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'rt'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn" title="'+esc(MAT[x[0]].name)+'">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq">'+esc(c.qty)+(x[0]===cur?' · на стене':'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></button>'};
+   return '<button type="button" class="ro-tr" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'rt'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn" title="'+esc(MAT[x[0]].name)+'">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq">'+esc(c.qty)+(x[0]===cur?' · на стене':'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></button>'};
   var all=Object.keys(MAT).filter(function(x){return MAT[x].cat===M.cat&&String(MAT[x].ks||'').indexOf(kind)>=0}).length;
   /* материалы для работы */
   var T=E.est||{},kon=T.kon||{},kit=kitFor(E,id,k,F.target),old=cur&&cur!==id?kitFor(E,cur,k,F.target):[];
@@ -18253,6 +18275,13 @@ document.addEventListener('DOMContentLoaded',function(){
   var sh='<div class="ro-ttot"><p><span>Итого за '+({wall:'стену',floor:'пол',ceil:'потолок'}[kind])+'</span><b>'+rub(cNew)+'</b></p>'+(cur&&cur!==id&&dm?'<small>'+wn+' на '+rub(Math.abs(dm))+' '+(dm>0?'дороже':'дешевле')+', чем сейчас</small>':'')+'</div>';
   var cpb=F.target==='base'&&kind!=='ceil'?'<button type="button" class="btn wide" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'';
   var to=F.target==='base'?{wall:'к стене',floor:'к полу',ceil:'к потолку'}[kind]:'к зоне';
+  if(S.dev==='m'){
+   var pc=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;return '<button type="button" class="ro-pc" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'pc'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq"><b>'+rub(c.sum)+'</b>'+(x[0]===cur?' · на стене':'')+'</span></span></button>'};
+   var kp=kit.length&&!allIn?'<button type="button" class="ro-pk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span>Материалы для '+FOR[kd]+'</span><b>+'+rub(ks)+'</b></button>':'';
+   return '<div class="ro-try ro-tryp"><div class="ro-ph"><b>'+esc(targetName(E))+'</b><button type="button" class="ro-plink" data-act="f-list">Весь каталог</button></div>'+
+    '<div class="ro-pl" role="group" aria-label="Варианты для примерки">'+L.map(pc).join('')+'</div>'+kp+
+    '<div class="ro-pf"><span class="ro-pt"><small>Итого</small><b>'+rub(cNew)+'</b></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'+
+    (cpb?'<button type="button" class="ro-plink ro-pcp" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'')+'</div>'}
   return '<div class="ro-try"><div class="ro-thead"><button type="button" class="btn s40" data-act="f-list">'+I('back')+'Каталог</button><h3>Примерка: '+esc(targetName(E))+'</h3></div>'+
    '<div class="ro-tl" role="group" aria-label="Варианты для примерки">'+L.map(row).join('')+'</div>'+
    (all>L.length?'<button type="button" class="ro-tall" data-act="f-list">Все '+(CATN[M.cat]||M.cat.toLowerCase())+' в каталоге ('+all+') →</button>':'')+
@@ -18261,7 +18290,7 @@ document.addEventListener('DOMContentLoaded',function(){
  function kitOn(E){var F=E.fin;if(!F.kitAdd)return;var T=E.est||(E.est={});T.kon=T.kon||{};kitFor(E,F.tryMat,F.surf,F.target).forEach(function(x){T.kon[x.sku]=true})}
  var _a=act;act=function(a,el,ev){var E=S.E,F=E&&E.fin,d=el&&el.dataset||{};
   if(a==='f-try'&&F){F.recBase=d.id;F.kitAdd=false}
-  if(a==='ro-try'&&F){keep(function(){tryOn(E,d.id);render()});var bt=document.querySelector('#ui .ro-tr[data-id="'+d.id+'"]');if(bt){bt.focus({preventScroll:true});var sp=scP(bt);if(sp){var r=bt.getBoundingClientRect(),f=document.querySelector('#ui .ro-try .pfoot'),lim=f?f.getBoundingClientRect().top:sp.getBoundingClientRect().bottom;if(r.bottom>lim-8)sp.scrollTop+=r.bottom-lim+16}}return}
+  if(a==='ro-try'&&F){keep(function(){tryOn(E,d.id);render()});var bt=document.querySelector('#ui .ro-tr[data-id="'+d.id+'"], #ui .ro-pc[data-id="'+d.id+'"]');if(bt){bt.focus({preventScroll:true});var sp=scP(bt);if(sp){var r=bt.getBoundingClientRect(),f=document.querySelector('#ui .ro-try .pfoot'),lim=f?f.getBoundingClientRect().top:sp.getBoundingClientRect().bottom;if(r.bottom>lim-8)sp.scrollTop+=r.bottom-lim+16}}return}
   if(a==='ro-kitadd'&&F){keep(function(){F.kitAdd=!F.kitAdd;render()});var t=document.querySelector('#ui .ro-tk');if(t)t.focus({preventScroll:true});return}
   if(a==='f-apply'&&F&&F.mode==='try'){kitOn(E);F.kitAdd=false;F.recBase=null}
   if(a==='ro-cp'&&F&&F.mode==='try'){kitOn(E);F.kitAdd=false;F.recBase=null;applyTry(E);E.sheet=null;E.cp={sel:{},open:{}};F.copied=null;render();return}
@@ -19510,9 +19539,9 @@ const thumb=(pts,w,h,ref,ops)=>{const det=!!(ops&&ops.length&&w>=100),pad=det?20
    const ux=(B[0]-A[0])/L,uy=(B[1]-A[1])/L,off=Math.max(0,+op.off||0),ww=Math.min(+op.w||0,L-off);if(!(ww>0))return;
    const a=X([A[0]+ux*off,A[1]+uy*off]),c=X([A[0]+ux*(off+ww),A[1]+uy*(off+ww)]);let nx=-uy,ny=ux;if(!pip((a[0]+c[0])/2+nx*3,(a[1]+c[1])/2+ny*3)){nx=-nx;ny=-ny}
    o+=`<line x1="${f(a[0])}" y1="${f(a[1])}" x2="${f(c[0])}" y2="${f(c[1])}" style="stroke:var(--wash,#F3F1EB)" stroke-width="3.5"/>`;
-   if(op.kind==='win'){const d=1.4;o+=`<path d="M${pt([a[0]+nx*d,a[1]+ny*d])}L${pt([c[0]+nx*d,c[1]+ny*d])}M${pt([a[0]-nx*d,a[1]-ny*d])}L${pt([c[0]-nx*d,c[1]-ny*d])}M${pt([a[0]+nx*d,a[1]+ny*d])}L${pt([a[0]-nx*d,a[1]-ny*d])}M${pt([c[0]+nx*d,c[1]+ny*d])}L${pt([c[0]-nx*d,c[1]-ny*d])}" fill="none" stroke="#006B79" stroke-width="1"/>`}
+   /* 23.11: окно в превью – как в конструкторе: белый проём в стене с тёмной обводкой (было – бирюзовые линии) */if(op.kind==='win'){const d=1.3;o+=`<path d="M${pt([a[0]+nx*d,a[1]+ny*d])}L${pt([c[0]+nx*d,c[1]+ny*d])}L${pt([c[0]-nx*d,c[1]-ny*d])}L${pt([a[0]-nx*d,a[1]-ny*d])}Z" fill="#fff" stroke="#152A4B" stroke-width=".8" stroke-linejoin="round"/>`}
    else{const g=doorG(op,a,c,[nx,ny]),len=ww*s,H=g.h,F=g.f,E2=[H[0]+g.n[0]*len,H[1]+g.n[1]*len],v1=[E2[0]-H[0],E2[1]-H[1]],v2=[F[0]-H[0],F[1]-H[1]],sw=v1[0]*v2[1]-v1[1]*v2[0]>0?1:0;
-    o+=`<path d="M${pt(H)}L${pt(E2)}" stroke="#152A4B" stroke-width="1.2" stroke-linecap="round"/><path d="M${pt(E2)}A${f(len)} ${f(len)} 0 0 ${sw} ${pt(F)}" fill="none" stroke="#152A4B" stroke-opacity=".45" stroke-width=".9"/>`}})}
+    o+=`<path d="M${pt(H)}L${pt(E2)}" stroke="#152A4B" stroke-width="1.2" stroke-linecap="round"/><path d="M${pt(E2)}A${f(len)} ${f(len)} 0 0 ${sw} ${pt(F)}" fill="none" stroke="#152A4B" stroke-width=".9"/>`}})}
  return o+'</svg>'};
 
 /* ---------- view helpers ---------- */
