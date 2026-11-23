@@ -18390,15 +18390,17 @@ document.addEventListener('DOMContentLoaded',function(){
  if(typeof act!=='function'||typeof gatePage!=='function')return;
  var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
-  var body='<h2>Создайте свой интерьер</h2><p>Комната, отделка и смета — в одном месте.</p>';
+  var has0=anon()&&S.objs&&S.objs.length;var body='<h2>Создайте свой интерьер</h2><p>'+(has0?'Ваш проект сохранён в этом браузере. Войдите, чтобы он не потерялся.':'Комната, отделка и смета — в одном месте. Можно начать без регистрации.')+'</p>';
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
   var has=anon()&&S.objs&&S.objs.length;
   h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="ro-gnew">'+(has?'Продолжить проект':'Создать объект')+' '+I('arrow')+'</button>');
-  h=h.replace(/(<div class="acts">[\s\S]*?<\/div>)/,'$1<p class="ro-gnote">'+(has?'Проект сохранён в этом браузере':'Можно без регистрации')+'</p>');
+
+  /* окно «Новый объект» – поверх этого экрана, а не поверх «Моих объектов» */
+  if(S.newObj&&S.roOnGate){var o=objectsPage(),i=o.indexOf('<div class="ovl"><form class="dlg dlg-obj"');if(i>=0){var j=o.indexOf('</form></div>',i);if(j>0)h+=o.slice(i,j+13)}}
   return h};
  var _op=objectsPage;objectsPage=function(){var h=_op.apply(this,arguments);
   if(S.newObj){var i=h.indexOf('<h3 id="no-t">Новый объект</h3>');if(i>=0){var j=h.indexOf('</div>',i)+6;
-   h=h.slice(0,j)+'<p class="ro-ointro">Объект — ваша квартира или дом. В нём будут все комнаты и общая смета.</p>'+(anon()?'<p class="ro-onote">Без входа проект хранится только в этом браузере.</p>':'')+h.slice(j)}}
+   h=h.slice(0,j)+'<p class="ro-ointro">Соберите в одном месте всё по квартире, дому или офису: комнаты, планировку и общую смету на весь ремонт.</p>'+(anon()?'<p class="ro-onote">Без входа проект легко потерять. Войдите, чтобы он точно сохранился.</p>':'')+h.slice(j)}}
   if(S.roLim)h+='<div class="ovl"><div class="dlg dlg-lim" role="dialog" aria-modal="true" aria-labelledby="lim-t"><div class="dlg-h"><h3 id="lim-t">Нужен вход</h3><button type="button" class="icb" data-act="ro-lim-x" aria-label="Закрыть">'+I('x')+'</button></div><p>Без регистрации доступен один объект. Войдите, чтобы создать ещё — текущий проект сохранится в кабинете.</p><div class="acts"><button type="button" class="btn pri" data-act="ro-lim-in">Войти</button><button type="button" class="btn" data-act="ro-lim-x">Отмена</button></div></div></div>';
   return h};
  var _a=act;act=function(a,el,ev){
@@ -18406,6 +18408,9 @@ document.addEventListener('DOMContentLoaded',function(){
   if(a==='ro-lim-x'){S.roLim=false;render();return}
   if(a==='ro-lim-in'){S.roLim=false;return act('login-open',el,ev)}
   if(a==='ro-gnew'&&anon()&&S.objs.length>=1){S.page='objects';render();return}
+  if(a==='ro-gnew'&&!(S.auth==='user'&&!S.anon)){var r0=_a.apply(this,arguments);if(S.newObj){S.page='gate';S.roOnGate=true;render();setTimeout(function(){var f=document.getElementById('f-obj-name');if(f)try{f.focus({preventScroll:true})}catch(e){}},0)}return r0}
+  if(a==='obj-save'&&S.roOnGate){var r1=_a.apply(this,arguments);if(!S.newObj){S.roOnGate=false;S.page='objects';render()}else render();return r1}
+  if(a==='obj-cancel'&&S.roOnGate){S.roOnGate=false}
   if(a==='ro-gnew'&&S.auth==='user'&&!S.anon){return _a.call(this,'obj-new',el,ev)}
   return _a.apply(this,arguments)};
  var _r=render;render=function(){if(window.__roGate){window.__roGate=0;if(S.page!=='gate'){S.page='gate';S.newObj=null}}var x=_r.apply(this,arguments);try{if(window.__roAddRoom&&S.page==='objects'&&S.objs&&S.objs.length){window.__roAddRoom=0;setTimeout(function(){act('room-add',{dataset:{}})},0)}}catch(e){}try{if(window.__roAI){S.roAI=1;window.__roAI=0}if(S.roAI&&S.page==='editor'&&S.E){S.roAI=0;if(S.dev==='m')S.E.sheet='ai';else S.E.rtab='ai';_r()}}catch(e){}return x};
@@ -18417,6 +18422,14 @@ html body #ui .rsteps li.on>i{background:#19CBD8!important;border-color:#19CBD8!
 html body #ui .rsteps li.on>i svg{width:14px!important;height:14px!important;stroke:#152A4B!important;color:#152A4B!important;stroke-width:3!important;margin:0!important;transform:translateY(.5px)}
 html body #ui .rsteps li.ln.on{background:#19CBD8!important;border-color:#19CBD8!important}
 html body #ui .rsteps li.on::before,html body #ui .rsteps li.nxon::after{background:#19CBD8!important}
+</style>
+<style id="ro-gsv2-css">
+/* 23.11 (Алина): «Войдите, чтобы сохранить» – такая же кнопка, как «Реалистичный»: белая плашка, скругление 12, высота 40, 14/21 600 тёмный, значок 16 */
+html body #ui .ro-gsv-b{display:inline-flex!important;align-items:center;gap:8px;min-height:40px!important;height:40px;margin:0;padding:0 14px!important;border:0;border-radius:12px;background:#fff;color:#152A4B!important;font:600 14px/21px Manrope,system-ui,sans-serif;text-decoration:none!important;box-shadow:none}
+html body #ui .ro-gsv-b .ic{display:inline-block!important;width:16px;height:16px;color:#152A4B!important}
+@media (hover:hover){html body #ui .ro-gsv-b:hover{background:#F7F6F2;text-decoration:none!important}}
+html body #ui .ro-gsv-b:focus-visible{box-shadow:inset 0 0 0 1px #006B79}
+html body #ui .crumbs>.ro-gsv-b{border:1px solid #DCE4E2;height:40px}
 </style>
 </head><body>
 <title>RemOnLine — Конструктор</title>
@@ -29501,7 +29514,7 @@ post({type:'ready'});
   const mail=L.via==='mail';
   if(L.step==='phone'){
    const lead=f.querySelector('.acc-lead');
-   if(lead)lead.textContent=why()+' '+(mail?'Пришлём код на почту.':'Пришлём код в SMS.');
+   if(lead)lead.textContent=why(); /* 23.11: текст не меняется при переключении – окно не прыгает */
    if(!f.querySelector('.acc-seg')){const s=`<div class="acc-seg" role="group" aria-label="Способ входа"><button type="button" data-act="via" data-via="phone" aria-pressed="${!mail}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg>Телефон</button><button type="button" data-act="via" data-via="mail" aria-pressed="${mail}"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>Почта</button></div>`;
     (lead||f.querySelector('.acc-dlg-h')).insertAdjacentHTML('afterend',s)}
    if(mail&&!$('#lg-mail')){
@@ -29544,7 +29557,7 @@ post({type:'ready'});
  document.addEventListener('click',e=>{const t=e.target.closest&&e.target.closest('[data-act="via"],[data-act="change"]');if(!t||!isLogin()||!$('#login-form'))return;
   if(t.dataset.act==='via'){e.preventDefault();e.stopImmediatePropagation();if(L.busy)return;const v=t.dataset.via;if(v===L.via)return;
    L.via=VIA=v;L.err='';L.net=false;renderLogin();
-   const i=v==='mail'?$('#lg-mail'):$('#lg-phone');if(i)i.focus();return}
+   const sb=document.querySelector('#login-form [data-act="via"][data-via="'+v+'"]');if(sb)sb.focus({preventScroll:true});return} /* 23.11: без автофокуса в поле – на телефоне не выскакивает клавиатура и окно не прыгает */
   if(L.via==='mail'){e.preventDefault();e.stopImmediatePropagation();
    Object.assign(L,{step:'phone',code:'',err:'',net:false,blocked:false,expired:false});renderLogin();
    const i=$('#lg-mail');if(i)i.focus()}},true);
