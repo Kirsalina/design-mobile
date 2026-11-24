@@ -15605,7 +15605,6 @@ function cabinetMenu(current,count=0) {
     ? `<a class="cab-item" href="${href}" data-route aria-current="page">${icon(ic)}<span>${label}</span>${extra}</a>`
     : `<a class="cab-item" href="${href}" target="_top">${icon(ic)}<span>${label}</span>${extra}</a>`;
   return '<nav class="cab-menu" aria-label="Кабинет">'
-    +item('objects','../Сдача/index.html#obj-one','folderOpen','Мои объекты')
     +item('orders','#order=1&case=history','package','Мои заказы',count?'<span class="cab-dot" role="img" aria-label="Есть неоплаченный заказ"></span>':'')
     +item('profile','../account/index.html#/account/profile','user','Мои данные')
     +'<hr><button type="button" class="cab-item cab-logout" data-logout>'+icon('logout')+'<span>Выйти</span></button></nav>';
@@ -17079,6 +17078,7 @@ post({type:'ready'});
    Строка фиксированной высоты 40, длинное название обрезается «…». В свёрнутом виде всегда 4 строки (3 колонки = 12, на планшете и телефоне 2 колонки = 8),
    сколько бы категорий ни было (50–100): кнопка «Показать все N» раскрывает список тут же, «Свернуть» возвращает. Высота страницы от числа категорий не зависит. */
 #ro-all{padding-bottom:64px}
+html body .order-summary p#summary-window:not(:empty){margin:4px 0 12px!important}
 #ro-all .catalog-location{display:flex;align-items:center;flex-wrap:wrap;gap:0 16px;margin-top:8px}
 #ro-all .crumbs [aria-current]{color:#152A4B}
 #ro-all h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.02em;margin:16px 0 0;color:#152A4B}
@@ -17087,14 +17087,14 @@ post({type:'ready'});
 #ro-all .ro-as:first-child{border-top:0;padding-top:0}
 #ro-all .ro-ban{display:block;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:#F3F1EB}
 #ro-all .ro-ban img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-@media (hover:hover){#ro-all .ro-ban:hover img{transform:scale(1.03)}}
+
 #ro-all .ro-ah{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
 #ro-all .ro-ah h2{margin:0;font-size:24px;line-height:32px;font-weight:600;flex:1;min-width:0}
 #ro-all .ro-ah h2 a{color:#152A4B;text-decoration:none}
 #ro-all .ro-ah .text-link{font-size:14px;line-height:21px;font-weight:600;color:#006B79;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 #ro-all .ro-ah .text-link svg{width:18px;height:18px}
 #ro-all .ro-ha{display:none}
-#ro-all .ro-ac{list-style:none;margin:0;padding:0;columns:3;column-gap:32px}
+#ro-all .ro-ac{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px}
 #ro-all .ro-ac:not(.open) li:nth-child(n+13){display:none}
 #ro-all .ro-ac li{break-inside:avoid}
 #ro-all .ro-ac a{display:block;height:40px;line-height:40px;font:400 16px/40px Manrope,system-ui,sans-serif;color:#152A4B;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -17104,10 +17104,10 @@ post({type:'ready'});
 #ro-all .ro-tg[aria-expanded="true"] svg{transform:rotate(180deg)}
 #ro-all .ro-few .ro-tg{display:none}
 #ro-all a:focus-visible,#ro-all .ro-tg:focus-visible{outline:0;box-shadow:0 0 0 2px #fff,0 0 0 3px #006B79;border-radius:8px}
-@media (max-width:1100px){#ro-all .ro-as{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}#ro-all .ro-ac{columns:2;column-gap:24px}#ro-all .ro-ac:not(.open) li:nth-child(n+9){display:none}#ro-all .ro-few .ro-tg{display:inline-flex}#ro-all .ro-few.ro-fewm .ro-tg{display:none}}
+@media (max-width:1100px){#ro-all .ro-as{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}#ro-all .ro-ac{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:24px}#ro-all .ro-ac:not(.open) li:nth-child(n+9){display:none}#ro-all .ro-few .ro-tg{display:inline-flex}#ro-all .ro-few.ro-fewm .ro-tg{display:none}}
 @media (max-width:700px){#ro-all h1{font-size:28px;line-height:35px}
  #ro-all .ro-as{grid-template-columns:minmax(0,1fr);gap:16px;padding:24px 0}#ro-all .ro-ban{aspect-ratio:16/9;border-radius:12px}
- #ro-all .ro-ah{margin-bottom:0}#ro-all .ro-ah h2{font-size:20px;line-height:28px}#ro-all .ro-ah .text-link{display:none}#ro-all .ro-ah h2 a{display:inline-flex;align-items:center;gap:8px}#ro-all .ro-ha{display:inline-flex;color:#006B79}#ro-all .ro-ha svg{width:20px;height:20px}
+ #ro-all .ro-ah{margin-bottom:0}#ro-all .ro-ah h2{font-size:20px;line-height:28px}#ro-all .ro-ha{display:inline-flex;color:#006B79}#ro-all .ro-ha svg{width:20px;height:20px}
  #ro-all .ro-ac{column-gap:16px}#ro-all .ro-ac a{font-size:14px}}
 </style>
 <script id="ro-allcat">
@@ -17129,7 +17129,7 @@ post({type:'ready'});
   page.innerHTML='<div class="catalog-location"><a class="catalog-back" href="#" data-route><span data-icon="back">'+icon('back')+'</span><span>Назад</span></a><nav class="crumbs" aria-label="Хлебные крошки"><a href="#" data-route>Каталог</a>'+icon('right')+'<span aria-current="page">Все категории</span></nav></div>'+
    '<h1 id="ro-all-t" tabindex="-1">Все категории</h1>'+
    '<div class="ro-ab">'+
-   S.map(function(s){var url='#'+catalogRoute({surface:s.key}),N=s.types.length;return '<section class="ro-as" id="ro-sec-'+s.key+'" aria-labelledby="ro-h-'+s.key+'"><a class="ro-ban" href="'+url+'" data-route tabindex="-1" aria-hidden="true">'+(s.img?'<img src="'+s.img+'" alt="" loading="lazy">':'')+'</a><div'+(N<=12?' class="ro-few'+(N<=8?' ro-fewm':'')+'"':'')+'><div class="ro-ah"><h2 id="ro-h-'+s.key+'"><a href="'+url+'" data-route>'+esc(s.title)+'<span class="ro-ha">'+icon('arrow')+'</span></a></h2><a class="text-link" href="'+url+'" data-route>Весь раздел '+icon('arrow')+'</a></div><ul class="ro-ac" id="ro-l-'+s.key+'">'+
+   S.map(function(s){var url='#'+catalogRoute({surface:s.key}),N=s.types.length;return '<section class="ro-as" id="ro-sec-'+s.key+'" aria-labelledby="ro-h-'+s.key+'"><div class="ro-ban" aria-hidden="true">'+(s.img?'<img src="'+s.img+'" alt="" loading="lazy">':'')+'</div><div'+(N<=12?' class="ro-few'+(N<=8?' ro-fewm':'')+'"':'')+'><div class="ro-ah"><h2 id="ro-h-'+s.key+'">'+esc(s.title)+'</h2><a class="text-link" href="'+url+'" data-route>Весь раздел '+icon('arrow')+'</a></div><ul class="ro-ac" id="ro-l-'+s.key+'">'+
     s.types.map(function(x){var n=typeNames[x.t]||x.t;return '<li><a href="#'+catalogRoute(x.link)+'" data-route title="'+esc(n)+'">'+esc(n)+'</a></li>'}).join('')+'</ul>'+(N>8?'<button type="button" class="ro-tg" aria-expanded="false" aria-controls="ro-l-'+s.key+'" data-n="'+N+'"><span>Показать все '+N+'</span>'+icon('down')+'</button>':'')+'</div></section>'}).join('')+
    '</div>';
   page.querySelectorAll('.ro-tg').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();var ul=document.getElementById(b.getAttribute('aria-controls')),o=!ul.classList.contains('open');ul.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o));b.firstChild.textContent=o?'Свернуть':'Показать все '+b.dataset.n})})
@@ -17163,6 +17163,21 @@ post({type:'ready'});
 #ro-del .ro-del-x{display:flex;gap:12px;align-items:flex-start;margin:4px 0 0;font-size:16px;line-height:24px;color:#152A4B;cursor:pointer}
 #ro-del .ro-del-x input{width:22px;height:22px;margin:1px 0 0;accent-color:#19CBD8;flex:none}
 #ro-del .ro-del-x small{display:block;font-size:14px;line-height:21px;color:#566273}
+/* 24.11: удаляемый товар – как строка корзины; «Удалить всё»; галочки строк по центру, как в смете; плашка «Заказ ждёт оплаты» – чистая белая карточка */
+#ro-del .ro-del-r{display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;column-gap:12px;margin:8px 0 4px}
+#ro-del .ro-del-r img,#ro-del .ro-del-ph{width:48px;height:48px;border-radius:8px;object-fit:cover;display:block;background:#F3F1EB}
+#ro-del .ro-del-n{display:flex;flex-direction:column;min-width:0}
+#ro-del .ro-del-n b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B;overflow-wrap:anywhere}
+#ro-del .ro-del-n small{font-size:14px;line-height:21px;color:#566273}
+#ro-del .ro-del-s{font-size:16px;line-height:24px;font-weight:700;color:#152A4B;white-space:nowrap}
+.cart-list-head{display:flex!important;align-items:center!important;gap:16px!important}
+.cart-list-head>#cart-selected-count{margin-left:0!important;margin-right:auto!important}
+.cart-list-head .ro-delall{min-height:40px;margin:-8px 0;padding:0 4px;border:0;border-radius:8px;background:none;font:600 14px/21px Manrope,system-ui,sans-serif;color:#B42318;cursor:pointer;white-space:nowrap}
+@media (hover:hover){.cart-list-head .ro-delall:hover{text-decoration:underline;text-underline-offset:4px}}
+.cart-list-head .ro-delall:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
+html body.shop #transaction .cart-row>label.cart-check,html body.shop #transaction .cart-row>.cart-row-media,html.shop body #transaction .cart-row>label.cart-check,html.shop body #transaction .cart-row>.cart-row-media,html .shop #transaction .cart-row>label.cart-check,html .shop #transaction .cart-row>.cart-row-media{align-self:center!important;margin-top:0!important}
+.unpaid-strip .unpaid-inner,#unpaid-strip .unpaid-inner{background:#fff!important;border:1px solid #DCE4E2!important;border-radius:16px!important;box-shadow:none!important}
+.unpaid-strip .unpaid-inner>svg,#unpaid-strip .unpaid-inner>svg,.unpaid-strip .unpaid-inner [data-icon] svg,#unpaid-strip .unpaid-inner [data-icon] svg{color:#006B79!important;stroke:#006B79!important}
 </style>
 <script id="ro-cartdel">
 (function(){
@@ -17171,7 +17186,9 @@ post({type:'ready'});
  var par=function(){return window.roPAR||{}};
  function ask(btn){var sku=btn.dataset.cartRemove,en=cart.get(sku);if(!en)return true;var P=par(),kids=[...cart.keys()].filter(function(k){return P[k]===sku});
   var dlg=document.getElementById('ro-del');if(!dlg){dlg=document.createElement('dialog');dlg.id='ro-del';dlg.className='ord-dialog';dlg.setAttribute('aria-labelledby','ro-del-t');(document.getElementById('transaction')||document.body).appendChild(dlg)}
-  dlg.innerHTML='<h2 id="ro-del-t">Удалить из корзины?</h2><p>'+en.item.name+'</p>'+
+  var row=btn.closest('.cart-row'),im=row&&row.querySelector('.cart-row-media img'),q=row&&row.querySelector('[data-cart-qty]'),tot=row&&row.querySelector('[data-line-total]');
+  var line='<div class="ro-del-r">'+(im&&im.getAttribute('src')?'<img src="'+im.getAttribute('src')+'" alt="">':'<span class="ro-del-ph"></span>')+'<span class="ro-del-n"><b>'+en.item.name+'</b><small>Количество: '+(q?q.value:en.quantity||1)+'</small></span><b class="ro-del-s">'+(tot?tot.textContent:'')+'</b></div>';
+  dlg.innerHTML='<h2 id="ro-del-t">Удалить из корзины?</h2>'+line+
    (kids.length?'<label class="ro-del-x"><input type="checkbox" checked><span>И материалы для работы<small>'+kids.map(function(k){return cart.get(k).item.name}).join(', ')+'</small></span></label>':'')+
    '<div class="ord-dialog-actions"><button class="button" type="button" data-del-ok>Удалить</button><button class="button secondary" type="button" data-del-no>Оставить</button></div>';
   dlg.onclick=function(e){if(e.target===dlg||e.target.closest('[data-del-no]')){dlg.close();btn.focus();return}
@@ -17179,7 +17196,29 @@ post({type:'ready'});
     kids.forEach(function(k){if(x&&x.checked)cart.delete(k);delete P2[k]});try{localStorage.setItem('ro-kit-par',JSON.stringify(P2))}catch(_){}
     dlg.close();ok=true;btn.click();ok=false}};
   dlg.showModal();dlg.querySelector('[data-del-ok]').focus();return false}
+ function putAll(){var h=document.querySelector('.cart-list-head');if(!h||h.querySelector('.ro-delall'))return;var b=document.createElement('button');b.type='button';b.className='ro-delall';b.textContent='Удалить всё';h.appendChild(b)}
+ new MutationObserver(putAll).observe(document.body,{childList:true,subtree:true});putAll();
+ function askAll(btn){var rows=[].slice.call(document.querySelectorAll('.cart-row[data-cart-row]'));if(!rows.length)return;var n=0,sum=0;
+  rows.forEach(function(r){var q=r.querySelector('[data-cart-qty]');n+=q?(+q.value||0):1;var t=r.querySelector('[data-line-total]');sum+=t?(+t.textContent.replace(/[^\d]/g,'')||0):0});
+  var dlg=document.getElementById('ro-del');if(!dlg){dlg=document.createElement('dialog');dlg.id='ro-del';dlg.className='ord-dialog';dlg.setAttribute('aria-labelledby','ro-del-t');(document.getElementById('transaction')||document.body).appendChild(dlg)}
+  var tot=String(sum).replace(/\B(?=(\d{3})+(?!\d))/g,'\u00a0')+'\u00a0₽';
+  dlg.innerHTML='<h2 id="ro-del-t">Очистить корзину?</h2><p>Удалим все товары: '+n+' '+pl3(n,['товар','товара','товаров'])+' на '+tot+'.</p><div class="ord-dialog-actions"><button class="button" type="button" data-del-ok>Удалить всё</button><button class="button secondary" type="button" data-del-no>Оставить</button></div>';
+  dlg.onclick=function(e){if(e.target===dlg||e.target.closest('[data-del-no]')){dlg.close();btn.focus();return}
+   if(e.target.closest('[data-del-ok]')){dlg.close();[...cart.keys()].forEach(function(k){cart.delete(k)});try{localStorage.setItem('ro-kit-par','{}')}catch(_){}
+    try{saveCart()}catch(_){}try{renderCart()}catch(_){}try{if(typeof renderFullCart==='function')renderFullCart()}catch(_){}}};
+  dlg.showModal();dlg.querySelector('[data-del-no]').focus()}
+ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.ro-delall');if(a){e.preventDefault();askAll(a)}});
  window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-cart-remove]');if(!b||ok)return;e.preventDefault();e.stopImmediatePropagation();ask(b)},true);
+})();
+<%/script>
+
+<script id="ro-dlgsel">
+/* 24.11: окно закрывается кликом по затемнению, только если и нажали, и отпустили вне окна. Раньше выделение текста в окне,
+   отпущенное за его краем, закрывало окно («Удалить из корзины?» и др.). */
+(function(){var downOut=false;
+ var out=function(d,e){var r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};
+ document.addEventListener('pointerdown',function(e){var d=e.target&&e.target.tagName==='DIALOG'?e.target:null;downOut=!!(d&&out(d,e))},true);
+ document.addEventListener('click',function(e){var d=e.target;if(!d||d.tagName!=='DIALOG')return;if(!out(d,e)||!downOut){e.stopImmediatePropagation()}downOut=false},true);
 })();
 <%/script>
 <script id="ro-ckv">
@@ -18568,8 +18607,8 @@ document.addEventListener('DOMContentLoaded',function(){
  var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
   var has0=anon()&&S.objs&&S.objs.length,usr=S.auth==='user'&&!S.anon,uo=usr&&S.objs&&S.objs.length;
-  var pitch='Спланируйте ремонт онлайн: нарисуйте комнату или выберите типовую планировку, подберите отделку и получите смету материалов.';
-  var body='<h2>Создать свой интерьер</h2><p>'+pitch+'</p>'+(uo?'<p class="ro-gsub">Продолжите с того места, где остановились, или выберите другой объект.</p>':has0?'<p class="ro-gsub">Без входа объект хранится в этом браузере.</p>':usr?'':'<p class="ro-gsub">Начать можно без регистрации.</p>');
+  var pitch='Нарисуйте комнату или выберите готовую планировку. ИИ-помощник подберёт отделку, покажет её в 3D и посчитает материалы.';
+  var body='<h2>Создать свой интерьер</h2><p>'+pitch+'</p>';
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
   var has=anon()&&S.objs&&S.objs.length;
   h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="'+(has||uo?'ro-cont':'ro-gnew')+'">'+(uo?'Продолжить':has?'Продолжить':'Создать объект')+' '+I('arrow')+'</button>');
@@ -18589,7 +18628,7 @@ document.addEventListener('DOMContentLoaded',function(){
   if(a==='ro-cont'){if(S.E&&S.activeRef!==null&&S.E.ref){S.page='editor';render();return}return _a.call(this,'nav',{dataset:{to:'objs'}},ev)}
   if(a==='ro-lim-in'){S.roLim=false;return act('login-open',el,ev)}
   if(a==='ro-gnew'&&anon()&&S.objs.length>=1){S.page='objects';render();return}
-  if(a==='ro-gnew'&&!(S.auth==='user'&&!S.anon)){var r0=_a.apply(this,arguments);if(S.newObj){S.page='gate';S.roOnGate=true;render();setTimeout(function(){var f=document.getElementById('f-obj-name');if(f)try{f.focus({preventScroll:true})}catch(e){}},0)}return r0}
+  if(a==='ro-gnew'){var r0=_a.apply(this,arguments);if(S.newObj){S.page='gate';S.roOnGate=true;render();setTimeout(function(){var f=document.getElementById('f-obj-name');if(f)try{f.focus({preventScroll:true})}catch(e){}},0)}return r0}
   if(a==='obj-save'&&S.roOnGate){var r1=_a.apply(this,arguments);if(!S.newObj){S.roOnGate=false;S.page='objects';render()}else render();return r1}
   if(a==='obj-cancel'&&S.roOnGate){S.roOnGate=false}
   if(a==='ro-gnew'&&S.auth==='user'&&!S.anon){return _a.call(this,'obj-new',el,ev)}
@@ -19894,7 +19933,7 @@ function pageTop(kind){const m=S.dev==='m',bk=kind==='cab'&&m&&S.auth==='user'?`
  return `<div class="gtop"><form class="gsearch" role="search" onsubmit="return false"><span class="gs-ic" aria-hidden="true">${I('search')}</span><input id="gs-in" type="search" data-m="gs" value="${esc(S.gsq||'')}" placeholder="Товар, категория или артикул" aria-label="Поиск по каталогу" autocomplete="off"><button type="button" class="btn pri" data-act="nav" data-to="search">Найти</button></form>${bk}</div>`}
 function gatePage(){return `<div class="pg">${pageTop('gate')}<section class="gate"><h2>Конструктор комнаты</h2><p>Соберите комнату по своим размерам и примерьте отделку. ИИ-помощник подскажет материалы, учтёт размеры и посчитает, сколько упаковок купить. Войдите, чтобы комната сохранилась в «Моих объектах».</p><div class="acts"><button type="button" class="btn pri" data-act="login-open" data-next="ctor">Войти и создать комнату ${I('arrow')}</button><button type="button" class="btn" data-act="nav" data-to="cat">Открыть каталог</button></div>${S.gateNote?`<p class="note sm" role="status">${esc(S.gateNote)}</p>`:''}</section></div>`}
 function objectsPage(){
- const o=S.auth==='user'?S.objs[S.cur]:null,side=S.dev==='m'||S.auth!=='user'?'':`<aside class="secmenu" aria-label="Кабинет"><button type="button" class="sd" aria-current="page">${I('folder-open')}Мои объекты</button><button type="button" class="sd" data-act="nav" data-to="orders">${I('package')}Мои заказы</button><button type="button" class="sd" data-act="nav" data-to="profile">${I('user')}Мои данные</button>${S.auth==='user'?`<hr><button type="button" class="sd out" data-act="logout">${I('log-out')}Выйти</button>`:''}</aside>`;
+ const o=S.auth==='user'?S.objs[S.cur]:null,side=true?'':`<aside class="secmenu" aria-label="Кабинет"><button type="button" class="sd" aria-current="page">${I('folder-open')}Мои объекты</button><button type="button" class="sd" data-act="nav" data-to="orders">${I('package')}Мои заказы</button><button type="button" class="sd" data-act="nav" data-to="profile">${I('user')}Мои данные</button>${S.auth==='user'?`<hr><button type="button" class="sd out" data-act="logout">${I('log-out')}Выйти</button>`:''}</aside>`;
  let main;
  let nd='';
  if(S.newObj){const n=S.newObj;nd=`<div class="ovl"><form class="dlg dlg-obj" role="dialog" aria-modal="true" aria-labelledby="no-t" data-form="obj"><div class="dlg-h"><h3 id="no-t">Новый объект</h3><button type="button" class="icb" data-act="obj-cancel" aria-label="Закрыть">${I('x')}</button></div>${fld('obj','name','Название объекта',n.name,n.err,{ph:'Например, квартира на улице Мира'})}<div class="fld addr"><label for="f-obj-addr">Адрес, можно заполнить позже</label><input id="f-obj-addr" data-m="obj" data-k="addr" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="addr-list" aria-expanded="${!!(n.open&&addrSug(n.addr).length)}" value="${esc(n.addr)}" placeholder="Улица, дом"><div class="addr-list" id="addr-list" role="listbox"${n.open&&addrSug(n.addr).length?'':' hidden'}>${addrSug(n.addr).map(a=>`<button type="button" role="option" data-act="addr-pick" data-v="${esc(a)}">${esc(a)}</button>`).join('')}</div></div>${sel('obj','apt','Типовая планировка',n.apt||'none',[['none','Без планировки','Комнаты добавлю сам'],...APT.map(a=>[a[0],a[1],a[2]])])}${(()=>{const a=APT.find(x=>x[0]===n.apt);if(!a)return'';const vr=aptVar(a[0],n.rooms),fx=v=>String(v).replace('.',','),est=vr[2].filter(r=>r[6]).map(r=>r[0].toLowerCase());
@@ -24703,6 +24742,7 @@ let lastR='';
 function route(path,q,under){
   lastR=path;
   const full=path+(q.toString()?'?'+q:'');
+  if(path==='/objects'&&S.auth!=='user'){S.auth='user';S.anon=true;S.objs=[];S.cur=0;S.activeRef=null;S.page='objects';S.newObj=null;S.login=null;render();return}
   const need=path==='/objects'||path==='/account'||path==='/account/profile'||path.startsWith('/room')||q.get('ai')||q.get('est');
   if(need&&S.auth!=='user'){
     /* гость на закрытой странице: заголовок страницы (fix52), окно входа — кабинета, поверх (оболочка) */
@@ -29436,7 +29476,7 @@ function setUser(u){ user = u; try { u ? localStorage.setItem('ro-user', JSON.st
 
 /* Кабинет: меню раздела (DESIGN-SYSTEM §12) */
 const wide = () => matchMedia('(min-width:1200px)').matches;
-const SIDE = [['objects','folder','Мои объекты','/objects'],['orders','package','Мои заказы','/account/orders'],['profile','user','Мои данные','/account/profile']];
+const SIDE = [['orders','package','Мои заказы','/account/orders'],['profile','user','Мои данные','/account/profile']];
 function side(cur){
   return `<nav class="acc-side" aria-label="Кабинет">${SIDE.map(([k,i,t,p])=>`<a href="${p.startsWith('/account/profile')?'#'+p:fileFor(p)}" target="_top" data-nav="${p}"${k===cur?' aria-current="page"':''}>${icon(i)}<span class="grow">${t}</span>${k==='orders'&&PS.openOrder?'<span class="acc-dot" role="img" aria-label="Есть неоплаченный заказ"></span>':''}</a>`).join('')}<hr><button type="button" class="exit" data-act="logout">${icon('logout')}<span>Выйти</span></button></nav>`;
 }
@@ -29784,6 +29824,16 @@ post({type:'ready'});
    const i=$('#lg-mail');if(i)i.focus()}},true);
 
  patch();
+})();
+<%/script>
+
+<script id="ro-dlgsel-acc">
+/* 24.11: окно закрывается кликом по затемнению, только если и нажали, и отпустили вне окна. Раньше выделение текста в окне,
+   отпущенное за его краем, закрывало окно («Удалить из корзины?» и др.). */
+(function(){var downOut=false;
+ var out=function(d,e){var r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom};
+ document.addEventListener('pointerdown',function(e){var d=e.target&&e.target.tagName==='DIALOG'?e.target:null;downOut=!!(d&&out(d,e))},true);
+ document.addEventListener('click',function(e){var d=e.target;if(!d||d.tagName!=='DIALOG')return;if(!out(d,e)||!downOut){e.stopImmediatePropagation()}downOut=false},true);
 })();
 <%/script>
 <script id="ro-ckv-acc">
