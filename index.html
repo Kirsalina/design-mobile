@@ -8709,7 +8709,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:8px;left:32px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -16720,7 +16720,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:8px;left:32px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -17196,7 +17196,7 @@ html body .order-summary p#summary-window:not(:empty){margin:4px 0 12px!importan
 @media (hover:hover){.cart-list-head .ro-delall:hover{text-decoration:underline;text-underline-offset:4px}}
 .cart-list-head .ro-delall:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
 html body.shop #transaction .cart-row>label.cart-check,html body.shop #transaction .cart-row>.cart-row-media,html.shop body #transaction .cart-row>label.cart-check,html.shop body #transaction .cart-row>.cart-row-media,html .shop #transaction .cart-row>label.cart-check,html .shop #transaction .cart-row>.cart-row-media{align-self:center!important;margin-top:0!important}
-.unpaid-strip .unpaid-inner,#unpaid-strip .unpaid-inner{background:#fff!important;border:1px solid #DCE4E2!important;border-radius:12px!important;min-height:56px!important;padding:5px 5px 5px 16px!important;box-sizing:border-box!important;align-items:center!important;box-shadow:none!important}
+.unpaid-strip .unpaid-inner,#unpaid-strip .unpaid-inner{background:#fff!important;border:1px solid #566273!important;border-radius:12px!important;min-height:56px!important;padding:5px 5px 5px 16px!important;box-sizing:border-box!important;align-items:center!important;box-shadow:none!important}
 @media (max-width:700px){html body .unpaid-strip .unpaid-inner,html body #unpaid-strip .unpaid-inner{padding:12px!important}}
 html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-inner .button{height:44px!important;min-height:44px!important;padding:0 24px!important;border-radius:12px!important;font-size:16px!important;line-height:24px!important;font-weight:700!important;margin:0!important}
 .unpaid-strip .unpaid-inner>svg,#unpaid-strip .unpaid-inner>svg,.unpaid-strip .unpaid-inner [data-icon] svg,#unpaid-strip .unpaid-inner [data-icon] svg{color:#006B79!important;stroke:#006B79!important}
@@ -24703,7 +24703,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:8px;left:32px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -29729,7 +29729,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:8px;left:32px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -31543,7 +31543,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:8px;left:32px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
