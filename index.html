@@ -8707,6 +8707,14 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function put(){t=0;var on=window.RO_UNPAID();
   document.querySelectorAll('.secmenu button,.secmenu a').forEach(function(b){if(!/Мои заказы/.test(b.textContent))return;var d=b.querySelector('.ro-dot');if(on&&!d){d=document.createElement('span');d.className='ro-dot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');b.appendChild(d)}else if(!on&&d)d.remove()})}
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
+/* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
+(function(){if(window.parent===window)return;
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
+  [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
+   if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
+ new MutationObserver(function(){hput()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('storage',hput);hput()})();
+
 
 /* Р40 (18.11): «Войти» — подсветка по содержимому (12 px с обеих сторон), а не на 114 px с пустотой справа; место до 114 px — отступом, чтобы «Корзина» не сдвигалась */
 (function(){if(window.parent===window)return;var t=0;
@@ -16706,6 +16714,14 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function put(){t=0;var on=window.RO_UNPAID();
   document.querySelectorAll('.secmenu button,.secmenu a').forEach(function(b){if(!/Мои заказы/.test(b.textContent))return;var d=b.querySelector('.ro-dot');if(on&&!d){d=document.createElement('span');d.className='ro-dot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');b.appendChild(d)}else if(!on&&d)d.remove()})}
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
+/* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
+(function(){if(window.parent===window)return;
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
+  [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
+   if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
+ new MutationObserver(function(){hput()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('storage',hput);hput()})();
+
 
 /* Р40 (18.11): «Войти» — подсветка по содержимому (12 px с обеих сторон), а не на 114 px с пустотой справа; место до 114 px — отступом, чтобы «Корзина» не сдвигалась */
 (function(){if(window.parent===window)return;var t=0;
@@ -24681,6 +24697,14 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function put(){t=0;var on=window.RO_UNPAID();
   document.querySelectorAll('.secmenu button,.secmenu a').forEach(function(b){if(!/Мои заказы/.test(b.textContent))return;var d=b.querySelector('.ro-dot');if(on&&!d){d=document.createElement('span');d.className='ro-dot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');b.appendChild(d)}else if(!on&&d)d.remove()})}
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
+/* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
+(function(){if(window.parent===window)return;
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
+  [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
+   if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
+ new MutationObserver(function(){hput()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('storage',hput);hput()})();
+
 
 /* Р40 (18.11): «Войти» — подсветка по содержимому (12 px с обеих сторон), а не на 114 px с пустотой справа; место до 114 px — отступом, чтобы «Корзина» не сдвигалась */
 (function(){if(window.parent===window)return;var t=0;
@@ -29699,6 +29723,14 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function put(){t=0;var on=window.RO_UNPAID();
   document.querySelectorAll('.secmenu button,.secmenu a').forEach(function(b){if(!/Мои заказы/.test(b.textContent))return;var d=b.querySelector('.ro-dot');if(on&&!d){d=document.createElement('span');d.className='ro-dot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');b.appendChild(d)}else if(!on&&d)d.remove()})}
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
+/* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
+(function(){if(window.parent===window)return;
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
+  [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
+   if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
+ new MutationObserver(function(){hput()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('storage',hput);hput()})();
+
 
 /* Р40 (18.11): «Войти» — подсветка по содержимому (12 px с обеих сторон), а не на 114 px с пустотой справа; место до 114 px — отступом, чтобы «Корзина» не сдвигалась */
 (function(){if(window.parent===window)return;var t=0;
@@ -31505,6 +31537,14 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function put(){t=0;var on=window.RO_UNPAID();
   document.querySelectorAll('.secmenu button,.secmenu a').forEach(function(b){if(!/Мои заказы/.test(b.textContent))return;var d=b.querySelector('.ro-dot');if(on&&!d){d=document.createElement('span');d.className='ro-dot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');b.appendChild(d)}else if(!on&&d)d.remove()})}
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
+/* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
+(function(){if(window.parent===window)return;
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
+  [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
+   if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
+ new MutationObserver(function(){hput()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('storage',hput);hput()})();
+
 
 /* Р40 (18.11): «Войти» — подсветка по содержимому (12 px с обеих сторон), а не на 114 px с пустотой справа; место до 114 px — отступом, чтобы «Корзина» не сдвигалась */
 (function(){if(window.parent===window)return;var t=0;
