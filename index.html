@@ -24792,7 +24792,7 @@ let lastR='';
 function route(path,q,under){
   lastR=path;
   const full=path+(q.toString()?'?'+q:'');
-  if(path==='/objects'&&S.auth!=='user'){S.auth='user';S.anon=true;S.objs=[];S.cur=0;S.activeRef=null;S.page='objects';S.newObj=null;S.login=null;render();return}
+  if(path==='/objects'&&S.auth!=='user'&&!(function(){try{var u=JSON.parse(localStorage.getItem('ro-user')||'null');return !!(u&&u.phone)}catch(e){return false}})()){S.auth='user';S.anon=true;S.objs=[];S.cur=0;S.activeRef=null;S.page='objects';S.newObj=null;S.login=null;render();return}
   const need=path==='/objects'||path==='/account'||path==='/account/profile'||path.startsWith('/room')||q.get('ai')||q.get('est');
   if(need&&S.auth!=='user'){
     /* гость на закрытой странице: заголовок страницы (fix52), окно входа — кабинета, поверх (оболочка) */
