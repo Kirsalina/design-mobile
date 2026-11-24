@@ -17028,81 +17028,129 @@ post({type:'ready'});
  fixImgs();
 })();
 <%/script>
+<script id="ro-demo-cats">
+(function(){
+ if(typeof products==='undefined'||typeof makeProduct!=='function'||typeof typeSection==='undefined')return;
+ /* демо: по одному товару в каждой категории разделов (24.11), чтобы «Все категории» выглядело как полный каталог.
+    Картинок нет – плейсхолдер-плашка с цветом, как у демо-стройматериалов. Дизайнеры/каталог заменят на реальные товары. */
+ var D=[
+  ['walls','Стены',[
+   ['DM-101','Декоративное покрытие «Шёлк»','Декоративные покрытия','Ведро 5 кг',3490,'bucket','Эффект шёлка','#D9CBB3','Декоративные покрытия'],
+   ['DM-102','Декоративный камень «Сланец»','Декоративный камень','Упаковка 0,5 м²',1890,'pack','Серый сланец','#B9B6B0','Декоративный камень'],
+   ['DM-103','Лак акриловый для стен','Лаки и пропитки','Банка 0,9 л',790,'bucket','Матовый, без запаха','#EDE7D8','Лаки и пропитки'],
+   ['DM-104','Мозаика стеклянная «Лагуна»','Мозаика','Лист 30 × 30 см',640,'piece','Голубой микс','#9CC8CF','Мозаика'],
+   ['DM-105','Молдинг гладкий 2 м','Молдинги','2 м',420,'piece','Под покраску','#F1EFEA','Молдинги'],
+   ['DM-106','Обои под покраску «Рогожка»','Обои под покраску','Рулон 25 × 1,06 м',1450,'roll','Флизелин, рельеф','#EDEAE3','Обои под покраску'],
+   ['DM-107','Панель 3D «Волна»','Панели 3D','Панель 50 × 50 см',380,'piece','Белая, гипс','#F3F2EE','Панели 3D'],
+   ['DM-108','Панель МДФ «Дуб»','Панели МДФ','Панель 2,6 × 0,25 м',540,'piece','Светлый дуб','#CDAE85','Панели МДФ'],
+   ['DM-109','Панель ПВХ «Белая»','Панели ПВХ','Панель 2,7 × 0,25 м',310,'piece','Глянцевая','#F4F5F5','Панели ПВХ'],
+   ['DM-110','Рейка декоративная «Орех»','Рейки','2,7 м',690,'piece','Шпон ореха','#8A6A4D','Рейки'],
+   ['DM-111','Стеклообои «Паутинка»','Стеклообои','Рулон 50 × 1 м',2390,'roll','Под покраску','#ECEBE6','Стеклообои'],
+   ['DM-112','Уголок наружный алюминиевый','Уголки и профили','2,7 м',210,'piece','Серебро','#C9CCCE','Уголки и профили'],
+   ['DM-113','Фотообои «Горы»','Фотообои','Панно 300 × 270 см',3290,'piece','Флизелин, 6 полос','#9FB3BF','Фотообои'],
+   ['DM-114','Клинкерная плитка «Кирпич»','Клинкер','Упаковка 0,5 м²',2190,'pack','Терракотовый','#B5694B','Клинкер']]],
+  ['floor','Пол',[
+   ['DM-201','Кварцвинил «Дуб Северный»','Кварцвинил','Упаковка 2,2 м²',3490,'pack','Светлый дуб','#D3B88F','Кварцвинил'],
+   ['DM-202','Паркетная доска «Дуб Классик»','Паркетная доска','Упаковка 2,1 м²',6290,'pack','Натуральный дуб','#BF9667','Паркетная доска'],
+   ['DM-203','Инженерная доска «Орех»','Инженерная доска','Упаковка 1,9 м²',8490,'pack','Американский орех','#7A5538','Инженерная доска'],
+   ['DM-204','Ковролин «Комфорт»','Ковролин','Рулон 4 × 25 м, цена за м²',690,'area_m2','Серо-бежевый','#C8C0B4','Ковролин'],
+   ['DM-205','Пробковое покрытие «Натур»','Пробковое покрытие','Упаковка 1,8 м²',4190,'pack','Натуральная пробка','#C99E6C','Пробковое покрытие'],
+   ['DM-206','Нагревательный мат 150 Вт/м²','Нагревательные маты','Мат 2 м²',5290,'piece','Под плитку','#7C8286','Нагревательные маты'],
+   ['DM-207','Нагревательный кабель 18 Вт/м','Нагревательный кабель','Комплект 12 м',3790,'piece','В стяжку','#6E7377','Нагревательный кабель'],
+   ['DM-208','Терморегулятор с датчиком пола','Терморегуляторы','Белый, механический',2190,'piece','Для тёплого пола','#F2F2F0','Терморегуляторы'],
+   ['DM-209','Ступень с подступенком «Дуб»','Ступени и подступенки','Комплект',2490,'piece','Под ламинат','#C7A67C','Ступени и подступенки']]],
+  ['ceiling','Потолок',[
+   ['DM-301','Подвесной потолок «Армстронг»','Подвесные потолки','Плита 600 × 600 мм',180,'piece','Белый, минеральное волокно','#F1F1EC','Подвесные потолки'],
+   ['DM-302','Реечный потолок «Хром»','Реечные потолки','Рейка 3 м',360,'piece','Хром глянцевый','#CFD3D6','Реечные потолки'],
+   ['DM-303','Потолочная плита «Полистирол»','Потолочные плиты','Плита 50 × 50 см',70,'piece','Белая, бесшовная','#F7F7F5','Потолочные плиты'],
+   ['DM-304','Потолочный плинтус «Классик»','Потолочные плинтусы','2 м',190,'piece','Белый, пенополистирол','#F4F3EF','Потолочные плинтусы'],
+   ['DM-305','Потолочная розетка «Ампир»','Потолочные розетки','Диаметр 30 см',590,'piece','Лепнина, полиуретан','#F2F0EA','Потолочные розетки']]]
+ ];
+ var N={};
+ D.forEach(function(g){g[2].forEach(function(r){
+  if(products.some(function(p){return p.sku===r[0]}))return;
+  products.push(makeProduct(r[0],r[1],r[2],[g[1]],null,r[3],r[4],r[5],'available',{variant:r[6],swatch:r[7],demo:true}));
+  typeSection[r[2]]=g[0];typeNames[r[2]]=r[8]})});
+ if(typeof saleUnits==='object'&&!saleUnits.area_m2)saleUnits.area_m2='за м²';
+})();
+<%/script>
 <style id="ro-allcat-css">
-/* «Все категории» (#all=1), 23.11 ночь: витрина плиток, как у больших магазинов отделки.
-   Разделы – Стены, Пол, Потолок, Стройматериалы (ванная – не раздел). В разделе поверхности сначала отделка,
-   затем то, что для неё нужно (штукатурка, грунт, подложка…) – одна категория может быть в нескольких разделах.
-   У категорий – только текст (картинки не нужны для новых категорий); картинка – одна на раздел (баннер, выбирает дизайнер). Без ряда-переключателя. В разделе до 18 категорий (3×6), остальные – «Ещё N →» на странице раздела. */
+/* «Все категории» (#all=1), 24.11: только четыре раздела (Стены, Пол, Потолок, Стройматериалы); внутри – плоский список категорий по алфавиту, без групп и без картинок у категорий.
+   Строка фиксированной высоты 40, длинное название обрезается «…». В свёрнутом виде всегда 4 строки (3 колонки = 12, на планшете и телефоне 2 колонки = 8),
+   сколько бы категорий ни было (50–100): кнопка «Показать все N» раскрывает список тут же, «Свернуть» возвращает. Высота страницы от числа категорий не зависит. */
 #ro-all{padding-bottom:64px}
 #ro-all .catalog-location{display:flex;align-items:center;flex-wrap:wrap;gap:0 16px;margin-top:8px}
 #ro-all .crumbs [aria-current]{color:#152A4B}
 #ro-all h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.02em;margin:16px 0 0;color:#152A4B}
-#ro-all .ro-as{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:40px;padding:32px 0;border-top:1px solid #E3E6EA;scroll-margin-top:72px}
-#ro-all .ro-ab{margin-top:24px}#ro-all .ro-as:first-child{border-top:0;padding-top:0}
+#ro-all .ro-ab{margin-top:24px}
+#ro-all .ro-as{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:40px;padding:32px 0;border-top:1px solid #E3E6EA;align-items:start}
+#ro-all .ro-as:first-child{border-top:0;padding-top:0}
 #ro-all .ro-ban{display:block;aspect-ratio:3/2;border-radius:16px;overflow:hidden;background:#F3F1EB}
 #ro-all .ro-ban img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
 @media (hover:hover){#ro-all .ro-ban:hover img{transform:scale(1.03)}}
-#ro-all .ro-ah{display:flex;align-items:baseline;gap:16px;margin-bottom:16px}
+#ro-all .ro-ah{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
 #ro-all .ro-ah h2{margin:0;font-size:24px;line-height:32px;font-weight:600;flex:1;min-width:0}
 #ro-all .ro-ah h2 a{color:#152A4B;text-decoration:none}
 #ro-all .ro-ah .text-link{font-size:14px;line-height:21px;font-weight:600;color:#006B79;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 #ro-all .ro-ah .text-link svg{width:18px;height:18px}
-#ro-all .ro-ac{list-style:none;margin:0;padding:0;columns:3 160px;column-gap:24px}
-#ro-all .ro-ac li{break-inside:avoid}
-#ro-all .ro-ac a{display:inline-block;padding:6px 0;font:400 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;text-decoration:none}
-@media (hover:hover){#ro-all .ro-ac a:hover,#ro-all .ro-ah h2 a:hover{color:#006B79;text-decoration:underline;text-underline-offset:4px}}
-#ro-all a:focus-visible{outline:0;box-shadow:0 0 0 2px #fff,0 0 0 3px #006B79;border-radius:8px}
 #ro-all .ro-ha{display:none}
-#ro-all .ro-ac.ro-gr{column-gap:32px}#ro-all .ro-g{margin:0 0 20px}#ro-all .ro-g ul{list-style:none;margin:0;padding:0}#ro-all .ro-ac a.ro-gh{font-weight:600;padding:0 0 4px}#ro-all .ro-g ul a{padding:4px 0}
-#ro-all .ro-ac a.ro-more{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#006B79}#ro-all .ro-more svg{width:18px;height:18px}
-@media (max-width:1100px){#ro-all .ro-as{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}#ro-all .ro-ac{columns:2}}
+#ro-all .ro-ac{list-style:none;margin:0;padding:0;columns:3;column-gap:32px}
+#ro-all .ro-ac:not(.open) li:nth-child(n+13){display:none}
+#ro-all .ro-ac li{break-inside:avoid}
+#ro-all .ro-ac a{display:block;height:40px;line-height:40px;font:400 16px/40px Manrope,system-ui,sans-serif;color:#152A4B;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (hover:hover){#ro-all .ro-ac a:hover,#ro-all .ro-ah h2 a:hover{color:#006B79;text-decoration:underline;text-underline-offset:4px}}
+#ro-all .ro-tg{margin-top:8px;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0;border:0;background:none;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;cursor:pointer}
+#ro-all .ro-tg svg{width:18px;height:18px;transition:transform .2s ease}
+#ro-all .ro-tg[aria-expanded="true"] svg{transform:rotate(180deg)}
+#ro-all .ro-few .ro-tg{display:none}
+#ro-all a:focus-visible,#ro-all .ro-tg:focus-visible{outline:0;box-shadow:0 0 0 2px #fff,0 0 0 3px #006B79;border-radius:8px}
+@media (max-width:1100px){#ro-all .ro-as{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:24px}#ro-all .ro-ac{columns:2;column-gap:24px}#ro-all .ro-ac:not(.open) li:nth-child(n+9){display:none}#ro-all .ro-few .ro-tg{display:inline-flex}#ro-all .ro-few.ro-fewm .ro-tg{display:none}}
 @media (max-width:700px){#ro-all h1{font-size:28px;line-height:35px}
- #ro-all .ro-as{grid-template-columns:minmax(0,1fr);gap:16px;padding:24px 0;scroll-margin-top:64px}#ro-all .ro-ban{aspect-ratio:16/9;border-radius:12px}
- #ro-all .ro-ah{margin-bottom:8px}#ro-all .ro-ah h2{font-size:20px;line-height:28px}#ro-all .ro-ah .text-link{display:none}#ro-all .ro-ah h2 a{display:inline-flex;align-items:center;gap:8px}#ro-all .ro-ha{display:inline-flex;color:#006B79}#ro-all .ro-ha svg{width:20px;height:20px}
- #ro-all .ro-ac{columns:2;column-gap:16px}#ro-all .ro-ac a{font-size:14px;line-height:21px}}
+ #ro-all .ro-as{grid-template-columns:minmax(0,1fr);gap:16px;padding:24px 0}#ro-all .ro-ban{aspect-ratio:16/9;border-radius:12px}
+ #ro-all .ro-ah{margin-bottom:0}#ro-all .ro-ah h2{font-size:20px;line-height:28px}#ro-all .ro-ah .text-link{display:none}#ro-all .ro-ah h2 a{display:inline-flex;align-items:center;gap:8px}#ro-all .ro-ha{display:inline-flex;color:#006B79}#ro-all .ro-ha svg{width:20px;height:20px}
+ #ro-all .ro-ac{column-gap:16px}#ro-all .ro-ac a{font-size:14px}}
 </style>
 <script id="ro-allcat">
 (function(){
  if(typeof products==='undefined'||typeof syncRoute!=='function')return;
  var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
- var MAXC=18,ORDER=['walls','floor','ceiling','prep'],SURF={'Стены':'walls','Пол':'floor','Потолок':'ceiling'};
- /* группы внутри раздела: Раздел → Группа → Категория. Каждая категория – ровно в одном месте. На этой странице у группы видно до 5 категорий, дальше «Все N →» */
- var GMAX=5,GROUPS={
-  /* демо: категории без товаров (кроме уже существующих типов) – чтобы видеть, как раздел выглядит полным; ведут на страницу раздела */
-  walls:[['Покраска',['Краска','Декоративные покрытия','Лаки и пропитки','Колеровка']],['Обойные материалы',['Обои','Обои под покраску','Фотообои','Стеклообои']],['Плитка и камень',['Плитка','Мозаика','Декоративный камень','Клинкер']],['Панели',['Панели МДФ','Панели ПВХ','3D-панели','Рейки']],['Декор',['Молдинги','Уголки','Розетки и бордюры']]],
-  floor:[['Напольные покрытия',['Ламинат','Линолеум','Кварцвинил','Паркетная доска','Инженерная доска','Ковролин','Пробка']],['Плитка и керамогранит',['Керамогранит','Напольная плитка','Ступени и подступенки']],['Тёплый пол',['Нагревательные маты','Нагревательный кабель','Терморегуляторы']]],
-  ceiling:[['Потолки',['Натяжной потолок','Подвесные потолки','Реечные потолки','Потолочные плиты']],['Декор',['Потолочные плинтусы','Потолочные розетки']]],
-  prep:[['Сухие смеси',['Штукатурка','Шпаклёвка','Стяжка и ровнители']],['Грунты и гидроизоляция',['Грунтовка','Гидроизоляция']],['Клей и затирки',['Клей','Затирка']],['Каркас и листы',['Гипсокартон','Профиль']],['Для пола',['Подложка','Плинтус','Порожек']],['Инструмент и расходники',['Инструмент','Лента','Плёнка','Расходники']]]};
+ var ORDER=['walls','floor','ceiling','prep'],SURF={'Стены':'walls','Пол':'floor','Потолок':'ceiling'};
  /* разделы: тип товара → раздел; типы «ванной» – в раздел по поверхности их товаров (ссылка ведёт туда же, куда раньше) */
- function secs(){var by={},img={};var put=function(k,t,link,prep){by[k]=by[k]||[];if(!by[k].some(function(x){return x.t===t}))by[k].push({t:t,link:link,prep:!!prep})};
-  products.forEach(function(p){if(p.published===false)return;var s=typeSection[p.type];if(!s)return;if(!img[p.type]&&p.image&&assets[p.image])img[p.type]=assets[p.image];
+ function secs(){var by={};var put=function(k,t,link){by[k]=by[k]||[];if(!by[k].some(function(x){return x.t===t}))by[k].push({t:t,link:link})};
+  products.forEach(function(p){if(p.published===false)return;var s=typeSection[p.type];if(!s)return;
    if(s==='bath'){(p.surfaces||[]).forEach(function(sf){if(SURF[sf])put(SURF[sf],p.type,{surface:'bath',type:p.type})})}
    else put(s,p.type,{surface:s,type:p.type})});
   var keys=ORDER.filter(function(k){return by[k]}).concat(Object.keys(by).filter(function(k){return ORDER.indexOf(k)<0}));
-  return keys.map(function(k){var m=categoryMeta[k]||{},title=departmentTitles[k]||m.title||k;return{key:k,title:title,img:(window.roImgs&&roImgs[title])||(m.image&&assets[m.image])||'',types:by[k].map(function(x){x.img=img[x.t]||(window.roImgs&&roImgs['Отделка ванной'])||((categoryMeta[typeSection[x.t]]||{}).image&&assets[categoryMeta[typeSection[x.t]].image])||'';return x}).sort(function(a,b){return (a.prep-b.prep)||(k==='prep'?(typeNames[a.t]||a.t).localeCompare(typeNames[b.t]||b.t,'ru'):0)})}})}
+  return keys.map(function(k){var m=categoryMeta[k]||{},title=departmentTitles[k]||m.title||k;
+   return{key:k,title:title,img:(window.roImgs&&roImgs[title])||(m.image&&assets[m.image])||'',types:by[k].sort(function(x,y){return (typeNames[x.t]||x.t).localeCompare(typeNames[y.t]||y.t,'ru')})}})}
  var page=document.createElement('section');page.id='ro-all';page.className='wrap';page.hidden=true;page.setAttribute('aria-labelledby','ro-all-t');
  document.getElementById('detail').before(page);
  function draw(){var S=secs();
   page.innerHTML='<div class="catalog-location"><a class="catalog-back" href="#" data-route><span data-icon="back">'+icon('back')+'</span><span>Назад</span></a><nav class="crumbs" aria-label="Хлебные крошки"><a href="#" data-route>Каталог</a>'+icon('right')+'<span aria-current="page">Все категории</span></nav></div>'+
    '<h1 id="ro-all-t" tabindex="-1">Все категории</h1>'+
    '<div class="ro-ab">'+
-   S.map(function(s){var url='#'+catalogRoute({surface:s.key});return '<section class="ro-as" id="ro-sec-'+s.key+'" aria-labelledby="ro-h-'+s.key+'"><a class="ro-ban" href="'+url+'" data-route tabindex="-1" aria-hidden="true">'+(s.img?'<img src="'+s.img+'" alt="" loading="lazy">':'')+'</a><div><div class="ro-ah"><h2 id="ro-h-'+s.key+'"><a href="'+url+'" data-route>'+esc(s.title)+'<span class="ro-ha">'+icon('arrow')+'</span></a></h2><a class="text-link" href="'+url+'" data-route>Весь раздел '+icon('arrow')+'</a></div><ul class="ro-ac'+(GROUPS[s.key]?' ro-gr':'')+'">'+
-    (function(){var li=function(x){var n=typeNames[x.t]||x.t;return '<li><a href="'+(x.demo?url:'#'+catalogRoute(x.link))+'" data-route>'+esc(n)+'</a></li>'};
-     var G=GROUPS[s.key];if(!G)return s.types.slice(0,MAXC).map(li).join('')+(s.types.length>MAXC?'<li><a class="ro-more" href="'+url+'" data-route>Ещё '+(s.types.length-MAXC)+' '+icon('arrow')+'</a></li>':'');
-     var used={},out=G.map(function(g){var its=g[1].map(function(t){var r=s.types.filter(function(x){return x.t===t})[0];if(r){used[t]=1;return r}return s.key==='prep'?null:{t:t,demo:1}}).filter(Boolean);return [g[0],its]});
-     var rest=s.types.filter(function(x){return !used[x.t]});if(rest.length)out.push(['Другое',rest]);
-     return out.filter(function(g){return g[1].length}).map(function(g){return '<li class="ro-g"><a class="ro-gh" href="'+url+'" data-route>'+esc(g[0])+'</a><ul>'+g[1].slice(0,GMAX).map(li).join('')+(g[1].length>GMAX?'<li><a class="ro-more" href="'+url+'" data-route>Все '+g[1].length+' '+icon('arrow')+'</a></li>':'')+'</ul></li>'}).join('')})()+'</ul></div></section>'}).join('')+
+   S.map(function(s){var url='#'+catalogRoute({surface:s.key}),N=s.types.length;return '<section class="ro-as" id="ro-sec-'+s.key+'" aria-labelledby="ro-h-'+s.key+'"><a class="ro-ban" href="'+url+'" data-route tabindex="-1" aria-hidden="true">'+(s.img?'<img src="'+s.img+'" alt="" loading="lazy">':'')+'</a><div'+(N<=12?' class="ro-few'+(N<=8?' ro-fewm':'')+'"':'')+'><div class="ro-ah"><h2 id="ro-h-'+s.key+'"><a href="'+url+'" data-route>'+esc(s.title)+'<span class="ro-ha">'+icon('arrow')+'</span></a></h2><a class="text-link" href="'+url+'" data-route>Весь раздел '+icon('arrow')+'</a></div><ul class="ro-ac" id="ro-l-'+s.key+'">'+
+    s.types.map(function(x){var n=typeNames[x.t]||x.t;return '<li><a href="#'+catalogRoute(x.link)+'" data-route title="'+esc(n)+'">'+esc(n)+'</a></li>'}).join('')+'</ul>'+(N>8?'<button type="button" class="ro-tg" aria-expanded="false" aria-controls="ro-l-'+s.key+'" data-n="'+N+'"><span>Показать все '+N+'</span>'+icon('down')+'</button>':'')+'</div></section>'}).join('')+
    '</div>';
-  /* якоря без смены адреса; подсветка раздела при прокрутке */
-}
- var _s=syncRoute;syncRoute=function(route,initial){var p=new URLSearchParams(route);
+  page.querySelectorAll('.ro-tg').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();var ul=document.getElementById(b.getAttribute('aria-controls')),o=!ul.classList.contains('open');ul.classList.toggle('open',o);b.setAttribute('aria-expanded',String(o));b.firstChild.textContent=o?'Свернуть':'Показать все '+b.dataset.n})})
+ }
+ /* «Назад» с раздела/категории, открытых из «Все категорий», возвращает на «Все категории», а не на два шага назад в каталог */
+ var backAnchor=null;
+ var _s=syncRoute;syncRoute=function(route,initial){var p=new URLSearchParams(route),prev=activeRoute,res;
   if(p.has('all')&&!p.has('list')&&!p.has('product')&&!p.has('cart')&&!p.has('checkout')&&!p.has('order')){
    var r=p.toString();if(!initial&&r===activeRoute&&!page.hidden)return;
    _s.call(this,'',initial);activeRoute=r;
    ['overview','catalog','detail','transaction'].forEach(function(id){var e=document.getElementById(id);if(e)e.hidden=true});
    draw();page.hidden=false;document.title='Все категории – RemOnLine';
    if(!initial){window.scrollTo(0,0);page.querySelector('h1').focus({preventScroll:true})}return}
-  page.hidden=true;return _s.apply(this,arguments)};
+  page.hidden=true;res=_s.apply(this,arguments);
+  if(/(^|&)all=1(&|$)/.test(prev||'')&&activeRoute&&activeRoute!==prev)backAnchor=activeRoute;
+  else if(!activeRoute)backAnchor=null;
+  return res};
+ window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('#catalog .catalog-location .catalog-back');
+  if(!b||!backAnchor||activeRoute!==backAnchor)return;
+  e.preventDefault();e.stopImmediatePropagation();backAnchor=null;
+  if(typeof RO_POST==='function')RO_POST({type:'nav',path:'/catalog?all=1'})},true);
  var boot=function(h){h=String(h||'');if(h.indexOf('?')>=0)h=h.split('?')[1];if(/(^|&)all=1/.test(h))syncRoute(h,true)};try{boot(location.hash.slice(1))}catch(e){}try{boot(parent.location.hash)}catch(e){}
 })();
 <%/script>
