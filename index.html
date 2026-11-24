@@ -8709,7 +8709,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -15748,7 +15748,11 @@ let bankView = null;
 function unpaidOrder() {
   const params = new URLSearchParams(activeRoute);
   if (params.get('unpaid')==='1') return {id:'RO-1004',created:Date.now()-8*6e4,href:'#order=1&payment=waiting'};
-  return [...shopperOrders.values()].reverse().find(o=>['waiting','failed'].includes(o.payment) && Date.now()<o.created+RESERVE_MIN*6e4);
+  const own = [...shopperOrders.values()].reverse().find(o=>['waiting','failed'].includes(o.payment) && Date.now()<o.created+RESERVE_MIN*6e4);
+  /* 24.11: своих заказов нет – в «Моих заказах» показан образец, где RO-1004 ждёт оплаты; плашка в каталоге и корзине говорит о нём же */
+  if (own || shopperOrders.size) return own;
+  try { if (phoneAuth.account) { const smp = historySample().find(o=>o.payment==='waiting'); if (smp) return smp; } } catch {}
+  return own;
 }
 function syncAccountLabel() {
   const a = $('#account-link'); if (!a) return;
@@ -16716,7 +16720,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -24699,7 +24703,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -29725,7 +29729,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
@@ -31539,7 +31543,7 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  new MutationObserver(function(){put()}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('storage',put);put()})();
 /* 24.11 (Алина): метка неоплаченного заказа и на «Кабинет» в шапке – та же точка, что у «Мои заказы» в меню кабинета. Только у вошедшего. */
 (function(){if(window.parent===window)return;
- if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:10px;left:30px;width:10px;height:10px;border-radius:50%;background:#19CBD8;box-shadow:0 0 0 2px #fff;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
+ if(!document.getElementById('ro-hdot-css')){var st=document.createElement('style');st.id='ro-hdot-css';st.textContent='.ro-hdot{position:absolute;top:9px;left:31px;width:8px;height:8px;border-radius:50%;background:#19CBD8;pointer-events:none}';(document.head||document.documentElement).appendChild(st)}
  function hput(){var on=window.RO_UNPAID&&window.RO_UNPAID();
   [].slice.call(document.querySelectorAll('header a,header button')).forEach(function(a){var lab=(a.getAttribute('aria-label')||a.textContent||'').replace(/\s+/g,' ').trim();var me=/^Кабинет/.test(lab);var d=a.querySelector(':scope>.ro-hdot');
    if(me&&on){if(!d){d=document.createElement('span');d.className='ro-hdot';d.setAttribute('role','img');d.setAttribute('aria-label','Есть неоплаченный заказ');if(getComputedStyle(a).position==='static')a.style.position='relative';a.appendChild(d)}}else if(d)d.remove()})}
