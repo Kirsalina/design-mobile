@@ -17212,6 +17212,26 @@ html body.shop #transaction .cart-row>label.cart-check,html body.shop #transacti
 })();
 <%/script>
 
+<script id="ro-allcat-ab">
+/* 24.11: «Все категории» – по алфавиту сверху вниз, затем слева направо. Свёрнуто – первые 12 (на планшете и телефоне 8) колонками;
+   «Показать все» добавляет остальные ниже отдельным блоком, тоже сверху вниз. Первые строки при раскрытии не двигаются. */
+(function(){if(typeof document==='undefined')return;
+ function cols(){return innerWidth<=1100?2:3}
+ function build(ul){if(!ul._all){ul._all=[].slice.call(ul.children).map(function(li){return li.outerHTML})}
+  var c=cols(),K=c===3?12:8,A=ul._all,first=A.slice(0,K),rest=A.slice(K);if(ul._c===c&&ul._done)return;ul._c=c;ul._done=1;
+  ul.innerHTML=first.join('');ul.style.gridAutoFlow='column';ul.style.gridTemplateRows='repeat('+Math.ceil(first.length/c)+',auto)';
+  var sec=ul.parentNode.querySelector('ul.ro-ac2[data-for="'+ul.id+'"]');if(!sec){sec=document.createElement('ul');sec.className='ro-ac ro-ac2';sec.dataset.for=ul.id;ul.after(sec)}
+  sec.innerHTML=rest.join('');sec.style.gridAutoFlow='column';sec.style.gridTemplateRows='repeat('+Math.max(1,Math.ceil(rest.length/c))+',auto)';sec.classList.add('open');
+  var tg=ul.parentNode.querySelector('.ro-tg');sec.hidden=!(tg&&tg.getAttribute('aria-expanded')==='true');
+  if(tg){tg.style.display=rest.length?'':'none'}}
+ function run(){document.querySelectorAll('#ro-all ul.ro-ac:not(.ro-ac2)').forEach(function(ul){if(ul._done&&ul._c===cols()&&ul.dataset.ab)return;ul.dataset.ab=1;build(ul)})}
+ new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true});
+ addEventListener('resize',function(){document.querySelectorAll('#ro-all ul.ro-ac:not(.ro-ac2)').forEach(function(ul){if(ul._c!==cols()){ul._done=0;build(ul)}})});
+ document.addEventListener('click',function(e){var tg=e.target.closest&&e.target.closest('#ro-all .ro-tg');if(!tg)return;setTimeout(function(){var ul=document.getElementById(tg.getAttribute('aria-controls'));if(!ul)return;
+  var sec=ul.parentNode.querySelector('ul.ro-ac2');if(sec)sec.hidden=tg.getAttribute('aria-expanded')!=='true'},0)});
+ run()})();
+<%/script>
+<style id="ro-allcat-ab-css">#ro-all ul.ro-ac2{margin-top:0}#ro-all ul.ro-ac2[hidden]{display:none}</style>
 <script id="ro-dlgsel">
 /* 24.11: окно закрывается кликом по затемнению, только если и нажали, и отпустили вне окна. Раньше выделение текста в окне,
    отпущенное за его краем, закрывало окно («Удалить из корзины?» и др.). */
@@ -29232,7 +29252,7 @@ function profileHTML(){
     <section class="acc-card" aria-labelledby="pc-2"><h2 id="pc-2">Адреса доставки</h2>${addrs}
       <button class="button secondary acc-add" type="button" data-act="addr-new">Добавить адрес</button></section>
     <section class="acc-card" aria-labelledby="pc-3"><h2 id="pc-3">Удаление аккаунта</h2><p class="acc-pl">Удалим имя, почту, адреса доставки и объекты с комнатами. Восстановить их будет нельзя.</p>
-      <button class="acc-link del big" type="button" data-act="acc-del">Удалить аккаунт</button></section>`;
+      <button class="button secondary acc-add ro-acc-del" type="button" data-act="acc-del">Удалить аккаунт</button></section>`;
 }
 
 /* ---- окна «Моих данных»: строятся один раз, дальше меняется только содержимое ---- */
@@ -29836,6 +29856,7 @@ post({type:'ready'});
  document.addEventListener('click',function(e){var d=e.target;if(!d||d.tagName!=='DIALOG')return;if(!out(d,e)||!downOut){e.stopImmediatePropagation()}downOut=false},true);
 })();
 <%/script>
+<style id="ro-acc-del-css">/* 24.11: «Удалить аккаунт» – такая же кнопка, как «Добавить адрес», текст красный */ html body .acc-card .ro-acc-del{color:#B42318!important}</style>
 <script id="ro-ckv-acc">
 /* 24.11: окно входа, открытое из оформления заказа (текст: «Чтобы оформить заказ и быть на связи по доставке.») (back=/checkout…), – подтверждение телефона: заголовок «Подтвердите телефон»,
    первая фраза «Чтобы оформить заказ. По этому номеру позвонит курьер.», без выбора «Почта» (курьеру нужен телефон), номер из формы заказа. */
@@ -29844,7 +29865,7 @@ post({type:'ready'});
  function fix(){var f=document.getElementById('login-form');if(!f||!ord())return;
   if(L.via!=='phone'){L.via='phone';var b=f.querySelector('[data-act=via][data-via=phone]');if(b){b.click();return}}
   var h=f.querySelector('#lg-t');if(h&&h.textContent!=='Подтвердите телефон')h.textContent='Подтвердите телефон';
-  var lead=f.querySelector('.acc-lead');var t='Чтобы оформить заказ и быть на связи по доставке.';if(lead&&lead.textContent!==t)lead.textContent=t;
+  var lead=f.querySelector('.acc-lead');var t='Чтобы оформить заказ и быть на связи при доставке.';if(lead&&lead.textContent!==t)lead.textContent=t;
   var sg=f.querySelector('.acc-seg');if(sg)sg.remove();
   var i=f.querySelector('#lg-phone');if(i&&!i.value&&!i.dataset.ckv){i.dataset.ckv='1';var p='';try{p=localStorage.getItem('ro-ck-ph')||''}catch(x){}
    if(p){var v='+7 '+p.slice(1,4)+' '+p.slice(4,7)+'-'+p.slice(7,9)+'-'+p.slice(9,11);i.value=v;i.dispatchEvent(new Event('input',{bubbles:true}))}}}
