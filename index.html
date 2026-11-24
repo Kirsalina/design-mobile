@@ -8713,8 +8713,8 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function run(){t=0;var hd=[].slice.call(document.querySelectorAll('header')).filter(function(h){return h.offsetHeight>30})[0];if(!hd)return;
   [].slice.call(hd.querySelectorAll('a,button')).forEach(function(a){var lab=a.textContent.replace(/\s+/g,' ').trim();var on=lab==='Войти'&&a.offsetParent&&getComputedStyle(a).minWidth==='114px'||a.classList.contains('ro-login')&&lab==='Войти';
    if(on){if(!a.classList.contains('ro-login')){a.classList.add('ro-login');a.style.setProperty('min-width','0','important');a.style.setProperty('width','auto','important');a.style.setProperty('padding-left','12px','important');a.style.setProperty('padding-right','12px','important')}
-     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginRight!==mr)a.style.setProperty('margin-right',mr,'important')}
-   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right'].forEach(function(k){a.style.removeProperty(k)})}})}
+     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginLeft!==mr)a.style.setProperty('margin-left',mr,'important');a.style.removeProperty('margin-right')}
+   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right','margin-left'].forEach(function(k){a.style.removeProperty(k)})}})}
  new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',function(){if(!t)t=requestAnimationFrame(run)});setTimeout(run,300);run()})();
 
 /* Р42 (18.11): длинного тире «—» на сайте нет — везде короткое «–» (тексты, подписи, подсказки, поля), включая тени (подвал конструктора) */
@@ -15402,7 +15402,7 @@ function sendCode(form,channel) {
 }
 function renderPhone(form) {
   const box = $('#phone-verify'); if (!box) return;
-  if (form.id==='checkout-form') { box.hidden=true; box.innerHTML=''; const sb=$('[data-phone-send]',form); if (sb) sb.hidden=true; form.elements.phone.readOnly=false; clearInterval(phoneAuth.timer); return; } /* 23.11: без подтверждения кодом */
+  if (form.id==='checkout-form') { const sb=$('[data-phone-send]',form); if (sb) sb.hidden=true; clearInterval(phoneAuth.timer); const okp=!!phoneAuth.account&&phoneDigits(form.elements.phone.value)===phoneAuth.account; form.elements.phone.readOnly=okp; box.hidden=!okp; box.innerHTML=okp?`<p class="phone-ok">${icon('check')}<span>Номер подтверждён</span></p>`:''; return; } /* 24.11: код – в окне подтверждения при «Подтвердить заказ» (ro-ckv) */
   const input = form.elements.phone, btn = $('[data-phone-send]',form);
   const st = phoneAuth.status;
   input.readOnly = st==='ok';
@@ -16713,8 +16713,8 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function run(){t=0;var hd=[].slice.call(document.querySelectorAll('header')).filter(function(h){return h.offsetHeight>30})[0];if(!hd)return;
   [].slice.call(hd.querySelectorAll('a,button')).forEach(function(a){var lab=a.textContent.replace(/\s+/g,' ').trim();var on=lab==='Войти'&&a.offsetParent&&getComputedStyle(a).minWidth==='114px'||a.classList.contains('ro-login')&&lab==='Войти';
    if(on){if(!a.classList.contains('ro-login')){a.classList.add('ro-login');a.style.setProperty('min-width','0','important');a.style.setProperty('width','auto','important');a.style.setProperty('padding-left','12px','important');a.style.setProperty('padding-right','12px','important')}
-     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginRight!==mr)a.style.setProperty('margin-right',mr,'important')}
-   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right'].forEach(function(k){a.style.removeProperty(k)})}})}
+     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginLeft!==mr)a.style.setProperty('margin-left',mr,'important');a.style.removeProperty('margin-right')}
+   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right','margin-left'].forEach(function(k){a.style.removeProperty(k)})}})}
  new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',function(){if(!t)t=requestAnimationFrame(run)});setTimeout(run,300);run()})();
 
 /* Р42 (18.11): длинного тире «—» на сайте нет — везде короткое «–» (тексты, подписи, подсказки, поля), включая тени (подвал конструктора) */
@@ -17180,6 +17180,32 @@ post({type:'ready'});
     dlg.close();ok=true;btn.click();ok=false}};
   dlg.showModal();dlg.querySelector('[data-del-ok]').focus();return false}
  window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-cart-remove]');if(!b||ok)return;e.preventDefault();e.stopImmediatePropagation();ask(b)},true);
+})();
+<%/script>
+<script id="ro-ckv">
+/* 24.11 (Алина): заказ без кабинета – телефон обязательно подтверждается кодом из SMS. Ошибка в номере = курьер не дозвонится, заказ потерян.
+   «Подтвердить заказ»: если номер ещё не подтверждён – окно сайта «Подтвердите телефон» (то же окно, что вход, номер уже вписан).
+   Подтвердил – это и есть вход: в шапке «Кабинет», заказ сразу оформляется и уходит на оплату, «Мои заказы» открываются без входа.
+   Закрыл окно – остаётся на оформлении, всё введённое на месте. */
+(function(){if(window.parent===window||typeof phoneAuth==='undefined')return;var wait=false;
+ var dg=function(v){var d=String(v||'').replace(/\D/g,'');if(d.length===11&&d[0]==='8')d='7'+d.slice(1);if(d.length===10)d='7'+d;return d};
+ document.addEventListener('submit',function(e){var f=e.target;if(!f||f.id!=='checkout-form')return;var ph=f.elements.phone;if(!ph)return;
+  if(phoneAuth.account&&dg(ph.value)===phoneAuth.account)return;
+  if(typeof checkoutError==='function'&&checkoutError(ph)){return}
+  if(typeof validateCheckout==='function'&&!validateCheckout(f))return;
+  e.preventDefault();e.stopImmediatePropagation();wait=true;
+  try{localStorage.setItem('ro-ck-ph',dg(ph.value))}catch(x){}
+  var back='/checkout';try{back=(parent.location.hash||'#/checkout').replace(/^#/,'')}catch(x){}
+  RO_POST({type:'nav',path:'/login?back='+encodeURIComponent(back)})},true);
+ addEventListener('message',function(e){var d=e.data||{};if(e.source!==parent||!d.ro)return;
+  if(d.type==='login:closed'){wait=false;return}
+  if(d.type!=='auth'||!d.user||!d.user.phone)return;var p=dg(d.user.phone);
+  Object.assign(phoneAuth,{account:p,phone:p,status:'ok'});
+  var go2=wait;wait=false;
+  setTimeout(function(){var f=document.getElementById('checkout-form');if(!f)return;var ph=f.elements.phone;
+   if(ph&&dg(ph.value)!==p&&typeof phonePretty==='function')ph.value=phonePretty(p);
+   try{renderPhone(f);syncAccountLabel()}catch(x){}
+   if(go2&&f.requestSubmit)f.requestSubmit()},250)});
 })();
 <%/script>
 </body>
@@ -18029,24 +18055,32 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
  off();document.addEventListener('DOMContentLoaded',off)})();
 <%/script>
 <style id="ro-kit-css">
-/* Сопутствующие в смете (22.11, задача Димы): вложенный список «Понадобится» под отделкой.
-   Тёплая плашка #F3F1EB, строки 48, фото 40, текст 14/21; по умолчанию не выбраны – выглядят обычно, не «выключенно». */
-#ui .ro-kit{margin:0 0 12px 52px;padding:4px 12px 8px;background:#F3F1EB;border-radius:12px}
-#ui .ro-kit-h{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:40px}
-#ui .ro-kit-h>span{font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B}
-#ui .ro-kit-all,#ui .ro-kit-more{min-height:40px;margin:0;padding:0 4px;border:0;border-radius:8px;background:none;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;cursor:pointer;white-space:nowrap}
-#ui .ro-kit-all:focus-visible,#ui .ro-kit-more:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
-@media (hover:hover){#ui .ro-kit-all:hover,#ui .ro-kit-more:hover{text-decoration:underline;text-underline-offset:4px}}
-#ui .ro-kit-r{display:grid;grid-template-columns:24px 40px minmax(0,1fr) auto auto;align-items:center;gap:12px;min-height:48px;border-top:1px solid #E3E0D6}
-#ui .ro-kit-r .phimg,#ui .ro-kit-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
-#ui .ro-kit-n{font:400 14px/21px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* «Понадобится» (24.11): строки как в смете – галочка 22 по центру, фото 48, название 16/24 600, подпись «на что» 14/21 #566273,
+   количество 14/21, сумма 16/24 700. Шапка – галочка блока + «N из M». Группы «Рекомендуем», «По желанию» – строка 48 со стрелкой. */
+#ui .ro-kit{margin:0 0 12px 52px;padding:4px 16px 4px;background:#F3F1EB;border-radius:12px}
+#ui .ro-kit-h{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
+#ui .ro-kit-h>label{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;cursor:pointer}
+#ui .ro-kit-h>small{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-kit-r{display:grid;grid-template-columns:22px 48px minmax(0,1fr) auto auto;align-items:center;column-gap:16px;min-height:72px;padding:12px 0;border-top:1px solid #E3E0D6;box-sizing:border-box}
+#ui .ro-kit-r .phimg,#ui .ro-kit-r svg{width:48px;height:48px;border-radius:8px;display:block;object-fit:cover}
+#ui .ro-kit-t{display:flex;flex-direction:column;min-width:0}
+#ui .ro-kit-n{display:block;max-width:100%;font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-kit-w{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;overflow-wrap:anywhere}
 #ui .ro-kit-q{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
-#ui .ro-kit-r b{font:700 14px/21px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;min-width:72px;text-align:right}
-#ui .ro-kit-more{display:block;margin-top:2px}
-#ui .ro-kit-nb{display:block;min-width:0;min-height:40px;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer;text-decoration:underline;text-decoration-color:#B9C2C0;text-underline-offset:4px}
+#ui .ro-kit-r b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;min-width:80px;text-align:right}
+#ui .ro-kit-nb{min-height:24px;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer}
 #ui .ro-kit-nb:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
-@media (hover:hover){#ui .ro-kit-nb:hover{color:#006B79;text-decoration-color:#006B79}}
+@media (hover:hover){#ui .ro-kit-nb:hover{color:#006B79;text-decoration:underline;text-underline-offset:4px}}
 #ui label.ro-kit-n{cursor:pointer}
+#ui .ro-kit-g{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;column-gap:12px;width:100%;min-height:48px;margin:0;padding:0 0 0 38px;border:0;border-top:1px solid #E3E0D6;background:none;text-align:left;cursor:pointer;font:inherit;color:#152A4B;box-sizing:border-box}
+#ui .ro-kit-gt{font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B}
+#ui .ro-kit-gm{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
+#ui .ro-kit-g .ic{width:20px;height:20px;color:#566273;transition:transform .15s ease}
+#ui .ro-kit-g[aria-expanded="true"] .ic{transform:rotate(180deg)}
+#ui .apc[data-act=ai-pdet]{cursor:pointer;transition:box-shadow .15s ease}@media (hover:hover){#ui .apc[data-act=ai-pdet]:hover{box-shadow:0 8px 24px rgba(21,42,75,.08)}}#ui .apc[data-act=ai-pdet]:focus-visible{outline:none;border-color:#006B79}
+#ui .ro-kd-fb{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px}#ui .ro-kd-fb .lnk{min-height:24px;padding:0;border:0;background:none;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+#ui .ro-kit-g:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:8px}
+@media (hover:hover){#ui .ro-kit-g:hover .ro-kit-gt{color:#006B79}}
 #ui .ro-alt{display:grid;gap:8px;margin-top:16px}
 #ui .ro-alt-r{display:grid;grid-template-columns:48px minmax(0,1fr) auto auto;align-items:center;gap:16px;min-height:72px;padding:12px 16px;border:1px solid #DCE4E2;border-radius:16px;background:#fff}
 #ui .ro-alt-r.cur{background:#F3F1EB;border-color:#F3F1EB}
@@ -18057,12 +18091,21 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
 #ui .ro-alt-r .ro-kit-n,#ui .ro-alt-r .ro-kit-q{white-space:normal}
 @media (max-width:700px){#ui .ro-alt-r{grid-template-columns:48px minmax(0,1fr);row-gap:8px;column-gap:12px}#ui .ro-alt-r>.ro-kit-th{grid-row:1/3;align-self:start}#ui .ro-alt-s{grid-column:2;text-align:left;flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:8px}#ui .ro-alt-r>.btn{grid-column:1/-1;justify-self:stretch}#ui .ro-alt-r>.ro-alt-ok{display:none}}
 @media (max-width:700px){
- #ui .ro-kit{margin:0 0 12px 0;padding:4px 12px 8px}
- #ui .ro-kit-r{grid-template-columns:24px 40px minmax(0,1fr) auto;row-gap:0}
- #ui .ro-kit-r .ro-kit-q{grid-column:3;grid-row:2;margin-top:-4px;padding-bottom:6px}
- #ui .ro-kit-r b{grid-column:4;grid-row:1/3}
- #ui .ro-kit-r>input{grid-row:1/3}#ui .ro-kit-r>.ro-kit-th{grid-row:1/3}
+ #ui .ro-kit{margin:0 0 12px 0;padding:0 12px}
+ #ui .ro-kit-h{column-gap:12px}
+ #ui .ro-kit-r{grid-template-columns:22px 40px minmax(0,1fr) auto;column-gap:12px;row-gap:0;min-height:64px;align-items:center}
+ #ui .ro-kit-r .phimg,#ui .ro-kit-r svg{width:40px;height:40px}
+ #ui .ro-kit-r>input,#ui .ro-kit-r>.ro-kit-th{grid-row:1/3}
+ #ui .ro-kit-t{display:contents}
+ #ui .ro-kit-r>input,#ui .ro-kit-r>.ro-kit-th{grid-row:1/4}
+ #ui .ro-kit-n{grid-column:3;grid-row:1}
+ #ui .ro-kit-r .ro-kit-q{grid-column:3;grid-row:2}
+ #ui .ro-kit-w{grid-column:3;grid-row:3}
+ #ui .ro-kit-r b{grid-column:4;grid-row:1/4;min-width:0}
+ #ui .ro-kit-n{font-size:14px;line-height:21px}
+ #ui .ro-kit-g{padding-left:34px}
 }
+
 </style>
 <script id="ro-kit">
 /* Сопутствующие товары в смете (22.11). Логика – документ «Сопутствующие товары: логика для RemOnLine»:
@@ -18133,33 +18176,77 @@ document.addEventListener('DOMContentLoaded',function(){
       var doors=(R.ops||[]).filter(function(o){return o.kind==='door'});
       if(f==='doors')amt+=doors.length;else{var per=0;for(var i=0;i<(R.pts||[]).length;i++)per+=wlen(R,i);per-=doors.reduce(function(a,o){return a+(+o.w||0)},0);amt+=Math.max(0,per)/100}}});
     if(f==='obj')amt=1;if(!(amt>0))return;
-    var a=acc[sku];if(!a){a=acc[sku]={sku:sku,amt:0,own:{},role:sl[1],by:{},places:[]};order.push(a)}
+    var a=acc[sku];if(!a){a=acc[sku]={sku:sku,amt:0,own:{},role:sl[1],by:{},places:[],f:f,geo:{},kinds:{},per:0,drs:0};order.push(a)}
+    a.kinds[kd]=1;
+    l.places.forEach(function(p){if(!p.R)return;var gk=p.ri+':'+p.k+':'+p.target;
+     if(f==='area'||f==='tape'){if(!a.geo[gk])a.geo[gk]={ri:p.ri,k:p.k,ar:targetGeo(p.R,p.k,p.target).area}}
+     else if((f==='perim'||f==='doors')&&p.target==='base'&&surfKind(p.k)==='floor'){if(!a.geo[gk]){a.geo[gk]={ri:p.ri,k:p.k,ar:0};
+      var drs=(p.R.ops||[]).filter(function(o){return o.kind==='door'});if(f==='doors')a.drs+=drs.length;else{var pr=0;for(var i=0;i<(p.R.pts||[]).length;i++)pr+=wlen(p.R,i);pr-=drs.reduce(function(x,o){return x+(+o.w||0)},0);a.per+=Math.max(0,pr)/100}}}});
     if(ROLE[sl[1]]<ROLE[a.role])a.role=sl[1];
     if(f==='obj'){a.amt=1;a.own[l.id]=l.places.reduce(function(x,p){return x+(p.R?targetGeo(p.R,p.k,p.target).area:0)},0)||1}else{a.amt+=amt;a.own[l.id]=(a.own[l.id]||0)+amt}
     l.places.forEach(function(p){a.places.push(p);if(!a.by[p.ri])a.by[p.ri]={amt:0,st:0}})});
   });
   var accLines=order.map(function(a){var own=Object.keys(a.own)[0],eff=T.kswap&&ACC[T.kswap[a.sku]]?T.kswap[a.sku]:a.sku,X=ACC[eff];
-   return Object.assign({id:a.sku,eff:eff,grp:KITG,by:a.by,places:a.places,amt:a.amt,st:0},fin1(eff,a.amt,0),{name:X.name,pack:X.pack,price:X.price,unit:'за '+X.pack,on:!!T.kon[a.sku],swapped:eff!==a.sku,kit:true,role:a.role,owner:own})});
+   return Object.assign({id:a.sku,eff:eff,grp:KITG,by:a.by,places:a.places,amt:a.amt,st:0},fin1(eff,a.amt,0),{name:X.name,pack:X.pack,price:X.price,unit:'за '+X.pack,on:!!T.kon[a.sku],swapped:eff!==a.sku,kit:true,role:a.role,owner:own,kf:a.f,kgeo:a.geo,kkinds:Object.keys(a.kinds),kper:a.per,kdrs:a.drs})});
   C.lines=main.concat(accLines);
   var on=C.lines.filter(function(l){return l.on});C.on=on.length;C.total=on.reduce(function(x,l){return x+(l.sum||0)},0);C.unk=on.filter(function(l){return l.sum==null}).length;
   C.main=main;return C};
 
  var rub0=function(n){return rub(n).replace(/ /g,' ')};
+ /* 24.11: «Понадобится» – обычные строки сметы (галочка по центру, фото, название, подпись «на что», количество, сумма).
+    Шапка – галочка «Понадобится» и счётчик «N из M», как «Выбрать всё» в смете (без «Добавить всё»).
+    Сначала «Нужно для работы» (видно всегда), затем свёрнутые «Рекомендуем» и «По желанию» с числом товаров и суммой.
+    Подпись «на что»: площадь / периметр / двери и где (комната и стены), для общих товаров – для каких отделок. */
+ var KN={paper:'обои',paint:'краску',tile:'плитку',gres:'керамогранит',lam:'ламинат',lino:'линолеум'};
+ var GN={rec:'Рекомендуем',opt:'По желанию'};
+ var nf=function(x){return String(Math.round(x*10)/10).replace('.',',')};
+ function kWhere(l){var o=S.objs[S.cur]||{rooms:[]},by={},ord=[];
+  Object.keys(l.kgeo||{}).forEach(function(key){var g=l.kgeo[key];if(!by[g.ri]){by[g.ri]=[];ord.push(g.ri)}if(by[g.ri].indexOf(g.k)<0)by[g.ri].push(g.k)});
+  if(!ord.length)return '';
+  if(ord.length>1)return ord.map(function(ri){return (o.rooms[ri]||{}).name||''}).join(', ');
+  var ks=by[ord[0]],w=ks.filter(function(k){return surfKind(k)==='wall'}).map(function(k){return +k.slice(1)+1}).sort(function(a,b){return a-b}),
+   oth=ks.filter(function(k){return surfKind(k)!=='wall'}).map(function(k){return surfName(k).toLowerCase()}),parts=[];
+  if(w.length)parts.push((w.length>1?'стены ':'стена ')+w.join(', '));parts=parts.concat(oth);
+  return ((o.rooms[ord[0]]||{}).name||'')+(parts.length?', '+parts.join(', '):'')}
+ function kFor(l){var ar=0;Object.keys(l.kgeo||{}).forEach(function(k){ar+=l.kgeo[k].ar||0});
+  var kinds=(l.kkinds||[]).map(function(k){return KN[k]}).filter(Boolean),pre=kinds.length>1?'Под '+kinds.slice(0,-1).join(', ')+' и '+kinds[kinds.length-1]+', ':'',wh=kWhere(l);
+  if(l.kf==='obj')return 'Один на весь объект';
+  if(l.kf==='tape')return (pre?pre+'п':'П')+'о стыкам стен '+nf(l.amt)+' м'+(wh?': '+wh:'');
+  if(l.kf==='perim')return (pre||'')+(pre?'п':'П')+'о периметру '+nf(l.kper)+' м'+(wh?': '+wh:'');
+  if(l.kf==='doors')return (pre?pre+'н':'Н')+'а '+l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей'])+(wh?': '+wh:'');
+  return (pre?pre+'н':'Н')+'а '+nf(ar)+' м²'+(wh?': '+wh:'')}
+ function kRow(l){var nm='<button type="button" class="ro-kit-n ro-kit-nb" data-act="ro-kit-det" data-id="'+l.id+'" title="'+esc(l.name)+'">'+esc(l.name)+'</button>';
+  return '<div class="ro-kit-r"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'"><span class="ro-kit-th" aria-hidden="true">'+pthumb(l.eff,'ek'+l.id.replace(/\W/g,''),48)+'</span><div class="ro-kit-t">'+nm+'<span class="ro-kit-w">'+esc(kFor(l))+'</span></div><span class="ro-kit-q">'+qtyH(l.buy)+'</span><b>'+rub0(l.sum||0)+'</b></div>'}
  function kitHTML(C,owner){
-  var T=S.E.est,rows=C.lines.filter(function(l){return l.kit&&l.owner===owner.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
-  var core=rows.filter(function(l){return l.role!=='opt'}),off=core.filter(function(l){return !l.on}),allOn=core.length&&!off.length;
-  var sum=off.reduce(function(a,l){return a+(l.sum||0)},0),open=!!T.kopen[owner.id],show=open?rows:rows.slice(0,4),more=rows.length-show.length;
-  var btn=core.length?'<button type="button" class="ro-kit-all" data-act="ro-kit-all" data-id="'+owner.id+'">'+(allOn?'Убрать всё':'Добавить всё · '+rub0(sum))+'</button>':'';
-  return '<div class="ro-kit" role="group" aria-label="Понадобится: '+esc(owner.name)+'"><div class="ro-kit-h"><span>Понадобится</span>'+btn+'</div>'+
-   show.map(function(l){return '<div class="ro-kit-r"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="Добавить в смету: '+esc(l.name)+'"><span class="ro-kit-th" aria-hidden="true">'+pthumb(l.eff,'ek'+l.id.replace(/\W/g,''),40)+'</span>'+(altsOf(l.id).length>1?'<button type="button" class="ro-kit-n ro-kit-nb" data-act="ro-kit-alt" data-id="'+l.id+'" title="'+esc(l.name)+'" aria-label="'+esc(l.name)+'. Заменить на аналог">'+esc(l.name)+'</button>':'<label class="ro-kit-n" for="eon-'+l.id+'" title="'+esc(l.name)+'">'+esc(l.name)+'</label>')+'<span class="ro-kit-q">'+qtyH(l.buy)+'</span><b>'+rub0(l.sum||0)+'</b></div>'}).join('')+
-   (more>0?'<button type="button" class="ro-kit-more" data-act="ro-kit-more" data-id="'+owner.id+'">Ещё '+more+'</button>':open&&rows.length>4?'<button type="button" class="ro-kit-more" data-act="ro-kit-more" data-id="'+owner.id+'">Свернуть</button>':'')+'</div>'}
+  var T=S.E.est;if(!T.kgrp)T.kgrp={};var rows=C.lines.filter(function(l){return l.kit&&l.owner===owner.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
+  var on=rows.filter(function(l){return l.on}).length,allOn=on===rows.length,need=rows.filter(function(l){return l.role==='need'}),h='';
+  h+='<div class="ro-kit" role="group" aria-label="Понадобится: '+esc(owner.name)+'"><div class="ro-kit-h"><input type="checkbox" id="kall-'+owner.id+'" data-m="kall" data-k="'+owner.id+'"'+(allOn?' checked':'')+'><label for="kall-'+owner.id+'">Понадобится</label><small>'+on+' из '+rows.length+'</small></div>';
+  h+=need.map(kRow).join('');
+  ['rec','opt'].forEach(function(g){var R=rows.filter(function(l){return l.role===g});if(!R.length)return;var key=owner.id+':'+g,op=!!T.kgrp[key],
+    sum=R.reduce(function(x,l){return x+(l.sum||0)},0),sel=R.filter(function(l){return l.on}).length;
+   h+='<button type="button" class="ro-kit-g" data-act="ro-kit-grp" data-id="'+key+'" aria-expanded="'+op+'"><span class="ro-kit-gt">'+GN[g]+'</span><span class="ro-kit-gm">'+(sel?'выбрано '+sel+' из '+R.length:R.length+' '+pl(R.length,['товар','товара','товаров'])+' на '+rub0(sum))+'</span>'+I('down')+'</button>';
+   if(op)h+=R.map(kRow).join('')});
+  return h+'</div>'}
 
  function altHTML(C){var T=S.E.est,l=C.lines.filter(function(x){return x.kit&&x.id===T.ksel})[0];if(!l){T.mode='view';return null}
   var cur=l.sum||0,list=altsOf(l.id).map(function(sku){var f=fin1(sku,l.amt,0);return{sku:sku,X:ACC[sku],buy:f.buy,sum:f.sum||0}});
   var back='<div class="cat-h"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Вернуться к смете</button><p>Аналоги: <b>'+esc(l.name)+'</b></p></div>';
   return back+'<div class="ro-alt">'+list.map(function(a){var is=a.sku===l.eff,d=a.sum-cur;
-   return '<div class="ro-alt-r'+(is?' cur':'')+'"><span class="ro-kit-th" aria-hidden="true">'+pthumb(a.sku,'ea'+a.sku.replace(/\W/g,''),48)+'</span><div class="ro-alt-t"><span class="ro-kit-n">'+esc(a.X.name)+'</span><span class="ro-kit-q">'+esc(a.X.pack)+' · '+qtyH(a.buy)+'</span></div><div class="ro-alt-s"><b>'+rub0(a.sum)+'</b><span class="ro-kit-q">'+(is?'Сейчас в смете':d<0?'Дешевле на '+rub0(-d):d>0?'Дороже на '+rub0(d):'Та же сумма')+'</span></div>'+(is?'<span class="ro-alt-ok">'+I('check')+'</span>':'<button type="button" class="btn s40" data-act="ro-kit-swap" data-id="'+l.id+'" data-to="'+a.sku+'">Заменить</button>')+'</div>'}).join('')+'</div>'}
- var _ce=estCenter;estCenter=function(){if(S.E.est.mode==='kalt'){var x=altHTML(estCalc(S));if(x)return x}var h=_ce.apply(this,arguments);if(S.E.est.mode==='cmp')return h;
+   return '<div class="ro-alt-r'+(is?' cur':'')+'"><span class="ro-kit-th" aria-hidden="true">'+pthumb(a.sku,'ea'+a.sku.replace(/\W/g,''),48)+'</span><div class="ro-alt-t"><span class="ro-kit-n">'+esc(a.X.name)+'</span><span class="ro-kit-q">'+esc(a.X.pack)+', '+qtyH(a.buy)+'</span></div><div class="ro-alt-s"><b>'+rub0(a.sum)+'</b><span class="ro-kit-q">'+(is?'Сейчас в смете':d<0?'Дешевле на '+rub0(-d):d>0?'Дороже на '+rub0(d):'Та же сумма')+'</span></div>'+(is?'<span class="ro-alt-ok">'+I('check')+'</span>':'<button type="button" class="btn s40" data-act="ro-kit-swap" data-id="'+l.id+'" data-to="'+a.sku+'">Заменить</button>')+'</div>'}).join('')+'</div>'}
+ /* 24.11 (фидбэк E3, E6, E7): клик по вспомогательному товару открывает обычную карточку товара (как в «Отделке»):
+    фото, название, фасовка, цена, наличие, сколько в смете и на что, «В корзину», «Аналоги», «Открыть в каталоге».
+    «В корзину» добавляет количество из сметы и отвечает строкой «В корзине: … на … ₽» со ссылкой в корзину; кнопка не меняется. */
+ var accU=function(p){p=String(p||'');return p.replace(/^(\S+?)а(\s|$)/,'$1у$2')};
+ function kdetHTML(C){var T=S.E.est,l=C.lines.filter(function(x){return x.kit&&x.id===T.kdet})[0];if(!l){T.mode='view';return null}
+  var sku=l.eff,X=ACC[sku]||{},own=C.lines.filter(function(x){return x.id===l.owner})[0],inC=(T.kcart||{})[sku],nA=altsOf(l.id).length;
+  var back='<div class="cat-h"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Вернуться к смете</button><p>Понадобится'+(own?' к: <b>'+esc(own.name)+'</b>':'')+'</p></div>';
+  return back+'<article class="pdet ro-pd ro-kd"><div class="pdet-img">'+pfill(sku,'kd'+sku.replace(/\W/g,''))+'</div><div class="pdet-b"><h2>'+esc(X.name)+'</h2><p class="ro-pd-sub">'+esc(String(X.pack||'').replace(/^./,function(c){return c.toUpperCase()}))+', '+sku+'</p>'+
+   '<p class="pdet-pr">'+rub(X.price)+' <span>за '+esc(accU(X.pack))+'</span></p><p class="pcd-s ro-pd-st">В наличии</p>'+
+   '<div class="pdet-calc"><h4>В смете</h4><dl class="ar"><div><dt>К покупке</dt><dd>'+qtyH(l.buy)+'</dd></div><div><dt>Сумма</dt><dd>'+rub0(l.sum||0)+'</dd></div><div><dt>На что</dt><dd>'+esc(kFor(l))+'</dd></div>'+(X.rule?'<div><dt>Норма</dt><dd>'+esc(X.rule)+'</dd></div>':'')+'</dl></div>'+
+   '<div class="pdet-a"><button type="button" class="btn pri" data-act="ro-kit-cart" data-id="'+l.id+'">В корзину</button>'+(nA>1?'<button type="button" class="btn" data-act="ro-kit-alt" data-id="'+l.id+'">Аналоги</button>':'')+'<a class="pdet-l btn ro-pd-cat" href="#'+sku+'" data-act="f-page" data-id="'+sku+'" aria-label="Открыть «'+esc(X.name)+'» в каталоге">Открыть в каталоге'+I('arrow')+'</a></div>'+
+   '<p class="pdet-fb ro-kd-fb" role="status">'+(inC?I('check')+'<span>В корзине: '+qtyH(inC.buy)+' на '+rub0(inC.sum)+'</span><button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>':'')+'</p>'+
+   '<h4>Характеристики</h4><dl class="ar ro-pd-tbl"><div><dt>Артикул</dt><dd>'+sku+'</dd></div><div><dt>Фасовка</dt><dd>'+esc(X.pack)+'</dd></div></dl></div></article>'}
+ var _ce=estCenter;estCenter=function(){if(S.E.est.mode==='kdet'){var y=kdetHTML(estCalc(S));if(y)return y}if(S.E.est.mode==='kalt'){var x=altHTML(estCalc(S));if(x)return x}var h=_ce.apply(this,arguments);if(S.E.est.mode==='cmp')return h;
   var C=estCalc(S),m=C.main||[],mon=m.filter(function(l){return l.on}).length;
   h=h.replace(/(<input type="checkbox" id="eall"[^>]*?)\s?checked(\s)/,'$1$2');
   if(m.length&&mon===m.length)h=h.replace('<input type="checkbox" id="eall"','<input type="checkbox" id="eall" checked');
@@ -18168,12 +18255,26 @@ document.addEventListener('DOMContentLoaded',function(){
   return h};
 
  var _ch=estChange;estChange=function(m,k,v,el){
+  if(m==='kall'){var E0=S.E,T0=E0.est;if(!T0.kon)T0.kon={};var Ck=estCalc(S);commit(E0,el.checked?'выбраны сопутствующие':'снят выбор сопутствующих');Ck.lines.filter(function(l){return l.kit&&l.owner===k}).forEach(function(l){if(el.checked)T0.kon[l.id]=1;else delete T0.kon[l.id]});T0.cartMsg='';return true}
   if(m==='eon'&&ACC[k]){var E=S.E,T=E.est;commit(E,(el.checked?'добавлено: ':'убрано: ')+String(ACC[k].name).toLowerCase());if(!T.kon)T.kon={};if(el.checked)T.kon[k]=1;else delete T.kon[k];T.cartMsg='';return true}
   return _ch.apply(this,arguments)};
 
  var _a=act;act=function(a,el,ev){var d=(el&&el.dataset)||{};
   if(a==='ro-kit-alt'){var T0=S.E.est;T0.ksel=d.id;T0.mode='kalt';render();var u=document.getElementById('ui');if(u)u.scrollTop=0;return}
   if(a==='ro-kit-swap'){var E1=S.E,T1=E1.est;if(!T1.kswap)T1.kswap={};commit(E1,'замена в смете: '+String(ACC[d.to].name).toLowerCase());if(d.to===d.id)delete T1.kswap[d.id];else T1.kswap[d.id]=d.to;T1.mode='view';T1.cartMsg='';render();return}
+  if(a==='ro-kit-det'){var Td=S.E.est;Td.kdet=d.id;Td.mode='kdet';render();var ud=document.getElementById('ui');if(ud)ud.scrollTop=0;var cd=document.querySelector('#ui .ctr');if(cd)cd.scrollTop=0;return}
+  if(a==='ro-kit-cart'){var Tc=S.E.est,Cc=estCalc(S),lc=Cc.lines.filter(function(x){return x.kit&&x.id===d.id})[0];if(!lc)return;var n=cartNum(lc.buy);if(!n)return;
+   RO_POST({type:'cart:add',lines:[{sku:lc.eff,quantity:n}]});if(!Tc.kcart)Tc.kcart={};var pr=Tc.kcart[lc.eff],q=(pr?pr.q:0)+n,X=ACC[lc.eff]||{};
+   Tc.kcart[lc.eff]={q:q,buy:q+' '+(X.pk?pl(q,X.pk):''),sum:q*(X.price||0)};render();return}
+  /* клик по материалу в смете (фидбэк E7): не нижняя карточка, а карточка товара в «Отделке» на той поверхности, где он лежит –
+     там заменить, примерить, расчёт, в корзину. «Смета» – одна вкладка назад. */
+  if(a==='e-sel'&&!ACC[d.id]){var Cs=estCalc(S),ls=Cs.lines.filter(function(x){return x.id===d.id&&!x.kit})[0],p=ls&&ls.places&&ls.places[0];
+   if(p&&MAT[ls.eff]){var est=S.E.est;syncRoom(S);if(!(S.E.ref&&S.E.ref[0]===S.cur&&S.E.ref[1]===p.ri)){loadRoom(S,S.cur,p.ri);S.E.est=est}
+    var X1=S.E;X1.stage='finish';X1.fin.surf=p.k;X1.view='2d';X1.sheet=null;X1.rtab='params';openCat(X1,p.target);X1.fin.mode='detail';X1.fin.det=ls.eff;render();var u1=document.querySelector('#ui .ctr');if(u1)u1.scrollTop=0;return}}
+  if(a==='ai-pdet'&&MAT[d.id]){var Ea=S.E,Fa=Ea.fin,id=d.id,k=Fa.surf;if(!k||!Fa.mats[k]||Fa.mats[k].base!==id){var ks=Object.keys(Fa.mats).filter(function(x){return Fa.mats[x]&&Fa.mats[x].base===id});if(ks.length)k=ks[0]}
+   if(!k)k=MAT[id].ks.indexOf('floor')>=0?'floor':MAT[id].ks.indexOf('ceil')>=0&&MAT[id].ks.indexOf('wall')<0?'ceil':'w0';
+   Ea.stage='finish';Fa.surf=k;Ea.view='2d';openCat(Ea,'base');if(MAT[id].ks.indexOf(surfKind(k))>=0)Fa.cat=MAT[id].cat;Fa.mode='detail';Fa.det=id;if(Ea.sheet!=='ai')Ea.sheet=null;else Ea.sheet=null;render();var ua=document.querySelector('#ui .ctr');if(ua)ua.scrollTop=0;return}
+  if(a==='ro-kit-grp'){var Tg=S.E.est;if(!Tg.kgrp)Tg.kgrp={};Tg.kgrp[d.id]=!Tg.kgrp[d.id];render();return}
   if(a==='ro-kit-all'||a==='ro-kit-more'){var E=S.E,T=E.est;if(!T.kon)T.kon={};if(!T.kopen)T.kopen={};
    if(a==='ro-kit-more')T.kopen[d.id]=!T.kopen[d.id];
    else{var C=estCalc(S),core=C.lines.filter(function(l){return l.kit&&l.owner===d.id&&l.role!=='opt'}),allOn=core.every(function(l){return l.on});
@@ -18191,6 +18292,9 @@ document.addEventListener('DOMContentLoaded',function(){
   var names=[];L.forEach(function(l){var n=NOUN[l.eff]||String(l.name).toLowerCase();if(names.indexOf(n)<0)names.push(n)});
   var sum=L.reduce(function(a,l){return a+(l.sum||0)},0);
   aSay(E,'conf',TO[kd]+' понадобятся '+andList(names)+'. Добавить в смету? +'+rub0(sum),{o:[['Добавить','kitadd:'+kd],['Не нужно','kitno:'+kd]]})}
+ /* 24.11 (фидбэк E3): карточка товара у помощника кликается целиком, как карточка в каталоге – открывает карточку товара в «Отделке» */
+ var _cardK=cardHTML;cardHTML=function(m,idx,last){var h=_cardK.apply(this,arguments);try{var ids=[];if(m.c&&m.c.prod&&MAT[m.c.prod])ids.push(m.c.prod);if(last&&m.o)m.o.forEach(function(x){if(x[3])ids.push(x[3])});
+  var i=0;h=h.replace(/<div class="apc[^"]*">/g,function(t){var id=ids[i++];return id?t.slice(0,-1)+' data-act="ai-pdet" data-id="'+id+'" tabindex="0" role="link" aria-label="Открыть карточку: '+esc(MAT[id].name)+'">':t})}catch(e){}return h};
  var _ai=ai;ai=function(s,text){var r=_ai.apply(this,arguments);try{if(!AI_ON&&s&&s.E&&s===S)kitAsk(s.E)}catch(e){}return r};
  var _ao=aiOpt;aiOpt=function(s,key){var k=String(key);
   if(/^kit(add|no):/.test(k)&&s&&s.E){var E=s.E,kd=k.split(':')[1];
@@ -18464,8 +18568,8 @@ document.addEventListener('DOMContentLoaded',function(){
  var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
   var has0=anon()&&S.objs&&S.objs.length,usr=S.auth==='user'&&!S.anon,uo=usr&&S.objs&&S.objs.length;
-  var pitch='Нарисуйте свою квартиру или выберите готовую планировку, примерьте отделку и подберите лучшие материалы вместе с ИИ-помощником.';
-  var body='<h2>Создать свой интерьер</h2><p>'+pitch+'</p>'+(uo?'<p class="ro-gsub">Продолжите с того места, где остановились, или выберите другой объект.</p>':has0?'<p class="ro-gsub">Без входа объект хранится только в этом браузере. Войдите, чтобы не потерять его.</p>':usr?'':'<p class="ro-gsub">Начать можно без регистрации.</p>');
+  var pitch='Нарисуйте квартиру или выберите готовую планировку. Примерьте отделку с ИИ-помощником.';
+  var body='<h2>Создать свой интерьер</h2><p>'+pitch+'</p>'+(uo?'<p class="ro-gsub">Продолжите с того места, где остановились, или выберите другой объект.</p>':has0?'<p class="ro-gsub">Без входа объект хранится в этом браузере.</p>':usr?'':'<p class="ro-gsub">Начать можно без регистрации.</p>');
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
   var has=anon()&&S.objs&&S.objs.length;
   h=h.replace(/<button type="button" class="btn pri" data-act="ro-gnew">[\s\S]*?<\/button>/,'<button type="button" class="btn pri" data-act="'+(has||uo?'ro-cont':'ro-gnew')+'">'+(uo?'Продолжить':has?'Продолжить':'Создать объект')+' '+I('arrow')+'</button>');
@@ -24522,8 +24626,8 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function run(){t=0;var hd=[].slice.call(document.querySelectorAll('header')).filter(function(h){return h.offsetHeight>30})[0];if(!hd)return;
   [].slice.call(hd.querySelectorAll('a,button')).forEach(function(a){var lab=a.textContent.replace(/\s+/g,' ').trim();var on=lab==='Войти'&&a.offsetParent&&getComputedStyle(a).minWidth==='114px'||a.classList.contains('ro-login')&&lab==='Войти';
    if(on){if(!a.classList.contains('ro-login')){a.classList.add('ro-login');a.style.setProperty('min-width','0','important');a.style.setProperty('width','auto','important');a.style.setProperty('padding-left','12px','important');a.style.setProperty('padding-right','12px','important')}
-     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginRight!==mr)a.style.setProperty('margin-right',mr,'important')}
-   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right'].forEach(function(k){a.style.removeProperty(k)})}})}
+     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginLeft!==mr)a.style.setProperty('margin-left',mr,'important');a.style.removeProperty('margin-right')}
+   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right','margin-left'].forEach(function(k){a.style.removeProperty(k)})}})}
  new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',function(){if(!t)t=requestAnimationFrame(run)});setTimeout(run,300);run()})();
 
 /* Р42 (18.11): длинного тире «—» на сайте нет — везде короткое «–» (тексты, подписи, подсказки, поля), включая тени (подвал конструктора) */
@@ -29539,8 +29643,8 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function run(){t=0;var hd=[].slice.call(document.querySelectorAll('header')).filter(function(h){return h.offsetHeight>30})[0];if(!hd)return;
   [].slice.call(hd.querySelectorAll('a,button')).forEach(function(a){var lab=a.textContent.replace(/\s+/g,' ').trim();var on=lab==='Войти'&&a.offsetParent&&getComputedStyle(a).minWidth==='114px'||a.classList.contains('ro-login')&&lab==='Войти';
    if(on){if(!a.classList.contains('ro-login')){a.classList.add('ro-login');a.style.setProperty('min-width','0','important');a.style.setProperty('width','auto','important');a.style.setProperty('padding-left','12px','important');a.style.setProperty('padding-right','12px','important')}
-     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginRight!==mr)a.style.setProperty('margin-right',mr,'important')}
-   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right'].forEach(function(k){a.style.removeProperty(k)})}})}
+     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginLeft!==mr)a.style.setProperty('margin-left',mr,'important');a.style.removeProperty('margin-right')}
+   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right','margin-left'].forEach(function(k){a.style.removeProperty(k)})}})}
  new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',function(){if(!t)t=requestAnimationFrame(run)});setTimeout(run,300);run()})();
 
 /* Р42 (18.11): длинного тире «—» на сайте нет — везде короткое «–» (тексты, подписи, подсказки, поля), включая тени (подвал конструктора) */
@@ -29680,6 +29784,21 @@ post({type:'ready'});
    const i=$('#lg-mail');if(i)i.focus()}},true);
 
  patch();
+})();
+<%/script>
+<script id="ro-ckv-acc">
+/* 24.11: окно входа, открытое из оформления заказа (back=/checkout…), – подтверждение телефона: заголовок «Подтвердите телефон»,
+   первая фраза «Чтобы оформить заказ. По этому номеру позвонит курьер.», без выбора «Почта» (курьеру нужен телефон), номер из формы заказа. */
+(function(){if(typeof L==='undefined')return;
+ var ord=function(){return /^\/checkout(\?|$)/.test(String(L.back||''))&&L.mode!=='change'};
+ function fix(){var f=document.getElementById('login-form');if(!f||!ord())return;
+  if(L.via!=='phone'){L.via='phone';var b=f.querySelector('[data-act=via][data-via=phone]');if(b){b.click();return}}
+  var h=f.querySelector('#lg-t');if(h&&h.textContent!=='Подтвердите телефон')h.textContent='Подтвердите телефон';
+  var lead=f.querySelector('.acc-lead');var t='Чтобы оформить заказ. По этому номеру позвонит курьер.';if(lead&&lead.textContent!==t)lead.textContent=t;
+  var sg=f.querySelector('.acc-seg');if(sg)sg.remove();
+  var i=f.querySelector('#lg-phone');if(i&&!i.value&&!i.dataset.ckv){i.dataset.ckv='1';var p='';try{p=localStorage.getItem('ro-ck-ph')||''}catch(x){}
+   if(p){var v='+7 '+p.slice(1,4)+' '+p.slice(4,7)+'-'+p.slice(7,9)+'-'+p.slice(9,11);i.value=v;i.dispatchEvent(new Event('input',{bubbles:true}))}}}
+ new MutationObserver(fix).observe(document.body,{childList:true,subtree:true});fix();
 })();
 <%/script>
 <script id="ro-home-nv">
@@ -31319,8 +31438,8 @@ window.RO_UNPAID=function(){try{var a=JSON.parse(localStorage.getItem('remonline
  function run(){t=0;var hd=[].slice.call(document.querySelectorAll('header')).filter(function(h){return h.offsetHeight>30})[0];if(!hd)return;
   [].slice.call(hd.querySelectorAll('a,button')).forEach(function(a){var lab=a.textContent.replace(/\s+/g,' ').trim();var on=lab==='Войти'&&a.offsetParent&&getComputedStyle(a).minWidth==='114px'||a.classList.contains('ro-login')&&lab==='Войти';
    if(on){if(!a.classList.contains('ro-login')){a.classList.add('ro-login');a.style.setProperty('min-width','0','important');a.style.setProperty('width','auto','important');a.style.setProperty('padding-left','12px','important');a.style.setProperty('padding-right','12px','important')}
-     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginRight!==mr)a.style.setProperty('margin-right',mr,'important')}
-   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right'].forEach(function(k){a.style.removeProperty(k)})}})}
+     var w=a.getBoundingClientRect().width;var mr=Math.max(0,114-w).toFixed(3)+'px';if(a.style.marginLeft!==mr)a.style.setProperty('margin-left',mr,'important');a.style.removeProperty('margin-right')}
+   else if(a.classList.contains('ro-login')){a.classList.remove('ro-login');['min-width','width','padding-left','padding-right','margin-right','margin-left'].forEach(function(k){a.style.removeProperty(k)})}})}
  new MutationObserver(function(){run()}).observe(document.documentElement,{childList:true,subtree:true,characterData:true});addEventListener('resize',function(){if(!t)t=requestAnimationFrame(run)});setTimeout(run,300);run()})();
 
 /* Р42 (18.11): длинного тире «—» на сайте нет — везде короткое «–» (тексты, подписи, подсказки, поля), включая тени (подвал конструктора) */
