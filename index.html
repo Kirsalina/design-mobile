@@ -18568,7 +18568,7 @@ document.addEventListener('DOMContentLoaded',function(){
  var anon=function(){return !!(S&&S.anon&&S.auth==='user')};
  var _gp=gatePage;gatePage=function(){var h=_gp.apply(this,arguments);
   var has0=anon()&&S.objs&&S.objs.length,usr=S.auth==='user'&&!S.anon,uo=usr&&S.objs&&S.objs.length;
-  var pitch='Нарисуйте квартиру или выберите готовую планировку. Примерьте отделку с ИИ-помощником.';
+  var pitch='Спланируйте ремонт онлайн: нарисуйте комнату или выберите типовую планировку, подберите отделку и получите смету материалов.';
   var body='<h2>Создать свой интерьер</h2><p>'+pitch+'</p>'+(uo?'<p class="ro-gsub">Продолжите с того места, где остановились, или выберите другой объект.</p>':has0?'<p class="ro-gsub">Без входа объект хранится в этом браузере.</p>':usr?'':'<p class="ro-gsub">Начать можно без регистрации.</p>');
   h=h.replace(/<h2>[^<]*<\/h2><p>[\s\S]*?<\/p>/,body);
   var has=anon()&&S.objs&&S.objs.length;
@@ -18580,7 +18580,7 @@ document.addEventListener('DOMContentLoaded',function(){
   return h};
  var _op=objectsPage;objectsPage=function(){var h=_op.apply(this,arguments);
   if(S.newObj){var i=h.indexOf('<h3 id="no-t">Новый объект</h3>');if(i>=0){var j=h.indexOf('</div>',i)+6;
-   h=h.slice(0,j)+'<p class="ro-ointro">Соберите в одном месте всё по квартире, дому или офису: комнаты, планировку и общую смету на весь ремонт.</p>'+(anon()?'<p class="ro-onote">Без входа объект легко потерять. Войдите, чтобы он точно сохранился.</p>':'')+h.slice(j)}}
+   h=h.slice(0,j)+'<p class="ro-ointro">Соберите в одном месте всё по квартире, дому или офису: комнаты, планировку и общую смету на весь ремонт.'+(anon()?' Без входа объект хранится в этом браузере.':'')+'</p>'+h.slice(j)}}
   if(S.roLim)h+='<div class="ovl"><div class="dlg dlg-lim" role="dialog" aria-modal="true" aria-labelledby="lim-t"><div class="dlg-h"><h3 id="lim-t">Нужен вход</h3><button type="button" class="icb" data-act="ro-lim-x" aria-label="Закрыть">'+I('x')+'</button></div><p>Без регистрации доступен один объект. Войдите, чтобы создать ещё — текущий объект сохранится в кабинете.</p><div class="acts"><button type="button" class="btn pri" data-act="ro-lim-in">Войти</button><button type="button" class="btn" data-act="ro-lim-x">Отмена</button></div></div></div>';
   return h};
  var _a=act;act=function(a,el,ev){
@@ -29787,14 +29787,14 @@ post({type:'ready'});
 })();
 <%/script>
 <script id="ro-ckv-acc">
-/* 24.11: окно входа, открытое из оформления заказа (back=/checkout…), – подтверждение телефона: заголовок «Подтвердите телефон»,
+/* 24.11: окно входа, открытое из оформления заказа (текст: «Чтобы оформить заказ и быть на связи по доставке.») (back=/checkout…), – подтверждение телефона: заголовок «Подтвердите телефон»,
    первая фраза «Чтобы оформить заказ. По этому номеру позвонит курьер.», без выбора «Почта» (курьеру нужен телефон), номер из формы заказа. */
 (function(){if(typeof L==='undefined')return;
  var ord=function(){return /^\/checkout(\?|$)/.test(String(L.back||''))&&L.mode!=='change'};
  function fix(){var f=document.getElementById('login-form');if(!f||!ord())return;
   if(L.via!=='phone'){L.via='phone';var b=f.querySelector('[data-act=via][data-via=phone]');if(b){b.click();return}}
   var h=f.querySelector('#lg-t');if(h&&h.textContent!=='Подтвердите телефон')h.textContent='Подтвердите телефон';
-  var lead=f.querySelector('.acc-lead');var t='Чтобы оформить заказ. По этому номеру позвонит курьер.';if(lead&&lead.textContent!==t)lead.textContent=t;
+  var lead=f.querySelector('.acc-lead');var t='Чтобы оформить заказ и быть на связи по доставке.';if(lead&&lead.textContent!==t)lead.textContent=t;
   var sg=f.querySelector('.acc-seg');if(sg)sg.remove();
   var i=f.querySelector('#lg-phone');if(i&&!i.value&&!i.dataset.ckv){i.dataset.ckv='1';var p='';try{p=localStorage.getItem('ro-ck-ph')||''}catch(x){}
    if(p){var v='+7 '+p.slice(1,4)+' '+p.slice(4,7)+'-'+p.slice(7,9)+'-'+p.slice(9,11);i.value=v;i.dispatchEvent(new Event('input',{bubbles:true}))}}}
