@@ -21,6 +21,8 @@ body{display:flex;flex-direction:column}
 .ro-stub a:hover{background:#10ACB8}
 @media (max-width:600px){.ro-stub h1{font-size:28px;line-height:35px}}
 </style></head><body>
+<script id="ro-preview-label">(function(){var L="W4 Кнопки",P=L+" – ";function fix(){if(document.title.indexOf(P)!==0)document.title=P+document.title.replace(/^W\d[^–]*– /,"");}fix();var t=document.querySelector("title");if(t)new MutationObserver(fix).observe(t,{childList:true,characterData:true,subtree:true});setInterval(fix,1000);function badge(){if(document.getElementById("ro-pv-badge"))return;var d=document.createElement("div");d.id="ro-pv-badge";d.textContent=L;d.style.cssText="position:fixed;left:8px;bottom:8px;z-index:2147483647;pointer-events:none;padding:4px 8px;border-radius:8px;background:rgba(21,42,75,.72);color:#fff;font:700 12px/16px Manrope,Arial,sans-serif;letter-spacing:.02em";document.body.appendChild(d);}if(document.body)badge();else document.addEventListener("DOMContentLoaded",badge);})();</script>
+
 <div class="ro-stage"><div class="ro-box" id="ro-box">
   <div class="ro-load" id="ro-load" hidden>Загружаем…</div>
   <div class="ro-stub" id="ro-stub" hidden><div class="in"><h1 id="ro-stub-h"></h1><p id="ro-stub-p"></p><a href="#/">На главную</a></div></div>
@@ -8848,6 +8850,20 @@ html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+/* W4-2, 25.11: карточка товара (G6, Алина 15:39). Цена – сразу под подписями (12), к низу прижата только кнопка;
+   карточки одного ряда одной высоты, кнопки на одной линии. Каталог: витрина, списки, похожие. Главная: блоки товаров. */
+html body .shop .card>.card-body:not(#ro-w4-a):not(#ro-w4-b){display:flex!important;flex-direction:column!important}
+html body .shop .card>.card-body>.card-head:not(#ro-w4-a){flex:none}
+html body .shop .card>.card-body .offer-price:not(#ro-w4-a):not(#ro-w4-b){margin-top:0!important}
+html body .shop .card>.card-body .product-card-actions:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important;align-self:stretch!important}
+html body #design-app .product-card .product-pricing:not(#ro-w4-a):not(#ro-w4-b){margin:0!important;padding-top:12px!important}
+html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important}
+/* страница товара «нет в наличии»: пустой блок покупки не даёт лишних 32–48 px; цена → «Аналоги» как цена → «В корзину» */
+html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
+</style>
 </body></html>
 </script>
 <script type="text/x-ro-module" id="mod-catalog"><!doctype html>
@@ -17369,6 +17385,20 @@ html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+/* W4-2, 25.11: карточка товара (G6, Алина 15:39). Цена – сразу под подписями (12), к низу прижата только кнопка;
+   карточки одного ряда одной высоты, кнопки на одной линии. Каталог: витрина, списки, похожие. Главная: блоки товаров. */
+html body .shop .card>.card-body:not(#ro-w4-a):not(#ro-w4-b){display:flex!important;flex-direction:column!important}
+html body .shop .card>.card-body>.card-head:not(#ro-w4-a){flex:none}
+html body .shop .card>.card-body .offer-price:not(#ro-w4-a):not(#ro-w4-b){margin-top:0!important}
+html body .shop .card>.card-body .product-card-actions:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important;align-self:stretch!important}
+html body #design-app .product-card .product-pricing:not(#ro-w4-a):not(#ro-w4-b){margin:0!important;padding-top:12px!important}
+html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important}
+/* страница товара «нет в наличии»: пустой блок покупки не даёт лишних 32–48 px; цена → «Аналоги» как цена → «В корзину» */
+html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
+</style>
 </body>
 </html>
 </script>
@@ -25418,6 +25448,10 @@ html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+</style>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
@@ -30192,6 +30226,10 @@ html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+</style>
 </body>
 </html>
 </script>
@@ -31921,6 +31959,10 @@ html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
 </style>
 </body></html></script>
 
