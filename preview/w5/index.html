@@ -21,6 +21,8 @@ body{display:flex;flex-direction:column}
 .ro-stub a:hover{background:#10ACB8}
 @media (max-width:600px){.ro-stub h1{font-size:28px;line-height:35px}}
 </style></head><body>
+<script id="ro-preview-label">(function(){var L="W5 Смета",P=L+" – ";function fix(){if(document.title.indexOf(P)!==0)document.title=P+document.title.replace(/^W\d[^–]*– /,"");}fix();var t=document.querySelector("title");if(t)new MutationObserver(fix).observe(t,{childList:true,characterData:true,subtree:true});setInterval(fix,1000);function badge(){if(document.getElementById("ro-pv-badge"))return;var d=document.createElement("div");d.id="ro-pv-badge";d.textContent=L;d.style.cssText="position:fixed;left:8px;bottom:8px;z-index:2147483647;pointer-events:none;padding:4px 8px;border-radius:8px;background:rgba(21,42,75,.72);color:#fff;font:700 12px/16px Manrope,Arial,sans-serif;letter-spacing:.02em";document.body.appendChild(d);}if(document.body)badge();else document.addEventListener("DOMContentLoaded",badge);})();</script>
+
 <div class="ro-stage"><div class="ro-box" id="ro-box">
   <div class="ro-load" id="ro-load" hidden>Загружаем…</div>
   <div class="ro-stub" id="ro-stub" hidden><div class="in"><h1 id="ro-stub-h"></h1><p id="ro-stub-p"></p><a href="#/">На главную</a></div></div>
@@ -8818,14 +8820,14 @@ post({type:'ready'});
    Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
    Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
    :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
-html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(.button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip):not(.v-btn--variant-text),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,.range input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
 html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
 html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
 @media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#14B3BF 0%,#0E9EAA 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
 /* удаление: белая кнопка, красный текст */
 html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* кнопки внутри счётчика – без своего фона */
@@ -8833,11 +8835,16 @@ html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w
 /* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
 html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
 /* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* поиск в фокусе (§5): рамка #006B79 + 1 px внутри */
+html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+/* удаление: один красный #A32637 */
+html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
 html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
 :root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
@@ -17334,14 +17341,14 @@ html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-in
    Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
    Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
    :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
-html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(.button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip):not(.v-btn--variant-text),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,.range input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
 html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
 html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
 @media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#14B3BF 0%,#0E9EAA 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
 /* удаление: белая кнопка, красный текст */
 html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* кнопки внутри счётчика – без своего фона */
@@ -17349,11 +17356,16 @@ html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w
 /* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
 html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
 /* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* поиск в фокусе (§5): рамка #006B79 + 1 px внутри */
+html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+/* удаление: один красный #A32637 */
+html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
 html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
 :root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
@@ -18547,74 +18559,80 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 <%/script>
 <style id="ro-w5-smeta-css">
-/* W5, S1 v2 (25.11, 15:27, Алина: «картонно, непонятно, что в смете»). Вспомогательные – обычные строки на белом, без бежевых плашек.
-   Под отделкой: «Нужно для …» – видно всегда (без этого работу не сделать); «Рекомендуем для …» – одна строка, раскрывается.
-   Что в сумме: у отмеченной строки цена 16/24 700 #152A4B, у неотмеченной «+ N ₽» #566273 (добавится, если отметить). Цвета и размеры – DESIGN-SYSTEM. */
-#ui .ro-w5-k{margin:-4px 14px 12px 48px}
-#ui .ro-w5-gh{display:flex;flex-direction:column;padding:12px 0 4px 38px}
-#ui .ro-w5-gh b,#ui .ro-w5-rh .t{font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B}
-#ui .ro-w5-gh span,#ui .ro-w5-rh .d{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
-#ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:16px;align-items:center;border-top:1px solid #E3E6EA}
-#ui .ro-w5-kh{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;column-gap:12px;width:100%;min-height:64px;margin:0;padding:8px 0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;color:#152A4B;box-sizing:border-box}
-#ui .ro-w5-kh .tt{display:flex;flex-direction:column;min-width:0}
-#ui .ro-w5-kh .m{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
-#ui .ro-w5-kh .m.on{color:#006B79;font-weight:600}
-#ui .ro-w5-kh .ic{width:20px;height:20px;color:#566273;transition:transform .15s ease}
-#ui .ro-w5-kh[aria-expanded="true"] .ic{transform:rotate(180deg)}
-#ui .ro-w5-kh:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:8px}
-@media (hover:hover){#ui .ro-w5-kh:hover .t{color:#006B79}}
-#ui .ro-w5-r{display:grid;grid-template-columns:22px 48px minmax(0,1fr) auto auto;align-items:center;column-gap:16px;min-height:72px;padding:12px 0;border-top:1px solid #E3E6EA;box-sizing:border-box}
-#ui .ro-w5-gh+.ro-w5-r{border-top:0}
-#ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:48px;height:48px;border-radius:8px;display:block;object-fit:cover}
+/* W5, S1 v3 (25.11, 16:59, Алина: «нет иерархии, ничего не посчитать, непонятно, как скрыть / раскрыть»).
+   Блок отделки: строка отделки → «Для поклейки» (обязательное, отмечено) → «Рекомендуем» (отмеченное видно всегда,
+   неотмеченное – под «Показать ещё N») → «Итого» блока. Цены всех строк блока – в одном столбце. Без плашек и вложенных рамок.
+   Цвета, размеры, шрифты – DESIGN-SYSTEM. Наведение на название – только цвет (Алина 16:59). */
+#ui .estimate-group>article.estimate-product~article.estimate-product{border-top:1px solid #E3E6EA}
+html body #ui .estimate-list h4.eg>span{font-size:16px!important;line-height:24px!important;font-weight:600!important;color:#152A4B!important}
+html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24px!important;font-weight:700!important;color:#152A4B!important}
+#ui .ro-w5-k{margin:0 66px 0 48px;padding:0 0 16px}
+#ui .ro-w5-gh{display:flex;align-items:center;gap:16px;min-height:40px;margin:0;font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-gh label{cursor:pointer}
+#ui .ro-w5-r{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;min-height:56px;padding:8px 0;box-sizing:border-box}
+#ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
 #ui .ro-w5-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
-#ui .ro-w5-n{display:inline;max-width:100%;min-height:24px;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer;font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;overflow-wrap:anywhere}
+#ui .ro-w5-n{display:inline;max-width:100%;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer;font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;overflow-wrap:anywhere;transition:color .15s ease}
 #ui .ro-w5-n:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
-@media (hover:hover){#ui .ro-w5-n:hover{color:#006B79;text-decoration:underline;text-underline-offset:4px}}
+@media (hover:hover){#ui .ro-w5-n:hover{color:#006B79}}
 #ui .ro-w5-w{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;overflow-wrap:anywhere}
 #ui .ro-w5-q{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
-#ui .ro-w5-s{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;min-width:88px;text-align:right}
-#ui .ro-w5-r.off .ro-w5-s{color:#566273}
+#ui .ro-w5-s{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;text-align:right}
+#ui .ro-w5-r.off .ro-w5-s{color:#566273;font-weight:600}
 #ui .ro-w5-r .pbadge{margin-top:4px}
+#ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
+#ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273;cursor:pointer}
+#ui .ro-w5-rh label .x{font-weight:400}
+#ui .ro-w5-more{display:inline-flex;align-items:center;gap:4px;min-height:40px;margin:0;padding:0 4px;white-space:nowrap;border:0;background:none;cursor:pointer;text-align:left;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;transition:color .15s ease}
+#ui .ro-w5-more .x{font-weight:400;color:#566273}
+#ui .ro-w5-more svg{width:16px;height:16px;flex:none;transition:transform .15s ease}
+#ui .ro-w5-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+#ui .ro-w5-more:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
+@media (hover:hover){#ui .ro-w5-more:hover{color:#152A4B}}
+#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin-top:8px;padding-top:12px;border-top:1px solid #E3E6EA}
+#ui .ro-w5-sum span{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-sum b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap}
 /* итог в «Параметрах» сметы – без плашки (DESIGN-SYSTEM §17): подпись 14/21 над суммой */
 #ui .cov.ro-w5-tot{padding:0;background:none;border:0;border-radius:0}
 #ui .cov.ro-w5-tot .sm{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 4px}
+#ui .ro-w5-cs .lnk{margin-left:4px}
+/* название отделки: наведение – только цвет */
+@media (hover:hover){#ui .estimate-name .ln:hover{text-decoration:none!important;color:#006B79}}
 @media (max-width:700px){
- #ui .ro-w5-k{margin:-2px 8px 8px 12px}
- #ui .ro-w5-gh{padding-left:34px}
+ #ui .ro-w5-k{margin:0 48px 0 12px;padding-bottom:12px}
+ #ui .ro-w5-gh{gap:12px}
+ #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
+ #ui .ro-w5-r>.ro-w5-th{display:none}
+ #ui .ro-w5-t{grid-column:2;grid-row:1/3}
+ #ui .ro-w5-r .ro-w5-q{grid-column:2;grid-row:3}
+ #ui .ro-w5-s{grid-column:3;grid-row:1/4;align-self:center}
+ #ui .ro-w5-r>input{grid-row:1/4;align-self:center}
  #ui .ro-w5-rh{column-gap:12px}
- #ui .ro-w5-kh{grid-template-columns:minmax(0,1fr) 20px}
- #ui .ro-w5-kh .m{grid-column:1;grid-row:2}
- #ui .ro-w5-kh .ic{grid-column:2;grid-row:1/3}
- #ui .ro-w5-r{grid-template-columns:22px 40px minmax(0,1fr) auto;column-gap:12px;min-height:64px}
- #ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px}
- #ui .ro-w5-r>input,#ui .ro-w5-r>.ro-w5-th{grid-row:1/4}
- #ui .ro-w5-t{display:contents}
- #ui .ro-w5-n{grid-column:3;grid-row:1;justify-self:start}
- #ui .ro-w5-r .ro-w5-q{grid-column:3;grid-row:2}
- #ui .ro-w5-w{grid-column:3;grid-row:3}
- #ui .ro-w5-s{grid-column:4;grid-row:1/4;min-width:0}
- /* название в строке сметы на телефоне – 16/24 600 (DESIGN-SYSTEM §2), до двух строк, без обрезки в одну */
+ /* строка отделки на телефоне: название 16/24, количество 14/21, цена 16/24 700 (DESIGN-SYSTEM §2), стрелка по центру */
  html body #ui .estimate-row.r2>.estimate-name>.ln{font-size:16px!important;line-height:24px!important;white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ html body #ui .estimate-row.r2 .estimate-q .qty{font-size:14px!important;line-height:21px!important}
+ html body #ui .estimate-row.r2 .estimate-q .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important}
+ html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
 }
-@media (prefers-reduced-motion:reduce){#ui .ro-w5-kh .ic{transition:none}}
+@media (prefers-reduced-motion:reduce){#ui .ro-w5-more svg,#ui .ro-w5-n,#ui .ro-w5-more{transition:none}}
 </style>
 <script id="ro-w5-smeta">
-/* W5, S1 (25.11, Алина: «смету сделать красивей, отдельно»). Основа – макет W1 mock/smeta-vspomogatelnye.html, правила C7.
-   – Под отделкой одна строка «Для …» (свёрнута), справа «в смете N из M, сумма»; раскрывается на месте (T.w5o).
-   – Внутри «Понадобится» (без этого работу не сделать) и «По желанию» (рекомендуем + по желанию); галочка группы = «выбрать всё» группы.
-   – «Понадобится» отмечено сразу, один раз при появлении строки (T.kseen); снятая галочка не возвращается.
-   – «Выбрать всё» сверху и «Выбрано» справа считают одно и то же: все строки сметы, со вспомогательными.
-   – Сумма у «Стены / Пол / Потолок» – с отмеченными вспомогательными.
-   Данные и расчёт – из «ro-kit» (W1), здесь только вид и галочки. */
+/* W5, S1 v3 (25.11, 16:59). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
+   – «Для поклейки / покраски / укладки» – обязательное (без чего работу не сделать), отмечено сразу один раз (T.kseen).
+   – «Рекомендуем» – инструменты и по желанию. Отмеченное видно всегда; неотмеченное – под «Показать ещё N: …» (T.w5o).
+     Снятая на виду строка не пропадает до «Скрыть» (T.w5k) – ничего не прыгает.
+   – «Итого» блока = отделка + отмеченные материалы; «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
+   – Итог справа: кнопка «Добавить в корзину» не меняется; ответ «В корзине: N на … ₽» + «Перейти в корзину» (решение Алины).
+   – «Назад к смете» и возврат из «Отделки» – к той же строке. */
 document.addEventListener('DOMContentLoaded',function(){
  if(typeof estCalc!=='function'||typeof estCenter!=='function'||!window.roKit)return;
  var ROLE={need:0,rec:1,opt:2};
- var FOR={paper:'обоев',paint:'краски',tile:'плитки',gres:'керамогранита',lam:'ламината',lino:'линолеума'};
  var KN={paper:'обои',paint:'краску',tile:'плитку',gres:'керамогранит',lam:'ламинат',lino:'линолеум'};
- var R0=function(n){return rub(n||0).replace(/ /g,' ')};
+ var FORV={paper:'Для поклейки',paint:'Для покраски',tile:'Для укладки',gres:'Для укладки',lam:'Для укладки',lino:'Для укладки'};
+ var R0=function(n){return rub(n||0).replace(/ /g,'\u00a0')};
  var nf=function(x){return String(Math.round(x*10)/10).replace('.',',')};
-
- /* «Понадобится» – отмечено сразу (решение C7, W1 25.11) */
+ var sid=function(id){return String(id).replace(/\W/g,'')};
+ var noun=function(n){return String(n).split(/[\s«]/)[0].toLowerCase()};
  var _ec=estCalc;estCalc=function(s){var C=_ec.apply(this,arguments);try{var T=s.E.est;if(!T.kon)T.kon={};if(!T.kseen)T.kseen={};var ch=false,here={};
   C.lines.forEach(function(l){if(!l.kit)return;if(l.kf==='obj'&&l.role==='need')l.role='rec';here[l.id]=1;if(!T.kseen[l.id]){T.kseen[l.id]=1;if(l.role==='need'){T.kon[l.id]=1;l.on=true;ch=true}}});
   Object.keys(T.kseen).forEach(function(id){if(!here[id])delete T.kseen[id]});
@@ -18636,62 +18654,73 @@ document.addEventListener('DOMContentLoaded',function(){
   if(l.kf==='perim')return (pre?pre+'п':'П')+'о периметру '+nf(l.kper)+' м'+(wh?': '+wh:'');
   if(l.kf==='doors')return (pre?pre+'н':'Н')+'а '+l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей'])+(wh?': '+wh:'');
   return (pre?pre+'н':'Н')+'а '+nf(ar)+' м²'+(wh?': '+wh:'')}
- var FORV={paper:'поклейки',paint:'покраски',tile:'укладки плитки',gres:'укладки керамогранита',lam:'укладки ламината',lino:'укладки линолеума'};
- var NOWAY={paper:'Без этого обои не поклеить',paint:'Без этого не покрасить',tile:'Без этого плитку не уложить',gres:'Без этого керамогранит не уложить',lam:'Без этого ламинат не уложить',lino:'Без этого линолеум не уложить'};
- var noun=function(n){return String(n).split(/[\s«]/)[0].toLowerCase()};
+
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
-   '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+l.id.replace(/\W/g,''),48)+'</span>'+
+   '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
    '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+esc(kFor(l))+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
- function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};
+ function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};
   var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
-  var kd=roKit.kindOf(own.eff),fv=FORV[kd]||'работы',need=rows.filter(function(l){return l.role==='need'}),rec=rows.filter(function(l){return l.role!=='need'}),sid=own.id.replace(/\W/g,''),h='<div class="ro-w5-k" data-own="'+own.id+'">';
-  if(need.length)h+='<p class="ro-w5-gh"><b>Нужно для '+fv+'</b><span>'+(NOWAY[kd]||'Без этого работу не сделать')+'</span></p>'+need.map(row).join('');
-  if(rec.length){var op=!!T.w5o[own.id],on=rec.filter(function(l){return l.on}),sum=on.reduce(function(x,l){return x+(l.sum||0)},0),nm=[];
-   rec.forEach(function(l){var w=noun(l.name);if(nm.indexOf(w)<0)nm.push(w)});
-   var m=on.length?'В смете '+on.length+' из '+rec.length+', '+R0(sum):'Не в смете';
-   h+='<div class="ro-w5-rh">'+'<input type="checkbox" id="w5g-'+sid+'" data-m="w5g" data-k="'+own.id+':opt"'+(on.length===rec.length?' checked':'')+' aria-label="Выбрать все рекомендуемые для '+fv+'">'+
-    '<button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+sid+'"><span class="tt"><span class="t">Рекомендуем для '+fv+'</span><span class="d">'+(op?'Необязательно: пригодится, если нет своего':esc(nm.join(', ')))+'</span></span><span class="m'+(on.length?' on':'')+'">'+m+'</span>'+I('down')+'</button></div>';
-   if(op)h+='<div id="w5b-'+sid+'" role="group" aria-label="Рекомендуем для '+fv+'">'+rec.map(row).join('')+'</div>'}
+  var kd=roKit.kindOf(own.eff),need=rows.filter(function(l){return l.role==='need'}),rec=rows.filter(function(l){return l.role!=='need'}),k=sid(own.id),op=!!T.w5o[own.id],h='<div class="ro-w5-k" data-own="'+own.id+'">';
+  if(need.length)h+='<p class="ro-w5-gh">'+(FORV[kd]||'Для работы')+'</p>'+need.map(row).join('');
+  if(rec.length){var on=rec.filter(function(l){return l.on}),vis=rec.filter(function(l){return op||l.on||T.w5k[l.id]}),hid=rec.filter(function(l){return vis.indexOf(l)<0}),nm=[];
+   hid.forEach(function(l){var w=noun(l.name);if(nm.indexOf(w)<0)nm.push(w)});
+   var lb='Рекомендуем'+(hid.length&&!vis.length?':<span class="x"> '+esc(nm.join(', '))+'</span>':'');
+   var tg=hid.length?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="false" aria-controls="w5b-'+k+'">'+(vis.length?'Показать ещё '+hid.length:'Показать')+I('down')+'</button>':((op||vis.some(function(l){return !l.on}))?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-v="hide" data-id="'+own.id+'" aria-expanded="true" aria-controls="w5b-'+k+'">Скрыть'+I('down')+'</button>':'');
+   h+='<div class="ro-w5-rh"><input type="checkbox" id="w5g-'+k+'" data-m="w5g" data-k="'+own.id+':opt"'+(on.length===rec.length?' checked':'')+' aria-label="Выбрать всё рекомендуемое"><label for="w5g-'+k+'">'+lb+'</label>'+tg+'</div>';
+   h+='<div id="w5b-'+k+'" role="group" aria-label="Рекомендуем">'+vis.map(row).join('')+'</div>'}
+  var tot=(own.on?own.sum||0:0)+rows.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0);
+  h+='<p class="ro-w5-sum"><span>Итого</span><b>'+R0(tot)+'</b></p>';
   return h+'</div>'}
 
  var _ce=estCenter;estCenter=function(){var h=_ce.apply(this,arguments),T=S.E.est;
   if(T.mode==='cmp'||T.mode==='kdet'||T.mode==='kalt'||h.indexOf('estimate-list-head')<0)return h;
   var C=estCalc(S);
-  /* вид W1 («Понадобится» под отделкой) заменяется строкой «Для …» */
   h=h.replace(/<div class="ro-kit" role="group"[\s\S]*?(?=<article|<\/section>)/g,'');
   C.lines.forEach(function(l){if(l.kit)return;var k='data-act="e-sel" data-id="'+l.id+'"',i=h.indexOf(k);if(i<0)return;var j=h.indexOf('</article>',i);if(j<0)return;j+=10;h=h.slice(0,j)+kitBox(C,l)+h.slice(j)});
-  /* «Выбрать всё»: все строки сметы */
   var all=C.lines.length&&C.on===C.lines.length;
   h=h.replace(/(<input type="checkbox" id="eall"[^>]*?)\s?checked(?=[\s>])/,'$1');
   if(all)h=h.replace('<input type="checkbox" id="eall"','<input type="checkbox" id="eall" checked');
   h=h.replace(/(<label class="estimate-list-head">[\s\S]*?<small>)[^<]*(<\/small>)/,'$1'+C.on+' из '+C.lines.length+'$2');
-  /* суммы групп – с отмеченными вспомогательными (под видимыми отделками) */
-  var rs=C.rooms.filter(function(r){return r.on}),rf=rs.some(function(r){return r.ri===T.room})?T.room:null;
-  var vis=C.lines.filter(function(l){return !l.kit&&(!T.grp||l.grp===T.grp)&&(rf==null||l.by[rf])});
+  var vis=C.lines.filter(function(l){return !l.kit&&(!T.grp||l.grp===T.grp)});
   h=h.replace(/(<h4 class="eg"><span>)([^<]+)(<\/span><small>)[^<]*(<\/small>)/g,function(m,a,g,b,c){
    var own=vis.filter(function(l){return l.grp===g}),ids={};own.forEach(function(l){ids[l.id]=1});
    var s=own.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0)+C.lines.reduce(function(x,l){return x+(l.kit&&l.on&&ids[l.owner]?l.sum||0:0)},0);
    return a+g+b+R0(s)+c});
   return h};
 
- /* итог в «Параметрах» – без плашки */
  if(typeof estParams==='function'){var _ep=estParams;estParams=function(){var h=_ep.apply(this,arguments);return h.replace('<div class="cov"><div><p class="sm">Выбрано','<div class="cov ro-w5-tot"><div><p class="sm">Выбрано')}}
 
- /* после перерисовки фокус остаётся на той же галочке (клавиатура, экранный диктор) */
- var _rn=render;render=function(){var r=_rn.apply(this,arguments),id=S._w5f;S._w5f=null;if(id){var e=document.getElementById(id);if(e&&document.activeElement!==e)try{e.focus({preventScroll:true})}catch(x){}}return r};
- var _ch=estChange;estChange=function(m,k,v,el){if(el&&el.id&&(m==='eon'||m==='w5g'||m==='eall'))S._w5f=el.id;
-  if(m==='w5g'){var E=S.E,T=E.est,p=String(k).split(':'),own=p[0],key=p[1];if(!T.kon)T.kon={};
-   var L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&(key==='need'?l.role==='need':l.role!=='need')});
-   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+(key==='need'?'понадобится':'по желанию'));L.forEach(function(l){if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
-  var r=_ch.apply(this,arguments);
-  if(m==='eall'){try{var T2=S.E.est;if(!T2.kon)T2.kon={};estCalc(S).lines.forEach(function(l){if(!l.kit)return;if(el.checked)T2.kon[l.id]=1;else delete T2.kon[l.id]})}catch(e){}}
-  return r};
+ /* итог: кнопка не меняется; ответ строкой (как в карточке товара) */
+ if(typeof cartBlock==='function'){var _cb=cartBlock;cartBlock=function(C,T){var r=_cb.apply(this,arguments);try{
+  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])},go=' <button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>';
+  if(T.cart&&r.btn.indexOf('e-cartgo')>=0){var n=Object.keys(T.cart.items).length;r.btn='<button type="button" class="btn pri wide" data-act="e-cart"'+(C.on?'':' disabled')+'>Добавить в корзину</button>';r.st='<span class="ro-w5-cs">В корзине: '+w(n)+' на '+R0(cartSum(T.cart))+go+'</span>'}
+  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='<span class="ro-w5-cs">В корзине: '+w(ks.length)+' на '+R0(sm)+go+'</span>'}
+  else if(T.cart&&r.btn.indexOf('e-sync')>=0&&T.cartMsg)r.st='<span class="ro-w5-cs">'+esc(T.cartMsg)+go+'</span>';
+ }catch(e){}return r}}
 
+ /* фокус на той же галочке после перерисовки; возврат к строке после «Назад к смете» */
+ var _rn=render;render=function(){var r=_rn.apply(this,arguments),id=S._w5f;S._w5f=null;
+  if(id){var e=document.getElementById(id);if(e&&document.activeElement!==e)try{e.focus({preventScroll:true})}catch(x){}}
+  var ret=S._w5ret;if(ret&&S.page==='editor'&&S.E&&S.E.stage==='est'&&S.E.est.mode!=='kdet'&&S.E.est.mode!=='kalt'){
+   var t=document.querySelector('#ui .estimate-list [data-id="'+ret+'"]');if(t){S._w5ret=null;var y=S._w5y;
+    requestAnimationFrame(function(){try{var sc=t.closest('.ctr')||document.getElementById('ui');t.scrollIntoView({block:'center'});t.focus({preventScroll:true})}catch(x){}})}}
+  return r};
+ var _ch=estChange;estChange=function(m,k,v,el){if(el&&el.id&&(m==='eon'||m==='w5g'||m==='eall'))S._w5f=el.id;
+  var T=S.E.est;if(!T.w5k)T.w5k={};
+  if(m==='w5g'){var E=S.E,p=String(k).split(':'),own=p[0];if(!T.kon)T.kon={};
+   var L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&l.role!=='need'});
+   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+'рекомендуем');L.forEach(function(l){T.w5k[l.id]=1;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
+  if(m==='eon')T.w5k[k]=1;
+  var r=_ch.apply(this,arguments);
+  if(m==='eall'){try{if(!T.kon)T.kon={};estCalc(S).lines.forEach(function(l){if(!l.kit)return;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]})}catch(e){}}
+  return r};
  var _a=act;act=function(a,el,ev){var d=(el&&el.dataset)||{};
-  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};T.w5o[d.id]=!T.w5o[d.id];render();
-   var b=document.querySelector('#ui .ro-w5-kh[data-id="'+d.id+'"]');if(b)b.focus({preventScroll:true});return}
+  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};var o=d.v!=='hide';T.w5o[d.id]=o;
+   if(!o)estCalc(S).lines.forEach(function(l){if(l.kit&&l.owner===d.id)delete T.w5k[l.id]});render();
+   var b=document.querySelector('#ui .ro-w5-more[data-id="'+d.id+'"]')||document.getElementById('w5g-'+sid(d.id));if(b)b.focus({preventScroll:true});return}
+  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est')S._w5ret=d.id;
   return _a.apply(this,arguments)};
  if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
 });
@@ -25528,14 +25557,14 @@ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.clo
    Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
    Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
    :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
-html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(.button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip):not(.v-btn--variant-text),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,.range input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
 html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
 html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
 @media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#14B3BF 0%,#0E9EAA 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
 /* удаление: белая кнопка, красный текст */
 html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* кнопки внутри счётчика – без своего фона */
@@ -25543,11 +25572,16 @@ html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w
 /* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
 html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
 /* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* поиск в фокусе (§5): рамка #006B79 + 1 px внутри */
+html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+/* удаление: один красный #A32637 */
+html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
 html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
 :root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
@@ -30297,14 +30331,14 @@ post({type:'ready'});
    Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
    Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
    :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
-html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(.button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip):not(.v-btn--variant-text),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,.range input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
 html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
 html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
 @media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#14B3BF 0%,#0E9EAA 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
 /* удаление: белая кнопка, красный текст */
 html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* кнопки внутри счётчика – без своего фона */
@@ -30312,11 +30346,16 @@ html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w
 /* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
 html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
 /* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* поиск в фокусе (§5): рамка #006B79 + 1 px внутри */
+html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+/* удаление: один красный #A32637 */
+html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
 html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
 :root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
@@ -32022,14 +32061,14 @@ post({type:'ready'});
    Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
    Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
    :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
-html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(.button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip):not(.v-btn--variant-text),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,.range input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
 html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
 html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
 @media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
-@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
-html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#14B3BF 0%,#0E9EAA 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
 /* удаление: белая кнопка, красный текст */
 html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* кнопки внутри счётчика – без своего фона */
@@ -32037,11 +32076,16 @@ html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w
 /* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
 html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
 /* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
-html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.icon-button:not([data-close]):not(#coverage-close):not(#tryon-close):not([aria-label="Закрыть"]),.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* поиск в фокусе (§5): рамка #006B79 + 1 px внутри */
+html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+/* удаление: один красный #A32637 */
+html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
 /* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
 html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
 :root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
