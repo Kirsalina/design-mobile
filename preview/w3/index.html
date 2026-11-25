@@ -15292,11 +15292,13 @@ function roDlvInfo(sub){var c=roCity(),zs=roZones(c.name),list=roMyAddrs(),a=roP
   if(z){free=z.free;var ok=free!=null&&sub>=free;return {price:ok?'Бесплатно':rub(z.price),short:ok?'Доставка бесплатно':'Доставка '+rub(z.price),free:free,left:ok||free==null?0:free-sub,list:list,a:a}}
   var fr=zs.filter(function(x){return x.free!=null}).map(function(x){return x.free});free=fr.length?Math.min.apply(null,fr):null;
   var minP=Math.min.apply(null,zs.map(function(x){return x.price}));
-  if(free!=null&&sub>=Math.max.apply(null,fr)&&fr.length===zs.length)return {price:'Бесплатно',short:'Доставка бесплатно',list:list,a:a};
+  if(free!=null&&sub>=free){var hi=zs.filter(function(x){return x.free==null||x.free>sub});
+    return {price:'Бесплатно',short:'Доставка бесплатно',note:hi.map(function(x){return x.name+(x.free==null?' – платно':' – бесплатно от '+rub(x.free))}).join(', '),list:list,a:a}}
   return {price:(zs.length>1?'от ':'')+rub(minP),short:'Доставка '+(zs.length>1?'от ':'')+rub(minP),free:free,left:free!=null&&sub<free?free-sub:0,list:list,a:a}}
 function roDeliveryNote(sub){return roDlvInfo(sub).short}
 function roDlvHTML(sub){var d=roDlvInfo(sub),h='<p class="ro-w3-dh"><span>Доставка</span><b>'+d.price+'</b></p>';
   if(d.list&&d.list.length)h+='<select class="field ro-w3-addr" aria-label="Адрес доставки">'+d.list.map(function(a){return '<option value="'+roEsc(a.id)+'"'+(d.a&&a.id===d.a.id?' selected':'')+'>'+roEsc(savedAddrLine(a))+'</option>'}).join('')+'</select>';
+  if(d.note)h+='<p class="ro-w3-sub">'+d.note+'</p>';
   if(d.left>0){var pct=Math.max(4,Math.round(sub/d.free*100));h+='<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><p class="ro-w3-sub">Бесплатно от '+rub(d.free)+', ещё '+rub(d.left)+'</p>'}
   if(d.list)h+='<button type="button" class="link-button ro-w3-my">'+(d.list.length?'Мои адреса':'Добавить адрес')+'</button>';
   return h}
@@ -17609,7 +17611,7 @@ html body .shop #transaction label.pay-option.ro-w3-po{align-items:center!import
 /* корзина: блок «Доставка» – в итоге справа (ПК), под списком (планшет, телефон) */
 #transaction .ro-w3-dlv{display:grid;gap:8px}
 #transaction .ro-w3-dlv[hidden]{display:none!important}
-#transaction .ro-w3-dlv.ro-w3-d{padding-top:16px;margin-top:16px;border-top:1px solid #E3E6EA}
+#transaction .ro-w3-dlv.ro-w3-d{padding-top:16px;margin:16px 0 24px;border-top:1px solid #E3E6EA}
 #transaction .ro-w3-dlv.ro-w3-m{display:none;border:1px solid #DCE4E2;border-radius:16px;padding:16px;margin-top:16px}
 #transaction .ro-w3-dh{display:flex;justify-content:space-between;gap:12px;margin:0;font-size:16px;line-height:24px}
 #transaction .ro-w3-dh span{font-weight:600;color:#152A4B}
