@@ -15162,7 +15162,8 @@ function updateCartSummary() {
   $('#cart-selected-count').textContent = selected.length+' из '+cart.size;
   $('#cart-subtotal').textContent = rub(cartTotals(selected).subtotal);
   $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length));
-  $('#cart-summary-note').innerHTML = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
+  $('#cart-summary-note').textContent = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
+  roCartDlv(selected);
 }
 function changeCartQuantity(field,quantity) {
   const entry = cart.get(field.dataset.cartQty);
@@ -15192,7 +15193,9 @@ const addrSug=q=>{q=String(q||'').trim().toLowerCase().replace(/ё/g,'е').repla
 
 /* W3-2 (25.11): доставка по зонам (логика клиента 25.11 16:05). Все цифры – ПРИМЕР, у Димы – из админки / с сервера.
    Зона – район или город с фиксированной ценой; у зоны свой порог «бесплатно от» (null – всегда платно).
-   Адрес вне зон – по расстоянию от склада: perKm × км (км считает сервер). Подъём / занос – отдельной строкой. */
+   Адрес вне зон – по расстоянию от склада: perKm × км (км считает сервер).
+   Подъём / занос – отдельной строкой, от веса заказа (округляем вверх до 100 кг):
+   на лифте – lift за каждые 100 кг (этаж не важен); по лестнице – stairs за каждый этаж за каждые 100 кг; занос в частный дом – house за каждые 100 кг. */
 window.RO_DELIVERY = window.RO_DELIVERY || {
   zones:[
     {city:'Тольятти', name:'Автозаводский район', price:390, free:30000,
@@ -15204,7 +15207,7 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {city:'Жигулёвск', name:'Жигулёвск', price:1200, free:50000},
     {city:'Самара', name:'Самара', price:2400, free:null}
   ],
-  cities:[ /* для выбора города; to / by – «в Самару», «по Самаре» */
+  cities:[
     {name:'Тольятти', to:'Тольятти', by:'Тольятти'},
     {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску'},
     {name:'Самара', to:'Самару', by:'Самаре'},
@@ -15212,48 +15215,65 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {name:'Новокуйбышевск', to:'Новокуйбышевск', by:'Новокуйбышевску', km:95},
     {name:'Чапаевск', to:'Чапаевск', by:'Чапаевску', km:85}
   ],
-  perKm:45,
-  stairs:60, lift:150, house:150,  /* подъём: по лестнице – за этаж и 100 кг; на лифте и занос в дом – за 100 кг */
+  perKm:45, lift:150, stairs:80, house:150, maxFloor:40,
   kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
 };
 function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
   return RO_DELIVERY.cities.find(function(x){return x.name===n})||{name:n,to:n,by:n,km:60}}
 function roZones(city){return RO_DELIVERY.zones.filter(function(z){return z.city===city})}
-/* зона по адресу (у Димы – сервер, по координатам) */
 function roZone(city,address){var zs=roZones(city);if(!zs.length)return null;if(zs.length===1)return zs[0];
   var a=String(address||'').toLowerCase().replace(/ё/g,'е');
   return zs.find(function(z){return (z.streets||[]).some(function(st){return a.indexOf(st.toLowerCase().replace(/ё/g,'е'))>=0})})||zs[0]}
-/* зона по сохранённому адресу (вошедший) – чтобы в корзине был порог его района */
-function roMyZone(){var c=roCity().name;try{var u=JSON.parse(localStorage.getItem('ro-user')||'null');var a=u&&(u.addresses||[]).find(function(x){return x.main})||u&&(u.addresses||[])[0];
-  if(a&&a.street&&(a.city||'Тольятти')===c)return roZone(c,a.street)}catch(e){}return null}
 function roUnitKg(item){var m=String(item.pack||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(кг|л)\b/);
   if(m)return +m[1]; return RO_DELIVERY.kg[item.type]||RO_DELIVERY.kgDefault}
 function roWeight(lines){return Math.max(1,Math.round(lines.reduce(function(a,l){return a+roUnitKg(l.item)*l.quantity},0)))}
 function roKm(city,address){var c=RO_DELIVERY.cities.find(function(x){return x.name===city});var base=c&&c.km||60,h=0;
-  for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12} /* пример: расстояние даёт сервер */
-function roDeliveryNote(sub){var c=roCity(),zs=roZones(c.name),my=roMyZone();
-  if(!zs.length)return 'Доставка в '+c.to+' по расстоянию: '+rub(RO_DELIVERY.perKm)+' за км<span class="ro-w3-sub">Цена появится после ввода адреса</span>';
-  var withFree=zs.filter(function(z){return z.free!=null});
-  if(!withFree.length){var z0=zs[0];return 'Доставка в '+c.to+' – '+rub(z0.price)+'<span class="ro-w3-sub">Бесплатной доставки в '+c.to+' нет</span>'}
-  var z=my&&my.free!=null?my:withFree.reduce(function(a,b){return a.free<=b.free?a:b});
+  for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12}
+function roLiftVal(a){if(!a)return '';var t=a.liftType;if(t==='yes'||t==='cargo'||t==='pass')return 'yes';if(t==='no'||t==='none')return 'no';return a.lift?'yes':''}
+/* подъём / занос: число, или NaN – не хватает ответа (лифт) */
+function roCarry(house,lift,floor,cwt){var R=RO_DELIVERY;if(house)return cwt*R.house;if(lift==='yes')return cwt*R.lift;
+  if(lift==='no')return Math.max(1,floor||1)*cwt*R.stairs;return NaN}
+/* сохранённые адреса вошедшего и выбранный в корзине */
+function roMyAddrs(){var u=typeof roUser==='function'?roUser():null;return u?u.addresses:null}
+function roPickedAddr(list){if(!list||!list.length)return null;var id=null;try{id=localStorage.getItem('ro-w3-addr')}catch(e){}
+  return list.find(function(a){return String(a.id)===id})||list.find(function(a){return a.main})||list[0]}
+/* корзина: что показываем в блоке «Доставка» */
+function roDlvInfo(sub){var c=roCity(),zs=roZones(c.name),list=roMyAddrs(),a=roPickedAddr(list);
+  if(!zs.length)return {price:rub(RO_DELIVERY.perKm)+' за км',short:'Доставка '+rub(RO_DELIVERY.perKm)+' за км',list:list,a:a};
+  var z=a?roZone(c.name,a.street):null,free;
+  if(z){free=z.free;var ok=free!=null&&sub>=free;return {price:ok?'Бесплатно':rub(z.price),short:ok?'Доставка бесплатно':'Доставка '+rub(z.price),free:free,left:ok||free==null?0:free-sub,list:list,a:a}}
+  var fr=zs.filter(function(x){return x.free!=null}).map(function(x){return x.free});free=fr.length?Math.min.apply(null,fr):null;
   var minP=Math.min.apply(null,zs.map(function(x){return x.price}));
-  if(sub>=z.free)return '<span class="ro-w3-ok">Доставка по '+c.by+' бесплатно</span>'+(my?'':'<span class="ro-w3-sub">В некоторых районах порог выше, точно – по адресу</span>');
-  var pct=Math.max(4,Math.round(sub/z.free*100));
-  return 'До бесплатной доставки по '+c.by+' – ещё '+rub(z.free-sub)+'<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><span class="ro-w3-sub">Бесплатно от '+rub(z.free)+', сейчас '+(my?rub(my.price)+' ('+my.name.toLowerCase()+')':'от '+rub(minP)+', зависит от района')+'</span>'}
+  if(free!=null&&sub>=Math.max.apply(null,fr)&&fr.length===zs.length)return {price:'Бесплатно',short:'Доставка бесплатно',list:list,a:a};
+  return {price:(zs.length>1?'от ':'')+rub(minP),short:'Доставка '+(zs.length>1?'от ':'')+rub(minP),free:free,left:free!=null&&sub<free?free-sub:0,list:list,a:a}}
+function roDeliveryNote(sub){return roDlvInfo(sub).short}
+function roDlvHTML(sub){var d=roDlvInfo(sub),h='<p class="ro-w3-dh"><span>Доставка</span><b>'+d.price+'</b></p>';
+  if(d.list&&d.list.length)h+='<select class="field ro-w3-addr" aria-label="Адрес доставки">'+d.list.map(function(a){return '<option value="'+roEsc(a.id)+'"'+(d.a&&a.id===d.a.id?' selected':'')+'>'+roEsc(savedAddrLine(a))+'</option>'}).join('')+'</select>';
+  if(d.left>0){var pct=Math.max(4,Math.round(sub/d.free*100));h+='<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><p class="ro-w3-sub">Бесплатно от '+rub(d.free)+', ещё '+rub(d.left)+'</p>'}
+  if(d.list)h+='<button type="button" class="link-button ro-w3-my">'+(d.list.length?'Мои адреса':'Добавить адрес')+'</button>';
+  return h}
+function roCartDlv(sel){var sub=cartTotals(sel).subtotal,html=sel.length?roDlvHTML(sub):'';
+  var aside=document.querySelector('#transaction .cart-summary'),rows=document.querySelector('#transaction .cart-rows');if(!aside||!rows)return;
+  var d=aside.querySelector('.ro-w3-dlv');if(!d){d=document.createElement('div');d.className='ro-w3-dlv ro-w3-d';var t=aside.querySelector('.cart-summary-total');(t||aside.firstChild).after(d)}
+  var m=rows.parentNode.querySelector('.ro-w3-dlv.ro-w3-m');if(!m){m=document.createElement('div');m.className='ro-w3-dlv ro-w3-m';rows.after(m)}
+  d.innerHTML=html;m.innerHTML=html;d.hidden=m.hidden=!html}
 function roW3Sync(form,q){
-  var f=form.elements,house=f.home&&f.home.value==='house',fl=f.floor.value.trim(),lift=f.lift?f.lift.value:'';
+  var f=form.elements,R=RO_DELIVERY,house=f.home&&f.home.value==='house',carry=f.carry&&f.carry.value==='in';
+  var fl=parseInt(f.floor.value,10)||0,lift=f.lift?f.lift.value:'',kg=roWeight(selectedCartLines()),cwt=Math.ceil(kg/100);
   form.querySelectorAll('[data-w3-flat]').forEach(function(el){el.hidden=house;el.querySelectorAll('input').forEach(function(i){i.disabled=house})});
+  var lb=form.querySelector('.ro-w3-lift');if(lb){var off=house||!carry;lb.hidden=off;lb.querySelectorAll('input').forEach(function(i){i.disabled=off})}
   var t=function(k,v){var el=form.querySelector('[data-w3-'+k+']');if(el)el.textContent=v};
   t('t="door"',house?'До ворот':'До подъезда');
   t('d="door"',house?'Выгрузим из машины у ворот.':'Выгрузим из машины у подъезда.');
   t('t="in"',house?'В дом':'В квартиру');
-  t('d="in"',house?'Занесём в дом, на первый этаж.':'Поднимем'+(fl?' на '+fl+' этаж':' на этаж')+(lift==='cargo'?' на грузовом лифте':lift==='pass'?' на пассажирском лифте':lift==='none'?' по лестнице':'')+' и занесём в квартиру.');
-  var pr=document.getElementById('ro-w3-in-pr');if(pr)pr.textContent=q?(Number.isFinite(q.lift)&&q.carry?'+'+rub(q.lift):Number.isFinite(q.lift)?'':'Выберите лифт'):'';
-  var kg=document.getElementById('ro-w3-kg');if(kg)kg.textContent=q?'Вес заказа около '+q.kg+' кг. '+(house?'Занос считаем за каждые 100 кг.':'Подъём по лестнице считаем за этаж и каждые 100 кг, на лифте – за каждые 100 кг.'):'';
+  t('d="in"',house?'Занесём в дом. '+rub(R.house)+' за каждые 100 кг.':'Поднимем и занесём в квартиру. На лифте – '+rub(R.lift)+' за каждые 100 кг, по лестнице – '+rub(R.stairs)+' за этаж за каждые 100 кг.');
+  var c=roCarry(house,lift,fl,cwt),pr=document.getElementById('ro-w3-in-pr');
+  if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(Math.min(cwt*R.lift,Math.max(1,fl||1)*cwt*R.stairs));
+  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, для подъёма считаем '+cwt*100+' кг.';
   var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
   var row=document.getElementById('ro-w3-lift-row');
-  if(row){row.hidden=!(q&&q.carry);var l=document.getElementById('ro-w3-lift-label'),c=document.getElementById('ro-w3-lift-cost');
-    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(c)c.textContent=q?rub(q.lift):''}
+  if(row){row.hidden=!(q&&q.carry&&!q.liftPending);var l=document.getElementById('ro-w3-lift-label'),cc=document.getElementById('ro-w3-lift-cost');
+    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(cc)cc.textContent=q?rub(q.lift):''}
 }
 const addressComplete = value => /\d/.test(value) && /[а-яё]{2}/i.test(value);
 function deliveryQuote(form) {
@@ -15261,19 +15281,17 @@ function deliveryQuote(form) {
   if (fields.delivery.value === 'Самовывоз') return {cost:0,window:'На следующий день',destination:'Пункт выдачи RemOnLine, Тольятти'};
   const address = fields.address.value.trim();
   if (!addressComplete(address)) return null;
-  /* W3-2: доставка бесплатна от порога в городах из списка, иначе – по расстоянию (считает сервер; пока «N ₽»).
-     Подъём / занос – отдельная строка, считает сервер по весу, этажу и лифту (пока «N ₽»). */
+  /* W3-2: зона (район / город) – фиксированная цена и свой порог бесплатной; вне зон – по км. Подъём – отдельно. */
   const city = roCity(), lines = selectedCartLines(), sub = cartTotals(lines).subtotal, R = RO_DELIVERY;
   const house = fields.home && fields.home.value==='house', carry = fields.carry && fields.carry.value==='in';
-  const kg = roWeight(lines), cwt = Math.ceil(kg/100), fl = Math.max(1,parseInt(fields.floor.value,10)||1);
-  const lt = fields.lift ? fields.lift.value : '';
+  const kg = roWeight(lines), cwt = Math.ceil(kg/100), flr = parseInt(fields.floor.value,10)||0;
   const zone = roZone(city.name,address), km = zone ? 0 : roKm(city.name,address);
   const free = !!zone && zone.free!=null && sub>=zone.free, ship = zone ? (free ? 0 : zone.price) : km*R.perKm;
-  const lift = !carry ? 0 : house ? cwt*R.house : lt==='cargo'||lt==='pass' ? cwt*R.lift : lt==='none' ? Math.max(0,fl-1)*cwt*R.stairs+cwt*R.house : NaN;
+  const c = carry ? roCarry(house,fields.lift ? fields.lift.value : '',flr,cwt) : 0, liftPending = !Number.isFinite(c), lift = liftPending ? 0 : c;
   const unit = !house && fields.unit.value.trim();
-  return {cost:ship+lift,ship,lift,carry,house,km,kg,free,zone:zone?zone.name:'',window:zone ? 'Через 1–2 дня' : 'Через 2–3 дня',
-    where:zone ? (zone.name===city.name ? city.name : zone.name) : city.name+', '+km+' км от склада',
-    liftLabel:carry ? (house ? 'Занос в дом' : 'Подъём на '+fl+' этаж') : '',
+  return {cost:ship+lift,ship,lift,liftPending,carry,house,km,kg,free,zone:zone?zone.name:'',window:zone ? 'Через 1–2 дня' : 'Через 2–3 дня',
+    where:zone ? (zone.name===city.name ? city.name : zone.name) : city.name+', '+km+'\u00a0км от склада',
+    liftLabel:carry ? (house ? 'Занос в дом' : flr ? 'Подъём на '+flr+' этаж' : 'Подъём') : '',
     destination:city.name+', '+address+(unit ? ', кв. '+unit : '')};
 }
 function syncDelivery(form) {
@@ -15304,8 +15322,12 @@ function checkoutError(field,strict) {
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
   }
   if (field.name==='lift') {
-    const f = field.form.elements;
-    return f.home.value!=='house' && f.carry.value==='in' && !f.lift.value ? 'Выберите, есть ли лифт.' : '';
+    const f = field.form.elements, fl = f.floor.value.trim();
+    if (f.home.value==='house' || f.carry.value!=='in') return '';
+    if (!f.lift.value) return 'Выберите, есть ли лифт.';
+    if (f.lift.value==='no' && !fl) return 'Укажите этаж – от него зависит цена подъёма.';
+    if (fl && !(+fl>=1 && +fl<=RO_DELIVERY.maxFloor)) return 'Проверьте этаж.';
+    return '';
   }
   if (field.name==='address') {
     if (!value) return 'Введите улицу и дом.';
@@ -15363,18 +15385,18 @@ function renderCheckout() {
         <div class="checkout-fields address-grid" id="address-fields">
           <input type="hidden" name="city" value="${roCity().name}">
           <div class="full ro-w3-seg" role="radiogroup" aria-label="Тип жилья"><label><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
-          <label class="full addr-field"><span class="ro-w3-lrow">Улица и дом<span class="ro-w3-city">${roCity().name}</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
+          <label class="full addr-field">Улица и дом<input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
           <div class="addr-row full" data-w3-flat>
             <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
             <label>Подъезд<input class="field" name="entrance" inputmode="numeric"></label>
             <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
           </div>
-          <div class="full ro-w3-segf" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="none"><span>Нет</span></label><label><input type="radio" name="lift" value="pass"><span>Пассажирский</span></label><label><input type="radio" name="lift" value="cargo"><span>Грузовой</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
           <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
-            <label class="pay-option"><input type="radio" name="carry" value="door" checked><span><b data-w3-t="door">До подъезда</b><span class="meta" data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
-            <label class="pay-option"><input type="radio" name="carry" value="in"><span><b data-w3-t="in">В квартиру</b><span class="meta" data-w3-d="in">Поднимем на этаж и занесём в квартиру.</span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+            <div class="ro-w3-opt"><label class="ro-w3-oh"><input type="radio" name="carry" value="door" checked><span class="ro-w3-ot"><b data-w3-t="door">До подъезда</b><span data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label></div>
+            <div class="ro-w3-opt"><label class="ro-w3-oh"><input type="radio" name="carry" value="in"><span class="ro-w3-ot"><b data-w3-t="in">В квартиру</b><span data-w3-d="in"></span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+              <div class="ro-w3-lift" hidden><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт в доме</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="yes"><span>Есть</span></label><label><input type="radio" name="lift" value="no"><span>Нет</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div></div>
           </div><p class="meta" id="ro-w3-kg"></p></div>
-          <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает, позвоните за 30 минут"></textarea></label>
+          <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает"></textarea></label>
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
       </fieldset>
@@ -15446,12 +15468,12 @@ function roUserLogin(phone) {
 }
 const savedAddrKey = a => String(a.street||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').replace(/\s+/g,' ')+'|'+String(a.flat||'').trim();
 const savedAddrLine = a => a.street+(a.flat ? ', кв. '+a.flat : '');
-const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, (a.liftType||(a.lift?'cargo':''))==='cargo'?'грузовой лифт':a.liftType==='pass'?'пассажирский лифт':a.liftType==='none'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
+const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, roLiftVal(a)==='yes'?'есть лифт':roLiftVal(a)==='no'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
 let savedAddrList = [];
 function fillAddress(form,a) {
   const f = form.elements;
   f.address.value = a ? a.street : ''; f.unit.value = a ? a.flat||'' : ''; f.entrance.value = a ? a.entrance||'' : '';
-  f.floor.value = a ? a.floor||'' : ''; f.lift.value = a ? a.liftType||(a.lift?'cargo':'') : ''; f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
+  f.floor.value = a ? a.floor||'' : ''; f.lift.value = roLiftVal(a); f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
   showCheckoutError(f.address,'');
 }
 function syncSavedAddress(form) {
@@ -15466,7 +15488,7 @@ function setupSavedAddresses(form,fresh) {
   const u = cart===exampleCart ? null : roUser();
   if (u && fresh) {
     if (!form.elements.recipient.value.trim() && u.name) form.elements.recipient.value = u.name;
-    const main = u.addresses.find(a=>a.main) || u.addresses[0];
+    const main = roPickedAddr(u.addresses);
     if (main && !form.elements.address.value.trim()) fillAddress(form,main);
   }
   savedAddrList = u ? [...u.addresses].sort((a,b)=>(b.main?1:0)-(a.main?1:0)) : [];
@@ -15488,7 +15510,7 @@ function rememberCheckoutUser(form) {
   if (cart===exampleCart || !phoneAuth.account) return;
   const f = form.elements; if (f.delivery.value!=='Доставка') return;
   const u = roUser() || {phone:phoneAuth.account,name:'',email:'',addresses:[]};
-  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='cargo',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
+  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='yes',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
   let changed = false;
   if (!u.name && f.recipient.value.trim()) { u.name = f.recipient.value.trim(); changed = true; }
   if (a.street && !u.addresses.some(x=>savedAddrKey(x)===savedAddrKey(a))) { u.addresses.push({id:Date.now(),...a,main:!u.addresses.length}); changed = true; }
@@ -17461,8 +17483,7 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
 </style>
 <style id="ro-w3-1-css">
 /* W3-1 O6: кликаются только фото и название */
-html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:inline!important;width:auto!important;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
-html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:inline!important;font-weight:600}
+html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:block!important;width:fit-content!important;max-width:100%;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
 @media (hover:hover){html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm:hover strong{color:#006B79;text-decoration:none!important}}
 #transaction .cart-row-name>.meta{display:block;margin-top:2px;font-size:14px;line-height:21px;color:#566273;font-weight:400}
 #transaction .cart-row:has(.row-badge) .cart-row-name>.meta,#transaction .cart-row:has(.row-badge) a.ro-w3-nm{opacity:.55}
@@ -17484,37 +17505,50 @@ html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:
 @media (hover:hover){#transaction .ro-w3-seg label:hover span{background:rgba(21,42,75,.05)}}
 #transaction .ro-w3-seg input:checked+span{background:#F3F1EB;color:#152A4B}
 #transaction .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 1px #006B79}
-#transaction .ro-w3-seg input:disabled+span{opacity:.5}
 #transaction .ro-w3-segf{display:grid;gap:4px}
-#transaction .ro-w3-segf[hidden],#transaction .addr-row[hidden]{display:none!important}
+#transaction .addr-row[hidden],#transaction .ro-w3-lift[hidden]{display:none!important}
 #transaction .ro-w3-lbl{font-size:14px;line-height:21px;font-weight:600;color:#152A4B}
-#transaction .ro-w3-lrow{display:flex;justify-content:space-between;gap:12px}
-#transaction .ro-w3-city{font-size:14px;line-height:21px;font-weight:600;color:#566273}
+/* «Как привезти»: строка-вариант (§5) – радио слева, текст, цена справа, всё по центру по высоте */
 #transaction .ro-w3-how{display:grid;gap:12px;margin-top:4px}
-#transaction .ro-w3-how .pay-option{align-items:flex-start;padding:16px;margin:0}
-#transaction .ro-w3-how .pay-option>span{flex:1;min-width:0}
-#transaction .ro-w3-how .pay-option b{color:#152A4B}
-#transaction .ro-w3-how .pay-option .meta{font-size:14px;line-height:21px;color:#566273}
-#transaction .ro-w3-how .ro-w3-pr{white-space:nowrap;font-weight:700}
-#transaction .ro-w3-how input{margin-top:1px!important}
+#transaction .ro-w3-opt{border:1px solid #DCE4E2;border-radius:12px;background:#fff;transition:border-color .15s ease,box-shadow .15s ease}
+#transaction .ro-w3-opt:has(input[name=carry]:checked){border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+#transaction label.ro-w3-oh{display:grid!important;grid-template-columns:22px minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;padding:16px!important;margin:0!important;cursor:pointer;min-height:0!important}
+#transaction .ro-w3-ot{display:grid;gap:2px;min-width:0}
+#transaction .ro-w3-ot b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B}
+#transaction .ro-w3-ot span{font-size:14px;line-height:21px;font-weight:400;color:#566273}
+#transaction .ro-w3-pr{font-size:16px;line-height:24px;font-weight:700;color:#152A4B;white-space:nowrap;text-align:right}
+#transaction .ro-w3-lift{display:grid;gap:4px;padding:0 16px 16px 50px}
 #transaction #ro-w3-lift-row[hidden]{display:none}
 #transaction #ro-w3-kg{margin:4px 0 0;font-size:14px;line-height:21px;color:#566273}
-#transaction #ro-w3-kg:empty{display:none}
-/* корзина: до бесплатной доставки – текст + полоска (цвета §1) */
-#transaction .cart-summary-note .ro-w3-bar{display:block;height:6px;border-radius:3px;background:#E3E6EA;margin:8px 0 4px;overflow:hidden}
-#transaction .cart-summary-note .ro-w3-bar>span{display:block;height:100%;border-radius:3px;background:#19CBD8;transition:width .2s ease}
-#transaction .cart-summary-note .ro-w3-sub{display:block;font-size:14px;line-height:21px;color:#566273}
-#transaction .cart-summary-note .ro-w3-ok{color:#006B79;font-weight:600}
-@container shop (max-width:1020px){#transaction .cart-summary-note .ro-w3-sub{display:none}#transaction .cart-summary-note .ro-w3-bar{margin:6px 0 0}}
-@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}}
+@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}#transaction .ro-w3-lift{padding-left:16px}}
+/* корзина: блок «Доставка» – в итоге справа (ПК), под списком (планшет, телефон) */
+#transaction .ro-w3-dlv{display:grid;gap:8px}
+#transaction .ro-w3-dlv[hidden]{display:none!important}
+#transaction .ro-w3-dlv.ro-w3-d{padding-top:16px;margin-top:16px;border-top:1px solid #E3E6EA}
+#transaction .ro-w3-dlv.ro-w3-m{display:none;border:1px solid #DCE4E2;border-radius:16px;padding:16px;margin-top:16px}
+#transaction .ro-w3-dh{display:flex;justify-content:space-between;gap:12px;margin:0;font-size:16px;line-height:24px}
+#transaction .ro-w3-dh span{font-weight:600;color:#152A4B}
+#transaction .ro-w3-dh b{font-weight:700;color:#152A4B}
+#transaction .ro-w3-dlv select.ro-w3-addr{width:100%;height:48px;padding:0 40px 0 12px;font-size:16px;line-height:24px;color:#152A4B;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23152A4B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;appearance:none;-webkit-appearance:none;text-overflow:ellipsis;cursor:pointer}
+#transaction .ro-w3-bar{display:block;height:6px;border-radius:3px;background:#E3E6EA;overflow:hidden;margin-top:4px}
+#transaction .ro-w3-bar>span{display:block;height:100%;border-radius:3px;background:#19CBD8;transition:width .2s ease}
+#transaction .ro-w3-sub{margin:0;font-size:14px;line-height:21px;color:#566273}
+#transaction .ro-w3-my{justify-self:start}
+@container shop (min-width:1021px){#transaction .cart-summary-note{display:none!important}}
+@container shop (max-width:1020px){#transaction .ro-w3-dlv.ro-w3-d{display:none!important}#transaction .ro-w3-dlv.ro-w3-m:not([hidden]){display:grid}}
 </style>
 <script id="ro-w3-2">
-/* лифт: ошибка проверяется по первой кнопке группы */
-document.addEventListener('change',function(e){var t=e.target;if(t&&t.form&&t.form.id==='checkout-form'&&(t.name==='home'||t.name==='carry'||t.name==='lift')){var lr=t.form.elements.lift[0];if(lr&&document.getElementById('checkout-error-lift').textContent)showCheckoutError(lr,checkoutError(lr))}});
-(function(){var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
+(function(){
+ var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
  new MutationObserver(mark).observe(document.body,{childList:true,subtree:true});mark();
- addEventListener('storage',function(e){if(e.key!=='ro-city')return;try{if(typeof updateCartSummary==='function'&&document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
-  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;var c=f.querySelector('.ro-w3-city');if(c)c.textContent=roCity().name;syncDelivery(f)}});
+ /* ошибку лифта / этажа пересчитываем при изменениях, если она уже показана */
+ document.addEventListener('input',function(e){var t=e.target,f=t&&t.form;if(!f||f.id!=='checkout-form')return;var er=document.getElementById('checkout-error-lift');var lr=f.elements.lift&&f.elements.lift[0];if(lr&&er&&er.textContent)showCheckoutError(lr,checkoutError(lr))});
+ /* корзина: выбор сохранённого адреса и переход к адресам */
+ document.addEventListener('change',function(e){var t=e.target;if(!t.classList||!t.classList.contains('ro-w3-addr'))return;try{localStorage.setItem('ro-w3-addr',t.value)}catch(_){}updateCartSummary();
+   var o=document.querySelector('#transaction .ro-w3-addr:not(:focus)');});
+ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.ro-w3-my');if(!b)return;try{parent.postMessage({ro:1,type:'nav',path:'/account/profile'},'*')}catch(_){}});
+ addEventListener('storage',function(e){if(e.key!=='ro-city'&&e.key!=='ro-user')return;try{if(document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
+  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;syncDelivery(f)}});
 })();
 <%/script>
 </body>
