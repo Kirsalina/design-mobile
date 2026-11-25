@@ -21,7 +21,7 @@ body{display:flex;flex-direction:column}
 .ro-stub a:hover{background:#10ACB8}
 @media (max-width:600px){.ro-stub h1{font-size:28px;line-height:35px}}
 </style></head><body>
-<script id="ro-preview-label">(function(){var L="Общий: все патчи",P=L+" – ";function fix(){if(document.title.indexOf(P)!==0)document.title=P+document.title.replace(/^W\d[^–]*– /,"");}fix();var t=document.querySelector("title");if(t)new MutationObserver(fix).observe(t,{childList:true,characterData:true,subtree:true});setInterval(fix,1000);function badge(){if(document.getElementById("ro-pv-badge"))return;var d=document.createElement("div");d.id="ro-pv-badge";d.textContent=L;d.style.cssText="position:fixed;left:8px;bottom:8px;z-index:2147483647;pointer-events:none;padding:4px 8px;border-radius:8px;background:rgba(21,42,75,.72);color:#fff;font:700 12px/16px Manrope,Arial,sans-serif;letter-spacing:.02em";document.body.appendChild(d);}if(document.body)badge();else document.addEventListener("DOMContentLoaded",badge);})();</script>
+<script id="ro-preview-label">(function(){var L="Общий: всё собрано в основу",P=L+" – ";function fix(){if(document.title.indexOf(P)!==0)document.title=P+document.title.replace(/^W\d[^–]*– /,"");}fix();var t=document.querySelector("title");if(t)new MutationObserver(fix).observe(t,{childList:true,characterData:true,subtree:true});setInterval(fix,1000);function badge(){if(document.getElementById("ro-pv-badge"))return;var d=document.createElement("div");d.id="ro-pv-badge";d.textContent=L;d.style.cssText="position:fixed;left:8px;bottom:8px;z-index:2147483647;pointer-events:none;padding:4px 8px;border-radius:8px;background:rgba(21,42,75,.72);color:#fff;font:700 12px/16px Manrope,Arial,sans-serif;letter-spacing:.02em";document.body.appendChild(d);}if(document.body)badge();else document.addEventListener("DOMContentLoaded",badge);})();</script>
 
 <div class="ro-stage"><div class="ro-box" id="ro-box">
   <div class="ro-load" id="ro-load" hidden>Загружаем…</div>
@@ -8840,27 +8840,37 @@ html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.lin
 html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
 /* удаление: один красный #A32637 */
 html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
-/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
-:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
-html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
+/* «Аналоги» – без иконки ⇆ (Алина 25.11, 21:42: убрать везде) */
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+/* W4-2, 25.11: карточка товара (G6, Алина 15:39). Цена – сразу под подписями (12), к низу прижата только кнопка;
+   карточки одного ряда одной высоты, кнопки на одной линии. Каталог: витрина, списки, похожие. Главная: блоки товаров. */
+html body .shop .card>.card-body:not(#ro-w4-a):not(#ro-w4-b){display:flex!important;flex-direction:column!important}
+html body .shop .card>.card-body>.card-head:not(#ro-w4-a){flex:none}
+html body .shop .card>.card-body .offer-price:not(#ro-w4-a):not(#ro-w4-b){margin-top:0!important}
+html body .shop .card>.card-body .product-card-actions:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important;align-self:stretch!important}
+html body #design-app .product-card .product-pricing:not(#ro-w4-a):not(#ro-w4-b){margin:0!important;padding-top:12px!important}
+html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important}
+/* страница товара «нет в наличии»: пустой блок покупки не даёт лишних 32–48 px; цена → «Аналоги» как цена → «В корзину» */
+html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
+</style>
 <style id="ro-w2-home-css">
 /* W2 v2: второй баннер главной. Фон, радиус, отступы и кнопка – как у первого баннера (.founder-hero) */
-#design-app .ro-w2-banner{display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:40px}
-#design-app .ro-w2-banner h2{font-size:38px;line-height:1.21;font-weight:600;letter-spacing:-.035em;margin:0;color:var(--ink)}
-#design-app .ro-w2-bdesc{font-size:16px;line-height:1.65;max-width:30em;margin:16px 0 24px}
+#design-app .ro-w2-banner{display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:32px}
+#design-app .ro-w2-banner h2{font-size:32px;line-height:1.21;font-weight:600;letter-spacing:-.035em;margin:0;color:var(--ink)}
+#design-app .ro-w2-bdesc{font-size:16px;line-height:1.5;max-width:30em;margin:12px 0 20px}
 #design-app .ro-w2-banner .actions{display:flex;gap:12px;margin:0}
-#design-app .ro-w2-btiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-width:0}
+#design-app .ro-w2-btiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
 #design-app .ro-w2-btile{display:flex;flex-direction:column;background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none;transition:box-shadow .15s ease}
-#design-app .ro-w2-bimg{display:block;aspect-ratio:16/10;overflow:hidden;background:#F3F1EB}
+#design-app .ro-w2-bimg{display:block;aspect-ratio:2/1;overflow:hidden;background:#F3F1EB}
 #design-app .ro-w2-bimg img{width:100%;height:100%;object-fit:cover;display:block}
-#design-app .ro-w2-btx{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:12px 16px}
+#design-app .ro-w2-btx{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:8px 12px}
 #design-app .ro-w2-btx b{font-size:16px;line-height:24px;font-weight:600}
 #design-app .ro-w2-btx small{font-size:14px;line-height:21px;color:#566273;white-space:nowrap}
 @media (hover:hover){#design-app .ro-w2-btile:hover{box-shadow:0 6px 20px rgba(21,42,75,.10)}}
@@ -15200,7 +15210,8 @@ function updateCartSummary() {
   $('#cart-selected-count').textContent = selected.length+' из '+cart.size;
   $('#cart-subtotal').textContent = rub(cartTotals(selected).subtotal);
   $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length));
-  $('#cart-summary-note').innerHTML = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
+  $('#cart-summary-note').textContent = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
+  roCartDlv(selected);
 }
 function changeCartQuantity(field,quantity) {
   const entry = cart.get(field.dataset.cartQty);
@@ -15230,7 +15241,9 @@ const addrSug=q=>{q=String(q||'').trim().toLowerCase().replace(/ё/g,'е').repla
 
 /* W3-2 (25.11): доставка по зонам (логика клиента 25.11 16:05). Все цифры – ПРИМЕР, у Димы – из админки / с сервера.
    Зона – район или город с фиксированной ценой; у зоны свой порог «бесплатно от» (null – всегда платно).
-   Адрес вне зон – по расстоянию от склада: perKm × км (км считает сервер). Подъём / занос – отдельной строкой. */
+   Адрес вне зон – по расстоянию от склада: perKm × км (км считает сервер).
+   Подъём / занос – отдельной строкой, от веса заказа (округляем вверх до 100 кг):
+   на лифте – lift за каждые 100 кг (этаж не важен); по лестнице – stairs за каждый этаж за каждые 100 кг; занос в частный дом – house за каждые 100 кг. */
 window.RO_DELIVERY = window.RO_DELIVERY || {
   zones:[
     {city:'Тольятти', name:'Автозаводский район', price:390, free:30000,
@@ -15242,7 +15255,7 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {city:'Жигулёвск', name:'Жигулёвск', price:1200, free:50000},
     {city:'Самара', name:'Самара', price:2400, free:null}
   ],
-  cities:[ /* для выбора города; to / by – «в Самару», «по Самаре» */
+  cities:[
     {name:'Тольятти', to:'Тольятти', by:'Тольятти'},
     {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску'},
     {name:'Самара', to:'Самару', by:'Самаре'},
@@ -15250,48 +15263,65 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {name:'Новокуйбышевск', to:'Новокуйбышевск', by:'Новокуйбышевску', km:95},
     {name:'Чапаевск', to:'Чапаевск', by:'Чапаевску', km:85}
   ],
-  perKm:45,
-  stairs:60, lift:150, house:150,  /* подъём: по лестнице – за этаж и 100 кг; на лифте и занос в дом – за 100 кг */
+  perKm:45, lift:150, stairs:80, house:150, maxFloor:40,
   kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
 };
 function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
   return RO_DELIVERY.cities.find(function(x){return x.name===n})||{name:n,to:n,by:n,km:60}}
 function roZones(city){return RO_DELIVERY.zones.filter(function(z){return z.city===city})}
-/* зона по адресу (у Димы – сервер, по координатам) */
 function roZone(city,address){var zs=roZones(city);if(!zs.length)return null;if(zs.length===1)return zs[0];
   var a=String(address||'').toLowerCase().replace(/ё/g,'е');
   return zs.find(function(z){return (z.streets||[]).some(function(st){return a.indexOf(st.toLowerCase().replace(/ё/g,'е'))>=0})})||zs[0]}
-/* зона по сохранённому адресу (вошедший) – чтобы в корзине был порог его района */
-function roMyZone(){var c=roCity().name;try{var u=JSON.parse(localStorage.getItem('ro-user')||'null');var a=u&&(u.addresses||[]).find(function(x){return x.main})||u&&(u.addresses||[])[0];
-  if(a&&a.street&&(a.city||'Тольятти')===c)return roZone(c,a.street)}catch(e){}return null}
 function roUnitKg(item){var m=String(item.pack||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(кг|л)\b/);
   if(m)return +m[1]; return RO_DELIVERY.kg[item.type]||RO_DELIVERY.kgDefault}
 function roWeight(lines){return Math.max(1,Math.round(lines.reduce(function(a,l){return a+roUnitKg(l.item)*l.quantity},0)))}
 function roKm(city,address){var c=RO_DELIVERY.cities.find(function(x){return x.name===city});var base=c&&c.km||60,h=0;
-  for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12} /* пример: расстояние даёт сервер */
-function roDeliveryNote(sub){var c=roCity(),zs=roZones(c.name),my=roMyZone();
-  if(!zs.length)return 'Доставка в '+c.to+' по расстоянию: '+rub(RO_DELIVERY.perKm)+' за км<span class="ro-w3-sub">Цена появится после ввода адреса</span>';
-  var withFree=zs.filter(function(z){return z.free!=null});
-  if(!withFree.length){var z0=zs[0];return 'Доставка в '+c.to+' – '+rub(z0.price)+'<span class="ro-w3-sub">Бесплатной доставки в '+c.to+' нет</span>'}
-  var z=my&&my.free!=null?my:withFree.reduce(function(a,b){return a.free<=b.free?a:b});
+  for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12}
+function roLiftVal(a){if(!a)return '';var t=a.liftType;if(t==='yes'||t==='cargo'||t==='pass')return 'yes';if(t==='no'||t==='none')return 'no';return a.lift?'yes':''}
+/* подъём / занос: число, или NaN – не хватает ответа (лифт) */
+function roCarry(house,lift,floor,cwt){var R=RO_DELIVERY;if(house)return cwt*R.house;if(lift==='yes')return cwt*R.lift;
+  if(lift==='no')return Math.max(1,floor||1)*cwt*R.stairs;return NaN}
+/* сохранённые адреса вошедшего и выбранный в корзине */
+function roMyAddrs(){var u=typeof roUser==='function'?roUser():null;return u?u.addresses:null}
+function roPickedAddr(list){if(!list||!list.length)return null;var id=null;try{id=localStorage.getItem('ro-w3-addr')}catch(e){}
+  return list.find(function(a){return String(a.id)===id})||list.find(function(a){return a.main})||list[0]}
+/* корзина: что показываем в блоке «Доставка» */
+function roDlvInfo(sub){var c=roCity(),zs=roZones(c.name),list=roMyAddrs(),a=roPickedAddr(list);
+  if(!zs.length)return {price:rub(RO_DELIVERY.perKm)+' за км',short:'Доставка '+rub(RO_DELIVERY.perKm)+' за км',list:list,a:a};
+  var z=a?roZone(c.name,a.street):null,free;
+  if(z){free=z.free;var ok=free!=null&&sub>=free;return {price:ok?'Бесплатно':rub(z.price),short:ok?'Доставка бесплатно':'Доставка '+rub(z.price),free:free,left:ok||free==null?0:free-sub,list:list,a:a}}
+  var fr=zs.filter(function(x){return x.free!=null}).map(function(x){return x.free});free=fr.length?Math.min.apply(null,fr):null;
   var minP=Math.min.apply(null,zs.map(function(x){return x.price}));
-  if(sub>=z.free)return '<span class="ro-w3-ok">Доставка по '+c.by+' бесплатно</span>'+(my?'':'<span class="ro-w3-sub">В некоторых районах порог выше, точно – по адресу</span>');
-  var pct=Math.max(4,Math.round(sub/z.free*100));
-  return 'До бесплатной доставки по '+c.by+' – ещё '+rub(z.free-sub)+'<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><span class="ro-w3-sub">Бесплатно от '+rub(z.free)+', сейчас '+(my?rub(my.price)+' ('+my.name.toLowerCase()+')':'от '+rub(minP)+', зависит от района')+'</span>'}
+  if(free!=null&&sub>=Math.max.apply(null,fr)&&fr.length===zs.length)return {price:'Бесплатно',short:'Доставка бесплатно',list:list,a:a};
+  return {price:(zs.length>1?'от ':'')+rub(minP),short:'Доставка '+(zs.length>1?'от ':'')+rub(minP),free:free,left:free!=null&&sub<free?free-sub:0,list:list,a:a}}
+function roDeliveryNote(sub){return roDlvInfo(sub).short}
+function roDlvHTML(sub){var d=roDlvInfo(sub),h='<p class="ro-w3-dh"><span>Доставка</span><b>'+d.price+'</b></p>';
+  if(d.list&&d.list.length)h+='<select class="field ro-w3-addr" aria-label="Адрес доставки">'+d.list.map(function(a){return '<option value="'+roEsc(a.id)+'"'+(d.a&&a.id===d.a.id?' selected':'')+'>'+roEsc(savedAddrLine(a))+'</option>'}).join('')+'</select>';
+  if(d.left>0){var pct=Math.max(4,Math.round(sub/d.free*100));h+='<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><p class="ro-w3-sub">Бесплатно от '+rub(d.free)+', ещё '+rub(d.left)+'</p>'}
+  if(d.list)h+='<button type="button" class="link-button ro-w3-my">'+(d.list.length?'Мои адреса':'Добавить адрес')+'</button>';
+  return h}
+function roCartDlv(sel){var sub=cartTotals(sel).subtotal,html=sel.length?roDlvHTML(sub):'';
+  var aside=document.querySelector('#transaction .cart-summary'),rows=document.querySelector('#transaction .cart-rows');if(!aside||!rows)return;
+  var d=aside.querySelector('.ro-w3-dlv');if(!d){d=document.createElement('div');d.className='ro-w3-dlv ro-w3-d';var t=aside.querySelector('.cart-summary-total');(t||aside.firstChild).after(d)}
+  var m=rows.parentNode.querySelector('.ro-w3-dlv.ro-w3-m');if(!m){m=document.createElement('div');m.className='ro-w3-dlv ro-w3-m';rows.after(m)}
+  d.innerHTML=html;m.innerHTML=html;d.hidden=m.hidden=!html}
 function roW3Sync(form,q){
-  var f=form.elements,house=f.home&&f.home.value==='house',fl=f.floor.value.trim(),lift=f.lift?f.lift.value:'';
+  var f=form.elements,R=RO_DELIVERY,house=f.home&&f.home.value==='house',carry=f.carry&&f.carry.value==='in';
+  var fl=parseInt(f.floor.value,10)||0,lift=f.lift?f.lift.value:'',kg=roWeight(selectedCartLines()),cwt=Math.ceil(kg/100);
   form.querySelectorAll('[data-w3-flat]').forEach(function(el){el.hidden=house;el.querySelectorAll('input').forEach(function(i){i.disabled=house})});
+  var lb=form.querySelector('.ro-w3-lift');if(lb){var off=house||!carry;lb.hidden=off;lb.querySelectorAll('input').forEach(function(i){i.disabled=off})}
   var t=function(k,v){var el=form.querySelector('[data-w3-'+k+']');if(el)el.textContent=v};
   t('t="door"',house?'До ворот':'До подъезда');
   t('d="door"',house?'Выгрузим из машины у ворот.':'Выгрузим из машины у подъезда.');
   t('t="in"',house?'В дом':'В квартиру');
-  t('d="in"',house?'Занесём в дом, на первый этаж.':'Поднимем'+(fl?' на '+fl+' этаж':' на этаж')+(lift==='cargo'?' на грузовом лифте':lift==='pass'?' на пассажирском лифте':lift==='none'?' по лестнице':'')+' и занесём в квартиру.');
-  var pr=document.getElementById('ro-w3-in-pr');if(pr)pr.textContent=q?(Number.isFinite(q.lift)&&q.carry?'+'+rub(q.lift):Number.isFinite(q.lift)?'':'Выберите лифт'):'';
-  var kg=document.getElementById('ro-w3-kg');if(kg)kg.textContent=q?'Вес заказа около '+q.kg+' кг. '+(house?'Занос считаем за каждые 100 кг.':'Подъём по лестнице считаем за этаж и каждые 100 кг, на лифте – за каждые 100 кг.'):'';
+  t('d="in"',house?'Занесём в дом. '+rub(R.house)+' за каждые 100 кг.':'Поднимем и занесём в квартиру. На лифте – '+rub(R.lift)+' за каждые 100 кг, по лестнице – '+rub(R.stairs)+' за этаж за каждые 100 кг.');
+  var c=roCarry(house,lift,fl,cwt),pr=document.getElementById('ro-w3-in-pr');
+  if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(Math.min(cwt*R.lift,Math.max(1,fl||1)*cwt*R.stairs));
+  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, для подъёма считаем '+cwt*100+' кг.';
   var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
   var row=document.getElementById('ro-w3-lift-row');
-  if(row){row.hidden=!(q&&q.carry);var l=document.getElementById('ro-w3-lift-label'),c=document.getElementById('ro-w3-lift-cost');
-    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(c)c.textContent=q?rub(q.lift):''}
+  if(row){row.hidden=!(q&&q.carry&&!q.liftPending);var l=document.getElementById('ro-w3-lift-label'),cc=document.getElementById('ro-w3-lift-cost');
+    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(cc)cc.textContent=q?rub(q.lift):''}
 }
 const addressComplete = value => /\d/.test(value) && /[а-яё]{2}/i.test(value);
 function deliveryQuote(form) {
@@ -15299,19 +15329,17 @@ function deliveryQuote(form) {
   if (fields.delivery.value === 'Самовывоз') return {cost:0,window:'На следующий день',destination:'Пункт выдачи RemOnLine, Тольятти'};
   const address = fields.address.value.trim();
   if (!addressComplete(address)) return null;
-  /* W3-2: доставка бесплатна от порога в городах из списка, иначе – по расстоянию (считает сервер; пока «N ₽»).
-     Подъём / занос – отдельная строка, считает сервер по весу, этажу и лифту (пока «N ₽»). */
+  /* W3-2: зона (район / город) – фиксированная цена и свой порог бесплатной; вне зон – по км. Подъём – отдельно. */
   const city = roCity(), lines = selectedCartLines(), sub = cartTotals(lines).subtotal, R = RO_DELIVERY;
   const house = fields.home && fields.home.value==='house', carry = fields.carry && fields.carry.value==='in';
-  const kg = roWeight(lines), cwt = Math.ceil(kg/100), fl = Math.max(1,parseInt(fields.floor.value,10)||1);
-  const lt = fields.lift ? fields.lift.value : '';
+  const kg = roWeight(lines), cwt = Math.ceil(kg/100), flr = parseInt(fields.floor.value,10)||0;
   const zone = roZone(city.name,address), km = zone ? 0 : roKm(city.name,address);
   const free = !!zone && zone.free!=null && sub>=zone.free, ship = zone ? (free ? 0 : zone.price) : km*R.perKm;
-  const lift = !carry ? 0 : house ? cwt*R.house : lt==='cargo'||lt==='pass' ? cwt*R.lift : lt==='none' ? Math.max(0,fl-1)*cwt*R.stairs+cwt*R.house : NaN;
+  const c = carry ? roCarry(house,fields.lift ? fields.lift.value : '',flr,cwt) : 0, liftPending = !Number.isFinite(c), lift = liftPending ? 0 : c;
   const unit = !house && fields.unit.value.trim();
-  return {cost:ship+lift,ship,lift,carry,house,km,kg,free,zone:zone?zone.name:'',window:zone ? 'Через 1–2 дня' : 'Через 2–3 дня',
-    where:zone ? (zone.name===city.name ? city.name : zone.name) : city.name+', '+km+' км от склада',
-    liftLabel:carry ? (house ? 'Занос в дом' : 'Подъём на '+fl+' этаж') : '',
+  return {cost:ship+lift,ship,lift,liftPending,carry,house,km,kg,free,zone:zone?zone.name:'',window:zone ? 'Через 1–2 дня' : 'Через 2–3 дня',
+    where:zone ? (zone.name===city.name ? city.name : zone.name) : city.name+', '+km+'\u00a0км от склада',
+    liftLabel:carry ? (house ? 'Занос в дом' : flr ? 'Подъём на '+flr+' этаж' : 'Подъём') : '',
     destination:city.name+', '+address+(unit ? ', кв. '+unit : '')};
 }
 function syncDelivery(form) {
@@ -15342,8 +15370,12 @@ function checkoutError(field,strict) {
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
   }
   if (field.name==='lift') {
-    const f = field.form.elements;
-    return f.home.value!=='house' && f.carry.value==='in' && !f.lift.value ? 'Выберите, есть ли лифт.' : '';
+    const f = field.form.elements, fl = f.floor.value.trim();
+    if (f.home.value==='house' || f.carry.value!=='in') return '';
+    if (!f.lift.value) return 'Выберите, есть ли лифт.';
+    if (f.lift.value==='no' && !fl) return 'Укажите этаж – от него зависит цена подъёма.';
+    if (fl && !(+fl>=1 && +fl<=RO_DELIVERY.maxFloor)) return 'Проверьте этаж.';
+    return '';
   }
   if (field.name==='address') {
     if (!value) return 'Введите улицу и дом.';
@@ -15401,18 +15433,18 @@ function renderCheckout() {
         <div class="checkout-fields address-grid" id="address-fields">
           <input type="hidden" name="city" value="${roCity().name}">
           <div class="full ro-w3-seg" role="radiogroup" aria-label="Тип жилья"><label><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
-          <label class="full addr-field"><span class="ro-w3-lrow">Улица и дом<span class="ro-w3-city">${roCity().name}</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
+          <label class="full addr-field">Улица и дом<input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
           <div class="addr-row full" data-w3-flat>
             <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
             <label>Подъезд<input class="field" name="entrance" inputmode="numeric"></label>
             <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
           </div>
-          <div class="full ro-w3-segf" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="none"><span>Нет</span></label><label><input type="radio" name="lift" value="pass"><span>Пассажирский</span></label><label><input type="radio" name="lift" value="cargo"><span>Грузовой</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
           <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
-            <label class="pay-option"><input type="radio" name="carry" value="door" checked><span><b data-w3-t="door">До подъезда</b><span class="meta" data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
-            <label class="pay-option"><input type="radio" name="carry" value="in"><span><b data-w3-t="in">В квартиру</b><span class="meta" data-w3-d="in">Поднимем на этаж и занесём в квартиру.</span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+            <div class="ro-w3-opt"><label class="ro-w3-oh"><input type="radio" name="carry" value="door" checked><span class="ro-w3-ot"><b data-w3-t="door">До подъезда</b><span data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label></div>
+            <div class="ro-w3-opt"><label class="ro-w3-oh"><input type="radio" name="carry" value="in"><span class="ro-w3-ot"><b data-w3-t="in">В квартиру</b><span data-w3-d="in"></span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+              <div class="ro-w3-lift" hidden><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт в доме</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="yes"><span>Есть</span></label><label><input type="radio" name="lift" value="no"><span>Нет</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div></div>
           </div><p class="meta" id="ro-w3-kg"></p></div>
-          <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает, позвоните за 30 минут"></textarea></label>
+          <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает"></textarea></label>
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
       </fieldset>
@@ -15484,12 +15516,12 @@ function roUserLogin(phone) {
 }
 const savedAddrKey = a => String(a.street||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').replace(/\s+/g,' ')+'|'+String(a.flat||'').trim();
 const savedAddrLine = a => a.street+(a.flat ? ', кв. '+a.flat : '');
-const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, (a.liftType||(a.lift?'cargo':''))==='cargo'?'грузовой лифт':a.liftType==='pass'?'пассажирский лифт':a.liftType==='none'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
+const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, roLiftVal(a)==='yes'?'есть лифт':roLiftVal(a)==='no'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
 let savedAddrList = [];
 function fillAddress(form,a) {
   const f = form.elements;
   f.address.value = a ? a.street : ''; f.unit.value = a ? a.flat||'' : ''; f.entrance.value = a ? a.entrance||'' : '';
-  f.floor.value = a ? a.floor||'' : ''; f.lift.value = a ? a.liftType||(a.lift?'cargo':'') : ''; f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
+  f.floor.value = a ? a.floor||'' : ''; f.lift.value = roLiftVal(a); f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
   showCheckoutError(f.address,'');
 }
 function syncSavedAddress(form) {
@@ -15504,7 +15536,7 @@ function setupSavedAddresses(form,fresh) {
   const u = cart===exampleCart ? null : roUser();
   if (u && fresh) {
     if (!form.elements.recipient.value.trim() && u.name) form.elements.recipient.value = u.name;
-    const main = u.addresses.find(a=>a.main) || u.addresses[0];
+    const main = roPickedAddr(u.addresses);
     if (main && !form.elements.address.value.trim()) fillAddress(form,main);
   }
   savedAddrList = u ? [...u.addresses].sort((a,b)=>(b.main?1:0)-(a.main?1:0)) : [];
@@ -15526,7 +15558,7 @@ function rememberCheckoutUser(form) {
   if (cart===exampleCart || !phoneAuth.account) return;
   const f = form.elements; if (f.delivery.value!=='Доставка') return;
   const u = roUser() || {phone:phoneAuth.account,name:'',email:'',addresses:[]};
-  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='cargo',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
+  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='yes',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
   let changed = false;
   if (!u.name && f.recipient.value.trim()) { u.name = f.recipient.value.trim(); changed = true; }
   if (a.street && !u.addresses.some(x=>savedAddrKey(x)===savedAddrKey(a))) { u.addresses.push({id:Date.now(),...a,main:!u.addresses.length}); changed = true; }
@@ -17516,20 +17548,29 @@ html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.lin
 html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
 /* удаление: один красный #A32637 */
 html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
-/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
-:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
-html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
+/* «Аналоги» – без иконки ⇆ (Алина 25.11, 21:42: убрать везде) */
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+/* W4-2, 25.11: карточка товара (G6, Алина 15:39). Цена – сразу под подписями (12), к низу прижата только кнопка;
+   карточки одного ряда одной высоты, кнопки на одной линии. Каталог: витрина, списки, похожие. Главная: блоки товаров. */
+html body .shop .card>.card-body:not(#ro-w4-a):not(#ro-w4-b){display:flex!important;flex-direction:column!important}
+html body .shop .card>.card-body>.card-head:not(#ro-w4-a){flex:none}
+html body .shop .card>.card-body .offer-price:not(#ro-w4-a):not(#ro-w4-b){margin-top:0!important}
+html body .shop .card>.card-body .product-card-actions:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important;align-self:stretch!important}
+html body #design-app .product-card .product-pricing:not(#ro-w4-a):not(#ro-w4-b){margin:0!important;padding-top:12px!important}
+html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){margin-top:auto!important}
+/* страница товара «нет в наличии»: пустой блок покупки не даёт лишних 32–48 px; цена → «Аналоги» как цена → «В корзину» */
+html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
+</style>
 <style id="ro-w3-1-css">
 /* W3-1 O6: кликаются только фото и название */
-html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:inline!important;width:auto!important;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
-html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:inline!important;font-weight:600}
+html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:block!important;width:fit-content!important;max-width:100%;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
 @media (hover:hover){html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm:hover strong{color:#006B79;text-decoration:none!important}}
 #transaction .cart-row-name>.meta{display:block;margin-top:2px;font-size:14px;line-height:21px;color:#566273;font-weight:400}
 #transaction .cart-row:has(.row-badge) .cart-row-name>.meta,#transaction .cart-row:has(.row-badge) a.ro-w3-nm{opacity:.55}
@@ -17551,37 +17592,50 @@ html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:
 @media (hover:hover){#transaction .ro-w3-seg label:hover span{background:rgba(21,42,75,.05)}}
 #transaction .ro-w3-seg input:checked+span{background:#F3F1EB;color:#152A4B}
 #transaction .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 1px #006B79}
-#transaction .ro-w3-seg input:disabled+span{opacity:.5}
 #transaction .ro-w3-segf{display:grid;gap:4px}
-#transaction .ro-w3-segf[hidden],#transaction .addr-row[hidden]{display:none!important}
+#transaction .addr-row[hidden],#transaction .ro-w3-lift[hidden]{display:none!important}
 #transaction .ro-w3-lbl{font-size:14px;line-height:21px;font-weight:600;color:#152A4B}
-#transaction .ro-w3-lrow{display:flex;justify-content:space-between;gap:12px}
-#transaction .ro-w3-city{font-size:14px;line-height:21px;font-weight:600;color:#566273}
+/* «Как привезти»: строка-вариант (§5) – радио слева, текст, цена справа, всё по центру по высоте */
 #transaction .ro-w3-how{display:grid;gap:12px;margin-top:4px}
-#transaction .ro-w3-how .pay-option{align-items:flex-start;padding:16px;margin:0}
-#transaction .ro-w3-how .pay-option>span{flex:1;min-width:0}
-#transaction .ro-w3-how .pay-option b{color:#152A4B}
-#transaction .ro-w3-how .pay-option .meta{font-size:14px;line-height:21px;color:#566273}
-#transaction .ro-w3-how .ro-w3-pr{white-space:nowrap;font-weight:700}
-#transaction .ro-w3-how input{margin-top:1px!important}
+#transaction .ro-w3-opt{border:1px solid #DCE4E2;border-radius:12px;background:#fff;transition:border-color .15s ease,box-shadow .15s ease}
+#transaction .ro-w3-opt:has(input[name=carry]:checked){border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+#transaction label.ro-w3-oh{display:grid!important;grid-template-columns:22px minmax(0,1fr) auto!important;align-items:center!important;gap:12px!important;padding:16px!important;margin:0!important;cursor:pointer;min-height:0!important}
+#transaction .ro-w3-ot{display:grid;gap:2px;min-width:0}
+#transaction .ro-w3-ot b{font-size:16px;line-height:24px;font-weight:600;color:#152A4B}
+#transaction .ro-w3-ot span{font-size:14px;line-height:21px;font-weight:400;color:#566273}
+#transaction .ro-w3-pr{font-size:16px;line-height:24px;font-weight:700;color:#152A4B;white-space:nowrap;text-align:right}
+#transaction .ro-w3-lift{display:grid;gap:4px;padding:0 16px 16px 50px}
 #transaction #ro-w3-lift-row[hidden]{display:none}
 #transaction #ro-w3-kg{margin:4px 0 0;font-size:14px;line-height:21px;color:#566273}
-#transaction #ro-w3-kg:empty{display:none}
-/* корзина: до бесплатной доставки – текст + полоска (цвета §1) */
-#transaction .cart-summary-note .ro-w3-bar{display:block;height:6px;border-radius:3px;background:#E3E6EA;margin:8px 0 4px;overflow:hidden}
-#transaction .cart-summary-note .ro-w3-bar>span{display:block;height:100%;border-radius:3px;background:#19CBD8;transition:width .2s ease}
-#transaction .cart-summary-note .ro-w3-sub{display:block;font-size:14px;line-height:21px;color:#566273}
-#transaction .cart-summary-note .ro-w3-ok{color:#006B79;font-weight:600}
-@container shop (max-width:1020px){#transaction .cart-summary-note .ro-w3-sub{display:none}#transaction .cart-summary-note .ro-w3-bar{margin:6px 0 0}}
-@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}}
+@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}#transaction .ro-w3-lift{padding-left:16px}}
+/* корзина: блок «Доставка» – в итоге справа (ПК), под списком (планшет, телефон) */
+#transaction .ro-w3-dlv{display:grid;gap:8px}
+#transaction .ro-w3-dlv[hidden]{display:none!important}
+#transaction .ro-w3-dlv.ro-w3-d{padding-top:16px;margin-top:16px;border-top:1px solid #E3E6EA}
+#transaction .ro-w3-dlv.ro-w3-m{display:none;border:1px solid #DCE4E2;border-radius:16px;padding:16px;margin-top:16px}
+#transaction .ro-w3-dh{display:flex;justify-content:space-between;gap:12px;margin:0;font-size:16px;line-height:24px}
+#transaction .ro-w3-dh span{font-weight:600;color:#152A4B}
+#transaction .ro-w3-dh b{font-weight:700;color:#152A4B}
+#transaction .ro-w3-dlv select.ro-w3-addr{width:100%;height:48px;padding:0 40px 0 12px;font-size:16px;line-height:24px;color:#152A4B;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23152A4B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;appearance:none;-webkit-appearance:none;text-overflow:ellipsis;cursor:pointer}
+#transaction .ro-w3-bar{display:block;height:6px;border-radius:3px;background:#E3E6EA;overflow:hidden;margin-top:4px}
+#transaction .ro-w3-bar>span{display:block;height:100%;border-radius:3px;background:#19CBD8;transition:width .2s ease}
+#transaction .ro-w3-sub{margin:0;font-size:14px;line-height:21px;color:#566273}
+#transaction .ro-w3-my{justify-self:start}
+@container shop (min-width:1021px){#transaction .cart-summary-note{display:none!important}}
+@container shop (max-width:1020px){#transaction .ro-w3-dlv.ro-w3-d{display:none!important}#transaction .ro-w3-dlv.ro-w3-m:not([hidden]){display:grid}}
 </style>
 <script id="ro-w3-2">
-/* лифт: ошибка проверяется по первой кнопке группы */
-document.addEventListener('change',function(e){var t=e.target;if(t&&t.form&&t.form.id==='checkout-form'&&(t.name==='home'||t.name==='carry'||t.name==='lift')){var lr=t.form.elements.lift[0];if(lr&&document.getElementById('checkout-error-lift').textContent)showCheckoutError(lr,checkoutError(lr))}});
-(function(){var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
+(function(){
+ var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
  new MutationObserver(mark).observe(document.body,{childList:true,subtree:true});mark();
- addEventListener('storage',function(e){if(e.key!=='ro-city')return;try{if(typeof updateCartSummary==='function'&&document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
-  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;var c=f.querySelector('.ro-w3-city');if(c)c.textContent=roCity().name;syncDelivery(f)}});
+ /* ошибку лифта / этажа пересчитываем при изменениях, если она уже показана */
+ document.addEventListener('input',function(e){var t=e.target,f=t&&t.form;if(!f||f.id!=='checkout-form')return;var er=document.getElementById('checkout-error-lift');var lr=f.elements.lift&&f.elements.lift[0];if(lr&&er&&er.textContent)showCheckoutError(lr,checkoutError(lr))});
+ /* корзина: выбор сохранённого адреса и переход к адресам */
+ document.addEventListener('change',function(e){var t=e.target;if(!t.classList||!t.classList.contains('ro-w3-addr'))return;try{localStorage.setItem('ro-w3-addr',t.value)}catch(_){}updateCartSummary();
+   var o=document.querySelector('#transaction .ro-w3-addr:not(:focus)');});
+ document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.ro-w3-my');if(!b)return;try{parent.postMessage({ro:1,type:'nav',path:'/account/profile'},'*')}catch(_){}});
+ addEventListener('storage',function(e){if(e.key!=='ro-city'&&e.key!=='ro-user')return;try{if(document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
+  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;syncDelivery(f)}});
 })();
 <%/script>
 <style id="ro-w2-css">
@@ -17678,6 +17732,32 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
 #ro-w2-dlg .ro-w2-objs:only-child~.ro-w2-slot{margin-top:16px}
 #ro-w2-dlg .ro-w2-slot .ro-w2-lbl{margin-top:0}
 #ro-w2-dlg .ro-w2-rooms{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+/* 25.11 22:25 (Алина): компактнее – меньше пустого места */
+#ro-w2 .ro-w2-fimg{aspect-ratio:3/2}
+#ro-w2 .ro-w2-ftx{padding:12px 16px 16px}
+#ro-w2 .ro-w2-ftx b{font-size:18px;line-height:25px}
+.ro-w2-card .card-bottom{margin-top:8px!important}
+.ro-w2-card .card-body{justify-content:flex-start!important}
+/* страница интерьера: сумма, разбивка и кнопка одним блоком */
+#detail .ro-w2-sum{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+#detail .ro-w2-sum .offer-price{margin:0}
+#detail .ro-w2-split{display:flex;flex-direction:column;gap:4px;margin:0;max-width:360px}
+#detail .ro-w2-split>div{display:flex;justify-content:space-between;gap:16px;font-size:14px;line-height:21px}
+#detail .ro-w2-split dt{color:#566273}#detail .ro-w2-split dd{margin:0;font-weight:600;color:#152A4B;white-space:nowrap}
+#detail .ro-w2-split .is-rec dd{font-weight:400;color:#566273}
+#detail .ro-w2-sum .ro-w2-open{align-self:flex-start;margin-top:4px}
+#detail .ro-w2-mat{margin-top:24px!important;padding-top:24px!important}
+html body .shop #detail .ro-w2-grp h3{font-size:16px!important;line-height:24px!important}
+#detail .ro-w2-grp{margin-top:12px}
+#detail .ro-w2-grp:first-of-type{margin-top:16px}
+#detail .ro-w2-aux{border-top:1px solid #E3E6EA}
+#detail .ro-w2-auxt{display:flex;align-items:center;gap:4px;width:100%;padding:0 16px;border-radius:0;text-align:left}
+#detail .ro-w2-auxt svg{width:16px;height:16px;transform:rotate(90deg);transition:transform .15s ease;flex:none}
+#detail .ro-w2-auxt[aria-expanded=true] svg{transform:rotate(-90deg)}
+#detail .ro-w2-axh{margin:0;padding:8px 16px 0;font-size:14px;line-height:21px;font-weight:600;color:#566273}
+#detail .ro-w2-axl .ro-w2-row{border-top:0!important}
+@media (max-width:700px){#detail .ro-w2-sum .ro-w2-open{align-self:stretch}#detail .ro-w2-split{max-width:none}}
+@media (prefers-reduced-motion:reduce){#detail .ro-w2-auxt svg{transition:none}}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -17716,6 +17796,29 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
   ['ent-oak','entry','Прихожая «Дуб»',5.9,'1,7 × 3,5',2.7,['ent2','ent1'],[['Стены',22.1,[['OB-D06',5]]],['Пол',5.9,[['LM-201',3]]],['Потолок',5.9,[['NT-D02',5.9]]]]]
  ].map(function(r){return{id:r[0],folder:r[1],name:r[2],area:r[3],size:r[4],h:r[5],img:r[6],groups:r[7]}});
  function sum(d){var s=0;d.groups.forEach(function(g){g[2].forEach(function(x){var p=P(x[0]);if(p)s+=Math.round(p.price*x[1])})});return s}
+ /* Вспомогательные (Алина 25.11 22:25): в цене интерьера – отделка + «Нужно для …», «Рекомендуем» отдельно (A2).
+    Комплекты KIT и замены ALT – копия из ro-kit-cat каталога (логика C7, владелец W1), считаются так же: area – по площади поверхности ×1,1, perim – по периметру комнаты. */
+ var KIT={'Обои':[['KL-01','need','area',1,25],['GR-010','rec','area',.1,5],['SH-020','rec','area',1,5]],
+  'Краска':[['TL-V01','need','obj'],['GR-010','rec','area',.1,5],['SH-020','rec','area',1,5]],
+  'Плитка':[['KL-D01','need','area',4.2,5],['ZT-101','need','area',.3,2],['GR-011','rec','area',.1,5]],
+  'Керамогранит':[['KL-D02','need','area',7,5],['ZT-101','need','area',.5,2],['GR-011','rec','area',.1,5]],
+  'Ламинат':[['PD-01','need','area',1.1,10],['PL-01','need','perim',1,2.5],['PZ-01','rec','area',1.15,30]],
+  'Линолеум':[['PL-01','need','perim',1,2.5]]};
+ var ALT=[['KL-01','KL-02'],['GR-010','GR-D02'],['SH-020','SH-D02'],['ZT-101','ZT-102']];
+ var FOR={'Обои':'поклейки','Краска':'покраски','Плитка':'укладки плитки','Керамогранит':'укладки плитки','Ламинат':'укладки пола','Линолеум':'укладки пола'};
+ function avail(sku){var p=P(sku);if(p&&p.availability!=='out')return p;var g=ALT.filter(function(x){return x[0]===sku})[0]||[];for(var i=1;i<g.length;i++){p=P(g[i]);if(p&&p.availability!=='out')return p}return null}
+ function aux(d){if(d._aux)return d._aux;var res={groups:[],need:0,rec:0};
+  d.groups.forEach(function(g){var items={},fors=[],used=0;
+   var main=g[2].map(function(x){var p=P(x[0]);var a=p&&p.areaPerSaleUnit?Math.min(g[1],p.areaPerSaleUnit*x[1]):null;if(a)used+=a;return{p:p,q:x[1],a:a}});
+   main.forEach(function(m){if(!m.p)return;var K=KIT[m.p.type];if(!K)return;var a=m.a!=null?m.a:Math.max(0,g[1]-used)||g[1];if(FOR[m.p.type]&&fors.indexOf(FOR[m.p.type])<0)fors.push(FOR[m.p.type]);
+    K.forEach(function(k){var p=avail(k[0]);if(!p)return;var q=1;if(k[2]==='area')q=Math.ceil(a*k[3]*1.1/k[4]);else if(k[2]==='perim')q=Math.ceil(Math.max(0,4*Math.sqrt(d.area)-.9)*1.05/k[4]);q=Math.max(1,q);
+     var it=items[p.sku];if(it){it.q+=q;if(k[1]==='need')it.role='need'}else items[p.sku]={p:p,q:q,role:k[1]}})});
+   var L=Object.keys(items).map(function(k){var it=items[k];it.sum=it.q*it.p.price;return it});
+   var need=L.filter(function(x){return x.role==='need'}),rec=L.filter(function(x){return x.role==='rec'});
+   need.forEach(function(x){res.need+=x.sum});rec.forEach(function(x){res.rec+=x.sum});
+   res.groups.push({need:need,rec:rec,label:fors.join(' и ')})});
+  d._aux=res;return res}
+ function total(d){return sum(d)+aux(d).need}
  function folderName(k){var f=FOLDERS.find(function(x){return x[0]===k});return f?f[1]:''}
  function inFolder(k){return D.filter(function(d){return d.folder===k})}
  function img(k){return IMG[k]||''}
@@ -17726,7 +17829,7 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
  document.getElementById('detail').before(page);
  var detail=document.getElementById('detail');
  var loc=function(crumbs,back){return '<div class="catalog-location"><a class="catalog-back ro-w2-back" href="#'+(back||'')+'" data-route>'+icon('back')+'<span>Назад</span></a>'+(crumbs?'<nav class="crumbs" aria-label="Хлебные крошки">'+crumbs+'</nav>':'')+'</div>'};
- function card(d){var s=sum(d);
+ function card(d){var s=total(d);
   return '<article class="card ro-w2-card" data-design="'+d.id+'"><div class="photo product-visual"><div class="card-art" aria-hidden="true"><img src="'+img(d.img[0])+'" alt="" loading="lazy"></div></div>'+
    '<div class="card-body"><div class="card-head"><h3><a class="card-link" href="#design='+d.id+'" data-route>'+esc(d.name)+'</a></h3><div class="meta"><p>'+esc(folderName(d.folder))+', '+sizeLine(d)+'</p></div></div>'+
    '<div class="card-bottom"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div></div></article>'}
@@ -17740,19 +17843,26 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
    '<h1 id="ro-w2-t" tabindex="-1">'+esc(n)+'</h1><p class="meta ro-w2-count">'+L.length+' '+pl(L.length,'интерьер','интерьера','интерьеров')+'</p>'+
    '<div class="product-grid ro-w2-grid">'+L.map(card).join('')+'</div>';
  }
- function drawDesign(d){var s=sum(d),n=0;d.groups.forEach(function(g){n+=g[2].length});
+ function rowHTML(p,q,sumv){var out=p.availability==='out';return '<a class="ro-w2-row'+(out?' is-out':'')+'" href="#product='+p.sku+'" data-route><span class="ro-w2-rm" aria-hidden="true">'+productVisual(p)+'</span><span class="ro-w2-rn"><b>'+esc(p.name)+'</b><span class="meta">'+esc([p.variant,p.pack].filter(Boolean).join(', '))+', <span class="nw">'+p.sku+'</span></span>'+(out?'<span class="row-badge ro-w2-badge">Нет в наличии</span>':'')+'</span><span class="ro-w2-rq"><strong>'+rub(sumv)+'</strong><span class="meta">'+qtyText(p,q)+'</span></span></a>'}
+ function drawDesign(d){var f=sum(d),A=aux(d),t=f+A.need;
   detail.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<a href="#designs='+d.folder+'" data-route>'+esc(folderName(d.folder))+'</a>','designs='+d.folder)+
   '<div class="detail-grid ro-w2-detail">'+
    '<header class="product-heading"><h1 tabindex="-1">'+esc(d.name)+'</h1><p class="meta">'+esc(folderName(d.folder))+', '+sizeLine(d)+', потолок '+nb(num(d.h)+' м')+'</p></header>'+
    '<div class="product-media product-gallery ro-w2-gal" role="region" aria-label="Фотографии интерьера"><div class="gallery-stage"><div class="gallery-frame" data-multiple="'+(d.img.length>1)+'"><img class="gallery-main-image ro-w2-main" alt="'+esc(d.name)+'" src="'+img(d.img[0])+'" draggable="false"></div>'+
     (d.img.length>1?'<div class="gallery-nav"><button type="button" class="icon-button gallery-control gallery-prev" data-w2-step="-1" aria-label="Предыдущее фото">'+icon('right')+'</button><button type="button" class="icon-button gallery-control gallery-next" data-w2-step="1" aria-label="Следующее фото">'+icon('right')+'</button><span class="gallery-position" aria-hidden="true">1 / '+d.img.length+'</span></div>':'')+'</div>'+
     (d.img.length>1?'<div class="gallery-thumbs" role="group" aria-label="Выбор фотографии">'+d.img.map(function(k,i){return '<button type="button" class="gallery-thumb" data-w2-slide="'+i+'" aria-current="'+(i===0)+'" aria-label="Фото '+(i+1)+' из '+d.img.length+'"><img src="'+img(k)+'" alt="" draggable="false"></button>'}).join('')+'</div>':'')+'</div>'+
-   '<div class="detail-copy"><div class="detail-summary"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div>'+
-    '<div class="buy-group"><button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
+   '<div class="detail-copy"><div class="ro-w2-sum"><p class="offer-price"><strong class="price">'+rub(t)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p>'+
+    '<dl class="ro-w2-split"><div><dt>Отделка</dt><dd>'+rub(f)+'</dd></div><div><dt>Нужно для работы</dt><dd>'+rub(A.need)+'</dd></div>'+(A.rec?'<div class="is-rec"><dt>Рекомендуем, не входит в сумму</dt><dd>'+rub(A.rec)+'</dd></div>':'')+'</dl>'+
+    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
     '<section class="detail-info ro-w2-mat" aria-labelledby="ro-w2-mt"><h2 id="ro-w2-mt">Материалы</h2>'+
-    d.groups.map(function(g){return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);if(!p)return '';var out=p.availability==='out';
-      return '<a class="ro-w2-row'+(out?' is-out':'')+'" href="#product='+p.sku+'" data-route><span class="ro-w2-rm" aria-hidden="true">'+productVisual(p)+'</span><span class="ro-w2-rn"><b>'+esc(p.name)+'</b><span class="meta">'+esc([p.variant,p.pack].filter(Boolean).join(', '))+', <span class="nw">'+p.sku+'</span></span>'+(out?'<span class="row-badge ro-w2-badge">Нет в наличии</span>':'')+'</span><span class="ro-w2-rq"><strong>'+rub(Math.round(p.price*x[1]))+'</strong><span class="meta">'+qtyText(p,x[1])+'</span></span></a>'}).join('')+'</div></div>'}).join('')+
+    d.groups.map(function(g,gi){var X=A.groups[gi],n=X.need.length+X.rec.length,xs=0;X.need.concat(X.rec).forEach(function(x){xs+=x.sum});
+     return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);return p?rowHTML(p,x[1],Math.round(p.price*x[1])):''}).join('')+
+      (n?'<div class="ro-w2-aux"><button type="button" class="ro-kc-link ro-w2-auxt" aria-expanded="false" aria-controls="ro-w2-ax'+gi+'">Для '+esc(X.label)+': '+n+'\u00A0'+pl(n,'позиция','позиции','позиций')+', '+rub(xs)+icon('right')+'</button><div class="ro-w2-axl" id="ro-w2-ax'+gi+'" hidden>'+
+       (X.need.length?'<p class="ro-w2-axh">Нужно для '+esc(X.label)+'</p>'+X.need.map(function(x){return rowHTML(x.p,x.q,x.sum)}).join(''):'')+
+       (X.rec.length?'<p class="ro-w2-axh">Рекомендуем</p>'+X.rec.map(function(x){return rowHTML(x.p,x.q,x.sum)}).join(''):'')+'</div></div>':'')+
+      '</div></div>'}).join('')+
     '</section></div></div>';
+  detail.querySelectorAll('.ro-w2-auxt').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(o));document.getElementById(b.getAttribute('aria-controls')).hidden=!o})});
   var i=0,main=detail.querySelector('.ro-w2-main'),pos=detail.querySelector('.gallery-position'),th=[].slice.call(detail.querySelectorAll('[data-w2-slide]'));
   function show(n){i=(n+d.img.length)%d.img.length;main.src=img(d.img[i]);if(pos)pos.textContent=(i+1)+' / '+d.img.length;th.forEach(function(b,j){b.setAttribute('aria-current',String(j===i))})}
   detail.querySelectorAll('[data-w2-step]').forEach(function(b){b.addEventListener('click',function(){show(i+Number(b.dataset.w2Step))})});
@@ -17800,9 +17910,19 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
  function roomName(base,obj){if(!obj)return base;var used=obj.rooms.filter(function(n){return n===base||n.indexOf(base+' ')===0}).length;return used?base+' '+(used+1):base}
  /* Окно (Алина 25.11, 15:36): комната всегда внутри объекта.
     Объект: свой или новый (название уже заполнено). Комната: «Новая комната как в интерьере» или своя комната (интерьер ляжет на её размеры). */
+ /* Типовые планировки – копия APT конструктора (владелец W1): [серия, название, [[вариант, название, [[комната, тип, м²]...]]]] */
+ var APT=[["stm", "Старая московская", [["1", "1-комнатная, без балкона", [["Гостиная", "living", 18.6], ["Кухня", "kitchen", 6.4], ["Прихожая", "entry", 4.2], ["Санузел", "combo", 2.8]]], ["2s", "2-комнатная «самолёт»", [["Гостиная", "living", 17.0], ["Спальня", "bed", 12.7], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 7.4], ["Кладовая", "store", 1.9], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.4]]], ["1k", "1-комнатная, с балконом", [["Гостиная", "living", 17.1], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 4.1], ["Санузел", "combo", 2.8], ["Балкон", "balcony", 1.7]]], ["2t", "2-комнатная «трамвай»", [["Гостиная", "living", 17.2], ["Спальня", "bed", 11.6], ["Кухня", "kitchen", 6.3], ["Прихожая", "entry", 5.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9], ["Кладовая", "store", 1.0], ["Кладовая 2", "store", 1.0], ["Балкон", "balcony", 1.2]]], ["2b", "2-комнатная, без балкона", [["Гостиная", "living", 18.2], ["Спальня", "bed", 10.5], ["Кухня", "kitchen", 6.6], ["Прихожая", "entry", 6.0], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8]]], ["3", "3-комнатная, девятиэтажка", [["Гостиная", "living", 19.0], ["Спальня", "bed", 11.3], ["Детская", "kids", 8.3], ["Кухня", "kitchen", 5.9], ["Прихожая", "entry", 9.3], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8], ["Балкон", "balcony", 1.0]]], ["3f", "3-комнатная, пятиэтажка", [["Гостиная", "living", 17.1], ["Спальня", "bed", 17.0], ["Детская", "kids", 10.3], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 9.0], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.4]]], ["3p", "3-комнатная с проходной комнатой", [["Гостиная", "living", 20.4], ["Спальня", "bed", 12.9], ["Детская", "kids", 11.7], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 4.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8], ["Балкон", "balcony", 1.3]]], ["3b", "3-комнатная, без балкона", [["Гостиная", "living", 16.3], ["Спальня", "bed", 11.2], ["Детская", "kids", 8.1], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 8.1], ["Кладовая", "store", 0.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8]]], ["3l", "3-комнатная с лоджией", [["Гостиная", "living", 17.3], ["Спальня", "bed", 10.3], ["Детская", "kids", 9.3], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]], ["3t", "3-комнатная «трапеция»", [["Гостиная", "living", 19.4], ["Спальня", "bed", 14.2], ["Детская", "kids", 14.0], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 9.6], ["Кладовая", "store", 1.1], ["Ванная", "bath", 2.4], ["Туалет", "wc", 1.2]]], ["4", "4-комнатная", [["Гостиная", "living", 17.3], ["Спальня", "bed", 14.8], ["Детская", "kids", 12.9], ["Комната", "office", 10.3], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 10.5], ["Кладовая", "store", 2.0], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]]]], ["msk", "Московская", [["1", "1-комнатная", [["Гостиная", "living", 17.1], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 4.6], ["Санузел", "combo", 2.3], ["Кладовая", "store", 0.9], ["Балкон", "balcony", 1.0]]], ["2l", "2-комнатная с лоджией", [["Гостиная", "living", 17.1], ["Спальня", "bed", 12.1], ["Кухня", "kitchen", 8.7], ["Прихожая", "entry", 8.5], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Лоджия", "balcony", 1.8]]], ["2m", "2-комнатная малометражка", [["Гостиная", "living", 12.2], ["Спальня", "bed", 8.6], ["Кухня", "kitchen", 8.4], ["Прихожая", "entry", 9.2], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 17.6], ["Спальня", "bed", 13.2], ["Детская", "kids", 12.7], ["Кухня", "kitchen", 7.6], ["Прихожая", "entry", 10.5], ["Кладовая", "store", 1.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 2.1]]], ["4t", "4-комнатная «трапеция»", [["Гостиная", "living", 18.9], ["Спальня", "bed", 14.1], ["Детская", "kids", 10.4], ["Комната", "office", 8.1], ["Кухня", "kitchen", 7.6], ["Прихожая", "entry", 12.3], ["Кладовая", "store", 2.8], ["Кладовая 2", "store", 1.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.5]]]]], ["tash", "Ташкентская", [["1", "1-комнатная", [["Гостиная", "living", 17.2], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 4.2], ["Санузел", "combo", 3.0]]], ["2", "2-комнатная", [["Гостиная", "living", 16.9], ["Спальня", "bed", 8.9], ["Кухня", "kitchen", 6.9], ["Прихожая", "entry", 6.6], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.6], ["Балкон", "balcony", 2.9]]], ["3", "3-комнатная", [["Гостиная", "living", 16.1], ["Спальня", "bed", 8.9], ["Детская", "kids", 7.1], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 7.4], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9]]], ["3c", "3-комнатная с большим коридором", [["Гостиная", "living", 17.2], ["Спальня", "bed", 12.3], ["Детская", "kids", 8.7], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 11.6], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9], ["Балкон", "balcony", 3.1]]]]], ["uly", "Ульяновская", [["1", "1-комнатная", [["Гостиная", "living", 13.8], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 3.3], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Лоджия", "balcony", 1.8]]], ["1m", "1-комнатная малометражка", [["Гостиная", "living", 14.3], ["Кухня", "kitchen", 5.3], ["Прихожая", "entry", 2.9], ["Санузел", "combo", 3.1], ["Лоджия", "balcony", 7.6]]], ["2", "2-комнатная", [["Гостиная", "living", 19.1], ["Спальня", "bed", 13.0], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 9.3], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Балкон", "balcony", 0.9]]], ["2m", "2-комнатная малометражка", [["Гостиная", "living", 13.8], ["Спальня", "bed", 8.8], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 8.4], ["Ванная", "bath", 2.7], ["Туалет", "wc", 1.0], ["Балкон", "balcony", 3.5]]], ["3", "3-комнатная", [["Гостиная", "living", 17.2], ["Спальня", "bed", 13.9], ["Детская", "kids", 11.8], ["Кухня", "kitchen", 8.7], ["Прихожая", "entry", 12.7], ["Кладовая", "store", 0.9], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 2.8]]], ["4", "4-комнатная", [["Гостиная", "living", 22.6], ["Спальня", "bed", 18.3], ["Детская", "kids", 12.7], ["Комната", "office", 11.4], ["Кухня", "kitchen", 7.2], ["Прихожая", "entry", 17.0], ["Коридор", "hall", 6.8], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Санузел", "combo", 3.5], ["Лоджия", "balcony", 7.6], ["Лоджия 2", "balcony", 7.6]]]]], ["hru", "Хрущёвская", [["2", "2-комнатная, проходная", [["Гостиная", "living", 19.0], ["Спальня", "bed", 13.9], ["Кухня", "kitchen", 5.5], ["Прихожая", "entry", 4.6], ["Санузел", "combo", 2.9], ["Балкон", "balcony", 0.9]]], ["2s", "2-комнатная «самолёт»", [["Гостиная", "living", 17.5], ["Спальня", "bed", 14.3], ["Кухня", "kitchen", 5.7], ["Коридор", "hall", 4.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 1.0]]], ["1", "1-комнатная", [["Гостиная", "living", 17.6], ["Кухня", "kitchen", 5.5], ["Прихожая", "entry", 3.5], ["Санузел", "combo", 2.9]]], ["3", "3-комнатная", [["Гостиная", "living", 16.8], ["Спальня", "bed", 14.0], ["Детская", "kids", 12.5], ["Кухня", "kitchen", 6.1], ["Коридор", "hall", 6.0], ["Санузел", "combo", 2.9]]], ["4", "4-комнатная, торцевая", [["Гостиная", "living", 17.5], ["Спальня", "bed", 11.1], ["Детская", "kids", 8.4], ["Комната", "office", 8.3], ["Кухня", "kitchen", 6.2], ["Прихожая", "entry", 4.9], ["Санузел", "combo", 3.0]]], ["4b", "4-комнатная, большая", [["Гостиная", "living", 18.5], ["Спальня", "bed", 10.8], ["Детская", "kids", 10.2], ["Комната", "office", 9.4], ["Кухня", "kitchen", 5.6], ["Прихожая", "entry", 11.8], ["Ванная", "bath", 2.0], ["Туалет", "wc", 1.0]]]]], ["mak", "Макаровская", [["4", "4-комнатная", [["Гостиная", "living", 21.8], ["Спальня", "bed", 16.4], ["Детская", "kids", 16.3], ["Комната", "office", 13.1], ["Кухня", "kitchen", 11.7], ["Прихожая", "entry", 18.0], ["Кладовая", "store", 2.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Лоджия", "balcony", 4.1], ["Лоджия 2", "balcony", 2.1], ["Лоджия 3", "balcony", 1.9]]]]], ["ulu", "Улучшенная", [["4", "4-комнатная", [["Гостиная", "living", 16.6], ["Спальня", "bed", 9.4], ["Детская", "kids", 8.2], ["Комната", "office", 8.1], ["Кухня", "kitchen", 5.7], ["Прихожая", "entry", 5.8], ["Ванная", "bath", 2.0], ["Туалет", "wc", 1.0]]], ["4s", "4-комнатная, окна на две стороны", [["Гостиная", "living", 16.6], ["Спальня", "bed", 13.9], ["Детская", "kids", 13.4], ["Комната", "office", 12.4], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 8.0], ["Ванная", "bath", 2.1], ["Туалет", "wc", 1.2], ["Кладовая", "store", 0.9]]]]], ["len", "Ленинградская", [["1", "1-комнатная", [["Гостиная", "living", 20.0], ["Кухня", "kitchen", 10.0], ["Прихожая", "entry", 4.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["2", "2-комнатная", [["Гостиная", "living", 16.2], ["Спальня", "bed", 11.8], ["Кухня", "kitchen", 12.0], ["Прихожая", "entry", 6.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 18.9], ["Спальня", "bed", 14.4], ["Детская", "kids", 11.7], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["oli", "Олимпийская", [["1", "1-комнатная", [["Гостиная", "living", 20.0], ["Кухня", "kitchen", 10.0], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["2", "2-комнатная", [["Гостиная", "living", 18.0], ["Спальня", "bed", 13.0], ["Кухня", "kitchen", 9.0], ["Прихожая", "entry", 9.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 16.8], ["Спальня", "bed", 12.8], ["Детская", "kids", 10.4], ["Кухня", "kitchen", 9.0], ["Прихожая", "entry", 12.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["mon", "Монолитная", [["3", "3-комнатная, 62 м²", [["Гостиная", "living", 14.3], ["Спальня", "bed", 10.9], ["Детская", "kids", 8.8], ["Кухня", "kitchen", 10.5], ["Прихожая", "entry", 13.7], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3g", "3-комнатная, 75 м²", [["Гостиная", "living", 18.4], ["Спальня", "bed", 14.0], ["Детская", "kids", 11.4], ["Кухня", "kitchen", 8.6], ["Прихожая", "entry", 18.4], ["Ванная", "bath", 3.0], ["Туалет", "wc", 1.5]]]]], ["sam", "Самарская", [["1", "1-комнатная", [["Гостиная", "living", 19.1], ["Кухня", "kitchen", 9.6], ["Прихожая", "entry", 4.3], ["Санузел", "combo", 3.5]]], ["2", "2-комнатная", [["Гостиная", "living", 19.4], ["Спальня", "bed", 14.1], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 8.4], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["gos", "Гостиничная", [["1", "1-комнатная малометражка", [["Гостиная", "living", 10.0], ["Кухня", "kitchen", 2.5], ["Прихожая", "entry", 2.5], ["Санузел", "combo", 2.0]]], ["2", "2-комнатная", [["Гостиная", "living", 18.7], ["Спальня", "bed", 12.9], ["Кухня", "kitchen", 1.5], ["Прихожая", "entry", 3.0], ["Санузел", "combo", 2.0]]]]], ["sta", "Сталинская", [["3", "3-комнатная", [["Гостиная", "living", 21.8], ["Спальня", "bed", 16.6], ["Детская", "kids", 13.6], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 18.0], ["Ванная", "bath", 3.5], ["Туалет", "wc", 1.5]]]]]];
+ var MATCH={living:['living'],kitchen:['kitchen'],bed:['bed'],kids:['kids'],bath:['bath','combo'],entry:['entry','hall']};
  function open(d){var O=objects(),user=isUser(),base=folderName(d.folder);
   var row=function(name,val,title,meta,on,dis){return '<label class="pay-option'+(dis?' ro-w2-dis':'')+'"><input type="radio" name="'+name+'" value="'+val+'"'+(on?' checked':'')+'><span><b>'+esc(title)+'</b>'+(meta?'<span class="meta">'+meta+'</span>':'')+'</span></label>'};
   var nameField='<label class="ro-w2-lbl" for="ro-w2-on">Название объекта<input class="field" id="ro-w2-on" name="objName" type="text" maxlength="60" autocomplete="off" value="Моя квартира"></label><span class="ro-w2-err" data-err="objName" role="alert"></span>';
+  var aptField='<label class="ro-w2-lbl" for="ro-w2-apt">Планировка<select class="field" id="ro-w2-apt" name="apt"><option value="">Без планировки</option>'+APT.map(function(a){return '<optgroup label="'+esc(a[1])+'">'+a[2].map(function(v){var t=0;v[2].forEach(function(r){if(r[1]!=='balcony')t+=r[2]});return '<option value="'+a[0]+'|'+v[0]+'">'+esc(v[1])+', '+num(Math.round(t*10)/10)+' м²</option>'}).join('')+'</optgroup>'}).join('')+'</select></label>';
+  function aptRooms(){var v=(f.elements.apt||{}).value;if(!v)return null;var k=v.split('|'),a=APT.find(function(x){return x[0]===k[0]}),vr=a&&a[2].find(function(x){return x[0]===k[1]});return vr?vr[2].filter(function(r){return r[1]!=='balcony'&&r[1]!=='store'}):null}
+  function drawAptRooms(){var box=slot.querySelector('.ro-w2-aptrooms');if(!box)return;var R=aptRooms();
+   if(!R){box.innerHTML='';label();return}
+   var want=MATCH[d.folder]||[],pick=R.findIndex(function(r){return want.indexOf(r[1])>=0});
+   box.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+row('room','new','Новая комната как в интерьере',esc(base)+', '+sizeLine(d),pick<0)+
+    R.map(function(r,k){return row('room',k,r[0],nb(num(r[2])+' м²'),k===pick)}).join('')+'</div></fieldset>';label()}
   var objList=O.length?'<fieldset class="ro-w2-fs"><legend>Объект</legend><div class="pay-options ro-w2-objs">'+O.map(function(o,j){return row('obj',j,o.name,o.rooms.length+' '+pl(o.rooms.length,'комната','комнаты','комнат'),j===0)}).join('')+
     row('obj','new','Новый объект',(!user?'Нужен вход: без входа доступен один объект':''),false)+'</div></fieldset>':'';
   dlg.innerHTML='<div class="dialog-frame"><div class="dialog-header"><h2 id="ro-w2-dt" tabindex="-1">Открыть в конструкторе</h2><button class="icon-button" type="button" data-w2-x aria-label="Закрыть">'+icon('close')+'</button></div>'+
@@ -17811,14 +17931,15 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
   function objVal(){return O.length?(f.querySelector('input[name=obj]:checked')||{}).value:'new'}
   function roomVal(){var r=f.querySelector('input[name=room]:checked');return r?r.value:'new'}
   function drawSlot(){var v=objVal();
-   if(v==='new'){slot.innerHTML=(!user&&O.length)?'':nameField;var n=f.elements.objName;if(n){n.addEventListener('input',function(){err('objName','')});n.addEventListener('focus',function(){n.select()})}}
+   if(v==='new'){slot.innerHTML=(!user&&O.length)?'':nameField+aptField+'<div class="ro-w2-aptrooms"></div>';var n=f.elements.objName;if(n){n.addEventListener('input',function(){err('objName','')});n.addEventListener('focus',function(){n.select()})}
+    var sel=f.elements.apt;if(sel)sel.addEventListener('change',drawAptRooms);drawAptRooms()}
    else{var o=O[+v],full=!user&&o.rooms.length>=GUEST_ROOMS;
     slot.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+
      row('room','new','Новая комната как в интерьере',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':esc(base)+', '+sizeLine(d),true)+
      o.rooms.map(function(n,k){return row('room',k,n,'',false)}).join('')+'</div></fieldset>'}
    label()}
   function needLogin(){var v=objVal();if(user)return false;if(v==='new')return O.length>0;var o=O[+v];return roomVal()==='new'&&o.rooms.length>=GUEST_ROOMS}
-  function label(){go.textContent=needLogin()?'Войти':(objVal()!=='new'&&roomVal()!=='new')?'Применить к комнате':'Открыть'}
+  function label(){go.textContent=needLogin()?'Войти':roomVal()!=='new'?'Применить к комнате':'Открыть'}
   f.addEventListener('change',function(e){if(e.target.name==='obj')drawSlot();else label()});
   function err(n,t){var e=f.querySelector('[data-err="'+n+'"]'),i=f.elements[n];if(!e)return;e.innerHTML=t?'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>'+t:'';i.toggleAttribute('aria-invalid',!!t)}
   f.addEventListener('submit',function(e){e.preventDefault();
@@ -17829,7 +17950,8 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
    go.setAttribute('aria-busy','true');go.textContent='Открываем…';
    setTimeout(function(){dlg.close();go.removeAttribute('aria-busy');
     /* в конструктор (W1): новая комната по интерьеру или интерьер на свою комнату */
-    var q=new URLSearchParams({design:d.id,obj:o?o.name:f.elements.objName.value.trim(),mode:rv==='new'?'new':'apply',room:rv==='new'?roomName(base,o):o.rooms[+rv]});if(!o)q.set('newobj','1');
+    var R=o?null:aptRooms(),rn=rv==='new'?roomName(base,o?o:(R?{rooms:R.map(function(r){return r[0]})}:null)):(o?o.rooms[+rv]:R[+rv][0]);
+    var q=new URLSearchParams({design:d.id,obj:o?o.name:f.elements.objName.value.trim(),mode:rv==='new'?'new':'apply',room:rn});if(!o){q.set('newobj','1');if(f.elements.apt&&f.elements.apt.value)q.set('apt',f.elements.apt.value)}
     if(typeof RO_POST==='function')RO_POST({type:'nav',path:'/objects?'+q.toString()})},600)});
   dlg.querySelector('[data-w2-x]').addEventListener('click',function(){dlg.close()});
   drawSlot();dlg.showModal();dlg.querySelector('h2').focus();
@@ -19032,16 +19154,23 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 <%/script>
 <style id="ro-w5-smeta-css">
-/* W5, S1 v3 (25.11, 16:59, Алина: «нет иерархии, ничего не посчитать, непонятно, как скрыть / раскрыть»).
-   Блок отделки: строка отделки → «Для поклейки» (обязательное, отмечено) → «Рекомендуем» (отмеченное видно всегда,
-   неотмеченное – под «Показать ещё N») → «Итого» блока. Цены всех строк блока – в одном столбце. Без плашек и вложенных рамок.
-   Цвета, размеры, шрифты – DESIGN-SYSTEM. Наведение на название – только цвет (Алина 16:59). */
+/* W5, S1 v5 (25.11, 22:40). Под отделкой – рамка «Материалы к …» во всю ширину строки, раскрывается стрелкой (без «Показать / Скрыть»);
+   внутри «Нужно для …» и «Рекомендуем» (заголовки 16/24 600, кликается только галочка); у материала – фасовка и артикул, как у отделки;
+   снятые бледнеют; цены материалов в столбце цен отделки. На широких экранах список не шире 1040. Цвета, размеры – DESIGN-SYSTEM. */
 #ui .estimate-group>article.estimate-product~article.estimate-product{border-top:1px solid #E3E6EA}
 html body #ui .estimate-list h4.eg>span{font-size:16px!important;line-height:24px!important;font-weight:600!important;color:#152A4B!important}
 html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24px!important;font-weight:700!important;color:#152A4B!important}
-#ui .ro-w5-k{margin:0 66px 0 48px;padding:0 0 16px}
-#ui .ro-w5-gh{display:flex;align-items:center;gap:16px;min-height:40px;margin:0;font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273}
-#ui .ro-w5-gh label{cursor:pointer}
+#ui .ro-w5-k{margin:0 14px 16px;padding:0 16px;border:1px solid #DCE4E2;border-radius:12px;background:#fff}
+#ui .ro-w5-kh{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;column-gap:16px;width:100%;min-height:48px;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;box-sizing:border-box}
+#ui .ro-w5-kh .t{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;transition:color .15s ease}
+#ui .ro-w5-kh .m{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap;text-align:right}
+#ui .ro-w5-kh>svg{width:20px;height:20px;color:#566273;transition:transform .15s ease}
+#ui .ro-w5-kh[aria-expanded="true"]>svg{transform:rotate(180deg)}
+#ui .ro-w5-kh:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:8px}
+@media (hover:hover){#ui .ro-w5-kh:hover .t{color:#006B79}}
+#ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px;border-top:1px solid #E3E6EA}
+#ui .ro-w5-rh .t{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;cursor:default}
+#ui .ro-w5-rh small{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
 #ui .ro-w5-r{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;min-height:56px;padding:8px 0;box-sizing:border-box}
 #ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
 #ui .ro-w5-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
@@ -19052,28 +19181,27 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
 #ui .ro-w5-q{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
 #ui .ro-w5-s{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;text-align:right}
 #ui .ro-w5-r.off .ro-w5-s{color:#566273;font-weight:600}
+/* снятая строка материалов бледнеет, как отделка (Алина 19:55); цена «+ N ₽» остаётся читаемой */
+#ui .ro-w5-r.off .ro-w5-th,#ui .ro-w5-r.off .ro-w5-n,#ui .ro-w5-r.off .ro-w5-w,#ui .ro-w5-r.off .ro-w5-q{opacity:.55}
+/* цены материалов – в столбце цен отделки */
+#ui .ro-w5-k .ro-w5-r{padding-right:36px}
 #ui .ro-w5-r .pbadge{margin-top:4px}
 #ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
 #ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273;cursor:pointer}
 #ui .ro-w5-rh label .x{font-weight:400}
-#ui .ro-w5-more{display:inline-flex;align-items:center;gap:4px;min-height:40px;margin:0;padding:0 4px;white-space:nowrap;border:0;background:none;cursor:pointer;text-align:left;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;transition:color .15s ease}
-#ui .ro-w5-more .x{font-weight:400;color:#566273}
-#ui .ro-w5-more svg{width:16px;height:16px;flex:none;transition:transform .15s ease}
-#ui .ro-w5-more[aria-expanded="true"] svg{transform:rotate(180deg)}
-#ui .ro-w5-more:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
-@media (hover:hover){#ui .ro-w5-more:hover{color:#152A4B}}
-#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin-top:8px;padding-top:12px;border-top:1px solid #E3E6EA}
-#ui .ro-w5-sum span{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
-#ui .ro-w5-sum b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap}
+/* широкие экраны (1920, 4К): список сметы не шире 1040, по центру колонки – строки не растягиваются */
+#ui .ctr>.tb.estimate-toolbar,#ui .ctr>.estimate-list{max-width:1040px;width:100%;margin-left:auto!important;margin-right:auto!important;align-self:center;box-sizing:border-box}
 /* итог в «Параметрах» сметы – без плашки (DESIGN-SYSTEM §17): подпись 14/21 над суммой */
 #ui .cov.ro-w5-tot{padding:0;background:none;border:0;border-radius:0}
 #ui .cov.ro-w5-tot .sm{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 4px}
-#ui .ro-w5-cs .lnk{margin-left:4px}
 /* название отделки: наведение – только цвет */
 @media (hover:hover){#ui .estimate-name .ln:hover{text-decoration:none!important;color:#006B79}}
 @media (max-width:700px){
- #ui .ro-w5-k{margin:0 48px 0 12px;padding-bottom:12px}
- #ui .ro-w5-gh{gap:12px}
+ #ui .ro-w5-k{margin:0 8px 8px 12px;padding:0 12px}
+ #ui .ro-w5-kh{grid-template-columns:minmax(0,1fr) 20px;column-gap:12px}
+ #ui .ro-w5-kh .m{grid-column:1;grid-row:2;text-align:left;white-space:normal}
+ #ui .ro-w5-kh>svg{grid-column:2;grid-row:1/3}
+ #ui .ro-w5-k .ro-w5-r{padding-right:0}
  #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
  #ui .ro-w5-r>.ro-w5-th{display:none}
  #ui .ro-w5-t{grid-column:2;grid-row:1/3}
@@ -19087,21 +19215,28 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
  html body #ui .estimate-row.r2 .estimate-q .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important}
  html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
 }
-@media (prefers-reduced-motion:reduce){#ui .ro-w5-more svg,#ui .ro-w5-n,#ui .ro-w5-more{transition:none}}
+@media (prefers-reduced-motion:reduce){#ui .ro-w5-kh>svg,#ui .ro-w5-kh .t,#ui .ro-w5-n{transition:none}}
 </style>
 <script id="ro-w5-smeta">
-/* W5, S1 v3 (25.11, 16:59). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
-   – «Для поклейки / покраски / укладки» – обязательное (без чего работу не сделать), отмечено сразу один раз (T.kseen).
-   – «Рекомендуем» – инструменты и по желанию. Отмеченное видно всегда; неотмеченное – под «Показать ещё N: …» (T.w5o).
-     Снятая на виду строка не пропадает до «Скрыть» (T.w5k) – ничего не прыгает.
-   – «Итого» блока = отделка + отмеченные материалы; «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
-   – Итог справа: кнопка «Добавить в корзину» не меняется; ответ «В корзине: N на … ₽» + «Перейти в корзину» (решение Алины).
-   – «Назад к смете» и возврат из «Отделки» – к той же строке. */
+/* W5, S1 v5 (25.11, 22:40: фидбэк Алины 19:55 – улучшить в контексте конструктора, не «как корзина»).
+   Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог.
+   – Рамка «Материалы к обоям / краске …» (свёрнута; «в смете N из M, сумма»; стрелка; выбор при сворачивании не меняется).
+   – Внутри «Нужно для поклейки / покраски / укладки» и «Рекомендуем»: галочка группы, «N из M». Под материалом – фасовка, артикул.
+   – «Нужно для …» отмечено сразу один раз (T.kseen). «Стены / Пол / Потолок» – с материалами. «Выбрать всё» – все строки.
+   – Итог: «Добавить в корзину» → «Перейти в корзину»; смету поменяли → «Обновить корзину» и что изменилось.
+   – «Назад к смете» и возврат из «Отделки» – к той же строке. Вид строки товара (A1) – прежний. */
 document.addEventListener('DOMContentLoaded',function(){
  if(typeof estCalc!=='function'||typeof estCenter!=='function'||!window.roKit)return;
  var ROLE={need:0,rec:1,opt:2};
  var KN={paper:'обои',paint:'краску',tile:'плитку',gres:'керамогранит',lam:'ламинат',lino:'линолеум'};
- var FORV={paper:'Для поклейки',paint:'Для покраски',tile:'Для укладки',gres:'Для укладки',lam:'Для укладки',lino:'Для укладки'};
+ var NEEDT={paper:'Нужно для поклейки',paint:'Нужно для покраски',tile:'Нужно для укладки',gres:'Нужно для укладки',lam:'Нужно для укладки',lino:'Нужно для укладки'};
+ var KTO={paper:'обоям',paint:'краске',tile:'плитке',gres:'керамограниту',lam:'ламинату',lino:'линолеуму'};
+ var KNOM={paper:'Обои',paint:'Краска',tile:'Плитка',gres:'Керамогранит',lam:'Ламинат',lino:'Линолеум'};
+ /* зачем товар – простыми словами (позже – поле «Зачем» у позиции набора в админке) */
+ var WHY={'KL-01':'Приклеить обои','GR-010':'Подготовить стены, чтобы покрытие держалось лучше','SH-D02':'Выровнять стены перед отделкой','TL-V01':'Нанести краску или клей',
+  'TL-K01':'Набирать краску на валик','ML-D02':'Закрыть углы и потолок от краски','KL-D01':'Приклеить плитку','KL-D02':'Приклеить керамогранит','ZT-101':'Заполнить швы между плитками',
+  'KR-S01':'Чтобы швы были ровными','TL-G01':'Нанести клей ровным слоем','TL-R01':'Втереть затирку в швы','PD-01':'Под ламинат: ровнее и тише','PL-01':'Закрыть край пола у стен',
+  'PZ-01':'Защитить пол от влаги снизу','PR-01':'Закрыть стык пола в дверном проёме'};
  var R0=function(n){return rub(n||0).replace(/ /g,'\u00a0')};
  var nf=function(x){return String(Math.round(x*10)/10).replace('.',',')};
  var sid=function(id){return String(id).replace(/\W/g,'')};
@@ -19120,32 +19255,23 @@ document.addEventListener('DOMContentLoaded',function(){
    oth=ks.filter(function(k){return surfKind(k)!=='wall'}).map(function(k){return surfName(k).toLowerCase()}),parts=[];
   if(w.length)parts.push((w.length>1?'стены ':'стена ')+w.join(', '));parts=parts.concat(oth);
   return ((o.rooms[ord[0]]||{}).name||'')+(parts.length?', '+parts.join(', '):'')}
- function kFor(l){var ar=0;Object.keys(l.kgeo||{}).forEach(function(k){ar+=l.kgeo[k].ar||0});
-  var kinds=(l.kkinds||[]).map(function(k){return KN[k]}).filter(Boolean),pre=kinds.length>1?'Под '+kinds.slice(0,-1).join(', ')+' и '+kinds[kinds.length-1]+', ':'',wh=kWhere(l);
-  if(l.kf==='obj')return 'Один на весь объект';
-  if(l.kf==='tape')return (pre?pre+'п':'П')+'о стыкам стен '+nf(l.amt)+' м'+(wh?': '+wh:'');
-  if(l.kf==='perim')return (pre?pre+'п':'П')+'о периметру '+nf(l.kper)+' м'+(wh?': '+wh:'');
-  if(l.kf==='doors')return (pre?pre+'н':'Н')+'а '+l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей'])+(wh?': '+wh:'');
-  return (pre?pre+'н':'Н')+'а '+nf(ar)+' м²'+(wh?': '+wh:'')}
-
+ function kFor(l){var M=(typeof ACC!=='undefined'&&ACC[l.eff])||{};
+  var t=[M.v?pNb(M.v):'',M.pack?(typeof pPack==='function'?pPack(M.pack):M.pack):'',l.eff].filter(Boolean).join(', ');return t.charAt(0).toUpperCase()+t.slice(1)}
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
    '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
-   '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+esc(kFor(l))+'</span>'+tg+'</div>'+
+   '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+kFor(l)+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
- function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};
+ function grp(own,key,title,R){if(!R.length)return '';var on=R.filter(function(l){return l.on}).length,id='w5g-'+sid(own.id)+'-'+key;
+  return '<div class="ro-w5-rh"><input type="checkbox" id="'+id+'" data-m="w5g" data-k="'+own.id+':'+key+'"'+(on===R.length?' checked':'')+' aria-label="'+title+': выбрать все"><span class="t">'+title+'</span><small>'+on+' из '+R.length+'</small></div>'+R.map(row).join('')}
+ function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};
   var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
-  var kd=roKit.kindOf(own.eff),need=rows.filter(function(l){return l.role==='need'}),rec=rows.filter(function(l){return l.role!=='need'}),k=sid(own.id),op=!!T.w5o[own.id],h='<div class="ro-w5-k" data-own="'+own.id+'">';
-  if(need.length)h+='<p class="ro-w5-gh">'+(FORV[kd]||'Для работы')+'</p>'+need.map(row).join('');
-  if(rec.length){var on=rec.filter(function(l){return l.on}),vis=rec.filter(function(l){return op||l.on||T.w5k[l.id]}),hid=rec.filter(function(l){return vis.indexOf(l)<0}),nm=[];
-   hid.forEach(function(l){var w=noun(l.name);if(nm.indexOf(w)<0)nm.push(w)});
-   var lb='Рекомендуем'+(hid.length&&!vis.length?':<span class="x"> '+esc(nm.join(', '))+'</span>':'');
-   var tg=hid.length?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="false" aria-controls="w5b-'+k+'">'+(vis.length?'Показать ещё '+hid.length:'Показать')+I('down')+'</button>':((op||vis.some(function(l){return !l.on}))?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-v="hide" data-id="'+own.id+'" aria-expanded="true" aria-controls="w5b-'+k+'">Скрыть'+I('down')+'</button>':'');
-   h+='<div class="ro-w5-rh"><input type="checkbox" id="w5g-'+k+'" data-m="w5g" data-k="'+own.id+':opt"'+(on.length===rec.length?' checked':'')+' aria-label="Выбрать всё рекомендуемое"><label for="w5g-'+k+'">'+lb+'</label>'+tg+'</div>';
-   h+='<div id="w5b-'+k+'" role="group" aria-label="Рекомендуем">'+vis.map(row).join('')+'</div>'}
-  var tot=(own.on?own.sum||0:0)+rows.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0);
-  h+='<p class="ro-w5-sum"><span>Итого</span><b>'+R0(tot)+'</b></p>';
-  return h+'</div>'}
+  var kd=roKit.kindOf(own.eff),k=sid(own.id),op=!!T.w5o[own.id],on=rows.filter(function(l){return l.on}),sm=on.reduce(function(x,l){return x+(l.sum||0)},0);
+  var meta=on.length?'в смете '+on.length+' из '+rows.length+', '+R0(sm):'в смете 0 из '+rows.length;
+  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'</span><span class="m">'+meta+'</span>'+I('down')+'</button>';
+  if(op)h+='<div id="w5b-'+k+'">'+grp(own,'need',NEEDT[kd]||'Нужно для работы',rows.filter(function(l){return l.role==='need'}))+grp(own,'opt','Рекомендуем',rows.filter(function(l){return l.role!=='need'}))+'</div>';
+  h+='</div>';
+  return h}
 
  var _ce=estCenter;estCenter=function(){var h=_ce.apply(this,arguments),T=S.E.est;
   if(T.mode==='cmp'||T.mode==='kdet'||T.mode==='kalt'||h.indexOf('estimate-list-head')<0)return h;
@@ -19165,12 +19291,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
  if(typeof estParams==='function'){var _ep=estParams;estParams=function(){var h=_ep.apply(this,arguments);return h.replace('<div class="cov"><div><p class="sm">Выбрано','<div class="cov ro-w5-tot"><div><p class="sm">Выбрано')}}
 
- /* итог: кнопка не меняется; ответ строкой (как в карточке товара) */
+ /* итог: после добавления – «Перейти в корзину» (как было, Алина 19:55); если смету поменяли – «Обновить корзину» и что изменилось */
  if(typeof cartBlock==='function'){var _cb=cartBlock;cartBlock=function(C,T){var r=_cb.apply(this,arguments);try{
-  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])},go=' <button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>';
-  if(T.cart&&r.btn.indexOf('e-cartgo')>=0){var n=Object.keys(T.cart.items).length;r.btn='<button type="button" class="btn pri wide" data-act="e-cart"'+(C.on?'':' disabled')+'>Добавить в корзину</button>';r.st='<span class="ro-w5-cs">В корзине: '+w(n)+' на '+R0(cartSum(T.cart))+go+'</span>'}
-  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='<span class="ro-w5-cs">В корзине: '+w(ks.length)+' на '+R0(sm)+go+'</span>'}
-  else if(T.cart&&r.btn.indexOf('e-sync')>=0&&T.cartMsg)r.st='<span class="ro-w5-cs">'+esc(T.cartMsg)+go+'</span>';
+  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])};
+  if(T.cart&&r.btn.indexOf('e-sync')>=0){var ch=(T.cart.changes||[]).map(function(c){var n=String(c.name).split(',')[0];return c.type==='новая'?'+ '+n:c.type==='удалена'?'– '+n:n+': '+c.now+' вместо '+c.was});
+   r.btn=r.btn.replace('>Добавить в корзину<','>Обновить корзину<');r.st=ch.length?'Изменилось после добавления: '+esc(ch.slice(0,3).join(', '))+(ch.length>3?' и ещё '+(ch.length-3):''):''}
+  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='В корзине: '+w(ks.length)+' на '+R0(sm)}
  }catch(e){}return r}}
 
  /* фокус на той же галочке после перерисовки; возврат к строке после «Назад к смете» */
@@ -19178,22 +19304,23 @@ document.addEventListener('DOMContentLoaded',function(){
   if(id){var e=document.getElementById(id);if(e&&document.activeElement!==e)try{e.focus({preventScroll:true})}catch(x){}}
   var ret=S._w5ret;if(ret&&S.page==='editor'&&S.E&&S.E.stage==='est'&&S.E.est.mode!=='kdet'&&S.E.est.mode!=='kalt'){
    var t=document.querySelector('#ui .estimate-list [data-id="'+ret+'"]');if(t){S._w5ret=null;var y=S._w5y;
-    requestAnimationFrame(function(){try{var sc=t.closest('.ctr')||document.getElementById('ui');t.scrollIntoView({block:'center'});t.focus({preventScroll:true})}catch(x){}})}}
+    requestAnimationFrame(function(){try{t.scrollIntoView({block:'center'});
+     if(y!=null){var sc=t.parentElement;while(sc&&sc!==document.body&&!(sc.scrollHeight>sc.clientHeight+1&&/auto|scroll/.test(getComputedStyle(sc).overflowY)))sc=sc.parentElement;
+      var dy=t.getBoundingClientRect().top-y;if(sc&&sc!==document.body)sc.scrollTop+=dy;else window.scrollBy(0,dy)}
+     t.focus({preventScroll:true})}catch(x){}})}}
   return r};
  var _ch=estChange;estChange=function(m,k,v,el){if(el&&el.id&&(m==='eon'||m==='w5g'||m==='eall'))S._w5f=el.id;
-  var T=S.E.est;if(!T.w5k)T.w5k={};
+  var T=S.E.est;
   if(m==='w5g'){var E=S.E,p=String(k).split(':'),own=p[0];if(!T.kon)T.kon={};
-   var L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&l.role!=='need'});
-   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+'рекомендуем');L.forEach(function(l){T.w5k[l.id]=1;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
-  if(m==='eon')T.w5k[k]=1;
+   var key=p[1],L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&(key==='need'?l.role==='need':l.role!=='need')});
+   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+(key==='need'?'нужно для работы':'рекомендуем'));L.forEach(function(l){if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
   var r=_ch.apply(this,arguments);
   if(m==='eall'){try{if(!T.kon)T.kon={};estCalc(S).lines.forEach(function(l){if(!l.kit)return;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]})}catch(e){}}
   return r};
  var _a=act;act=function(a,el,ev){var d=(el&&el.dataset)||{};
-  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};var o=d.v!=='hide';T.w5o[d.id]=o;
-   if(!o)estCalc(S).lines.forEach(function(l){if(l.kit&&l.owner===d.id)delete T.w5k[l.id]});render();
-   var b=document.querySelector('#ui .ro-w5-more[data-id="'+d.id+'"]')||document.getElementById('w5g-'+sid(d.id));if(b)b.focus({preventScroll:true});return}
-  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est')S._w5ret=d.id;
+  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};T.w5o[d.id]=!T.w5o[d.id];render();
+   var bt=document.querySelector('#ui .ro-w5-kh[data-id="'+d.id+'"]');if(bt)bt.focus({preventScroll:true});return}
+  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est'){S._w5ret=d.id;try{S._w5y=el.getBoundingClientRect().top}catch(x){S._w5y=null}}
   return _a.apply(this,arguments)};
  if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
 });
@@ -19333,7 +19460,7 @@ document.addEventListener('DOMContentLoaded',function(){
   /* сумма */
   var cNew=cost(E,id,k,F.target).sum+(F.kitAdd&&!allIn?ks:0),cOld=cur?cost(E,cur,k,F.target).sum:0,d=cNew-cOld;
   var dm=cost(E,id,k,F.target).sum-cOld,wn=MAT[id].cat==='Обои'?'Обои':MAT[id].cat==='Краска'?'Краска':'Покрытие';
-  var sh='<div class="ro-ttot"><p><span>Итого за '+({wall:'стену',floor:'пол',ceil:'потолок'}[kind])+'</span><b>'+rub(cNew)+'</b></p>'+(cur&&cur!==id&&dm?'<small>'+wn+' на '+rub(Math.abs(dm))+' '+(dm>0?'дороже':'дешевле')+', чем сейчас</small>':'')+'</div>';
+  var sh='<div class="ro-ttot"><p><span>Итого за '+({wall:'стену',floor:'пол',ceil:'потолок'}[kind])+'</span><b>'+rub(cNew)+'</b></p>'+'<small>'+(!cur?'Сейчас покрытия нет':cur===id?'Это покрытие уже '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'выбрано'):dm?wn+' на '+rub(Math.abs(dm))+' '+(dm>0?'дороже':'дешевле')+', чем сейчас':'Столько же, сколько сейчас')+'</small>'+'</div>';
   var cpb=F.target==='base'&&kind!=='ceil'?'<button type="button" class="btn wide" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'';
   var to=F.target==='base'?{wall:'к стене',floor:'к полу',ceil:'к потолку'}[kind]:'к зоне';
   if(S.dev==='m'){
@@ -21071,13 +21198,13 @@ function elevSVG(){
  rest.forEach(r=>{o+=`<rect data-act="f-base" tabindex="0" role="button" aria-label="${surfName(k)}, основная часть" style="cursor:pointer" x="0" y="${H-r[1]}" width="${W}" height="${r[1]-r[0]}" fill="#000" fill-opacity="0" stroke="#152A4B" stroke-width="${2*kk}"/>`});
  ok.forEach(z=>{const pid='pz'+z.id,id=tr&&+F.target===z.id?F.tryMat:z.mat,y=H-z.from-z.h,ar=z.draft?'':', '+fmtN(wallNet(E,i,z.from,z.from+z.h))+' м²';
   defs+=patDef(id,pid,0);
-  o+=`<g ${z.draft?'':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="0" y="${y}" width="${W}" height="${z.h}" fill="url(#${pid})" stroke="${z.draft?SELC:'#152A4B'}" stroke-width="${2*kk}" ${z.draft?'stroke-opacity=".55"':''}/>
+  o+=`<g ${z.draft?'':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="0" y="${y}" width="${W}" height="${z.h}" fill="url(#${pid})" stroke="#152A4B" stroke-width="${2*kk}"/>
 </g>`;labs+=lab(10*kk,y+16*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+ar+(id||z.draft?'':', без покрытия'),z.sel?'sel':'name')});
  if(m.zones.length&&rest.length){const r=rest.slice().sort((x,y)=>(y[1]-y[0])-(x[1]-x[0]))[0];labs+=lab(10*kk,H-r[1]+16*kk,1,0,0,kk,'Основная часть, '+fmtN(targetGeo(E,k,'base').area)+' м²',F.zform?'name':'sel')}
  const opsTop=()=>OPS.map(q=>{const p=q.p;return `<g pointer-events="none"><rect x="${q.x}" y="${q.y}" width="${p.w}" height="${p.h}" fill="#fff" stroke="#152A4B" stroke-width="${2*kk}"/>${lab(q.x+p.w/2,q.y+p.h/2,0,0,0,kk,opName(p),'name',12)}</g>`}).join('');
  o+=opsTop();
  o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#152A4B" stroke-width="${3*kk}" pointer-events="none"/>`;
- {const zsel=ok.find(z=>z.sel);if(zsel)o+=selBand(H-zsel.from-zsel.h,zsel.h);else if(!F.zform){const R=(x,y,w,h,t)=>`M${x-t} ${y-t}h${w+2*t}v${h+2*t}h${-w-2*t}Z`,hw=WT/2*kk,ins=(WT/2-.75)*kk,rs=[[0,0,W,H]].concat(OPS.map(q=>[q.x,q.y,q.p.w,q.p.h]));o+=rs.map(r=>`<path d="${R(...r,hw)} ${R(...r,-hw)}" fill="${SMID}" fill-rule="evenodd" pointer-events="none"/><path d="${R(...r,ins)} ${R(...r,-ins)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`).join('')}}
+ {const zsel=ok.find(z=>z.sel||z.draft)||(tr&&F.target!=='base'?ok.find(z=>z.id===+F.target):null);if(zsel)o+=selBand(H-zsel.from-zsel.h,zsel.h);else if(!F.zform){const R=(x,y,w,h,t)=>`M${x-t} ${y-t}h${w+2*t}v${h+2*t}h${-w-2*t}Z`,hw=WT/2*kk,ins=(WT/2-.75)*kk,rs=[[0,0,W,H]].concat(OPS.map(q=>[q.x,q.y,q.p.w,q.p.h]));o+=rs.map(r=>`<path d="${R(...r,hw)} ${R(...r,-hw)}" fill="${SMID}" fill-rule="evenodd" pointer-events="none"/><path d="${R(...r,ins)} ${R(...r,-ins)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`).join('')}}
  o+=labs;
  o+=lab(W/2,H,0,1,22,kk,W+' см','dim')+lab(0,H/2,-1,0,18,kk,H+' см','dim');
 
@@ -21102,7 +21229,7 @@ function flatSVG(ceil,pick){
  let zdefs='';const zs=m.zones.map(z=>F.zform&&F.zform.id===z.id?{...z,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),sel:1}:z);
  if(!pick&&F.zform&&!F.zform.id&&F.surf===k)zs.push({id:0,n:0,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),mat:null,draft:1});
  zs.forEach(z=>{if(!(z.w>0)||!(z.l>0)||!(z.x>=0)||!(z.y>=0))return;const zid=!pick&&F.mode==='try'&&+F.target===z.id?F.tryMat:z.mat,x0=ceil?b.x+b.w-z.x-z.w:b.x+z.x,y0=b.y+z.y;zdefs+=patDef(zid,'pz'+z.id,0);
-  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="${z.draft?SELC:'#152A4B'}" stroke-width="${1.5*kk}" ${z.draft?'stroke-opacity=".55"':''}/>${z.sel?`<rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="${SLT}" fill-opacity=".55" pointer-events="none"/><rect x="${x0+.75*kk}" y="${y0+.75*kk}" width="${Math.max(0,z.w-1.5*kk)}" height="${Math.max(0,z.l-1.5*kk)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`:''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
+  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="#152A4B" stroke-width="${1.5*kk}"/>${z.sel||z.draft||(!pick&&F.mode==='try'&&+F.target===z.id)?`<rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="${SLT}" fill-opacity=".55" pointer-events="none"/><rect x="${x0+.75*kk}" y="${y0+.75*kk}" width="${Math.max(0,z.w-1.5*kk)}" height="${Math.max(0,z.l-1.5*kk)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`:''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
  o+=wallsSVG(E,kk,fx,!ceil);
  E.ops.forEach(p=>{const w=wall(E,p.wall),a0=[w.a[0]+w.d[0]*p.off,w.a[1]+w.d[1]*p.off],c0=[a0[0]+w.d[0]*p.w,a0[1]+w.d[1]*p.w],a=fx(a0),c=fx(c0);
   if(p.kind==='win')o+=winSym(a,c,kk,'rest');
@@ -26050,15 +26177,15 @@ html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.lin
 html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
 /* удаление: один красный #A32637 */
 html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
-/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
-:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
-html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
+/* «Аналоги» – без иконки ⇆ (Алина 25.11, 21:42: убрать везде) */
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
 </style>
 <style id="ro-w1-2-css">
 /* W1 25.11 (фидбэк Алины 14:38). Карточка покрытия: отступы, клик только по фото и названию, кнопки M 48 по тексту.
@@ -26122,6 +26249,32 @@ document.addEventListener('DOMContentLoaded',function(){
   return r};
 });
 <%/script>
+<style id="ro-w1-4-css">
+/* W1-4 (фидбэк 22:09) */
+/* 2) «Всё для …»: строка 1 – галочка, название, сумма; строка 2 – пояснение во всю ширину, одной строкой */
+#ui .ro-tk{grid-template-columns:22px minmax(0,1fr) auto!important;grid-template-rows:auto auto;column-gap:12px;row-gap:0;align-items:center}
+#ui .ro-tk .ro-tkt{display:contents}
+#ui .ro-tk .ro-tkt>b{grid-column:2;grid-row:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-tk .ro-tkt>span{grid-column:2/4;grid-row:2;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ui .ro-tk>.ro-tkp,#ui .ro-tk>.ro-w1-go{grid-column:3;grid-row:1}
+#ui .ro-tk>.ro-tkb,#ui .ro-tk>.ro-w1-ok{grid-column:1;grid-row:1}
+/* 3) без подчёркивания при наведении – только цвет */
+@media (hover:hover){#ui .cv-n:hover,#ui .ro-tk-in .ro-w1-go:hover,#ui .ro-w1-in .ro-w1-go:hover{text-decoration:none!important;color:#006B79}}
+/* 5) список вариантов: полоса прокрутки не мигает при каждом выборе */
+#ui .ro-try .ro-tl,#ui .ro-try .ro-pl{scrollbar-width:thin;scrollbar-color:transparent transparent}
+#ui .ro-try .ro-tl:hover,#ui .ro-try .ro-pl:hover{scrollbar-color:#C9D1D6 transparent}
+/* 6) карточка товара при узком центре: фото над описанием */
+@media (min-width:1101px) and (max-width:1399px){
+ html body #ui .pdet.ro-pd{grid-template-columns:minmax(0,1fr)!important;row-gap:16px}
+ html body #ui .pdet.ro-pd>.pdet-img{width:100%!important;max-width:320px;height:auto!important;aspect-ratio:1}
+ html body #ui .pdet.ro-pd .pdet-a{max-width:100%!important}
+}
+html body #ui .pdet-fb.ro-kd-fb:not(:empty){display:flex!important;align-items:flex-start!important;gap:8px!important}
+html body #ui .pdet-fb.ro-kd-fb:not(:empty)>svg{flex:none;margin-top:2px}
+/* 7) вкладки панели: по тексту, поля 12 с обеих сторон */
+@media (min-width:1101px){html body #ui .tabs:has(>[data-act="rtab"]),html body #ui .pan>.tabs{display:flex!important;gap:4px!important;justify-content:flex-start!important}
+ html body #ui .pan>.tabs>button{flex:0 0 auto!important;width:auto!important;padding:0 12px!important}}
+</style>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
@@ -30886,15 +31039,15 @@ html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.lin
 html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
 /* удаление: один красный #A32637 */
 html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
-/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
-:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
-html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
+/* «Аналоги» – без иконки ⇆ (Алина 25.11, 21:42: убрать везде) */
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
 </style>
 </body>
 </html>
@@ -32616,15 +32769,15 @@ html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.lin
 html body :is(form.search,form.gsearch):focus-within:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
 /* удаление: один красный #A32637 */
 html body :is(.acc-card .ro-acc-del,.cart-list-head .ro-delall):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
-/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
-html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
-html body :is(#detail #product-alternatives,.product-card-actions>a.button.secondary[href*="type="]:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c),.v-btn[aria-label^="Аналоги"] .v-btn__content,#ui .btn:is([data-act=f-analog],[data-act=ro-kit-alt])):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
-:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
-html body .v-btn[aria-label^="Аналоги"] .v-btn__content:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex;align-items:center;gap:8px}
+/* «Аналоги» – без иконки ⇆ (Алина 25.11, 21:42: убрать везде) */
 /* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
 html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
+<style id="ro-w4-2">
+/* W4-2, 25.11: счётчик корзины в шапке – один размер во всех частях (G7). 20×20, двузначное число – отступы 5 с боков, как в каталоге и конструкторе. */
+html body :is(header,.hd,.header) :is(.cart-count,.cartn):not(#ro-w4-a):not(#ro-w4-b){min-width:20px!important;height:20px!important;padding:0 5px!important;box-sizing:border-box!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
 </style>
 </body></html></script>
 
