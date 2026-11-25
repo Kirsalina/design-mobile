@@ -18559,24 +18559,22 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 <%/script>
 <style id="ro-w5-smeta-css">
-/* W5, S1 v3 (25.11, 16:59, Алина: «нет иерархии, ничего не посчитать, непонятно, как скрыть / раскрыть»).
-   Блок отделки: строка отделки → «Для поклейки» (обязательное, отмечено) → «Рекомендуем» (отмеченное видно всегда,
-   неотмеченное – под «Показать ещё N») → «Итого» блока. Цены всех строк блока – в одном столбце. Без плашек и вложенных рамок.
-   Цвета, размеры, шрифты – DESIGN-SYSTEM. Наведение на название – только цвет (Алина 16:59). */
+/* W5, S1 v5 (25.11, 22:40). Под отделкой – рамка «Материалы к …» во всю ширину строки, раскрывается стрелкой (без «Показать / Скрыть»);
+   внутри «Нужно для …» и «Рекомендуем» (заголовки 16/24 600, кликается только галочка); у материала – фасовка и артикул, как у отделки;
+   снятые бледнеют; цены материалов в столбце цен отделки. На широких экранах список не шире 1040. Цвета, размеры – DESIGN-SYSTEM. */
 #ui .estimate-group>article.estimate-product~article.estimate-product{border-top:1px solid #E3E6EA}
 html body #ui .estimate-list h4.eg>span{font-size:16px!important;line-height:24px!important;font-weight:600!important;color:#152A4B!important}
 html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24px!important;font-weight:700!important;color:#152A4B!important}
-#ui .ro-w5-k{margin:0 50px 8px 48px;padding:0 16px;border:1px solid #DCE4E2;border-radius:12px;background:#fff}
-#ui .ro-w5-kh{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:16px;width:100%;min-height:48px;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;box-sizing:border-box}
+#ui .ro-w5-k{margin:0 14px 16px;padding:0 16px;border:1px solid #DCE4E2;border-radius:12px;background:#fff}
+#ui .ro-w5-kh{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;column-gap:16px;width:100%;min-height:48px;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;box-sizing:border-box}
 #ui .ro-w5-kh .t{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;transition:color .15s ease}
 #ui .ro-w5-kh .m{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap;text-align:right}
-#ui .ro-w5-kh .a{display:inline-flex;align-items:center;gap:4px;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;white-space:nowrap;transition:color .15s ease}
-#ui .ro-w5-kh .a svg{width:16px;height:16px;transition:transform .15s ease}
-#ui .ro-w5-kh[aria-expanded="true"] .a svg{transform:rotate(180deg)}
+#ui .ro-w5-kh>svg{width:20px;height:20px;color:#566273;transition:transform .15s ease}
+#ui .ro-w5-kh[aria-expanded="true"]>svg{transform:rotate(180deg)}
 #ui .ro-w5-kh:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:8px}
-@media (hover:hover){#ui .ro-w5-kh:hover .a{color:#152A4B}}
+@media (hover:hover){#ui .ro-w5-kh:hover .t{color:#006B79}}
 #ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px;border-top:1px solid #E3E6EA}
-#ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B;cursor:pointer}
+#ui .ro-w5-rh .t{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;cursor:default}
 #ui .ro-w5-rh small{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
 #ui .ro-w5-r{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;min-height:56px;padding:8px 0;box-sizing:border-box}
 #ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
@@ -18588,25 +18586,27 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
 #ui .ro-w5-q{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
 #ui .ro-w5-s{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;text-align:right}
 #ui .ro-w5-r.off .ro-w5-s{color:#566273;font-weight:600}
+/* снятая строка материалов бледнеет, как отделка (Алина 19:55); цена «+ N ₽» остаётся читаемой */
+#ui .ro-w5-r.off .ro-w5-th,#ui .ro-w5-r.off .ro-w5-n,#ui .ro-w5-r.off .ro-w5-w,#ui .ro-w5-r.off .ro-w5-q{opacity:.55}
+/* цены материалов – в столбце цен отделки */
+#ui .ro-w5-k .ro-w5-r{padding-right:36px}
 #ui .ro-w5-r .pbadge{margin-top:4px}
 #ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
 #ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273;cursor:pointer}
 #ui .ro-w5-rh label .x{font-weight:400}
-#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin:0 66px 16px 48px}
-#ui .ro-w5-sum span{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
-#ui .ro-w5-sum b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap}
+/* широкие экраны (1920, 4К): список сметы не шире 1040, по центру колонки – строки не растягиваются */
+#ui .ctr>.tb.estimate-toolbar,#ui .ctr>.estimate-list{max-width:1040px;width:100%;margin-left:auto!important;margin-right:auto!important;align-self:center;box-sizing:border-box}
 /* итог в «Параметрах» сметы – без плашки (DESIGN-SYSTEM §17): подпись 14/21 над суммой */
 #ui .cov.ro-w5-tot{padding:0;background:none;border:0;border-radius:0}
 #ui .cov.ro-w5-tot .sm{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 4px}
-#ui .ro-w5-cs .lnk{margin-left:4px}
 /* название отделки: наведение – только цвет */
 @media (hover:hover){#ui .estimate-name .ln:hover{text-decoration:none!important;color:#006B79}}
 @media (max-width:700px){
  #ui .ro-w5-k{margin:0 8px 8px 12px;padding:0 12px}
- #ui .ro-w5-kh{grid-template-columns:minmax(0,1fr) auto;column-gap:12px}
+ #ui .ro-w5-kh{grid-template-columns:minmax(0,1fr) 20px;column-gap:12px}
  #ui .ro-w5-kh .m{grid-column:1;grid-row:2;text-align:left;white-space:normal}
- #ui .ro-w5-kh .a{grid-column:2;grid-row:1/3}
- #ui .ro-w5-sum{margin:0 8px 12px 12px}
+ #ui .ro-w5-kh>svg{grid-column:2;grid-row:1/3}
+ #ui .ro-w5-k .ro-w5-r{padding-right:0}
  #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
  #ui .ro-w5-r>.ro-w5-th{display:none}
  #ui .ro-w5-t{grid-column:2;grid-row:1/3}
@@ -18620,16 +18620,16 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
  html body #ui .estimate-row.r2 .estimate-q .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important}
  html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
 }
-@media (prefers-reduced-motion:reduce){#ui .ro-w5-kh .a,#ui .ro-w5-kh .a svg,#ui .ro-w5-kh .t,#ui .ro-w5-n{transition:none}}
+@media (prefers-reduced-motion:reduce){#ui .ro-w5-kh>svg,#ui .ro-w5-kh .t,#ui .ro-w5-n{transition:none}}
 </style>
 <script id="ro-w5-smeta">
-/* W5, S1 v4 (25.11, 19:30: фидбэк Алины 17:27 + решение A2). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
-   Под отделкой – рамка «Материалы к обоям / краске …» (свёрнута; «в смете N из M, сумма»; «Показать / Скрыть» – выбор не меняется).
-   Внутри «Нужно для поклейки / покраски / укладки» и «Рекомендуем», у обеих галочка группы и «N из M». У строки – зачем товар и где.
-   Под рамкой – «Обои с материалами: сумма». Вид строки товара (A1) – прежний, до выбора Алины.
-   – «Нужно для …» отмечено сразу один раз (T.kseen); «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
-   – Итог справа: кнопка «Добавить в корзину» не меняется; ответ «В корзине: N на … ₽» + «Перейти в корзину» (решение Алины).
-   – «Назад к смете» и возврат из «Отделки» – к той же строке. */
+/* W5, S1 v5 (25.11, 22:40: фидбэк Алины 19:55 – улучшить в контексте конструктора, не «как корзина»).
+   Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог.
+   – Рамка «Материалы к обоям / краске …» (свёрнута; «в смете N из M, сумма»; стрелка; выбор при сворачивании не меняется).
+   – Внутри «Нужно для поклейки / покраски / укладки» и «Рекомендуем»: галочка группы, «N из M». Под материалом – фасовка, артикул.
+   – «Нужно для …» отмечено сразу один раз (T.kseen). «Стены / Пол / Потолок» – с материалами. «Выбрать всё» – все строки.
+   – Итог: «Добавить в корзину» → «Перейти в корзину»; смету поменяли → «Обновить корзину» и что изменилось.
+   – «Назад к смете» и возврат из «Отделки» – к той же строке. Вид строки товара (A1) – прежний. */
 document.addEventListener('DOMContentLoaded',function(){
  if(typeof estCalc!=='function'||typeof estCenter!=='function'||!window.roKit)return;
  var ROLE={need:0,rec:1,opt:2};
@@ -18660,31 +18660,22 @@ document.addEventListener('DOMContentLoaded',function(){
    oth=ks.filter(function(k){return surfKind(k)!=='wall'}).map(function(k){return surfName(k).toLowerCase()}),parts=[];
   if(w.length)parts.push((w.length>1?'стены ':'стена ')+w.join(', '));parts=parts.concat(oth);
   return ((o.rooms[ord[0]]||{}).name||'')+(parts.length?', '+parts.join(', '):'')}
- function kFor(l){var ar=0;Object.keys(l.kgeo||{}).forEach(function(k){ar+=l.kgeo[k].ar||0});
-  var wh=kWhere(l),why=WHY[l.id]||WHY[l.sku]||'',q='';
-  if(l.kf==='obj')q='один на все комнаты';
-  else if(l.kf==='tape')q=nf(l.amt)+'\u00a0м стыков';
-  else if(l.kf==='perim')q='периметр '+nf(l.kper)+'\u00a0м';
-  else if(l.kf==='doors')q=l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей']);
-  else q=nf(ar)+'\u00a0м²';
-  var where=l.kf==='obj'?q:(wh?wh+', '+q:q);
-  return (why?why+'. ':'')+where.charAt(0).toUpperCase()+where.slice(1)}
+ function kFor(l){var M=(typeof ACC!=='undefined'&&ACC[l.eff])||{};
+  var t=[M.v?pNb(M.v):'',M.pack?(typeof pPack==='function'?pPack(M.pack):M.pack):'',l.eff].filter(Boolean).join(', ');return t.charAt(0).toUpperCase()+t.slice(1)}
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
    '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
-   '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+esc(kFor(l))+'</span>'+tg+'</div>'+
+   '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+kFor(l)+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
  function grp(own,key,title,R){if(!R.length)return '';var on=R.filter(function(l){return l.on}).length,id='w5g-'+sid(own.id)+'-'+key;
-  return '<div class="ro-w5-rh"><input type="checkbox" id="'+id+'" data-m="w5g" data-k="'+own.id+':'+key+'"'+(on===R.length?' checked':'')+'><label for="'+id+'">'+title+'</label><small>'+on+' из '+R.length+'</small></div>'+R.map(row).join('')}
+  return '<div class="ro-w5-rh"><input type="checkbox" id="'+id+'" data-m="w5g" data-k="'+own.id+':'+key+'"'+(on===R.length?' checked':'')+' aria-label="'+title+': выбрать все"><span class="t">'+title+'</span><small>'+on+' из '+R.length+'</small></div>'+R.map(row).join('')}
  function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};
   var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
   var kd=roKit.kindOf(own.eff),k=sid(own.id),op=!!T.w5o[own.id],on=rows.filter(function(l){return l.on}),sm=on.reduce(function(x,l){return x+(l.sum||0)},0);
   var meta=on.length?'в смете '+on.length+' из '+rows.length+', '+R0(sm):'в смете 0 из '+rows.length;
-  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'</span><span class="m">'+meta+'</span><span class="a">'+(op?'Скрыть':'Показать')+I('down')+'</span></button>';
+  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'</span><span class="m">'+meta+'</span>'+I('down')+'</button>';
   if(op)h+='<div id="w5b-'+k+'">'+grp(own,'need',NEEDT[kd]||'Нужно для работы',rows.filter(function(l){return l.role==='need'}))+grp(own,'opt','Рекомендуем',rows.filter(function(l){return l.role!=='need'}))+'</div>';
   h+='</div>';
-  var tot=(own.on?own.sum||0:0)+sm;
-  h+='<p class="ro-w5-sum"><span>'+(KNOM[kd]||'Отделка')+' с материалами</span><b>'+R0(tot)+'</b></p>';
   return h}
 
  var _ce=estCenter;estCenter=function(){var h=_ce.apply(this,arguments),T=S.E.est;
@@ -18705,12 +18696,12 @@ document.addEventListener('DOMContentLoaded',function(){
 
  if(typeof estParams==='function'){var _ep=estParams;estParams=function(){var h=_ep.apply(this,arguments);return h.replace('<div class="cov"><div><p class="sm">Выбрано','<div class="cov ro-w5-tot"><div><p class="sm">Выбрано')}}
 
- /* итог: кнопка не меняется; ответ строкой (как в карточке товара) */
+ /* итог: после добавления – «Перейти в корзину» (как было, Алина 19:55); если смету поменяли – «Обновить корзину» и что изменилось */
  if(typeof cartBlock==='function'){var _cb=cartBlock;cartBlock=function(C,T){var r=_cb.apply(this,arguments);try{
-  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])},go=' <button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>';
-  if(T.cart&&r.btn.indexOf('e-cartgo')>=0){var n=Object.keys(T.cart.items).length;r.btn='<button type="button" class="btn pri wide" data-act="e-cart"'+(C.on?'':' disabled')+'>Добавить в корзину</button>';r.st='<span class="ro-w5-cs">В корзине: '+w(n)+' на '+R0(cartSum(T.cart))+go+'</span>'}
-  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='<span class="ro-w5-cs">В корзине: '+w(ks.length)+' на '+R0(sm)+go+'</span>'}
-  else if(T.cart&&r.btn.indexOf('e-sync')>=0&&T.cartMsg)r.st='<span class="ro-w5-cs">'+esc(T.cartMsg)+go+'</span>';
+  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])};
+  if(T.cart&&r.btn.indexOf('e-sync')>=0){var ch=(T.cart.changes||[]).map(function(c){var n=String(c.name).split(',')[0];return c.type==='новая'?'+ '+n:c.type==='удалена'?'– '+n:n+': '+c.now+' вместо '+c.was});
+   r.btn=r.btn.replace('>Добавить в корзину<','>Обновить корзину<');r.st=ch.length?'Изменилось после добавления: '+esc(ch.slice(0,3).join(', '))+(ch.length>3?' и ещё '+(ch.length-3):''):''}
+  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='В корзине: '+w(ks.length)+' на '+R0(sm)}
  }catch(e){}return r}}
 
  /* фокус на той же галочке после перерисовки; возврат к строке после «Назад к смете» */
