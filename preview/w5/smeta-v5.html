@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>W5 Смета – макет «как корзина»</title>
+<style>
+@font-face{font-family:Manrope;src:url("../../assets/4b4ec43c70e7.woff2");font-weight:200 800;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:#152A4B;font:400 16px/24px Manrope,system-ui,sans-serif}
+button{font:inherit;color:inherit}
+.wrap{max-width:1248px;margin:0 auto;padding:0 24px}
+@media (min-width:1441px){.wrap{padding:0}}
+/* шапка (как на сайте, упрощённо) */
+.hdr{display:flex;align-items:center;gap:32px;height:104px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:26px;letter-spacing:-.015em}
+.logo i{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#3DD6E1,#13B8C4);display:block;filter:drop-shadow(0 2px 3px rgba(21,42,75,.2))}
+.nav{display:flex;gap:8px;margin-left:auto;margin-right:auto}
+.nav a{padding:12px 12px;border-radius:12px;color:#566273;text-decoration:none;font-weight:500}
+.nav a.on{background:#F3F1EB;color:#152A4B;font-weight:600}
+.hdr .me{color:#566273;font-size:14px}
+/* этапы конструктора */
+.stages{display:flex;gap:4px;margin:0 0 24px}
+.stages a{height:48px;display:flex;align-items:center;padding:0 20px;border-radius:12px;color:#566273;text-decoration:none}
+.stages a.on{background:#F3F1EB;color:#152A4B;font-weight:600}
+/* заголовок сметы */
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:16px}
+h1{font:600 32px/38px Manrope,system-ui,sans-serif;margin:0}
+.sub{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin-top:4px}
+/* панель отбора */
+.bar{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.seg{display:flex;gap:4px}
+.seg button{height:48px;padding:0 20px;border:0;border-radius:12px;background:none;color:#566273;cursor:pointer;transition:background-color .15s,color .15s}
+.seg button[aria-pressed="true"]{background:#F3F1EB;color:#152A4B;font-weight:600}
+.room{margin-left:auto;display:flex;align-items:center;gap:12px}
+.room label{font:600 14px/21px Manrope,system-ui,sans-serif}
+.sel{position:relative}
+.sel select{appearance:none;height:48px;min-width:220px;padding:0 44px 0 16px;border:1px solid #566273;border-radius:10px;background:#fff;font:400 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;cursor:pointer}
+.sel svg{position:absolute;right:12px;top:14px;width:20px;height:20px;pointer-events:none}
+.sel select:focus{outline:none;border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+/* раскладка как корзина */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}
+.card{border:1px solid #DCE4E2;border-radius:16px;background:#fff}
+.warn{display:flex;align-items:flex-start;gap:12px;padding:16px 24px;border:1px solid #DCE4E2;border-radius:16px;margin-bottom:16px}
+.warn svg{flex:none;width:20px;height:20px;color:#A32637;margin-top:2px}
+.warn b{font-weight:600}
+.warn .lnk{margin-left:auto}
+.lnk{border:0;background:none;padding:0;cursor:pointer;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;white-space:nowrap;transition:color .15s}
+@media (hover:hover){.lnk:hover{color:#152A4B}}
+/* список */
+.lh{display:flex;align-items:center;gap:16px;min-height:56px;padding:0 24px;border-bottom:1px solid #E3E6EA}
+.lh label{display:flex;align-items:center;gap:16px;cursor:pointer}
+.lh small{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+.lh .tools{margin-left:auto;display:flex;gap:4px}
+.ib{width:40px;height:40px;border:0;border-radius:10px;background:none;display:grid;place-items:center;color:#566273;cursor:pointer}
+.ib svg{width:20px;height:20px}
+.ib[disabled]{opacity:.4;cursor:default}
+.sec{display:flex;align-items:baseline;justify-content:space-between;padding:24px 24px 8px}
+.sec h2{font:600 20px/28px Manrope,system-ui,sans-serif;margin:0}
+.sec b{font:700 20px/28px Manrope,system-ui,sans-serif}
+input[type=checkbox]{appearance:none;width:22px;height:22px;margin:0;flex:none;border:2px solid #566273;border-radius:7px;background:#fff;cursor:pointer;display:grid;place-items:center;transition:background-color .15s,border-color .15s}
+input[type=checkbox]:checked{background:#19CBD8;border-color:#19CBD8}
+input[type=checkbox]:checked::after{content:"";width:11px;height:6px;border:2.5px solid #152A4B;border-top:0;border-right:0;transform:translate(0,-1px) rotate(-45deg)}
+input[type=checkbox]:focus-visible{outline:none;border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}
+/* строка отделки = строка корзины */
+.it{border-top:1px solid #E3E6EA}
+.sec+.it{border-top:0}
+.row{display:grid;grid-template-columns:22px 64px minmax(0,1fr) auto 104px 40px;align-items:center;column-gap:16px;padding:16px 24px}
+.ph{width:64px;height:64px;border-radius:8px;object-fit:cover;display:block;background:#F0EFEA}
+.nm{border:0;background:none;padding:0;text-align:left;cursor:pointer;font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;transition:color .15s}
+@media (hover:hover){.nm:hover{color:#006B79}}
+.mt{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+.qt{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
+.pr{font:700 16px/24px Manrope,system-ui,sans-serif;text-align:right;white-space:nowrap}
+.off .ph,.off .nm,.off .mt,.off .qt,.off .pr{opacity:.55}
+.off .pr.plus{opacity:1;color:#566273;font-weight:600}
+.tg{width:40px;height:40px;border:1px solid #566273;border-radius:10px;background:linear-gradient(180deg,#fff,#F3F5F6);display:grid;place-items:center;cursor:pointer}
+.tg svg,.kh svg{width:20px;height:20px;transition:transform .15s}
+.tg[aria-expanded="true"] svg,.kh[aria-expanded="true"] svg{transform:rotate(180deg)}
+/* раскрытие строки: сколько куда */
+.det{margin:0 24px 16px 142px;padding:12px 16px;border-radius:12px;border:1px solid #DCE4E2}
+.det table{width:100%;border-collapse:collapse;font:400 14px/21px Manrope,system-ui,sans-serif}
+.det td{padding:4px 0;color:#566273}
+.det td:last-child{text-align:right;color:#152A4B;font-weight:600}
+.det tr.t td{border-top:1px solid #E3E6EA;padding-top:8px;color:#152A4B;font-weight:600}
+/* материалы – выпадашка во всю ширину строки */
+.kit{margin:0 24px 16px;border:1px solid #DCE4E2;border-radius:12px}
+.kh{display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;column-gap:16px;width:100%;min-height:56px;padding:0 16px;border:0;background:none;text-align:left;cursor:pointer;border-radius:12px}
+.kh .t{font:600 16px/24px Manrope,system-ui,sans-serif}
+.kh .m{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
+.kh:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
+@media (hover:hover){.kh:hover .t{color:#006B79}}
+.kb{padding:0 16px 8px}
+.gh{display:flex;align-items:center;gap:16px;min-height:48px;border-top:1px solid #E3E6EA}
+.gh .t{font:600 16px/24px Manrope,system-ui,sans-serif;cursor:default}
+.gh small{margin-left:auto;font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+.mr{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;padding:8px 0}
+.mr .ph{width:40px;height:40px}
+.mr .nm{font:600 14px/21px Manrope,system-ui,sans-serif}
+.mr .mt{font-size:14px}
+/* итог справа = «Ваш заказ» корзины */
+.sum{padding:24px;position:sticky;top:16px}
+.sum h3{font:600 20px/28px Manrope,system-ui,sans-serif;margin:0 0 16px}
+.sum .cap{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 4px}
+.sum .tot{font:700 26px/35px Manrope,system-ui,sans-serif;margin:0 0 16px}
+.btn{width:100%;height:52px;border-radius:10px;border:1px solid transparent;cursor:pointer;font:700 16px/22px Manrope,system-ui,sans-serif;color:#152A4B;background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 0 0 1px rgba(11,120,130,.22),0 1px 2px rgba(21,42,75,.16),0 4px 10px -4px rgba(16,140,150,.35)}
+.btn.w{background:linear-gradient(180deg,#fff,#F3F5F6);border-color:#566273;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)}
+.btn[disabled]{background:#F3F1EB;color:#566273;box-shadow:none;cursor:default}
+.st{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:12px 0 0}
+.st b{color:#006B79;font-weight:600}
+.miss{margin-top:24px;padding-top:24px;border-top:1px solid #E3E6EA}
+.miss h4{font:600 16px/24px Manrope,system-ui,sans-serif;margin:0 0 8px}
+.miss div{display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.miss span small{display:block;font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+.note{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 16px}
+/* только макет: переключатели состояний */
+.mock{position:fixed;left:16px;bottom:16px;z-index:5;background:#152A4B;color:#fff;border-radius:12px;padding:8px 12px;font:600 13px/18px Manrope,system-ui,sans-serif;display:flex;gap:8px;align-items:center;flex-wrap:wrap;max-width:calc(100% - 32px)}
+.mock button{border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:8px;padding:4px 8px;cursor:pointer;font:inherit}
+.mock button[aria-pressed="true"]{background:#fff;color:#152A4B}
+/* телефон */
+.mbar{display:none}
+@media (max-width:900px){.nav{display:none}.hdr .me{margin-left:auto}.grid{grid-template-columns:1fr}.sum{display:none}.mbar{display:flex;position:sticky;bottom:0;z-index:4;align-items:center;justify-content:space-between;gap:16px;padding:12px 16px;background:#fff;box-shadow:0 -4px 16px rgba(21,42,75,.07);margin:0 -24px}.mbar .tot{font:700 20px/28px Manrope,system-ui,sans-serif}.mbar .cap{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}.mbar .btn{width:auto;padding:0 20px;height:48px}}
+@media (max-width:700px){
+ .wrap{padding:0 16px}.hdr{height:72px}.nav{display:none}.logo{font-size:22px}.hdr .me{margin-left:auto}
+ .stages{overflow-x:auto;margin:0 -16px 16px;padding:0 16px}.stages a{padding:0 16px;flex:none}
+ h1{font-size:28px;line-height:35px}
+ .bar{gap:12px}.seg{width:100%;overflow-x:auto}.seg button{padding:0 16px;flex:none}
+ .room{margin-left:0;width:100%;flex-direction:column;align-items:stretch;gap:4px}.sel select{width:100%}
+ .lh,.sec{padding-left:16px;padding-right:16px}.sec h2,.sec b{font-size:20px;line-height:28px}
+ .row{grid-template-columns:22px 48px minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:12px;padding:16px}
+ .row .ph{width:48px;height:48px}
+ .row>input{grid-row:1/3}.row>.ph{grid-row:1/3;align-self:start}
+ .row .qt{grid-column:3;grid-row:2}.row .pr{grid-column:4;grid-row:1}.row .tg{grid-column:4;grid-row:2;justify-self:end;width:44px;height:44px}
+ .kit{margin:0 16px 16px}.kh{padding:0 12px;grid-template-columns:minmax(0,1fr) 20px}.kh .m{grid-column:1;grid-row:2;padding-bottom:12px}.kh .t{padding-top:12px}.kh svg{grid-column:2;grid-row:1/3}
+ .kb{padding:0 12px 8px}
+ .mr{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}.mr .ph{display:none}.mr>div{grid-column:2;grid-row:1}.mr .qt{grid-column:2;grid-row:2}.mr .pr{grid-column:3;grid-row:1/3}.mr>input{grid-row:1/3}
+ .row>input{align-self:start;margin-top:13px}
+ .mock{position:static;margin:0 16px 16px}
+ .det{margin:0 16px 16px}
+ .warn{padding:16px;flex-wrap:wrap}.warn .lnk{margin-left:34px}
+ .mbar{margin:0 -16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header class="hdr"><div class="logo"><i></i>RemOnLine</div>
+  <nav class="nav"><a>Главная</a><a>Каталог материалов</a><a class="on">Создать свой интерьер</a><a>Мои объекты</a></nav><span class="me">Кабинет&nbsp;&nbsp;&nbsp;Корзина</span></header>
+ <nav class="stages"><a>Планировка</a><a>Отделка</a><a>Обстановка</a><a class="on">Смета</a></nav>
+ <div class="head"><div><h1>Смета</h1><div class="sub">Квартира на улице Мира, 3 комнаты</div></div></div>
+ <div class="bar">
+  <div class="seg" role="group" aria-label="Группа" id="seg"></div>
+  <div class="room"><label for="room">Комната</label><span class="sel"><select id="room"><option value="">Все комнаты</option><option value="0">Гостиная</option><option value="1">Кухня</option><option value="2">Санузел</option></select><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+ </div>
+ <div class="grid">
+  <main>
+   <div class="warn" id="warn"></div>
+   <p class="note" id="note" hidden></p>
+   <section class="card" id="list"></section>
+  </main>
+  <aside class="card sum" id="sum"></aside>
+ </div>
+ <div class="mbar" id="mbar"></div>
+ <div style="height:96px"></div>
+</div>
+<div class="mock" aria-label="Только макет">Корзина:
+ <button data-c="none" aria-pressed="true">не добавлено</button><button data-c="in" aria-pressed="false">добавлено</button><button data-c="chg" aria-pressed="false">смета изменилась</button></div>
+<script>
+const A='../../assets/';
+const IMG={paint:A+'adacad67e779.jpg',paper:A+'8c89a0f53a0d.jpg',lam:A+'539c49f0504c.jpg',kn:A+'c36ba1e9e268.jpg',glue:A+'a1b7feaf8b4f.jpg',can:A+'d2ddad702fa9.jpg',tape:A+'18703481541b.jpg'};
+const R=['Гостиная','Кухня','Санузел'];
+/* by: сколько куда (комната → [количество, сумма]); qty/sum – на весь объект */
+const L=[
+ {id:'KR-005',g:'Стены',n:'Краска «Комфорт»',m:'Светлый шалфей, матовая, ведро 5 л, KR-005',u:'1 250 ₽ за ведро',q:'1 ведро',s:1250,img:IMG.paint,by:{0:['1 ведро',1250]},on:1,
+  kit:[{id:'TL-V01',r:'rec',n:'Валик малярный 25 см',m:'TL-V01',q:'1 штука',s:450,img:IMG.tape},{id:'GR-010',r:'rec',n:'Грунтовка «Контакт»',m:'Канистра 5 л, GR-010',q:'3 канистры',s:2850,img:IMG.can},{id:'SH-D02',r:'rec',n:'Шпаклёвка «Финиш»',m:'Коробка 20 кг, SH-D02',q:'14 коробок',s:9520,img:IMG.can},{id:'TL-K01',r:'rec',n:'Кювета малярная',m:'TL-K01',q:'1 штука',s:190,img:IMG.tape},{id:'ML-D02',r:'rec',n:'Лента «Малярная»',m:'Рулон 50 м, ML-D02',q:'1 рулон',s:230,img:IMG.tape}],kd:'краске',need:'Нужно для покраски'},
+ {id:'OB-101',g:'Стены',n:'Обои «Лён Светлый»',m:'Светлый лён, рулон 1,06 × 10,05 м, OB-101',u:'1 490 ₽ за рулон',q:'2 рулона',s:2980,img:IMG.paper,by:{0:['2 рулона',2980]},on:1,
+  kit:[{id:'KL-01',r:'need',n:'Клей «Флизелин»',m:'Упаковка на 25 м², KL-01',q:'1 упаковка',s:450,img:IMG.glue,on:1}],kd:'обоям',need:'Нужно для поклейки'},
+ {id:'PL-301',g:'Стены',n:'Плитка «Мел»',m:'Белая, матовая, 20 × 30 см, упаковка 1,2 м², PL-301',u:'1 380 ₽ за упаковку',q:'19 упаковок',s:26220,img:null,by:{2:['19 упаковок',26220]},on:1,
+  kit:[{id:'KL-D01',r:'need',n:'Клей плиточный «Керамика»',m:'Мешок 25 кг, KL-D01',q:'4 мешка',s:2360,img:IMG.can,on:1},{id:'ZT-101',r:'need',n:'Затирка «Белая»',m:'Коробка 2 кг, ZT-101',q:'7 упаковок',s:3150,img:IMG.glue,on:1},{id:'KR-S01',r:'rec',n:'Крестики 2 мм',m:'Упаковка 200 штук, KR-S01',q:'2 упаковки',s:240,img:IMG.tape},{id:'TL-G01',r:'rec',n:'Шпатель зубчатый 8 мм',m:'TL-G01',q:'1 штука',s:290,img:IMG.tape},{id:'TL-R01',r:'rec',n:'Шпатель резиновый',m:'TL-R01',q:'1 штука',s:190,img:IMG.tape}],kd:'плитке',need:'Нужно для укладки'},
+ {id:'LM-201',g:'Пол',n:'Ламинат «Дуб Натур»',m:'Светлый дуб, 2,2 м² в упаковке, LM-201',u:'2 860 ₽ за упаковку',q:'7 упаковок',s:20020,img:IMG.lam,by:{0:['7 упаковок',20020]},on:1,
+  kit:[{id:'PD-01',r:'need',n:'Подложка под ламинат',m:'Рулон 10 м², PD-01',q:'2 рулона',s:1780,img:null,on:1},{id:'PL-01',r:'need',n:'Плинтус напольный',m:'Планка 2,5 м, PL-01',q:'6 планок',s:2340,img:IMG.lam,on:1},{id:'PZ-01',r:'rec',n:'Плёнка пароизоляционная',m:'Рулон 25 м², PZ-01',q:'1 рулон',s:690,img:IMG.tape}],kd:'ламинату',need:'Нужно для укладки'},
+ {id:'KN-600',g:'Пол',n:'Керамогранит «Стоун»',m:'Светло-серый, 60 × 60 см, 4 плитки, 1,44 м², KN-600',u:'2 190 ₽ за упаковку',q:'10 упаковок',s:21900,img:IMG.kn,by:{1:['7 упаковок',15330],2:['3 упаковки',6570]},on:1,
+  kit:[{id:'KL-D02',r:'need',n:'Клей для керамогранита',m:'Мешок 25 кг, KL-D02',q:'4 мешка',s:3160,img:IMG.can,on:1},{id:'TL-G02',r:'rec',n:'Шпатель зубчатый 10 мм',m:'TL-G02',q:'1 штука',s:320,img:IMG.tape}],kd:'керамограниту',need:'Нужно для укладки'},
+ {id:'KR-005-W',g:'Потолок',n:'Краска «Комфорт»',m:'Белая, матовая, ведро 5 л, KR-005',u:'1 250 ₽ за ведро',q:'2 ведра',s:2500,img:IMG.paint,by:{0:['1 ведро',1250],1:['1 ведро',1250]},on:1,kit:[]}
+];
+const S={grp:'',room:'',open:{},det:{},cart:'none',chg:[]};
+const rub=n=>n.toLocaleString('ru-RU').replace(/ |\s/g,' ')+' ₽';
+const ic={down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+ undo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>',
+ redo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg>',
+ warn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'};
+const ph=(src)=>src?`<img class="ph" src="${src}" alt="">`:`<span class="ph" style="background:repeating-linear-gradient(90deg,#F0EFEA 0 18px,#E3E6EA 18px 19px),#F0EFEA"></span>`;
+function vis(l){const r=S.room;return (!S.grp||l.g===S.grp)&&(r===''||l.by[r])}
+function q(l){return S.room===''?[l.q,l.s]:l.by[S.room]}
+function kitScale(l){/* в одной комнате – материалы по доле этой комнаты */ if(S.room==='')return 1;const a=l.by[S.room];return a?a[1]/l.s:0}
+function kq(k,l){if(S.room===''||/штука/.test(k.q))return [k.q,k.s];const f=kitScale(l),n=Math.max(1,Math.ceil(parseInt(k.q)*f));return [k.q.replace(/^\d+/,n),Math.round(k.s/parseInt(k.q)*n)]}
+function lineSum(l){return l.on?q(l)[1]:0}
+function kitSum(l){return (l.kit||[]).reduce((x,k)=>x+(k.on?kq(k,l)[1]:0),0)}
+function counts(){let n=0,t=0,s=0;L.filter(vis).forEach(l=>{n++;if(l.on){t++;s+=q(l)[1]}(l.kit||[]).forEach(k=>{n++;if(k.on){t++;s+=kq(k,l)[1]}})});return {n,t,s}}
+function render(){
+ seg.innerHTML=['','Стены','Пол','Потолок'].map(g=>`<button type="button" aria-pressed="${S.grp===g}" data-g="${g}">${g||'Все'}</button>`).join('');
+ const C=counts();
+ warn.innerHTML=`${ic.warn}<div><b>Смета неполная.</b> Без покрытия: Гостиная (стены 3, 4), Санузел (потолок)</div><button class="lnk" type="button">Выбрать</button>`;
+ note.hidden=S.room==='';note.textContent=S.room===''?'':`Показано, сколько нужно только на ${['гостиную','кухню','санузел'][S.room]}. Для всей квартиры количество считается вместе и может выйти меньше: остатки упаковок идут в другие комнаты.`;
+ let h=`<div class="lh"><label><input type="checkbox" id="all" ${C.t===C.n?'checked':''}><span>Выбрать всё</span></label><small>${C.t} из ${C.n}</small><span class="tools"><button class="ib" type="button" aria-label="Отменить">${ic.undo}</button><button class="ib" type="button" aria-label="Повторить" disabled>${ic.redo}</button></span></div>`;
+ ['Стены','Пол','Потолок'].forEach(g=>{const ls=L.filter(l=>l.g===g&&vis(l));if(!ls.length)return;
+  const gs=ls.reduce((x,l)=>x+lineSum(l)+kitSum(l),0);
+  h+=`<div class="sec"><h2>${g}</h2><b>${rub(gs)}</b></div>`;
+  ls.forEach(l=>{const [qq,ss]=q(l),op=!!S.open[l.id],dt=!!S.det[l.id];
+   h+=`<div class="it"><div class="row${l.on?'':' off'}"><input type="checkbox" data-l="${l.id}" ${l.on?'checked':''} aria-label="В смету: ${l.n}">${ph(l.img)}<div><button class="nm" type="button">${l.n}</button><div class="mt">${l.m}</div><div class="mt">${l.u}</div></div><span class="qt">${qq}</span><b class="pr">${rub(ss)}</b><button class="tg" type="button" data-d="${l.id}" aria-expanded="${dt}" aria-label="Сколько куда">${ic.down}</button></div>`;
+   if(dt){const rows=Object.keys(l.by).map(r=>`<tr><td>${R[r]}</td><td>${l.by[r][0]}</td></tr>`).join('');h+=`<div class="det"><table>${rows}${S.room===''&&Object.keys(l.by).length>1?`<tr class="t"><td>Всего к покупке</td><td>${l.q}</td></tr>`:''}</table></div>`}
+   if(l.kit&&l.kit.length){const on=l.kit.filter(k=>k.on),ks=on.reduce((x,k)=>x+kq(k,l)[1],0);
+    h+=`<div class="kit"><button class="kh" type="button" data-k="${l.id}" aria-expanded="${op}"><span class="t">Материалы к ${l.kd}</span><span class="m">в смете ${on.length} из ${l.kit.length}${on.length?', '+rub(ks):''}</span>${ic.down}</button>`;
+    if(op){h+='<div class="kb">';[['need',l.need],['rec','Рекомендуем']].forEach(([r,t])=>{const ks2=l.kit.filter(k=>k.r===r);if(!ks2.length)return;const o=ks2.filter(k=>k.on).length;
+      h+=`<div class="gh"><input type="checkbox" data-gk="${l.id}:${r}" ${o===ks2.length?'checked':''} aria-label="${t}: выбрать все"><span class="t">${t}</span><small>${o} из ${ks2.length}</small></div>`;
+      ks2.forEach(k=>{const [kq1,ks1]=kq(k,l);h+=`<div class="mr${k.on?'':' off'}"><input type="checkbox" data-k2="${l.id}:${k.id}" ${k.on?'checked':''} aria-label="В смету: ${k.n}">${ph(k.img)}<div><button class="nm" type="button">${k.n}</button><div class="mt">${k.m}</div></div><span class="qt">${kq1}</span><b class="pr${k.on?'':' plus'}">${k.on?'':'+ '}${rub(ks1)}</b></div>`})});h+='</div>'}
+    h+='</div>'}
+   h+='</div>'})});
+ list.innerHTML=h;
+ const btn=S.cart==='none'?`<button class="btn" type="button" data-c="in">Добавить в корзину</button>`:S.cart==='in'?`<button class="btn w" type="button">Перейти в корзину</button><p class="st">В корзине <b>${C.t} товаров на ${rub(C.s)}</b></p>`:`<button class="btn" type="button" data-c="in">Обновить корзину</button><p class="st">Изменилось после добавления: ${S.chg.length?S.chg.slice(-3).join(', '):'+ Валик малярный 25 см'}</p>`;
+ sum.innerHTML=`<h3>Смета объекта</h3><p class="cap">Выбрано ${C.t} из ${C.n} позиций${S.room!==''?', '+R[S.room]:''}</p><p class="tot">${rub(C.s)}</p>${btn}<div class="miss"><h4>Без покрытия</h4><div><span>Гостиная<small>стены 3, 4</small></span><button class="lnk" type="button">Выбрать</button></div><div><span>Санузел<small>потолок</small></span><button class="lnk" type="button">Выбрать</button></div></div>`;
+ mbar.innerHTML=`<div><div class="cap">Выбрано ${C.t} из ${C.n}</div><div class="tot">${rub(C.s)}</div></div>${S.cart==='none'?'<button class="btn" type="button" data-c="in">В корзину</button>':S.cart==='in'?'<button class="btn w" type="button">Перейти в корзину</button>':'<button class="btn" type="button" data-c="in">Обновить корзину</button>'}`;
+ document.querySelectorAll('.mock button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===S.cart));
+}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+ if(d.g!==undefined){S.grp=d.g;render()}
+ else if(d.k){S.open[d.k]=!S.open[d.k];render();document.querySelector(`[data-k="${d.k}"]`).focus({preventScroll:true})}
+ else if(d.d){S.det[d.d]=!S.det[d.d];render()}
+ else if(d.c){S.cart=d.c;if(d.c!=='chg')S.chg=[];render()}});
+document.addEventListener('change',e=>{const t=e.target,d=t.dataset;
+ if(t.id==='room'){S.room=t.value;render();return}
+ if(t.id==='all'){L.filter(vis).forEach(l=>{l.on=t.checked;(l.kit||[]).forEach(k=>k.on=t.checked)})}
+ else if(d.l){L.find(l=>l.id===d.l).on=t.checked}
+ else if(d.gk){const [li,r]=d.gk.split(':');L.find(l=>l.id===li).kit.filter(k=>k.r===r).forEach(k=>k.on=t.checked)}
+ else if(d.k2){const [li,ki]=d.k2.split(':');L.find(l=>l.id===li).kit.find(k=>k.id===ki).on=t.checked}
+ if(S.cart!=='none'){S.cart='chg';const nm=(t.getAttribute('aria-label')||'').replace('В смету: ','');if(nm)S.chg.push((t.checked?'+ ':'– ')+nm)}const at=[...t.attributes].find(a=>a.name.startsWith('data-')),sel=t.id?'#'+t.id:at?`[${at.name}="${at.value}"]`:'';render();
+ const f=sel&&document.querySelector(sel);if(f)f.focus({preventScroll:true})});
+S.open['OB-101']=true;S.det['KN-600']=true;
+render();
+</script>
+</body>
+</html>
