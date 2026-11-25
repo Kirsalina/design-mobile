@@ -18167,6 +18167,38 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
 /* ручка: зона нажатия 44 на всю ширину; видна только там, где шторку можно свернуть (есть строка-сводка) */
 #ui .sheet .ro-grab{height:32px!important;margin:-12px -16px -12px!important}
 #ui .sheet:not(:has(>.ro-minbar))>.ro-grab{visibility:hidden;pointer-events:none}
+/* карточка выбранного покрытия кликается целиком (верх с фото и названием), как карточка товара */
+#ui .pcard.cv .cv-h[data-act]{cursor:pointer;border-radius:12px;transition:background-color .15s}
+@media(hover:hover){#ui .pcard.cv .cv-h[data-act]:hover h3{color:#006B79}}
+#ui .pcard.cv .cv-h[data-act]:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
+/* кнопки в карточке товара конструктора – по ширине текста (как в каталоге, решение 16.11 «вариант C») */
+html body #ui .pdet.ro-pd .pdet-a{display:flex!important;flex-wrap:wrap!important;gap:8px!important}
+html body #ui .pdet.ro-pd .pdet-a>.btn{width:auto!important;flex:none;padding:0 20px!important;min-height:48px!important}
+/* варианты: фото внутри рамки, не вылезает */
+html body #ui .pdet.ro-pd .pdet-vl>button{overflow:hidden;display:inline-flex!important;align-items:center;gap:8px}
+html body #ui .pdet.ro-pd .pdet-vl>button .sw{flex:none;width:28px;height:28px;border-radius:8px;overflow:hidden;display:block}
+html body #ui .pdet.ro-pd .pdet-vl>button .sw>*{width:100%!important;height:100%!important;display:block;object-fit:cover}
+html body #ui .pdet.ro-pd .pdet-a>a.ro-pd-cat{display:inline-flex!important;width:auto!important;flex:none;padding:0 20px!important;min-height:48px!important}
+/* 25.11 эскиз 1: «Убрать» у заголовка, «Ещё на N стенах» под ценой, две кнопки в ряд по ширине текста */
+#ui .pcard.cv .cv-tr{display:flex;align-items:baseline;justify-content:space-between;gap:12px;width:100%;align-self:stretch}
+#ui .pcard.cv .cv-tr .cv-t{margin:0}
+#ui .pcard.cv .cv-tr>.lnk.err{margin-left:auto!important;flex:none}
+#ui .pcard.cv .cv-tr .lnk.err{min-height:24px;padding:0;font:600 14px/21px Manrope,system-ui,sans-serif}
+#ui.dev-m .pcard.cv .cv-tr .lnk.err{min-height:44px;margin:-10px 0}
+#ui .pcard.cv .cv-note{margin:4px 0 0;font-size:14px;line-height:21px;font-weight:600;color:#006B79}
+#ui .pcard.cv .cv-a .cv-a2{display:flex;flex-wrap:wrap;gap:8px}
+#ui .pcard.cv .cv-a .cv-a2 .btn{width:auto!important;flex:none;margin:0;min-height:40px!important;height:40px;padding:0 16px!important;border-radius:10px;font:700 14px/20px Manrope,system-ui,sans-serif;white-space:nowrap}
+#ui.dev-m .pcard.cv .cv-a .cv-a2 .btn{min-height:44px!important;height:44px}
+/* телефон: короткая карточка */
+#ui .ro-mrow.ro-mrow-b{grid-template-columns:56px minmax(0,1fr) 20px;width:100%;padding:0;border:0;background:none;text-align:left;font:inherit;cursor:pointer;color:inherit}
+#ui .ro-mrow-b .ro-mchev{display:flex;color:#566273}#ui .ro-mrow-b .ro-mchev svg{width:20px;height:20px}
+#ui .ro-mrow-b .ro-mnote{font-weight:600;color:#006B79!important}
+#ui .ro-mbtns.one{grid-template-columns:auto;justify-content:start}
+/* «Без покрытия» по комнатам */
+#ui .tl.ro-miss{align-items:center}
+#ui .tl.ro-miss{display:flex!important;justify-content:space-between;gap:12px}
+#ui .tl.ro-miss .ro-miss-t{display:flex;flex-direction:column;min-width:0;text-align:left}
+#ui .tl.ro-miss .ro-miss-t .mut{margin:0!important;text-align:left;font-size:14px;line-height:21px}
 </style>
 <script id="ro-fin1">
 /* 25.11 «Отделка», партия 1. Телефон: «Весь каталог» из примерки открывал пустой список («Ничего не нашлось»),
@@ -18174,6 +18206,11 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
 document.addEventListener('DOMContentLoaded',function(){
  if(typeof act!=='function')return;
  var _a=act;act=function(a,el,ev){try{var E=S.E,F=E&&E.fin;
+  /* 25.11 (Алина): «Назад к смете» из карточки товара, открытой из сметы; карточка выбранного покрытия открывается кликом */
+  if(a==='ro-est-back'&&F){F.detFrom=null;F.mode='view';_a('stage',{dataset:{s:'3'}});return}
+  if(a==='ro-det-back'&&F){F.detFrom=null;F.mode='view';render();return}
+  if(a==='ro-cv-open'&&F&&el&&el.dataset){F.target='base';openCat(E,'base');F.mode='detail';F.det=el.dataset.id;F.detFrom='view';if(S.dev==='m')E.sheet=null;render();var u=document.querySelector('#ui .ctr');if(u)u.scrollTop=0;return}
+  if(F&&F.detFrom&&/^(f-list|f-cat-open|f-surf|f-all|stage|f-back)$/.test(a))F.detFrom=null;
   if(a==='f-list'&&F&&F.surf&&!F.cat){var k=surfKind(F.surf),id=F.tryMat||sm(E,F.surf).base;F.cat=id&&MAT[id]&&MAT[id].ks.indexOf(k)>=0?MAT[id].cat:CATS[k][0]}}catch(e){}
   var r=_a.apply(this,arguments);
   /* 25.11 (Алина): телефон – после «Применить» шторка не закрывается, а показывает короткую карточку:
@@ -18373,7 +18410,7 @@ document.addEventListener('DOMContentLoaded',function(){
  var accU=function(p){p=String(p||'');return p.replace(/^(\S+?)а(\s|$)/,'$1у$2')};
  function kdetHTML(C){var T=S.E.est,l=C.lines.filter(function(x){return x.kit&&x.id===T.kdet})[0];if(!l){T.mode='view';return null}
   var sku=l.eff,X=ACC[sku]||{},own=C.lines.filter(function(x){return x.id===l.owner})[0],inC=(T.kcart||{})[sku],nA=altsOf(l.id).length;
-  var back='<div class="cat-h"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Вернуться к смете</button><p>Понадобится'+(own?' к: <b>'+esc(own.name)+'</b>':'')+'</p></div>';
+  var back='<div class="cat-h"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Назад к смете</button><p>Понадобится'+(own?' к: <b>'+esc(own.name)+'</b>':'')+'</p></div>';
   return back+'<article class="pdet ro-pd ro-kd"><div class="pdet-img">'+pfill(sku,'kd'+sku.replace(/\W/g,''))+'</div><div class="pdet-b"><h2>'+esc(X.name)+'</h2><p class="ro-pd-sub">'+esc(String(X.pack||'').replace(/^./,function(c){return c.toUpperCase()}))+', '+sku+'</p>'+
    '<p class="pdet-pr">'+rub(X.price)+' <span>за '+esc(accU(X.pack))+'</span></p><p class="pcd-s ro-pd-st">В наличии</p>'+
    '<div class="pdet-calc"><h4>В смете</h4><dl class="ar"><div><dt>К покупке</dt><dd>'+qtyH(l.buy)+'</dd></div><div><dt>Сумма</dt><dd>'+rub0(l.sum||0)+'</dd></div><div><dt>На что</dt><dd>'+esc(kFor(l))+'</dd></div>'+(X.rule?'<div><dt>Норма</dt><dd>'+esc(X.rule)+'</dd></div>':'')+'</dl></div>'+
@@ -18404,7 +18441,7 @@ document.addEventListener('DOMContentLoaded',function(){
      там заменить, примерить, расчёт, в корзину. «Смета» – одна вкладка назад. */
   if(a==='e-sel'&&!ACC[d.id]){var Cs=estCalc(S),ls=Cs.lines.filter(function(x){return x.id===d.id&&!x.kit})[0],p=ls&&ls.places&&ls.places[0];
    if(p&&MAT[ls.eff]){var est=S.E.est;syncRoom(S);if(!(S.E.ref&&S.E.ref[0]===S.cur&&S.E.ref[1]===p.ri)){loadRoom(S,S.cur,p.ri);S.E.est=est}
-    var X1=S.E;X1.stage='finish';X1.fin.surf=p.k;X1.view='2d';X1.sheet=null;X1.rtab='params';openCat(X1,p.target);X1.fin.mode='detail';X1.fin.det=ls.eff;render();var u1=document.querySelector('#ui .ctr');if(u1)u1.scrollTop=0;return}}
+    var X1=S.E;X1.stage='finish';X1.fin.surf=p.k;X1.view='2d';X1.sheet=null;X1.rtab='params';openCat(X1,p.target);X1.fin.mode='detail';X1.fin.det=ls.eff;X1.fin.detFrom='est';render();var u1=document.querySelector('#ui .ctr');if(u1)u1.scrollTop=0;return}}
   if(a==='ai-pdet'&&MAT[d.id]){var Ea=S.E,Fa=Ea.fin,id=d.id,k=Fa.surf;if(!k||!Fa.mats[k]||Fa.mats[k].base!==id){var ks=Object.keys(Fa.mats).filter(function(x){return Fa.mats[x]&&Fa.mats[x].base===id});if(ks.length)k=ks[0]}
    if(!k)k=MAT[id].ks.indexOf('floor')>=0?'floor':MAT[id].ks.indexOf('ceil')>=0&&MAT[id].ks.indexOf('wall')<0?'ceil':'w0';
    Ea.stage='finish';Fa.surf=k;Ea.view='2d';openCat(Ea,'base');if(MAT[id].ks.indexOf(surfKind(k))>=0)Fa.cat=MAT[id].cat;Fa.mode='detail';Fa.det=id;if(Ea.sheet!=='ai')Ea.sheet=null;else Ea.sheet=null;render();var ua=document.querySelector('#ui .ctr');if(ua)ua.scrollTop=0;return}
@@ -18572,8 +18609,8 @@ document.addEventListener('DOMContentLoaded',function(){
   var FOR={paper:'поклейки',paint:'покраски',tile:'укладки плитки',gres:'укладки плитки',lam:'укладки ламината',lino:'укладки линолеума'},kd=window.roKit&&roKit.kindOf(id),kdo=cur&&window.roKit&&roKit.kindOf(cur);
   var kh='';
   if(kit.length){var nm=names.join(', ').replace(/^./,function(c){return c.toUpperCase()});
-   kh=allIn?'<p class="ro-tk-in">'+I('check')+'Материалы для '+FOR[kd]+' уже в смете</p>':
-    '<button type="button" class="ro-tk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span class="ro-tkt"><b>Материалы для '+FOR[kd]+'</b><span>'+esc(nm)+'</span></span><span class="ro-tkp">+'+rub(ks)+'</span></button>';
+   kh=allIn?'<p class="ro-tk-in">'+I('check')+'Всё для '+FOR[kd]+' уже в смете</p>':
+    '<button type="button" class="ro-tk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span class="ro-tkt"><b>Всё для '+FOR[kd]+'</b><span>По желанию, детали в смете</span></span><span class="ro-tkp">+'+rub(ks)+'</span></button>';
    if(gone.length)kh+='<p class="ro-tgone">Из сметы уберём'+(kdo&&FOR[kdo]?' материалы для '+FOR[kdo]:'')+': '+esc(gone.map(function(x){return short(x.name)}).join(', '))+'</p>'}
   /* сумма */
   var cNew=cost(E,id,k,F.target).sum+(F.kitAdd&&!allIn?ks:0),cOld=cur?cost(E,cur,k,F.target).sum:0,d=cNew-cOld;
@@ -18583,7 +18620,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var to=F.target==='base'?{wall:'к стене',floor:'к полу',ceil:'к потолку'}[kind]:'к зоне';
   if(S.dev==='m'){
    var pc=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;return '<button type="button" class="ro-pc" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'pc'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq"><b>'+rub(c.sum)+'</b>'+(x[0]===cur?', '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'сейчас'):'')+'</span></span></button>'};
-   var kp=kit.length&&!allIn?'<button type="button" class="ro-pk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span>Материалы для '+FOR[kd]+'</span><b>+'+rub(ks)+'</b></button>':'';
+   var kp=kit.length&&!allIn?'<button type="button" class="ro-pk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span>Всё для '+FOR[kd]+'</span><b>+'+rub(ks)+'</b></button>':'';
    return '<div class="ro-try ro-tryp"><div class="ro-ph"><b>'+esc(targetName(E))+'</b><button type="button" class="btn ro-plink ro-pall" data-act="f-list">Весь каталог</button></div>'+
     '<div class="ro-pl" role="group" aria-label="Варианты для примерки">'+L.map(pc).join('')+'</div>'+kp+
     '<div class="ro-pf"><span class="ro-pt"><small>Итого</small><b>'+rub(cNew)+'</b></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'+
@@ -18639,11 +18676,10 @@ document.addEventListener('DOMContentLoaded',function(){
  var _fp=finParams;finParams=function(){var E=S.E,F=E.fin;
   if(!mob()||!F.surf||F.mode==='try'||F.zform||E.roFull||F.mode==='catalog'||F.mode==='detail')return _fp.apply(this,arguments);
   var k=F.surf,id=sm(E,k).base,M=id&&MAT[id],c=M?cost(E,id,k,'base'):null;
+  var nt=M?roCpNote(id,surfKind(k)):'',cp=M&&cpTargets(S).length;
   return '<div class="ro-mcard"><h3>'+esc(surfName(k))+'</h3>'+
-   (M?'<div class="ro-mrow"><span aria-hidden="true">'+pthumb(id,'mc',56)+'</span><span class="ro-mt"><b>'+esc(M.name)+'</b><span>'+esc(c.qty)+'</span></span><span class="ro-mp">'+rub(c.sum)+'</span></div>':'<p class="mut">Покрытие не выбрано</p>')+
-   '<div class="ro-mbtns">'+(M?'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Заменить</button><button type="button" class="btn" data-act="ro-full">Подробнее</button>':'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base" style="grid-column:1/-1">Выбрать покрытие</button>')+'</div>'+
-   /* 25.11 (Алина): «Применить к другим стенам» – только когда покрытие уже стоит, и постоянная строка «Применено ещё к N» */
-   (M&&cpTargets(S).length?'<button type="button" class="btn ro-mcp" data-act="f-cp-dlg">'+(surfKind(k)==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'')+(M?roCpLine(id,surfKind(k)):'')+'</div>'};
+   (M?'<button type="button" class="ro-mrow ro-mrow-b" data-act="ro-full" aria-label="Подробнее: '+esc(M.name)+'"><span aria-hidden="true">'+pthumb(id,'mc',56)+'</span><span class="ro-mt"><b>'+esc(M.name)+'</b><span>'+esc(c.qty)+', '+rub(c.sum)+'</span>'+(nt?'<span class="ro-mnote">'+nt+'</span>':'')+'</span><span class="ro-mchev" aria-hidden="true">'+I('chev')+'</span></button>':'<p class="mut">Покрытие не выбрано</p>')+
+   '<div class="ro-mbtns'+(M&&!cp?' one':'')+'">'+(M?'<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button>'+(cp?'<button type="button" class="btn" data-act="f-cp-dlg">'+(surfKind(k)==='wall'?'На другие стены':'В другие комнаты')+'</button>':''):'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base" style="grid-column:1/-1">Выбрать покрытие</button>')+'</div></div>'};
  function minbar(){var E=S.E,F=E&&E.fin;if(!F||!F.surf)return '';var k=F.surf;
   if(F.mode==='try'&&MAT[F.tryMat]){var c=cost(E,F.tryMat,k,F.target);return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(MAT[F.tryMat].name)+'</b><span>'+esc(surfName(k))+', '+rub(c.sum)+'</span></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'}
   var id=curOf(E),M=id&&MAT[id];return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(surfName(k))+'</b><span>'+(M?esc(M.name):'Покрытие не выбрано')+'</span></span><button type="button" class="btn" data-act="f-cat-open" data-t="base">'+(M?'Заменить':'Выбрать')+'</button></div>'}
@@ -20390,6 +20426,8 @@ function catalogHTML(){
 /* Товар внутри конструктора: те же сведения, что на странице товара в каталоге, плюс расчёт на выбранную поверхность. Комната и место в списке не теряются. */
 /* 25.11 (Алина): постоянная строка под кнопкой – на скольких ещё стенах / в скольких комнатах объекта лежит это же покрытие.
    Видно, что замена коснётся только этой поверхности, а такое же покрытие есть ещё на N. */
+function roCpNote(id,kind){let n=0;try{cpTargets(S).forEach(t=>t.ks.forEach(k=>{if(cpMat(t.R,k).base===id)n++}))}catch(e){}
+ if(!n)return '';return kind==='wall'?'Ещё на '+n+' '+pl(n,['стене','стенах','стенах']):'Ещё в '+n+' '+pl(n,['комнате','комнатах','комнатах'])}
 function roCpLine(id,kind){let n=0;try{cpTargets(S).forEach(t=>t.ks.forEach(k=>{if(cpMat(t.R,k).base===id)n++}))}catch(e){}
  if(!n)return '';return `<p class="pdet-fb cp-fb">${I('check')}${kind==='wall'?'Применено ещё к '+n+' '+pl(n,['стене','стенам','стенам']):'Применено ещё в '+n+' '+pl(n,['комнате','комнатах','комнатах'])}</p>`}
 /* 25.11: количество в корзине словами по виду товара */
@@ -20398,7 +20436,7 @@ function detailHTML(){
  const E=S.E,F=E.fin,id=F.det,M=MAT[id],g=targetGeo(E,F.surf,F.target),c=cost(E,id,F.surf,F.target),kind=surfKind(F.surf);
  const vars=Object.keys(MAT).filter(x=>MAT[x].cat===M.cat&&MAT[x].d===M.d&&MAT[x].ks.includes(kind)),inCart=(F.cartAdd||{})[id];
  const spec=[['Артикул',id],['Категория',M.cat],['Описание',M.d],['Фасовка',M.pack],['Цена',rub(M.price)+' '+M.unit],['Наличие',availText(M)]];
- return `<div class="cat-h"><button type="button" class="btn s48" data-act="f-list">${I('back')}Назад к списку</button><p>Покрытие для: <b>${targetName(E)}</b>, ${fmtN(g.area)} м²</p></div>
+ return `<div class="cat-h">${F.detFrom==='est'?`<button type="button" class="btn s48" data-act="ro-est-back">${I('back')}Назад к смете</button>`:F.detFrom==='view'?`<button type="button" class="btn s48" data-act="ro-det-back">${I('back')}Назад</button>`:`<button type="button" class="btn s48" data-act="f-list">${I('back')}Назад к списку</button>`}<p>Покрытие для: <b>${targetName(E)}</b>, ${fmtN(g.area)} м²</p></div>
  <article class="pdet"><div class="pdet-img">${pfill(id,'d'+id)}</div>
   <div class="pdet-b"><h2>${M.name}</h2><p class="pcd-d">${M.d}</p><p class="pcd-d">${id}</p>
    <p class="pdet-pr">${rub(M.price)} <span>${M.unit}</span></p><p class="pcd-s${M.st?'':' ord'}">${availText(M)}</p>
@@ -20486,7 +20524,7 @@ function finParams(){
   :`<div class="acts"><button type="button" class="btn pri" data-act="f-zone-ok">Добавить зону</button><button type="button" class="btn" data-act="f-zone-cancel">Отменить</button></div>`}`}
  const op=null;
  let h=`${op?`<div class="note opnote"><div class="name-row"><b>${opName(op)}</b><button type="button" class="icb" data-act="f-op-x" aria-label="Закрыть">${I('x')}</button></div><p class="sm mut">${op.w} × ${op.h} см${op.kind==='win'?', подоконник '+op.sill+' см':''}. Проём вычитается из площади отделки стены.</p><button type="button" class="btn s48" data-act="f-op-plan">Изменить в «Планировке»</button></div>`:''}<h3>${surfName(k)}${kind==='wall'&&m.zones.length?', основная часть':''}</h3><dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,'base').area)} м²</dd></div></dl>
- ${covCard(m.base,{pid:'cb',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button>${cpTargets(S).length?`<button type="button" class="btn cp-btn" data-act="f-cp-dlg">${kind==='wall'?'Применить к другим стенам':'Применить в других комнатах'}</button>`:''}${roCpLine(m.base,kind)}<div class="cv-l"><button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
+ ${covCard(m.base,{pid:'cb',open:F.mode==='catalog'||F.mode==='detail'?'':'base',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',del:F.mode!=='catalog'&&F.mode!=='detail',note:F.mode==='catalog'||F.mode==='detail'?'':roCpNote(m.base,kind),actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<div class="cv-a2"><button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button>${cpTargets(S).length?`<button type="button" class="btn cp-btn" data-act="f-cp-dlg">${kind==='wall'?'На другие стены':'В другие комнаты'}</button>`:''}</div>`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
  if(kind==='wall')h+=`<div class="grp"><h4>Зоны отделки</h4>${m.zones.length?m.zones.map(z=>`<button type="button" class="tl" data-act="f-zone" data-id="${z.id}">Зона ${z.n}<span class="mut">${zoneSize(k,z)}, ${fmtN(targetGeo(E,k,z.id).area)} м²</span></button>`).join(''):`<p class="mut sm">Зон нет. Вся стена в одном покрытии.</p>`}<button type="button" class="btn wide" data-act="f-zone-new">${I('plus')}Добавить зону</button></div>`;
  return h;
 }
@@ -21135,9 +21173,14 @@ function estParams(){
  ${CB.btn}<p class="mut sm" role="status">${CB.st}</p>`;
  if(l){const A=alts(l),two=`<div class="half"><button type="button" class="btn" data-act="e-cmp">Сравнить аналоги</button></div>`;
   h+=prodCard(l.eff,{x:'e-desel',pid:'pc',collapsed:true,sub:l.swapped?`<p class="sm">Заменяет: ${MAT[l.id].name}</p>`:'',rows:[['Фасовка',l.pack],['Общее кол-во',l.need],['К покупке',l.buy],['Сумма',rub(l.sum)]],actions:two+(l.swapped?`<button type="button" class="btn wide" data-act="e-unswap">Вернуть исходный товар</button>`:'')})}
- if(C.miss.length)h+=`<div class="grp"><h4>Без покрытия</h4>${C.miss.map(m=>`<button type="button" class="tl" data-act="e-go" data-ri="${m.ri}" data-k="${m.k}">${m.label}<span class="mut">Выбрать</span></button>`).join('')}</div>`;
+ if(C.miss.length)h+=`<div class="grp"><h4>Без покрытия</h4>${roMissRooms(C.miss)}</div>`;
  return h;
 }
+/* 25.11 (Алина): «Без покрытия» в смете – одна строка на комнату: «Гостиная / стены 3, 4», «Выбрать» ведёт на первую из них */
+function roMissRooms(miss){const by={},ord=[];miss.forEach(m=>{if(!by[m.ri]){by[m.ri]=[];ord.push(m.ri)}by[m.ri].push(m)});const o=S.objs[S.cur]||{rooms:[]};
+ return ord.map(ri=>{const L=by[ri],w=L.filter(m=>surfKind(m.k)==='wall').map(m=>+m.k.slice(1)+1).sort((a,b)=>a-b),oth=L.filter(m=>surfKind(m.k)!=='wall').map(m=>surfName(m.k).toLowerCase());
+  const parts=oth.concat(w.length?[(w.length>1?'стены ':'стена ')+w.join(', ')]:[]),name=(o.rooms[ri]||{}).name||String(L[0].label).split(',')[0];
+  return `<button type="button" class="tl ro-miss" data-act="e-go" data-ri="${ri}" data-k="${L[0].k}"><span class="ro-miss-t"><span>${esc(name)}</span><span class="mut sm">${parts.join(', ')}</span></span><span class="mut">Выбрать</span></button>`}).join('')}
 function estSwap(E,src,to){const T=E.est;T.cartMsg='';commit(E,'замена в смете: '+MAT[to].name.toLowerCase());if(to===src)delete T.swap[src];else T.swap[src]=to;T.mode='view';T.sel=src}
 /* фото отмеченных позиций (видимые на экране) для полёта в корзину: до 5 штук */
 function estFlyGrab(only){return [...document.querySelectorAll('#ui .estimate-product')].filter(a=>{const c=a.querySelector('input[data-m="eon"]');return c&&c.checked&&(!only||only.includes(c.dataset.k))}).map(a=>a.querySelector('.estimate-th')).filter(t=>{if(!t)return false;const r=t.getBoundingClientRect(),u=document.querySelector('#ui .estimate-list');const ur=u?u.getBoundingClientRect():null;return r.width&&(!ur||(r.bottom>ur.top&&r.top<ur.bottom))}).slice(0,5).map(t=>({el:t.cloneNode(true),r:t.getBoundingClientRect()}))}
@@ -21955,10 +21998,10 @@ function micStop(cancel){const E=S.E;if(VTIM){clearInterval(VTIM);VTIM=null}if(R
 
 /* ---------- shared: product card, 3D camera ---------- */
 function covCard(id,o){
- const M=id&&(MAT[id]||ACC[id]),head=o.title?`<h4 class="cv-t">${o.title}</h4>`:'';
+ const M=id&&(MAT[id]||ACC[id]),head=o.title?(o.del&&M?`<div class="cv-tr"><h4 class="cv-t">${o.title}</h4><button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>`:`<h4 class="cv-t">${o.title}</h4>`):'';
  if(!M)return `<div class="pcard cv">${head}<div class="cv-h"><span class="cv-ph" aria-hidden="true">${I('pack')}</span><div class="cv-i"><h3>Покрытие не выбрано</h3></div></div>${o.actions||''}</div>`;
  const un=String(M.unit||'').replace(/^(за\s+\S+).*$/,'$1');
- return `<div class="pcard cv">${head}<div class="cv-h"><span class="cv-th">${pthumb(id,o.pid||'cv',86)}</span><div class="cv-i"><h3 class="c2" title="${esc(pName(M))}">${pName(M)}</h3><p class="mut">${pMeta(M,id)}</p><p class="pr">${rub(M.price)}</p>${un?`<p class="mut sm">${un}</p>`:''}</div></div>${o.rows&&o.rows.length?`${o.actions||''}<dl class="ar">${o.rows.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>`:o.actions||''}${o.extra||''}</div>`;
+ return `<div class="pcard cv">${head}<div class="cv-h"${o.open?` data-act="ro-cv-open" data-id="${id}" data-t="${o.open}" role="button" tabindex="0" aria-label="Открыть карточку: ${esc(pName(M))}"`:''}><span class="cv-th">${pthumb(id,o.pid||'cv',86)}</span><div class="cv-i"><h3 class="c2" title="${esc(pName(M))}">${pName(M)}</h3><p class="mut">${pMeta(M,id)}</p><p class="pr">${rub(M.price)}</p>${un?`<p class="mut sm">${un}</p>`:''}${o.note?`<p class="cv-note">${o.note}</p>`:''}</div></div>${o.rows&&o.rows.length?`${o.actions||''}<dl class="ar">${o.rows.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>`:o.actions||''}${o.extra||''}</div>`;
 }
 function prodCard(id,o){
  o=o||{};const M=MAT[id]||ACC[id],pid=o.pid||'pc',dl=o.rows&&o.rows.length?`<dl class="ar">${o.rows.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>`:'',info=o.collapsed&&dl?`<details class="product-more"><summary>Показать параметры товара</summary>${dl}</details>`:dl;
