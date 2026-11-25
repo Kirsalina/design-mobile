@@ -17318,7 +17318,7 @@ html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-in
 .dev-m .warn p{font-size:14px!important;line-height:20px!important;margin:0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .dev-m .warn>svg{width:20px!important;height:20px!important;flex:none}
 </style>
-<style id="fix-17-11-p6">#ui .cp-btn.cp-wall{display:none!important}</style>
+<!-- 25.11: fix-17-11-p6 снят – «Применить к другим стенам» возвращена по просьбе Алины (см. ro-fin1-css) -->
 <style id="fix-17-11-hist">#ui .aitag{display:inline-flex;align-items:center;height:20px;padding:0 8px;margin-right:8px;border-radius:999px;background:#E6F6F7;color:#006B79;font-size:12px;line-height:16px;font-weight:700;letter-spacing:.02em;vertical-align:1px}</style>
 <style id="fix-17-11-tel2">
 #ui .dlg-obj .fld.addr .addr-list{top:calc(100% + 6px)!important;bottom:auto!important}
@@ -18134,6 +18134,27 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
 (function(){function off(){[].forEach.call(document.styleSheets,function(sh){var r;try{r=sh.cssRules}catch(e){return}
  for(var i=r.length-1;i>=0;i--){var x=r[i];if(x.selectorText&&/\.ro-site #ui::-webkit-scrollbar$/.test(x.selectorText.trim())&&/display:\s*none/.test(x.cssText))sh.deleteRule(i)}})}
  off();document.addEventListener('DOMContentLoaded',off)})();
+<%/script>
+<style id="ro-fin1-css">/* 25.11 «Отделка», партия 1: ссылки под «Заменить» с иконками 20; «Убрать» всегда справа (не прыгает) */
+#ui .pcard.cv .cv-l{flex-wrap:wrap;gap:0 12px}
+#ui .pcard.cv .cv-l .lnk{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:0}
+#ui .pcard.cv .cv-l .lnk .ic{width:16px;height:16px;flex:none}
+#ui .pcard.cv .cv-l .lnk.err{margin-left:auto}
+#ui.dev-m .pcard.cv .cv-l .lnk{min-height:44px}
+#ui .pcard.cv .pdet-fb.cp-fb{margin:0;min-height:32px}
+/* ссылка-действие в строке ответа: подчёркивание только при наведении (DESIGN-SYSTEM §15) */
+#ui .ro-kd-fb .lnk{text-decoration:none!important}
+@media(hover:hover){#ui .ro-kd-fb .lnk:hover{text-decoration:underline!important;text-underline-offset:4px}}
+</style>
+<script id="ro-fin1">
+/* 25.11 «Отделка», партия 1. Телефон: «Весь каталог» из примерки открывал пустой список («Ничего не нашлось»),
+   потому что примерка на телефоне не задаёт категорию. Теперь категория берётся из примеряемого или текущего покрытия, как в openCat. */
+document.addEventListener('DOMContentLoaded',function(){
+ if(typeof act!=='function')return;
+ var _a=act;act=function(a,el,ev){try{var E=S.E,F=E&&E.fin;
+  if(a==='f-list'&&F&&F.surf&&!F.cat){var k=surfKind(F.surf),id=F.tryMat||sm(E,F.surf).base;F.cat=id&&MAT[id]&&MAT[id].ks.indexOf(k)>=0?MAT[id].cat:CATS[k][0]}}catch(e){}
+  return _a.apply(this,arguments)};
+});
 <%/script>
 <style id="ro-kit-css">
 /* «Понадобится» (24.11): строки как в смете – галочка 22 по центру, фото 48, название 16/24 600, подпись «на что» 14/21 #566273,
@@ -20333,6 +20354,8 @@ function catalogHTML(){
  :`<div class="empty" style="background:var(--paper)"><h3>Ничего не нашлось</h3><p class="mut">Проверьте запрос или снимите часть фильтров.</p><button type="button" class="btn" data-act="f-reset">Сбросить фильтры</button></div>`}`;
 }
 /* Товар внутри конструктора: те же сведения, что на странице товара в каталоге, плюс расчёт на выбранную поверхность. Комната и место в списке не теряются. */
+/* 25.11: количество в корзине словами по виду товара */
+function cartQty(id,q){const M=MAT[id];if(M.calc==='paper')return q+' '+pl(q,['рулон','рулона','рулонов']);if(M.calc==='paint')return q+' '+pl(q,['ведро','ведра','вёдер']);if(M.calc==='lin')return q+' пог. м';if(M.calc==='m2')return q+' м²';return q+' '+pl(q,['упаковка','упаковки','упаковок'])}
 function detailHTML(){
  const E=S.E,F=E.fin,id=F.det,M=MAT[id],g=targetGeo(E,F.surf,F.target),c=cost(E,id,F.surf,F.target),kind=surfKind(F.surf);
  const vars=Object.keys(MAT).filter(x=>MAT[x].cat===M.cat&&MAT[x].d===M.d&&MAT[x].ks.includes(kind)),inCart=(F.cartAdd||{})[id];
@@ -20344,7 +20367,7 @@ function detailHTML(){
    ${vars.length>1?`<div class="pdet-v"><h4>Варианты</h4><div class="pdet-vl" role="group" aria-label="Варианты товара">${vars.map(v=>`<button type="button" data-act="f-more" data-id="${v}" aria-pressed="${v===id}"><span class="sw">${pfill(v,'v'+v)}</span>${MAT[v].name.replace(/^.*«|».*$/g,'')}</button>`).join('')}</div></div>`:''}
    <div class="pdet-calc"><h4>${surfInto(E,F.target)}: ${targetName(E)}</h4><dl class="ar"><div><dt>К покупке</dt><dd>${c.qty}</dd></div><div><dt>Сумма</dt><dd>${rub(c.sum)}</dd></div><div><dt>Расчёт</dt><dd>${c.note}</dd></div></dl></div>
    <div class="pdet-a"><button type="button" class="btn pri" data-act="f-try" data-id="${id}">Примерить</button><button type="button" class="btn" data-act="f-cart" data-id="${id}">В корзину</button>${M.st?'':`<button type="button" class="btn" data-act="f-analog">Аналоги</button>`}</div>
-   <p class="pdet-fb" role="status">${inCart?`${I('check')}Добавлено в корзину: ${inCart}`:''}</p>
+   <p class="pdet-fb ro-kd-fb" role="status">${inCart&&inCart.q?`${I('check')}<span>В корзине: ${cartQty(id,inCart.q)} на ${rub(inCart.sum)}</span><button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>`:''}</p>
    <h4>Характеристики</h4><dl class="ar">${spec.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>
    <a class="lnk pdet-l" href="#${id}" data-act="f-page" data-id="${id}">Открыть страницу товара в каталоге${I('arrow')}</a></div></article>`;
 }
@@ -20425,7 +20448,7 @@ function finParams(){
   :`<div class="acts"><button type="button" class="btn pri" data-act="f-zone-ok">Добавить зону</button><button type="button" class="btn" data-act="f-zone-cancel">Отменить</button></div>`}`}
  const op=null;
  let h=`${op?`<div class="note opnote"><div class="name-row"><b>${opName(op)}</b><button type="button" class="icb" data-act="f-op-x" aria-label="Закрыть">${I('x')}</button></div><p class="sm mut">${op.w} × ${op.h} см${op.kind==='win'?', подоконник '+op.sill+' см':''}. Проём вычитается из площади отделки стены.</p><button type="button" class="btn s48" data-act="f-op-plan">Изменить в «Планировке»</button></div>`:''}<h3>${surfName(k)}${kind==='wall'&&m.zones.length?', основная часть':''}</h3><dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,'base').area)} м²</dd></div></dl>
- ${covCard(m.base,{pid:'cb',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button><div class="cv-l">${cpTargets(S).length?`<button type="button" class="lnk cp-btn${kind==='wall'?' cp-wall':''}" data-act="f-cp-dlg">${kind==='wall'?'Применить к другим стенам':'Применить в других комнатах'}</button>`:'<span></span>'}<button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
+ ${covCard(m.base,{pid:'cb',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button><div class="cv-l">${cpTargets(S).length?`<button type="button" class="lnk cp-btn${kind==='wall'?' cp-wall':''}" data-act="f-cp-dlg">${I('copy')}${kind==='wall'?'Применить к другим стенам':'Применить в других комнатах'}</button>`:'<span></span>'}<button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>${F.copied&&F.copied.surf===F.surf&&F.copied.n?`<p class="pdet-fb cp-fb" role="status">${I('check')}${kind==='wall'?'Применено ещё к '+F.copied.n+' '+pl(F.copied.n,['стене','стенам','стенам']):'Применено ещё в '+F.copied.rooms+' '+pl(F.copied.rooms,['комнате','комнатах','комнатах'])}</p>`:''}`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
  if(kind==='wall')h+=`<div class="grp"><h4>Зоны отделки</h4>${m.zones.length?m.zones.map(z=>`<button type="button" class="tl" data-act="f-zone" data-id="${z.id}">Зона ${z.n}<span class="mut">${zoneSize(k,z)}, ${fmtN(targetGeo(E,k,z.id).area)} м²</span></button>`).join(''):`<p class="mut sm">Зон нет. Вся стена в одном покрытии.</p>`}<button type="button" class="btn wide" data-act="f-zone-new">${I('plus')}Добавить зону</button></div>`;
  return h;
 }
@@ -20456,13 +20479,13 @@ function finAct(a,d){
   case 'f-more':F.mode='detail';F.det=d.id;E.sheet=null;break;
   case 'f-analog':F.ff={st:true};F.q='';F.mode='catalog';break;
   case 'f-grp':{const fo=F.fo||(F.fo={}),i=(FILT[F.cat]||FDEF).indexOf(d.g),n=FGR[d.g].o.filter(o=>F.ff[o[0]]).length,cur=fo[d.g]!=null?fo[d.g]:i<2||n>0;fo[d.g]=!cur;break}
-  case 'f-cart':{const c=cost(E,d.id,F.surf,F.target),im=document.querySelector('#ui .pdet-img');if(im)S._fly={el:im.cloneNode(true),r:im.getBoundingClientRect()};(F.cartAdd||(F.cartAdd={}))[d.id]=c.qty+', '+rub(c.sum);E.status='Добавлено в корзину: '+MAT[d.id].name;break}
+  case 'f-cart':{const c=cost(E,d.id,F.surf,F.target),im=document.querySelector('#ui .pdet-img');if(im)S._fly={el:im.cloneNode(true),r:im.getBoundingClientRect()};/* 25.11: копим добавленное, ответ «В корзине: N на … ₽» (как ro-kit-cart) */const n=Math.ceil(parseFloat((String(c.qty).match(/\d+(?:[.,]\d+)?/)||['0'])[0].replace(',','.'))),M0=MAT[d.id],ca=(F.cartAdd||(F.cartAdd={})),pr=ca[d.id]&&typeof ca[d.id]==='object'?ca[d.id]:{q:0,sum:0};F.cartNow=n;ca[d.id]={q:pr.q+n,sum:pr.sum+n*M0.price};E.status='Добавлено в корзину: '+MAT[d.id].name;break}
   case 'f-page':break;
   case 'f-cp-dlg':{const cur=E.ref?E.ref[1]:-1;E.cp={sel:{},open:{}};F.copied=null;break}
   case 'f-cp-open':{const i=+d.i,t=cpTargets(S).find(t=>t.ri===i),op=E.cp.open[i]!==undefined?E.cp.open[i]:!!(t&&t.cur);E.cp.open[i]=!op;break}
   case 'f-cp-x':E.cp=null;break;
   case 'f-cp-apply':cpApply(S);break;
-  case 'f-clear':commit(E,'удаление покрытия, '+surfName(F.surf).toLowerCase());sm(E,F.surf).base=null;E.saved='';E.status=`${surfName(F.surf)}: покрытие убрано.`;break;
+  case 'f-clear':F.copied=null;commit(E,'удаление покрытия, '+surfName(F.surf).toLowerCase());sm(E,F.surf).base=null;E.saved='';E.status=`${surfName(F.surf)}: покрытие убрано.`;break;
   case 'f-zone-new':F.zform=zoneNew(F.surf);F.zerrs={};F.mode='view';E.rtab='params';E.view='2d';if(mob)E.sheet='params';break;
   case 'f-zone-ok':zoneAdd(E);break;
   case 'f-zone-cancel':F.zform=null;F.zerrs={};E.kb=false;E.sheet=null;E.status='Ввод отменён. Стена не изменилась.';break;
@@ -24784,7 +24807,7 @@ const _act=act;act=function(a,el,ev){
   if(!wasUser&&S.auth==='user')post({type:'auth:login',user:{phone:String(phone||'').replace(/\D/g,'')}});
   if(wasUser&&S.auth!=='user')post({type:'auth:logout'});
   if(a==='e-cart'||a==='e-sync')sendEst();
-  if(a==='f-cart'&&S.E.fin.cartAdd&&S.E.fin.cartAdd[d.id])post({type:'cart:add',lines:[{sku:d.id,quantity:num(S.E.fin.cartAdd[d.id])}]});
+  if(a==='f-cart'&&S.E.fin.cartNow)post({type:'cart:add',lines:[{sku:d.id,quantity:S.E.fin.cartNow}]});
   return r};
 const SURF={floor:'floor',ceil:'ceil',wall:'w1'};
 function ensureEditor(oi,ri){if(S.page==='editor'&&S.E.phase==='edit')syncRoom(S);const o=S.objs[oi];if(o&&o.rooms&&o.rooms[ri]){loadRoom(S,oi,ri);return true}return false}
