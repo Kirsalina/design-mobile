@@ -8852,15 +8852,15 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
 </style>
 <style id="ro-w2-home-css">
 /* W2 v2: второй баннер главной. Фон, радиус, отступы и кнопка – как у первого баннера (.founder-hero) */
-#design-app .ro-w2-banner{display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:40px}
-#design-app .ro-w2-banner h2{font-size:38px;line-height:1.21;font-weight:600;letter-spacing:-.035em;margin:0;color:var(--ink)}
-#design-app .ro-w2-bdesc{font-size:16px;line-height:1.65;max-width:30em;margin:16px 0 24px}
+#design-app .ro-w2-banner{display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:32px}
+#design-app .ro-w2-banner h2{font-size:32px;line-height:1.21;font-weight:600;letter-spacing:-.035em;margin:0;color:var(--ink)}
+#design-app .ro-w2-bdesc{font-size:16px;line-height:1.5;max-width:30em;margin:12px 0 20px}
 #design-app .ro-w2-banner .actions{display:flex;gap:12px;margin:0}
-#design-app .ro-w2-btiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-width:0}
+#design-app .ro-w2-btiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
 #design-app .ro-w2-btile{display:flex;flex-direction:column;background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none;transition:box-shadow .15s ease}
-#design-app .ro-w2-bimg{display:block;aspect-ratio:16/10;overflow:hidden;background:#F3F1EB}
+#design-app .ro-w2-bimg{display:block;aspect-ratio:2/1;overflow:hidden;background:#F3F1EB}
 #design-app .ro-w2-bimg img{width:100%;height:100%;object-fit:cover;display:block}
-#design-app .ro-w2-btx{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:12px 16px}
+#design-app .ro-w2-btx{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:8px 12px}
 #design-app .ro-w2-btx b{font-size:16px;line-height:24px;font-weight:600}
 #design-app .ro-w2-btx small{font-size:14px;line-height:21px;color:#566273;white-space:nowrap}
 @media (hover:hover){#design-app .ro-w2-btile:hover{box-shadow:0 6px 20px rgba(21,42,75,.10)}}
@@ -17503,6 +17503,32 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
 #ro-w2-dlg .ro-w2-objs:only-child~.ro-w2-slot{margin-top:16px}
 #ro-w2-dlg .ro-w2-slot .ro-w2-lbl{margin-top:0}
 #ro-w2-dlg .ro-w2-rooms{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+/* 25.11 22:25 (Алина): компактнее – меньше пустого места */
+#ro-w2 .ro-w2-fimg{aspect-ratio:3/2}
+#ro-w2 .ro-w2-ftx{padding:12px 16px 16px}
+#ro-w2 .ro-w2-ftx b{font-size:18px;line-height:25px}
+.ro-w2-card .card-bottom{margin-top:8px!important}
+.ro-w2-card .card-body{justify-content:flex-start!important}
+/* страница интерьера: сумма, разбивка и кнопка одним блоком */
+#detail .ro-w2-sum{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+#detail .ro-w2-sum .offer-price{margin:0}
+#detail .ro-w2-split{display:flex;flex-direction:column;gap:4px;margin:0;max-width:360px}
+#detail .ro-w2-split>div{display:flex;justify-content:space-between;gap:16px;font-size:14px;line-height:21px}
+#detail .ro-w2-split dt{color:#566273}#detail .ro-w2-split dd{margin:0;font-weight:600;color:#152A4B;white-space:nowrap}
+#detail .ro-w2-split .is-rec dd{font-weight:400;color:#566273}
+#detail .ro-w2-sum .ro-w2-open{align-self:flex-start;margin-top:4px}
+#detail .ro-w2-mat{margin-top:24px!important;padding-top:24px!important}
+html body .shop #detail .ro-w2-grp h3{font-size:16px!important;line-height:24px!important}
+#detail .ro-w2-grp{margin-top:12px}
+#detail .ro-w2-grp:first-of-type{margin-top:16px}
+#detail .ro-w2-aux{border-top:1px solid #E3E6EA}
+#detail .ro-w2-auxt{display:flex;align-items:center;gap:4px;width:100%;padding:0 16px;border-radius:0;text-align:left}
+#detail .ro-w2-auxt svg{width:16px;height:16px;transform:rotate(90deg);transition:transform .15s ease;flex:none}
+#detail .ro-w2-auxt[aria-expanded=true] svg{transform:rotate(-90deg)}
+#detail .ro-w2-axh{margin:0;padding:8px 16px 0;font-size:14px;line-height:21px;font-weight:600;color:#566273}
+#detail .ro-w2-axl .ro-w2-row{border-top:0!important}
+@media (max-width:700px){#detail .ro-w2-sum .ro-w2-open{align-self:stretch}#detail .ro-w2-split{max-width:none}}
+@media (prefers-reduced-motion:reduce){#detail .ro-w2-auxt svg{transition:none}}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -17541,6 +17567,29 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
   ['ent-oak','entry','Прихожая «Дуб»',5.9,'1,7 × 3,5',2.7,['ent2','ent1'],[['Стены',22.1,[['OB-D06',5]]],['Пол',5.9,[['LM-201',3]]],['Потолок',5.9,[['NT-D02',5.9]]]]]
  ].map(function(r){return{id:r[0],folder:r[1],name:r[2],area:r[3],size:r[4],h:r[5],img:r[6],groups:r[7]}});
  function sum(d){var s=0;d.groups.forEach(function(g){g[2].forEach(function(x){var p=P(x[0]);if(p)s+=Math.round(p.price*x[1])})});return s}
+ /* Вспомогательные (Алина 25.11 22:25): в цене интерьера – отделка + «Нужно для …», «Рекомендуем» отдельно (A2).
+    Комплекты KIT и замены ALT – копия из ro-kit-cat каталога (логика C7, владелец W1), считаются так же: area – по площади поверхности ×1,1, perim – по периметру комнаты. */
+ var KIT={'Обои':[['KL-01','need','area',1,25],['GR-010','rec','area',.1,5],['SH-020','rec','area',1,5]],
+  'Краска':[['TL-V01','need','obj'],['GR-010','rec','area',.1,5],['SH-020','rec','area',1,5]],
+  'Плитка':[['KL-D01','need','area',4.2,5],['ZT-101','need','area',.3,2],['GR-011','rec','area',.1,5]],
+  'Керамогранит':[['KL-D02','need','area',7,5],['ZT-101','need','area',.5,2],['GR-011','rec','area',.1,5]],
+  'Ламинат':[['PD-01','need','area',1.1,10],['PL-01','need','perim',1,2.5],['PZ-01','rec','area',1.15,30]],
+  'Линолеум':[['PL-01','need','perim',1,2.5]]};
+ var ALT=[['KL-01','KL-02'],['GR-010','GR-D02'],['SH-020','SH-D02'],['ZT-101','ZT-102']];
+ var FOR={'Обои':'поклейки','Краска':'покраски','Плитка':'укладки плитки','Керамогранит':'укладки плитки','Ламинат':'укладки пола','Линолеум':'укладки пола'};
+ function avail(sku){var p=P(sku);if(p&&p.availability!=='out')return p;var g=ALT.filter(function(x){return x[0]===sku})[0]||[];for(var i=1;i<g.length;i++){p=P(g[i]);if(p&&p.availability!=='out')return p}return null}
+ function aux(d){if(d._aux)return d._aux;var res={groups:[],need:0,rec:0};
+  d.groups.forEach(function(g){var items={},fors=[],used=0;
+   var main=g[2].map(function(x){var p=P(x[0]);var a=p&&p.areaPerSaleUnit?Math.min(g[1],p.areaPerSaleUnit*x[1]):null;if(a)used+=a;return{p:p,q:x[1],a:a}});
+   main.forEach(function(m){if(!m.p)return;var K=KIT[m.p.type];if(!K)return;var a=m.a!=null?m.a:Math.max(0,g[1]-used)||g[1];if(FOR[m.p.type]&&fors.indexOf(FOR[m.p.type])<0)fors.push(FOR[m.p.type]);
+    K.forEach(function(k){var p=avail(k[0]);if(!p)return;var q=1;if(k[2]==='area')q=Math.ceil(a*k[3]*1.1/k[4]);else if(k[2]==='perim')q=Math.ceil(Math.max(0,4*Math.sqrt(d.area)-.9)*1.05/k[4]);q=Math.max(1,q);
+     var it=items[p.sku];if(it){it.q+=q;if(k[1]==='need')it.role='need'}else items[p.sku]={p:p,q:q,role:k[1]}})});
+   var L=Object.keys(items).map(function(k){var it=items[k];it.sum=it.q*it.p.price;return it});
+   var need=L.filter(function(x){return x.role==='need'}),rec=L.filter(function(x){return x.role==='rec'});
+   need.forEach(function(x){res.need+=x.sum});rec.forEach(function(x){res.rec+=x.sum});
+   res.groups.push({need:need,rec:rec,label:fors.join(' и ')})});
+  d._aux=res;return res}
+ function total(d){return sum(d)+aux(d).need}
  function folderName(k){var f=FOLDERS.find(function(x){return x[0]===k});return f?f[1]:''}
  function inFolder(k){return D.filter(function(d){return d.folder===k})}
  function img(k){return IMG[k]||''}
@@ -17551,7 +17600,7 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
  document.getElementById('detail').before(page);
  var detail=document.getElementById('detail');
  var loc=function(crumbs,back){return '<div class="catalog-location"><a class="catalog-back ro-w2-back" href="#'+(back||'')+'" data-route>'+icon('back')+'<span>Назад</span></a>'+(crumbs?'<nav class="crumbs" aria-label="Хлебные крошки">'+crumbs+'</nav>':'')+'</div>'};
- function card(d){var s=sum(d);
+ function card(d){var s=total(d);
   return '<article class="card ro-w2-card" data-design="'+d.id+'"><div class="photo product-visual"><div class="card-art" aria-hidden="true"><img src="'+img(d.img[0])+'" alt="" loading="lazy"></div></div>'+
    '<div class="card-body"><div class="card-head"><h3><a class="card-link" href="#design='+d.id+'" data-route>'+esc(d.name)+'</a></h3><div class="meta"><p>'+esc(folderName(d.folder))+', '+sizeLine(d)+'</p></div></div>'+
    '<div class="card-bottom"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div></div></article>'}
@@ -17565,19 +17614,26 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
    '<h1 id="ro-w2-t" tabindex="-1">'+esc(n)+'</h1><p class="meta ro-w2-count">'+L.length+' '+pl(L.length,'интерьер','интерьера','интерьеров')+'</p>'+
    '<div class="product-grid ro-w2-grid">'+L.map(card).join('')+'</div>';
  }
- function drawDesign(d){var s=sum(d),n=0;d.groups.forEach(function(g){n+=g[2].length});
+ function rowHTML(p,q,sumv){var out=p.availability==='out';return '<a class="ro-w2-row'+(out?' is-out':'')+'" href="#product='+p.sku+'" data-route><span class="ro-w2-rm" aria-hidden="true">'+productVisual(p)+'</span><span class="ro-w2-rn"><b>'+esc(p.name)+'</b><span class="meta">'+esc([p.variant,p.pack].filter(Boolean).join(', '))+', <span class="nw">'+p.sku+'</span></span>'+(out?'<span class="row-badge ro-w2-badge">Нет в наличии</span>':'')+'</span><span class="ro-w2-rq"><strong>'+rub(sumv)+'</strong><span class="meta">'+qtyText(p,q)+'</span></span></a>'}
+ function drawDesign(d){var f=sum(d),A=aux(d),t=f+A.need;
   detail.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<a href="#designs='+d.folder+'" data-route>'+esc(folderName(d.folder))+'</a>','designs='+d.folder)+
   '<div class="detail-grid ro-w2-detail">'+
    '<header class="product-heading"><h1 tabindex="-1">'+esc(d.name)+'</h1><p class="meta">'+esc(folderName(d.folder))+', '+sizeLine(d)+', потолок '+nb(num(d.h)+' м')+'</p></header>'+
    '<div class="product-media product-gallery ro-w2-gal" role="region" aria-label="Фотографии интерьера"><div class="gallery-stage"><div class="gallery-frame" data-multiple="'+(d.img.length>1)+'"><img class="gallery-main-image ro-w2-main" alt="'+esc(d.name)+'" src="'+img(d.img[0])+'" draggable="false"></div>'+
     (d.img.length>1?'<div class="gallery-nav"><button type="button" class="icon-button gallery-control gallery-prev" data-w2-step="-1" aria-label="Предыдущее фото">'+icon('right')+'</button><button type="button" class="icon-button gallery-control gallery-next" data-w2-step="1" aria-label="Следующее фото">'+icon('right')+'</button><span class="gallery-position" aria-hidden="true">1 / '+d.img.length+'</span></div>':'')+'</div>'+
     (d.img.length>1?'<div class="gallery-thumbs" role="group" aria-label="Выбор фотографии">'+d.img.map(function(k,i){return '<button type="button" class="gallery-thumb" data-w2-slide="'+i+'" aria-current="'+(i===0)+'" aria-label="Фото '+(i+1)+' из '+d.img.length+'"><img src="'+img(k)+'" alt="" draggable="false"></button>'}).join('')+'</div>':'')+'</div>'+
-   '<div class="detail-copy"><div class="detail-summary"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div>'+
-    '<div class="buy-group"><button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
+   '<div class="detail-copy"><div class="ro-w2-sum"><p class="offer-price"><strong class="price">'+rub(t)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p>'+
+    '<dl class="ro-w2-split"><div><dt>Отделка</dt><dd>'+rub(f)+'</dd></div><div><dt>Нужно для работы</dt><dd>'+rub(A.need)+'</dd></div>'+(A.rec?'<div class="is-rec"><dt>Рекомендуем, не входит в сумму</dt><dd>'+rub(A.rec)+'</dd></div>':'')+'</dl>'+
+    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
     '<section class="detail-info ro-w2-mat" aria-labelledby="ro-w2-mt"><h2 id="ro-w2-mt">Материалы</h2>'+
-    d.groups.map(function(g){return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);if(!p)return '';var out=p.availability==='out';
-      return '<a class="ro-w2-row'+(out?' is-out':'')+'" href="#product='+p.sku+'" data-route><span class="ro-w2-rm" aria-hidden="true">'+productVisual(p)+'</span><span class="ro-w2-rn"><b>'+esc(p.name)+'</b><span class="meta">'+esc([p.variant,p.pack].filter(Boolean).join(', '))+', <span class="nw">'+p.sku+'</span></span>'+(out?'<span class="row-badge ro-w2-badge">Нет в наличии</span>':'')+'</span><span class="ro-w2-rq"><strong>'+rub(Math.round(p.price*x[1]))+'</strong><span class="meta">'+qtyText(p,x[1])+'</span></span></a>'}).join('')+'</div></div>'}).join('')+
+    d.groups.map(function(g,gi){var X=A.groups[gi],n=X.need.length+X.rec.length,xs=0;X.need.concat(X.rec).forEach(function(x){xs+=x.sum});
+     return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);return p?rowHTML(p,x[1],Math.round(p.price*x[1])):''}).join('')+
+      (n?'<div class="ro-w2-aux"><button type="button" class="ro-kc-link ro-w2-auxt" aria-expanded="false" aria-controls="ro-w2-ax'+gi+'">Для '+esc(X.label)+': '+n+'\u00A0'+pl(n,'позиция','позиции','позиций')+', '+rub(xs)+icon('right')+'</button><div class="ro-w2-axl" id="ro-w2-ax'+gi+'" hidden>'+
+       (X.need.length?'<p class="ro-w2-axh">Нужно для '+esc(X.label)+'</p>'+X.need.map(function(x){return rowHTML(x.p,x.q,x.sum)}).join(''):'')+
+       (X.rec.length?'<p class="ro-w2-axh">Рекомендуем</p>'+X.rec.map(function(x){return rowHTML(x.p,x.q,x.sum)}).join(''):'')+'</div></div>':'')+
+      '</div></div>'}).join('')+
     '</section></div></div>';
+  detail.querySelectorAll('.ro-w2-auxt').forEach(function(b){b.addEventListener('click',function(){var o=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(o));document.getElementById(b.getAttribute('aria-controls')).hidden=!o})});
   var i=0,main=detail.querySelector('.ro-w2-main'),pos=detail.querySelector('.gallery-position'),th=[].slice.call(detail.querySelectorAll('[data-w2-slide]'));
   function show(n){i=(n+d.img.length)%d.img.length;main.src=img(d.img[i]);if(pos)pos.textContent=(i+1)+' / '+d.img.length;th.forEach(function(b,j){b.setAttribute('aria-current',String(j===i))})}
   detail.querySelectorAll('[data-w2-step]').forEach(function(b){b.addEventListener('click',function(){show(i+Number(b.dataset.w2Step))})});
@@ -17625,9 +17681,19 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
  function roomName(base,obj){if(!obj)return base;var used=obj.rooms.filter(function(n){return n===base||n.indexOf(base+' ')===0}).length;return used?base+' '+(used+1):base}
  /* Окно (Алина 25.11, 15:36): комната всегда внутри объекта.
     Объект: свой или новый (название уже заполнено). Комната: «Новая комната как в интерьере» или своя комната (интерьер ляжет на её размеры). */
+ /* Типовые планировки – копия APT конструктора (владелец W1): [серия, название, [[вариант, название, [[комната, тип, м²]...]]]] */
+ var APT=[["stm", "Старая московская", [["1", "1-комнатная, без балкона", [["Гостиная", "living", 18.6], ["Кухня", "kitchen", 6.4], ["Прихожая", "entry", 4.2], ["Санузел", "combo", 2.8]]], ["2s", "2-комнатная «самолёт»", [["Гостиная", "living", 17.0], ["Спальня", "bed", 12.7], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 7.4], ["Кладовая", "store", 1.9], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.4]]], ["1k", "1-комнатная, с балконом", [["Гостиная", "living", 17.1], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 4.1], ["Санузел", "combo", 2.8], ["Балкон", "balcony", 1.7]]], ["2t", "2-комнатная «трамвай»", [["Гостиная", "living", 17.2], ["Спальня", "bed", 11.6], ["Кухня", "kitchen", 6.3], ["Прихожая", "entry", 5.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9], ["Кладовая", "store", 1.0], ["Кладовая 2", "store", 1.0], ["Балкон", "balcony", 1.2]]], ["2b", "2-комнатная, без балкона", [["Гостиная", "living", 18.2], ["Спальня", "bed", 10.5], ["Кухня", "kitchen", 6.6], ["Прихожая", "entry", 6.0], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8]]], ["3", "3-комнатная, девятиэтажка", [["Гостиная", "living", 19.0], ["Спальня", "bed", 11.3], ["Детская", "kids", 8.3], ["Кухня", "kitchen", 5.9], ["Прихожая", "entry", 9.3], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8], ["Балкон", "balcony", 1.0]]], ["3f", "3-комнатная, пятиэтажка", [["Гостиная", "living", 17.1], ["Спальня", "bed", 17.0], ["Детская", "kids", 10.3], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 9.0], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.4]]], ["3p", "3-комнатная с проходной комнатой", [["Гостиная", "living", 20.4], ["Спальня", "bed", 12.9], ["Детская", "kids", 11.7], ["Кухня", "kitchen", 6.0], ["Прихожая", "entry", 4.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8], ["Балкон", "balcony", 1.3]]], ["3b", "3-комнатная, без балкона", [["Гостиная", "living", 16.3], ["Спальня", "bed", 11.2], ["Детская", "kids", 8.1], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 8.1], ["Кладовая", "store", 0.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 0.8]]], ["3l", "3-комнатная с лоджией", [["Гостиная", "living", 17.3], ["Спальня", "bed", 10.3], ["Детская", "kids", 9.3], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]], ["3t", "3-комнатная «трапеция»", [["Гостиная", "living", 19.4], ["Спальня", "bed", 14.2], ["Детская", "kids", 14.0], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 9.6], ["Кладовая", "store", 1.1], ["Ванная", "bath", 2.4], ["Туалет", "wc", 1.2]]], ["4", "4-комнатная", [["Гостиная", "living", 17.3], ["Спальня", "bed", 14.8], ["Детская", "kids", 12.9], ["Комната", "office", 10.3], ["Кухня", "kitchen", 6.1], ["Прихожая", "entry", 10.5], ["Кладовая", "store", 2.0], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]]]], ["msk", "Московская", [["1", "1-комнатная", [["Гостиная", "living", 17.1], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 4.6], ["Санузел", "combo", 2.3], ["Кладовая", "store", 0.9], ["Балкон", "balcony", 1.0]]], ["2l", "2-комнатная с лоджией", [["Гостиная", "living", 17.1], ["Спальня", "bed", 12.1], ["Кухня", "kitchen", 8.7], ["Прихожая", "entry", 8.5], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Лоджия", "balcony", 1.8]]], ["2m", "2-комнатная малометражка", [["Гостиная", "living", 12.2], ["Спальня", "bed", 8.6], ["Кухня", "kitchen", 8.4], ["Прихожая", "entry", 9.2], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 17.6], ["Спальня", "bed", 13.2], ["Детская", "kids", 12.7], ["Кухня", "kitchen", 7.6], ["Прихожая", "entry", 10.5], ["Кладовая", "store", 1.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 2.1]]], ["4t", "4-комнатная «трапеция»", [["Гостиная", "living", 18.9], ["Спальня", "bed", 14.1], ["Детская", "kids", 10.4], ["Комната", "office", 8.1], ["Кухня", "kitchen", 7.6], ["Прихожая", "entry", 12.3], ["Кладовая", "store", 2.8], ["Кладовая 2", "store", 1.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 1.5]]]]], ["tash", "Ташкентская", [["1", "1-комнатная", [["Гостиная", "living", 17.2], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 4.2], ["Санузел", "combo", 3.0]]], ["2", "2-комнатная", [["Гостиная", "living", 16.9], ["Спальня", "bed", 8.9], ["Кухня", "kitchen", 6.9], ["Прихожая", "entry", 6.6], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.6], ["Балкон", "balcony", 2.9]]], ["3", "3-комнатная", [["Гостиная", "living", 16.1], ["Спальня", "bed", 8.9], ["Детская", "kids", 7.1], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 7.4], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9]]], ["3c", "3-комнатная с большим коридором", [["Гостиная", "living", 17.2], ["Спальня", "bed", 12.3], ["Детская", "kids", 8.7], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 11.6], ["Ванная", "bath", 2.3], ["Туалет", "wc", 0.9], ["Балкон", "balcony", 3.1]]]]], ["uly", "Ульяновская", [["1", "1-комнатная", [["Гостиная", "living", 13.8], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 3.3], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Лоджия", "balcony", 1.8]]], ["1m", "1-комнатная малометражка", [["Гостиная", "living", 14.3], ["Кухня", "kitchen", 5.3], ["Прихожая", "entry", 2.9], ["Санузел", "combo", 3.1], ["Лоджия", "balcony", 7.6]]], ["2", "2-комнатная", [["Гостиная", "living", 19.1], ["Спальня", "bed", 13.0], ["Кухня", "kitchen", 7.7], ["Прихожая", "entry", 9.3], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Балкон", "balcony", 0.9]]], ["2m", "2-комнатная малометражка", [["Гостиная", "living", 13.8], ["Спальня", "bed", 8.8], ["Кухня", "kitchen", 8.1], ["Прихожая", "entry", 8.4], ["Ванная", "bath", 2.7], ["Туалет", "wc", 1.0], ["Балкон", "balcony", 3.5]]], ["3", "3-комнатная", [["Гостиная", "living", 17.2], ["Спальня", "bed", 13.9], ["Детская", "kids", 11.8], ["Кухня", "kitchen", 8.7], ["Прихожая", "entry", 12.7], ["Кладовая", "store", 0.9], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2], ["Балкон", "balcony", 2.8]]], ["4", "4-комнатная", [["Гостиная", "living", 22.6], ["Спальня", "bed", 18.3], ["Детская", "kids", 12.7], ["Комната", "office", 11.4], ["Кухня", "kitchen", 7.2], ["Прихожая", "entry", 17.0], ["Коридор", "hall", 6.8], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.0], ["Санузел", "combo", 3.5], ["Лоджия", "balcony", 7.6], ["Лоджия 2", "balcony", 7.6]]]]], ["hru", "Хрущёвская", [["2", "2-комнатная, проходная", [["Гостиная", "living", 19.0], ["Спальня", "bed", 13.9], ["Кухня", "kitchen", 5.5], ["Прихожая", "entry", 4.6], ["Санузел", "combo", 2.9], ["Балкон", "balcony", 0.9]]], ["2s", "2-комнатная «самолёт»", [["Гостиная", "living", 17.5], ["Спальня", "bed", 14.3], ["Кухня", "kitchen", 5.7], ["Коридор", "hall", 4.7], ["Ванная", "bath", 2.1], ["Туалет", "wc", 1.0]]], ["1", "1-комнатная", [["Гостиная", "living", 17.6], ["Кухня", "kitchen", 5.5], ["Прихожая", "entry", 3.5], ["Санузел", "combo", 2.9]]], ["3", "3-комнатная", [["Гостиная", "living", 16.8], ["Спальня", "bed", 14.0], ["Детская", "kids", 12.5], ["Кухня", "kitchen", 6.1], ["Коридор", "hall", 6.0], ["Санузел", "combo", 2.9]]], ["4", "4-комнатная, торцевая", [["Гостиная", "living", 17.5], ["Спальня", "bed", 11.1], ["Детская", "kids", 8.4], ["Комната", "office", 8.3], ["Кухня", "kitchen", 6.2], ["Прихожая", "entry", 4.9], ["Санузел", "combo", 3.0]]], ["4b", "4-комнатная, большая", [["Гостиная", "living", 18.5], ["Спальня", "bed", 10.8], ["Детская", "kids", 10.2], ["Комната", "office", 9.4], ["Кухня", "kitchen", 5.6], ["Прихожая", "entry", 11.8], ["Ванная", "bath", 2.0], ["Туалет", "wc", 1.0]]]]], ["mak", "Макаровская", [["4", "4-комнатная", [["Гостиная", "living", 21.8], ["Спальня", "bed", 16.4], ["Детская", "kids", 16.3], ["Комната", "office", 13.1], ["Кухня", "kitchen", 11.7], ["Прихожая", "entry", 18.0], ["Кладовая", "store", 2.3], ["Ванная", "bath", 2.3], ["Туалет", "wc", 1.2], ["Лоджия", "balcony", 4.1], ["Лоджия 2", "balcony", 2.1], ["Лоджия 3", "balcony", 1.9]]]]], ["ulu", "Улучшенная", [["4", "4-комнатная", [["Гостиная", "living", 16.6], ["Спальня", "bed", 9.4], ["Детская", "kids", 8.2], ["Комната", "office", 8.1], ["Кухня", "kitchen", 5.7], ["Прихожая", "entry", 5.8], ["Ванная", "bath", 2.0], ["Туалет", "wc", 1.0]]], ["4s", "4-комнатная, окна на две стороны", [["Гостиная", "living", 16.6], ["Спальня", "bed", 13.9], ["Детская", "kids", 13.4], ["Комната", "office", 12.4], ["Кухня", "kitchen", 7.1], ["Прихожая", "entry", 8.0], ["Ванная", "bath", 2.1], ["Туалет", "wc", 1.2], ["Кладовая", "store", 0.9]]]]], ["len", "Ленинградская", [["1", "1-комнатная", [["Гостиная", "living", 20.0], ["Кухня", "kitchen", 10.0], ["Прихожая", "entry", 4.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["2", "2-комнатная", [["Гостиная", "living", 16.2], ["Спальня", "bed", 11.8], ["Кухня", "kitchen", 12.0], ["Прихожая", "entry", 6.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 18.9], ["Спальня", "bed", 14.4], ["Детская", "kids", 11.7], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["oli", "Олимпийская", [["1", "1-комнатная", [["Гостиная", "living", 20.0], ["Кухня", "kitchen", 10.0], ["Прихожая", "entry", 7.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["2", "2-комнатная", [["Гостиная", "living", 18.0], ["Спальня", "bed", 13.0], ["Кухня", "kitchen", 9.0], ["Прихожая", "entry", 9.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3", "3-комнатная", [["Гостиная", "living", 16.8], ["Спальня", "bed", 12.8], ["Детская", "kids", 10.4], ["Кухня", "kitchen", 9.0], ["Прихожая", "entry", 12.2], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["mon", "Монолитная", [["3", "3-комнатная, 62 м²", [["Гостиная", "living", 14.3], ["Спальня", "bed", 10.9], ["Детская", "kids", 8.8], ["Кухня", "kitchen", 10.5], ["Прихожая", "entry", 13.7], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]], ["3g", "3-комнатная, 75 м²", [["Гостиная", "living", 18.4], ["Спальня", "bed", 14.0], ["Детская", "kids", 11.4], ["Кухня", "kitchen", 8.6], ["Прихожая", "entry", 18.4], ["Ванная", "bath", 3.0], ["Туалет", "wc", 1.5]]]]], ["sam", "Самарская", [["1", "1-комнатная", [["Гостиная", "living", 19.1], ["Кухня", "kitchen", 9.6], ["Прихожая", "entry", 4.3], ["Санузел", "combo", 3.5]]], ["2", "2-комнатная", [["Гостиная", "living", 19.4], ["Спальня", "bed", 14.1], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 8.4], ["Ванная", "bath", 2.6], ["Туалет", "wc", 1.2]]]]], ["gos", "Гостиничная", [["1", "1-комнатная малометражка", [["Гостиная", "living", 10.0], ["Кухня", "kitchen", 2.5], ["Прихожая", "entry", 2.5], ["Санузел", "combo", 2.0]]], ["2", "2-комнатная", [["Гостиная", "living", 18.7], ["Спальня", "bed", 12.9], ["Кухня", "kitchen", 1.5], ["Прихожая", "entry", 3.0], ["Санузел", "combo", 2.0]]]]], ["sta", "Сталинская", [["3", "3-комнатная", [["Гостиная", "living", 21.8], ["Спальня", "bed", 16.6], ["Детская", "kids", 13.6], ["Кухня", "kitchen", 8.0], ["Прихожая", "entry", 18.0], ["Ванная", "bath", 3.5], ["Туалет", "wc", 1.5]]]]]];
+ var MATCH={living:['living'],kitchen:['kitchen'],bed:['bed'],kids:['kids'],bath:['bath','combo'],entry:['entry','hall']};
  function open(d){var O=objects(),user=isUser(),base=folderName(d.folder);
   var row=function(name,val,title,meta,on,dis){return '<label class="pay-option'+(dis?' ro-w2-dis':'')+'"><input type="radio" name="'+name+'" value="'+val+'"'+(on?' checked':'')+'><span><b>'+esc(title)+'</b>'+(meta?'<span class="meta">'+meta+'</span>':'')+'</span></label>'};
   var nameField='<label class="ro-w2-lbl" for="ro-w2-on">Название объекта<input class="field" id="ro-w2-on" name="objName" type="text" maxlength="60" autocomplete="off" value="Моя квартира"></label><span class="ro-w2-err" data-err="objName" role="alert"></span>';
+  var aptField='<label class="ro-w2-lbl" for="ro-w2-apt">Планировка<select class="field" id="ro-w2-apt" name="apt"><option value="">Без планировки</option>'+APT.map(function(a){return '<optgroup label="'+esc(a[1])+'">'+a[2].map(function(v){var t=0;v[2].forEach(function(r){if(r[1]!=='balcony')t+=r[2]});return '<option value="'+a[0]+'|'+v[0]+'">'+esc(v[1])+', '+num(Math.round(t*10)/10)+' м²</option>'}).join('')+'</optgroup>'}).join('')+'</select></label>';
+  function aptRooms(){var v=(f.elements.apt||{}).value;if(!v)return null;var k=v.split('|'),a=APT.find(function(x){return x[0]===k[0]}),vr=a&&a[2].find(function(x){return x[0]===k[1]});return vr?vr[2].filter(function(r){return r[1]!=='balcony'&&r[1]!=='store'}):null}
+  function drawAptRooms(){var box=slot.querySelector('.ro-w2-aptrooms');if(!box)return;var R=aptRooms();
+   if(!R){box.innerHTML='';label();return}
+   var want=MATCH[d.folder]||[],pick=R.findIndex(function(r){return want.indexOf(r[1])>=0});
+   box.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+row('room','new','Новая комната как в интерьере',esc(base)+', '+sizeLine(d),pick<0)+
+    R.map(function(r,k){return row('room',k,r[0],nb(num(r[2])+' м²'),k===pick)}).join('')+'</div></fieldset>';label()}
   var objList=O.length?'<fieldset class="ro-w2-fs"><legend>Объект</legend><div class="pay-options ro-w2-objs">'+O.map(function(o,j){return row('obj',j,o.name,o.rooms.length+' '+pl(o.rooms.length,'комната','комнаты','комнат'),j===0)}).join('')+
     row('obj','new','Новый объект',(!user?'Нужен вход: без входа доступен один объект':''),false)+'</div></fieldset>':'';
   dlg.innerHTML='<div class="dialog-frame"><div class="dialog-header"><h2 id="ro-w2-dt" tabindex="-1">Открыть в конструкторе</h2><button class="icon-button" type="button" data-w2-x aria-label="Закрыть">'+icon('close')+'</button></div>'+
@@ -17636,14 +17702,15 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
   function objVal(){return O.length?(f.querySelector('input[name=obj]:checked')||{}).value:'new'}
   function roomVal(){var r=f.querySelector('input[name=room]:checked');return r?r.value:'new'}
   function drawSlot(){var v=objVal();
-   if(v==='new'){slot.innerHTML=(!user&&O.length)?'':nameField;var n=f.elements.objName;if(n){n.addEventListener('input',function(){err('objName','')});n.addEventListener('focus',function(){n.select()})}}
+   if(v==='new'){slot.innerHTML=(!user&&O.length)?'':nameField+aptField+'<div class="ro-w2-aptrooms"></div>';var n=f.elements.objName;if(n){n.addEventListener('input',function(){err('objName','')});n.addEventListener('focus',function(){n.select()})}
+    var sel=f.elements.apt;if(sel)sel.addEventListener('change',drawAptRooms);drawAptRooms()}
    else{var o=O[+v],full=!user&&o.rooms.length>=GUEST_ROOMS;
     slot.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+
      row('room','new','Новая комната как в интерьере',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':esc(base)+', '+sizeLine(d),true)+
      o.rooms.map(function(n,k){return row('room',k,n,'',false)}).join('')+'</div></fieldset>'}
    label()}
   function needLogin(){var v=objVal();if(user)return false;if(v==='new')return O.length>0;var o=O[+v];return roomVal()==='new'&&o.rooms.length>=GUEST_ROOMS}
-  function label(){go.textContent=needLogin()?'Войти':(objVal()!=='new'&&roomVal()!=='new')?'Применить к комнате':'Открыть'}
+  function label(){go.textContent=needLogin()?'Войти':roomVal()!=='new'?'Применить к комнате':'Открыть'}
   f.addEventListener('change',function(e){if(e.target.name==='obj')drawSlot();else label()});
   function err(n,t){var e=f.querySelector('[data-err="'+n+'"]'),i=f.elements[n];if(!e)return;e.innerHTML=t?'<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/></svg>'+t:'';i.toggleAttribute('aria-invalid',!!t)}
   f.addEventListener('submit',function(e){e.preventDefault();
@@ -17654,7 +17721,8 @@ html body .shop #ro-w2-dlg .field[aria-invalid]:focus,html body .shop #ro-w2-dlg
    go.setAttribute('aria-busy','true');go.textContent='Открываем…';
    setTimeout(function(){dlg.close();go.removeAttribute('aria-busy');
     /* в конструктор (W1): новая комната по интерьеру или интерьер на свою комнату */
-    var q=new URLSearchParams({design:d.id,obj:o?o.name:f.elements.objName.value.trim(),mode:rv==='new'?'new':'apply',room:rv==='new'?roomName(base,o):o.rooms[+rv]});if(!o)q.set('newobj','1');
+    var R=o?null:aptRooms(),rn=rv==='new'?roomName(base,o?o:(R?{rooms:R.map(function(r){return r[0]})}:null)):(o?o.rooms[+rv]:R[+rv][0]);
+    var q=new URLSearchParams({design:d.id,obj:o?o.name:f.elements.objName.value.trim(),mode:rv==='new'?'new':'apply',room:rn});if(!o){q.set('newobj','1');if(f.elements.apt&&f.elements.apt.value)q.set('apt',f.elements.apt.value)}
     if(typeof RO_POST==='function')RO_POST({type:'nav',path:'/objects?'+q.toString()})},600)});
   dlg.querySelector('[data-w2-x]').addEventListener('click',function(){dlg.close()});
   drawSlot();dlg.showModal();dlg.querySelector('h2').focus();
