@@ -31736,6 +31736,11 @@ setTimeout(()=>{try{if(!frames.catalog&&HAS('catalog')){mount('catalog');if(fram
 if(/panel/.test(location.search))document.documentElement.classList.add('ro-panel');
 const box=document.getElementById('ro-box'), load=document.getElementById('ro-load'), stub=document.getElementById('ro-stub');
 const frames={}, ready={}, shown={}, queue={}, routedAt={}, titles={}, lastRouted={};
+/* 25.11: если «Загружаем…» висит дольше 10 с – показать под ним ошибки частей сайта (для диагностики, обычно не видно) */
+const roHook=m=>'<head><script>(function(){var m="'+m+'";function r(t){try{parent.__roErr&&parent.__roErr(m+": "+t)}catch(_){}}addEventListener("error",function(e){r((e.message||"error")+" @"+String(e.filename||"").slice(-40)+":"+e.lineno+":"+e.colno)});addEventListener("unhandledrejection",function(e){var x=e.reason;r("promise: "+(x&&x.message||x))})})()<\/script>';
+const roErrs=[];window.__roErr=t=>{if(roErrs.length<8&&roErrs.indexOf(t)<0)roErrs.push(String(t).slice(0,300))};
+addEventListener('error',e=>window.__roErr('shell: '+(e.message||'error')+' :'+e.lineno));
+setInterval(()=>{const l=document.getElementById('ro-load');if(!l||l.hidden){window.__roLoadT=0;return}window.__roLoadT=(window.__roLoadT||0)+1;if(window.__roLoadT>=10){let p=l.querySelector('.ro-err');if(!p){p=document.createElement('pre');p.className='ro-err';p.style.cssText='margin:16px auto 0;max-width:640px;white-space:pre-wrap;font:12px/18px monospace;color:#A32637;text-align:left';l.appendChild(p)}p.textContent=(roErrs.length?roErrs.join('\n'):'нет ошибок; части: '+Object.keys(frames).map(k=>k+(ready[k]?'+':'-')).join(' '))+'\n'+navigator.userAgent}},1000);
 let curMod=null, overMod=null;
 const MOD_TITLES={home:'Главная',catalog:'Каталог',ctor:'Создать свой интерьер',account:'Кабинет',info:'Инфостраницы'};
 const lsGet=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}};
@@ -31849,7 +31854,7 @@ function mount(mod){
   const src=document.getElementById('mod-'+mod); if(!src)return;
   const f=document.createElement('iframe'); f.title=MOD_TITLES[mod]; f.dataset.mod=mod;
   frames[mod]=f; if(mod!=='account')f.style.visibility='hidden'; box.appendChild(f);
-  f.srcdoc=src.textContent.replace(/<%\//g,'</').replace(/<%!--/g,'<!--');
+  f.srcdoc=src.textContent.replace(/<%\//g,'</').replace(/<%!--/g,'<!--').replace(/<head>/i,roHook(mod));
 }
 const STUBS={
   '/info':['Раздел готовится','Страницы «Доставка», «Оплата», «Возврат и обмен», «Контакты» делает чат «Инфостраницы и системные». Подключим, когда будут готовы.'],
