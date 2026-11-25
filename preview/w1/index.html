@@ -13116,7 +13116,7 @@ function quantityLabel(item) {
   return 'Количество';
 }
 const priceFormatter = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2});
-const rub = amount => priceFormatter.format(amount)+'\u00A0₽';
+const rub = amount => Number.isFinite(amount) ? priceFormatter.format(amount)+'\u00A0₽' : 'N\u00A0₽'; /* W3-2: неизвестная сумма (NaN) – «N ₽» */
 function comparisonPrice(item) {
   if (item.areaPerSaleUnit) return rub(Math.round(item.price/item.areaPerSaleUnit))+' за м²';
   const m = String(item.pack||'').match(/(\d+(?:,\d+)?)\s*(л|кг)(?![а-яё])/i);
@@ -15092,7 +15092,7 @@ function orderSummary(action = '') {
     <details class="order-products"><summary><span id="summary-count">${productCount(units)}</span>${icon('down')}</summary>
       <ul class="pos-list">${lines.map(({item,quantity})=>positionRow(item,quantity)).join('')}</ul></details>
     <p class="summary-row"><span>Товары</span><strong id="summary-subtotal">${rub(subtotal)}</strong></p>
-    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p>
+    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p>
     <p id="summary-window" class="meta" aria-live="polite"></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}</aside>`;
 }
 function transactionHeading(title,parent='',action='') {
@@ -15113,10 +15113,9 @@ function renderCartRow({item,quantity,selected,issue}) {
   const sku = item.sku;
   return `<article class="cart-row" data-cart-row="${sku}">
     <label class="cart-check"><input type="checkbox" data-cart-pick="${sku}" ${issue?'disabled':selected!==false?'checked':''} aria-label="В заказ: ${item.name}, ${sku}"></label>
-    <div class="cart-row-media" aria-hidden="true">${productVisual(item)}</div>
-    <div class="cart-row-name"><a href="#product=${sku}" data-route>
-      <strong>${item.name}</strong><span class="meta">${[item.variant,item.pack].filter(Boolean).map(t=>nbu(t)).join(', ')}, <span class="cart-row-sku">${sku}</span></span>
-      <span class="meta">${rub(item.price)} ${saleUnits[item.saleUnit]}</span></a>${typeof estSourceHtml==='function' ? estSourceHtml(sku) : ''}${issue ? '<p class="cart-row-tags"><span class="row-badge">Нет в наличии</span></p>' : ''}${issue ? `<a class="link-button cart-analogs" href="#${catalogRoute({type:item.type,available:'1'})}" data-route>Посмотреть аналоги</a>` : ''}</div>
+    <a class="cart-row-media" href="#product=${sku}" data-route tabindex="-1" aria-hidden="true">${productVisual(item)}</a>
+    <div class="cart-row-name"><a class="ro-w3-nm" href="#product=${sku}" data-route><strong>${item.name}</strong></a><span class="meta">${[item.variant,item.pack].filter(Boolean).map(t=>nbu(t)).join(', ')}, <span class="cart-row-sku">${sku}</span></span>
+      <span class="meta">${rub(item.price)} ${saleUnits[item.saleUnit]}</span>${typeof estSourceHtml==='function' ? estSourceHtml(sku) : ''}${issue ? '<p class="cart-row-tags"><span class="row-badge">Нет в наличии</span></p>' : ''}${issue ? `<a class="link-button cart-analogs" href="#${catalogRoute({type:item.type,available:'1'})}" data-route>Посмотреть аналоги</a>` : ''}</div>
     <div class="cart-row-buy">
       <div class="cart-row-quantity">
         <div class="cart-stepper">
@@ -15163,7 +15162,7 @@ function updateCartSummary() {
   $('#cart-selected-count').textContent = selected.length+' из '+cart.size;
   $('#cart-subtotal').textContent = rub(cartTotals(selected).subtotal);
   $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length));
-  $('#cart-summary-note').textContent = selected.length ? 'Доставку рассчитаем при оформлении' : 'Выберите товары для заказа';
+  $('#cart-summary-note').innerHTML = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
 }
 function changeCartQuantity(field,quantity) {
   const entry = cart.get(field.dataset.cartQty);
@@ -15190,13 +15189,63 @@ const ADDR=ADDR_ST.flatMap(([st,hs])=>hs.map(h=>`${st}, д. ${h}`));
 const addrSug=q=>{q=String(q||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').split(/\s+/).filter(Boolean);if(!q.length)return[];const W=a=>a.toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').split(/\s+/).filter(Boolean);
  return ADDR.map(a=>{const w=W(a);if(!q.every(x=>w.some(y=>y.startsWith(x))))return null;const st=w.slice(1).findIndex(y=>y.startsWith(q[0]));return[a,st<0?9:st]}).filter(Boolean).sort((x,y)=>x[1]-y[1]).map(x=>x[0]).slice(0,7)};
 
+
+/* W3-2 (25.11): доставка. Все цифры – ПРИМЕР для показа логики, у Димы – из админки / с сервера:
+   free – порог бесплатной доставки по городу (null – бесплатной нет); perKm – цена за км (считает сервер по адресу);
+   подъём: по лестнице – за этаж и каждые 100 кг, на лифте – за каждые 100 кг; занос в частный дом – за каждые 100 кг. */
+window.RO_DELIVERY = window.RO_DELIVERY || {
+  cities:[
+    {name:'Тольятти', to:'Тольятти', by:'Тольятти', free:30000},
+    {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску', free:30000},
+    {name:'Самара', to:'Самару', by:'Самаре', free:null}
+  ],
+  perKm:40, stairs:60, lift:150, house:150,
+  kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
+};
+function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
+  var c=RO_DELIVERY.cities.find(function(x){return x.name===n});
+  return c||{name:n,to:n,by:n,free:null}}
+function roUnitKg(item){var m=String(item.pack||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(кг|л)\b/);
+  if(m)return +m[1]; return RO_DELIVERY.kg[item.type]||RO_DELIVERY.kgDefault}
+function roWeight(lines){return Math.max(1,Math.round(lines.reduce(function(a,l){return a+roUnitKg(l.item)*l.quantity},0)))}
+function roKm(address){var h=0;for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return 6+h%19} /* пример: расстояние даёт сервер */
+function roDeliveryNote(sub){var c=roCity();
+  if(c.free==null)return 'Доставка в '+c.to+' по расстоянию: цена появится после ввода адреса';
+  if(sub>=c.free)return '<span class="ro-w3-ok">Доставка по '+c.by+' бесплатно</span>';
+  var pct=Math.max(4,Math.round(sub/c.free*100));
+  return 'До бесплатной доставки по '+c.by+' – ещё '+rub(c.free-sub)+'<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><span class="ro-w3-sub">Бесплатно от '+rub(c.free)+', сейчас по расстоянию</span>'}
+function roW3Sync(form,q){
+  var f=form.elements,house=f.home&&f.home.value==='house',fl=f.floor.value.trim(),lift=f.lift?f.lift.value:'';
+  form.querySelectorAll('[data-w3-flat]').forEach(function(el){el.hidden=house;el.querySelectorAll('input').forEach(function(i){i.disabled=house})});
+  var t=function(k,v){var el=form.querySelector('[data-w3-'+k+']');if(el)el.textContent=v};
+  t('t="door"',house?'До ворот':'До подъезда');
+  t('d="door"',house?'Выгрузим из машины у ворот.':'Выгрузим из машины у подъезда.');
+  t('t="in"',house?'В дом':'В квартиру');
+  t('d="in"',house?'Занесём в дом, на первый этаж.':'Поднимем'+(fl?' на '+fl+' этаж':' на этаж')+(lift==='cargo'?' на грузовом лифте':lift==='pass'?' на пассажирском лифте':lift==='none'?' по лестнице':'')+' и занесём в квартиру.');
+  var pr=document.getElementById('ro-w3-in-pr');if(pr)pr.textContent=q?(Number.isFinite(q.lift)&&q.carry?'+'+rub(q.lift):Number.isFinite(q.lift)?'':'Выберите лифт'):'';
+  var kg=document.getElementById('ro-w3-kg');if(kg)kg.textContent=q?'Вес заказа около '+q.kg+' кг. '+(house?'Занос считаем за каждые 100 кг.':'Подъём по лестнице считаем за этаж и каждые 100 кг, на лифте – за каждые 100 кг.'):'';
+  var row=document.getElementById('ro-w3-lift-row');
+  if(row){row.hidden=!(q&&q.carry);var l=document.getElementById('ro-w3-lift-label'),c=document.getElementById('ro-w3-lift-cost');
+    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(c)c.textContent=q?rub(q.lift):''}
+}
 const addressComplete = value => /\d/.test(value) && /[а-яё]{2}/i.test(value);
 function deliveryQuote(form) {
   const fields = form.elements;
   if (fields.delivery.value === 'Самовывоз') return {cost:0,window:'На следующий день',destination:'Пункт выдачи RemOnLine, Тольятти'};
   const address = fields.address.value.trim();
   if (!addressComplete(address)) return null;
-  return {cost:590,window:'Через 1–2 дня',destination:'Тольятти, '+address+(fields.unit.value.trim() ? ', кв. '+fields.unit.value.trim() : '')};
+  /* W3-2: доставка бесплатна от порога в городах из списка, иначе – по расстоянию (считает сервер; пока «N ₽»).
+     Подъём / занос – отдельная строка, считает сервер по весу, этажу и лифту (пока «N ₽»). */
+  const city = roCity(), lines = selectedCartLines(), sub = cartTotals(lines).subtotal, R = RO_DELIVERY;
+  const house = fields.home && fields.home.value==='house', carry = fields.carry && fields.carry.value==='in';
+  const kg = roWeight(lines), cwt = Math.ceil(kg/100), km = roKm(city.name+address), fl = Math.max(1,parseInt(fields.floor.value,10)||1);
+  const lt = fields.lift ? fields.lift.value : '';
+  const free = city.free!=null && sub>=city.free, ship = free ? 0 : km*R.perKm;
+  const lift = !carry ? 0 : house ? cwt*R.house : lt==='cargo'||lt==='pass' ? cwt*R.lift : lt==='none' ? Math.max(0,fl-1)*cwt*R.stairs+cwt*R.house : NaN;
+  const unit = !house && fields.unit.value.trim();
+  return {cost:ship+lift,ship,lift,carry,house,km,kg,free,window:'Через 1–2 дня',
+    liftLabel:carry ? (house ? 'Занос в дом' : 'Подъём на '+fl+' этаж') : '',
+    destination:city.name+', '+address+(unit ? ', кв. '+unit : '')};
 }
 function syncDelivery(form) {
   const pickup = form.elements.delivery.value === 'Самовывоз';
@@ -15204,7 +15253,8 @@ function syncDelivery(form) {
   $('#address-fields').hidden = pickup;
   $('#pickup-note').hidden = !pickup;
   $('#address-fields').querySelectorAll('input,textarea').forEach(input => { input.disabled = pickup; });
-  $('#summary-delivery').textContent = quote ? pickup ? 'Бесплатно' : rub(quote.cost) : '';
+  $('#summary-delivery').textContent = quote ? pickup || quote.ship===0 ? 'Бесплатно' : rub(quote.ship)+', '+quote.km+' км' : '';
+  if (typeof roW3Sync==='function') roW3Sync(form,quote);
   $('#summary-delivery').closest('div,p,li')?.toggleAttribute('hidden',!quote);
   $('#summary-total').textContent = quote ? rub(cartTotals(selectedCartLines()).subtotal+quote.cost) : 'После расчёта доставки';
   $('#summary-window').textContent = quote ? quote.window.charAt(0).toLowerCase()+quote.window.slice(1) : '';
@@ -15223,6 +15273,10 @@ function checkoutError(field,strict) {
     if (!/^\+?[\d ()-]+$/.test(value) || !/^\d{10,15}$/.test(value.replace(/\D/g,''))) return 'Проверьте номер телефона.';
     if (field.name==='phone' && !/^(7|8)9\d{9}$/.test(value.replace(/\D/g,''))) return 'Нужен номер мобильного телефона.';
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
+  }
+  if (field.name==='lift') {
+    const f = field.form.elements;
+    return f.home.value!=='house' && f.carry.value==='in' && !f.lift.value ? 'Выберите, есть ли лифт.' : '';
   }
   if (field.name==='address') {
     if (!value) return 'Введите улицу и дом.';
@@ -15278,14 +15332,19 @@ function renderCheckout() {
         </div>
         <div class="saved-addrs" id="saved-addrs" role="radiogroup" aria-label="Адреса доставки" hidden></div>
         <div class="checkout-fields address-grid" id="address-fields">
-          <input type="hidden" name="city" value="Тольятти">
-          <label class="full addr-field">Улица и дом<input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
-          <div class="addr-row full">
+          <input type="hidden" name="city" value="${roCity().name}">
+          <div class="full ro-w3-seg" role="radiogroup" aria-label="Тип жилья"><label><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
+          <label class="full addr-field"><span class="ro-w3-lrow">Улица и дом<span class="ro-w3-city">${roCity().name}</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
+          <div class="addr-row full" data-w3-flat>
             <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
             <label>Подъезд<input class="field" name="entrance" inputmode="numeric"></label>
             <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
           </div>
-          <label class="chk lift-check full"><input type="checkbox" name="lift">Есть грузовой лифт</label>
+          <div class="full ro-w3-segf" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="none"><span>Нет</span></label><label><input type="radio" name="lift" value="pass"><span>Пассажирский</span></label><label><input type="radio" name="lift" value="cargo"><span>Грузовой</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
+          <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
+            <label class="pay-option"><input type="radio" name="carry" value="door" checked><span><b data-w3-t="door">До подъезда</b><span class="meta" data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
+            <label class="pay-option"><input type="radio" name="carry" value="in"><span><b data-w3-t="in">В квартиру</b><span class="meta" data-w3-d="in">Поднимем на этаж и занесём в квартиру.</span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+          </div><p class="meta" id="ro-w3-kg"></p></div>
           <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает, позвоните за 30 минут"></textarea></label>
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
@@ -15328,7 +15387,7 @@ function renderCheckout() {
     const draft = Object.fromEntries(new FormData(form));
     checkoutDrafts.set(cart,draft);
     form.querySelectorAll('#address-fields input,#address-fields textarea').forEach(field => {
-      if (field.type!=='checkbox' || field.checked) draft[field.name] = field.type==='checkbox' ? 'on' : field.value;
+      if ((field.type!=='checkbox' && field.type!=='radio') || field.checked) draft[field.name] = field.type==='checkbox' ? 'on' : field.value;
     });
   });
 }
@@ -15358,12 +15417,12 @@ function roUserLogin(phone) {
 }
 const savedAddrKey = a => String(a.street||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').replace(/\s+/g,' ')+'|'+String(a.flat||'').trim();
 const savedAddrLine = a => a.street+(a.flat ? ', кв. '+a.flat : '');
-const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, a.lift&&'есть грузовой лифт'].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
+const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, (a.liftType||(a.lift?'cargo':''))==='cargo'?'грузовой лифт':a.liftType==='pass'?'пассажирский лифт':a.liftType==='none'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
 let savedAddrList = [];
 function fillAddress(form,a) {
   const f = form.elements;
   f.address.value = a ? a.street : ''; f.unit.value = a ? a.flat||'' : ''; f.entrance.value = a ? a.entrance||'' : '';
-  f.floor.value = a ? a.floor||'' : ''; f.lift.checked = !!(a && a.lift); f.comment.value = a ? a.comment||'' : '';
+  f.floor.value = a ? a.floor||'' : ''; f.lift.value = a ? a.liftType||(a.lift?'cargo':'') : ''; f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
   showCheckoutError(f.address,'');
 }
 function syncSavedAddress(form) {
@@ -15400,7 +15459,7 @@ function rememberCheckoutUser(form) {
   if (cart===exampleCart || !phoneAuth.account) return;
   const f = form.elements; if (f.delivery.value!=='Доставка') return;
   const u = roUser() || {phone:phoneAuth.account,name:'',email:'',addresses:[]};
-  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.checked,comment:f.comment.value.trim()};
+  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='cargo',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
   let changed = false;
   if (!u.name && f.recipient.value.trim()) { u.name = f.recipient.value.trim(); changed = true; }
   if (a.street && !u.addresses.some(x=>savedAddrKey(x)===savedAddrKey(a))) { u.addresses.push({id:Date.now(),...a,main:!u.addresses.length}); changed = true; }
@@ -15547,7 +15606,7 @@ function restoreOrders() {
         if (!entry || !/^RO-[1-9][0-9]{3,8}$/.test(entry.id) || !Object.hasOwn(paymentStates,entry.payment)
           || !Number.isFinite(entry.created) || !Number.isFinite(new Date(entry.created).getTime())
           || !['Доставка','Самовывоз'].includes(entry.delivery)
-          || !Number.isFinite(entry.cost) || entry.cost<0 || typeof entry.window!=='string'
+          || (entry.cost!==null && (!Number.isFinite(entry.cost) || entry.cost<0)) || typeof entry.window!=='string'
           || !Array.isArray(entry.lines) || !entry.lines.length) continue;
         const lines = entry.lines.filter(line=>line && /^[A-Z0-9-]{2,50}$/.test(line.sku)
           && typeof line.name==='string' && typeof line.pack==='string'
@@ -15556,7 +15615,7 @@ function restoreOrders() {
         if (lines.length!==entry.lines.length) continue;
         if (kind==='example' && !['cart-example','cart-unavailable'].includes(entry.caseName)) continue;
         const {id,created,payment,delivery,cost,window} = entry;
-        bucket.set(id,{id,created,payment,delivery,quote:{cost,window},lines,subtotal:cartTotals(lines).subtotal,
+        bucket.set(id,{id,created,payment,delivery,quote:{cost:cost===null?NaN:cost,window},lines,subtotal:cartTotals(lines).subtotal,
           caseName:kind==='example' ? entry.caseName : '',statusChecks:entry.statusChecks===1 ? 1 : 0,
           returns:restoreReturnRequests(entry.returns,lines)});
       }
@@ -15748,7 +15807,7 @@ function renderOrder() {
         <ul class="pos-list">${current.lines.map(({item,quantity}) => positionRow(item,quantity,delivered ? '<div class="pos-extra">'+orderReturnMarkup(current,item.sku)+'</div>' : '')).join('')}</ul></details>
       <div class="ord-card ord-info">
         ${refund||['cancelled','expired'].includes(current.payment)?'':`<dl class="ord-dl"><div><dt>Доставка</dt><dd>${destination?'<span id="order-destination"></span>':'Тольятти'}<span class="meta">${orderText(current.quote.window)}</span></dd></div></dl>`}
-        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost ? rub(current.quote.cost) : 'Бесплатно'}</dd></div>
+        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost===0 ? 'Бесплатно' : rub(current.quote.cost)}</dd></div>
         <div class="ord-total"><dt>${paid?'Оплачено':refund?(current.payment==='refunded'?'Возвращено':'К возврату'):['cancelled','expired'].includes(current.payment)?'Сумма':'К оплате'}</dt><dd>${rub(total)}</dd></div></dl>
       </div>
     </div>
@@ -17400,6 +17459,64 @@ html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):
 html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
+<style id="ro-w3-1-css">
+/* W3-1 O6: кликаются только фото и название */
+html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:inline!important;width:auto!important;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
+html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:inline!important;font-weight:600}
+@media (hover:hover){html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm:hover strong{color:#006B79;text-decoration:none!important}}
+#transaction .cart-row-name>.meta{display:block;margin-top:2px;font-size:14px;line-height:21px;color:#566273;font-weight:400}
+#transaction .cart-row:has(.row-badge) .cart-row-name>.meta,#transaction .cart-row:has(.row-badge) a.ro-w3-nm{opacity:.55}
+#transaction a.cart-row-media{display:block;width:max-content;height:max-content;border-radius:10px}
+/* W3-1 O7 (v2, Алина 14:59): «✓ Номер подтверждён» – в строке подписи «Телефон», справа, тем же размером */
+#transaction .phone-field input[readonly]{background:#fff!important}
+#transaction .phone-field{position:relative}
+#transaction #phone-verify:has(.phone-ok){position:absolute;top:0;right:0;margin:0!important;padding:0!important;min-height:0!important}
+#transaction .phone-ok{display:flex;align-items:center;gap:6px;margin:0;height:21px;font-size:14px;line-height:21px;font-weight:600;color:#006B79;white-space:nowrap}
+#transaction .phone-ok>svg{display:block;width:16px;height:16px;flex:none}
+#transaction .phone-ok .link-button{margin-left:10px!important}
+</style>
+<style id="ro-w3-2-css">
+/* W3-2: сегменты (§5: выбранный – тёплая плашка, 600 #152A4B; остальные без рамки #566273; высота 48) */
+#transaction .ro-w3-seg{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:4px!important;justify-self:start;width:auto!important}
+#transaction .ro-w3-seg label{display:block!important;flex:none!important;width:auto!important;min-height:0!important;position:relative;margin:0!important;padding:0!important;cursor:pointer}
+#transaction .ro-w3-seg input{position:absolute!important;inset:0;width:100%!important;height:100%!important;opacity:0;margin:0;cursor:pointer;appearance:none;border:0!important;background:none!important}
+#transaction .ro-w3-seg span{display:flex;align-items:center;height:48px;padding:0 16px;border-radius:12px;font-size:16px;line-height:24px;font-weight:600;color:#566273;transition:background .15s ease,color .15s ease}
+@media (hover:hover){#transaction .ro-w3-seg label:hover span{background:rgba(21,42,75,.05)}}
+#transaction .ro-w3-seg input:checked+span{background:#F3F1EB;color:#152A4B}
+#transaction .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 1px #006B79}
+#transaction .ro-w3-seg input:disabled+span{opacity:.5}
+#transaction .ro-w3-segf{display:grid;gap:4px}
+#transaction .ro-w3-segf[hidden],#transaction .addr-row[hidden]{display:none!important}
+#transaction .ro-w3-lbl{font-size:14px;line-height:21px;font-weight:600;color:#152A4B}
+#transaction .ro-w3-lrow{display:flex;justify-content:space-between;gap:12px}
+#transaction .ro-w3-city{font-size:14px;line-height:21px;font-weight:600;color:#566273}
+#transaction .ro-w3-how{display:grid;gap:12px;margin-top:4px}
+#transaction .ro-w3-how .pay-option{align-items:flex-start;padding:16px;margin:0}
+#transaction .ro-w3-how .pay-option>span{flex:1;min-width:0}
+#transaction .ro-w3-how .pay-option b{color:#152A4B}
+#transaction .ro-w3-how .pay-option .meta{font-size:14px;line-height:21px;color:#566273}
+#transaction .ro-w3-how .ro-w3-pr{white-space:nowrap;font-weight:700}
+#transaction .ro-w3-how input{margin-top:1px!important}
+#transaction #ro-w3-lift-row[hidden]{display:none}
+#transaction #ro-w3-kg{margin:4px 0 0;font-size:14px;line-height:21px;color:#566273}
+#transaction #ro-w3-kg:empty{display:none}
+/* корзина: до бесплатной доставки – текст + полоска (цвета §1) */
+#transaction .cart-summary-note .ro-w3-bar{display:block;height:6px;border-radius:3px;background:#E3E6EA;margin:8px 0 4px;overflow:hidden}
+#transaction .cart-summary-note .ro-w3-bar>span{display:block;height:100%;border-radius:3px;background:#19CBD8;transition:width .2s ease}
+#transaction .cart-summary-note .ro-w3-sub{display:block;font-size:14px;line-height:21px;color:#566273}
+#transaction .cart-summary-note .ro-w3-ok{color:#006B79;font-weight:600}
+@container shop (max-width:1020px){#transaction .cart-summary-note .ro-w3-sub{display:none}#transaction .cart-summary-note .ro-w3-bar{margin:6px 0 0}}
+@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}}
+</style>
+<script id="ro-w3-2">
+/* лифт: ошибка проверяется по первой кнопке группы */
+document.addEventListener('change',function(e){var t=e.target;if(t&&t.form&&t.form.id==='checkout-form'&&(t.name==='home'||t.name==='carry'||t.name==='lift')){var lr=t.form.elements.lift[0];if(lr&&document.getElementById('checkout-error-lift').textContent)showCheckoutError(lr,checkoutError(lr))}});
+(function(){var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
+ new MutationObserver(mark).observe(document.body,{childList:true,subtree:true});mark();
+ addEventListener('storage',function(e){if(e.key!=='ro-city')return;try{if(typeof updateCartSummary==='function'&&document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
+  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;var c=f.querySelector('.ro-w3-city');if(c)c.textContent=roCity().name;syncDelivery(f)}});
+})();
+<%/script>
 </body>
 </html>
 </script>
@@ -18584,6 +18701,173 @@ document.addEventListener('DOMContentLoaded',function(){
    else{aUser(E,'Не нужно');aText(E,'Хорошо. Если понадобятся, они есть в смете под отделкой, в списке «Понадобится».')}
    return}
   var r=_ao.apply(this,arguments);try{if(!AI_ON&&s&&s.E&&s===S)kitAsk(s.E)}catch(e){}return r};
+ if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
+});
+<%/script>
+<style id="ro-w5-smeta-css">
+/* W5, S1 v3 (25.11, 16:59, Алина: «нет иерархии, ничего не посчитать, непонятно, как скрыть / раскрыть»).
+   Блок отделки: строка отделки → «Для поклейки» (обязательное, отмечено) → «Рекомендуем» (отмеченное видно всегда,
+   неотмеченное – под «Показать ещё N») → «Итого» блока. Цены всех строк блока – в одном столбце. Без плашек и вложенных рамок.
+   Цвета, размеры, шрифты – DESIGN-SYSTEM. Наведение на название – только цвет (Алина 16:59). */
+#ui .estimate-group>article.estimate-product~article.estimate-product{border-top:1px solid #E3E6EA}
+html body #ui .estimate-list h4.eg>span{font-size:16px!important;line-height:24px!important;font-weight:600!important;color:#152A4B!important}
+html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24px!important;font-weight:700!important;color:#152A4B!important}
+#ui .ro-w5-k{margin:0 66px 0 48px;padding:0 0 16px}
+#ui .ro-w5-gh{display:flex;align-items:center;gap:16px;min-height:40px;margin:0;font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-gh label{cursor:pointer}
+#ui .ro-w5-r{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;min-height:56px;padding:8px 0;box-sizing:border-box}
+#ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
+#ui .ro-w5-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+#ui .ro-w5-n{display:inline;max-width:100%;margin:0;padding:0;border:0;background:none;text-align:left;cursor:pointer;font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;overflow-wrap:anywhere;transition:color .15s ease}
+#ui .ro-w5-n:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
+@media (hover:hover){#ui .ro-w5-n:hover{color:#006B79}}
+#ui .ro-w5-w{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;overflow-wrap:anywhere}
+#ui .ro-w5-q{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
+#ui .ro-w5-s{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap;text-align:right}
+#ui .ro-w5-r.off .ro-w5-s{color:#566273;font-weight:600}
+#ui .ro-w5-r .pbadge{margin-top:4px}
+#ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
+#ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273;cursor:pointer}
+#ui .ro-w5-rh label .x{font-weight:400}
+#ui .ro-w5-more{display:inline-flex;align-items:center;gap:4px;min-height:40px;margin:0;padding:0 4px;white-space:nowrap;border:0;background:none;cursor:pointer;text-align:left;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;transition:color .15s ease}
+#ui .ro-w5-more .x{font-weight:400;color:#566273}
+#ui .ro-w5-more svg{width:16px;height:16px;flex:none;transition:transform .15s ease}
+#ui .ro-w5-more[aria-expanded="true"] svg{transform:rotate(180deg)}
+#ui .ro-w5-more:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
+@media (hover:hover){#ui .ro-w5-more:hover{color:#152A4B}}
+#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin-top:8px;padding-top:12px;border-top:1px solid #E3E6EA}
+#ui .ro-w5-sum span{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-sum b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap}
+/* итог в «Параметрах» сметы – без плашки (DESIGN-SYSTEM §17): подпись 14/21 над суммой */
+#ui .cov.ro-w5-tot{padding:0;background:none;border:0;border-radius:0}
+#ui .cov.ro-w5-tot .sm{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;margin:0 0 4px}
+#ui .ro-w5-cs .lnk{margin-left:4px}
+/* название отделки: наведение – только цвет */
+@media (hover:hover){#ui .estimate-name .ln:hover{text-decoration:none!important;color:#006B79}}
+@media (max-width:700px){
+ #ui .ro-w5-k{margin:0 48px 0 12px;padding-bottom:12px}
+ #ui .ro-w5-gh{gap:12px}
+ #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
+ #ui .ro-w5-r>.ro-w5-th{display:none}
+ #ui .ro-w5-t{grid-column:2;grid-row:1/3}
+ #ui .ro-w5-r .ro-w5-q{grid-column:2;grid-row:3}
+ #ui .ro-w5-s{grid-column:3;grid-row:1/4;align-self:center}
+ #ui .ro-w5-r>input{grid-row:1/4;align-self:center}
+ #ui .ro-w5-rh{column-gap:12px}
+ /* строка отделки на телефоне: название 16/24, количество 14/21, цена 16/24 700 (DESIGN-SYSTEM §2), стрелка по центру */
+ html body #ui .estimate-row.r2>.estimate-name>.ln{font-size:16px!important;line-height:24px!important;white-space:normal!important;display:-webkit-box!important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ html body #ui .estimate-row.r2 .estimate-q .qty{font-size:14px!important;line-height:21px!important}
+ html body #ui .estimate-row.r2 .estimate-q .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important}
+ html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
+}
+@media (prefers-reduced-motion:reduce){#ui .ro-w5-more svg,#ui .ro-w5-n,#ui .ro-w5-more{transition:none}}
+</style>
+<script id="ro-w5-smeta">
+/* W5, S1 v3 (25.11, 16:59). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
+   – «Для поклейки / покраски / укладки» – обязательное (без чего работу не сделать), отмечено сразу один раз (T.kseen).
+   – «Рекомендуем» – инструменты и по желанию. Отмеченное видно всегда; неотмеченное – под «Показать ещё N: …» (T.w5o).
+     Снятая на виду строка не пропадает до «Скрыть» (T.w5k) – ничего не прыгает.
+   – «Итого» блока = отделка + отмеченные материалы; «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
+   – Итог справа: кнопка «Добавить в корзину» не меняется; ответ «В корзине: N на … ₽» + «Перейти в корзину» (решение Алины).
+   – «Назад к смете» и возврат из «Отделки» – к той же строке. */
+document.addEventListener('DOMContentLoaded',function(){
+ if(typeof estCalc!=='function'||typeof estCenter!=='function'||!window.roKit)return;
+ var ROLE={need:0,rec:1,opt:2};
+ var KN={paper:'обои',paint:'краску',tile:'плитку',gres:'керамогранит',lam:'ламинат',lino:'линолеум'};
+ var FORV={paper:'Для поклейки',paint:'Для покраски',tile:'Для укладки',gres:'Для укладки',lam:'Для укладки',lino:'Для укладки'};
+ var R0=function(n){return rub(n||0).replace(/ /g,'\u00a0')};
+ var nf=function(x){return String(Math.round(x*10)/10).replace('.',',')};
+ var sid=function(id){return String(id).replace(/\W/g,'')};
+ var noun=function(n){return String(n).split(/[\s«]/)[0].toLowerCase()};
+ var _ec=estCalc;estCalc=function(s){var C=_ec.apply(this,arguments);try{var T=s.E.est;if(!T.kon)T.kon={};if(!T.kseen)T.kseen={};var ch=false,here={};
+  C.lines.forEach(function(l){if(!l.kit)return;if(l.kf==='obj'&&l.role==='need')l.role='rec';here[l.id]=1;if(!T.kseen[l.id]){T.kseen[l.id]=1;if(l.role==='need'){T.kon[l.id]=1;l.on=true;ch=true}}});
+  Object.keys(T.kseen).forEach(function(id){if(!here[id])delete T.kseen[id]});
+  if(ch){var on=C.lines.filter(function(l){return l.on});C.on=on.length;C.total=on.reduce(function(x,l){return x+(l.sum||0)},0);C.unk=on.filter(function(l){return l.sum==null}).length}}catch(e){}
+  return C};
+
+ function kWhere(l){var o=S.objs[S.cur]||{rooms:[]},by={},ord=[];
+  Object.keys(l.kgeo||{}).forEach(function(key){var g=l.kgeo[key];if(!by[g.ri]){by[g.ri]=[];ord.push(g.ri)}if(by[g.ri].indexOf(g.k)<0)by[g.ri].push(g.k)});
+  if(!ord.length)return '';
+  if(ord.length>1)return ord.map(function(ri){return (o.rooms[ri]||{}).name||''}).join(', ');
+  var ks=by[ord[0]],w=ks.filter(function(k){return surfKind(k)==='wall'}).map(function(k){return +k.slice(1)+1}).sort(function(a,b){return a-b}),
+   oth=ks.filter(function(k){return surfKind(k)!=='wall'}).map(function(k){return surfName(k).toLowerCase()}),parts=[];
+  if(w.length)parts.push((w.length>1?'стены ':'стена ')+w.join(', '));parts=parts.concat(oth);
+  return ((o.rooms[ord[0]]||{}).name||'')+(parts.length?', '+parts.join(', '):'')}
+ function kFor(l){var ar=0;Object.keys(l.kgeo||{}).forEach(function(k){ar+=l.kgeo[k].ar||0});
+  var kinds=(l.kkinds||[]).map(function(k){return KN[k]}).filter(Boolean),pre=kinds.length>1?'Под '+kinds.slice(0,-1).join(', ')+' и '+kinds[kinds.length-1]+', ':'',wh=kWhere(l);
+  if(l.kf==='obj')return 'Один на весь объект';
+  if(l.kf==='tape')return (pre?pre+'п':'П')+'о стыкам стен '+nf(l.amt)+' м'+(wh?': '+wh:'');
+  if(l.kf==='perim')return (pre?pre+'п':'П')+'о периметру '+nf(l.kper)+' м'+(wh?': '+wh:'');
+  if(l.kf==='doors')return (pre?pre+'н':'Н')+'а '+l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей'])+(wh?': '+wh:'');
+  return (pre?pre+'н':'Н')+'а '+nf(ar)+' м²'+(wh?': '+wh:'')}
+
+ function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
+  return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
+   '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
+   '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+esc(kFor(l))+'</span>'+tg+'</div>'+
+   '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
+ function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};
+  var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
+  var kd=roKit.kindOf(own.eff),need=rows.filter(function(l){return l.role==='need'}),rec=rows.filter(function(l){return l.role!=='need'}),k=sid(own.id),op=!!T.w5o[own.id],h='<div class="ro-w5-k" data-own="'+own.id+'">';
+  if(need.length)h+='<p class="ro-w5-gh">'+(FORV[kd]||'Для работы')+'</p>'+need.map(row).join('');
+  if(rec.length){var on=rec.filter(function(l){return l.on}),vis=rec.filter(function(l){return op||l.on||T.w5k[l.id]}),hid=rec.filter(function(l){return vis.indexOf(l)<0}),nm=[];
+   hid.forEach(function(l){var w=noun(l.name);if(nm.indexOf(w)<0)nm.push(w)});
+   var lb='Рекомендуем'+(hid.length&&!vis.length?':<span class="x"> '+esc(nm.join(', '))+'</span>':'');
+   var tg=hid.length?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="false" aria-controls="w5b-'+k+'">'+(vis.length?'Показать ещё '+hid.length:'Показать')+I('down')+'</button>':((op||vis.some(function(l){return !l.on}))?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-v="hide" data-id="'+own.id+'" aria-expanded="true" aria-controls="w5b-'+k+'">Скрыть'+I('down')+'</button>':'');
+   h+='<div class="ro-w5-rh"><input type="checkbox" id="w5g-'+k+'" data-m="w5g" data-k="'+own.id+':opt"'+(on.length===rec.length?' checked':'')+' aria-label="Выбрать всё рекомендуемое"><label for="w5g-'+k+'">'+lb+'</label>'+tg+'</div>';
+   h+='<div id="w5b-'+k+'" role="group" aria-label="Рекомендуем">'+vis.map(row).join('')+'</div>'}
+  var tot=(own.on?own.sum||0:0)+rows.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0);
+  h+='<p class="ro-w5-sum"><span>Итого</span><b>'+R0(tot)+'</b></p>';
+  return h+'</div>'}
+
+ var _ce=estCenter;estCenter=function(){var h=_ce.apply(this,arguments),T=S.E.est;
+  if(T.mode==='cmp'||T.mode==='kdet'||T.mode==='kalt'||h.indexOf('estimate-list-head')<0)return h;
+  var C=estCalc(S);
+  h=h.replace(/<div class="ro-kit" role="group"[\s\S]*?(?=<article|<\/section>)/g,'');
+  C.lines.forEach(function(l){if(l.kit)return;var k='data-act="e-sel" data-id="'+l.id+'"',i=h.indexOf(k);if(i<0)return;var j=h.indexOf('</article>',i);if(j<0)return;j+=10;h=h.slice(0,j)+kitBox(C,l)+h.slice(j)});
+  var all=C.lines.length&&C.on===C.lines.length;
+  h=h.replace(/(<input type="checkbox" id="eall"[^>]*?)\s?checked(?=[\s>])/,'$1');
+  if(all)h=h.replace('<input type="checkbox" id="eall"','<input type="checkbox" id="eall" checked');
+  h=h.replace(/(<label class="estimate-list-head">[\s\S]*?<small>)[^<]*(<\/small>)/,'$1'+C.on+' из '+C.lines.length+'$2');
+  var vis=C.lines.filter(function(l){return !l.kit&&(!T.grp||l.grp===T.grp)});
+  h=h.replace(/(<h4 class="eg"><span>)([^<]+)(<\/span><small>)[^<]*(<\/small>)/g,function(m,a,g,b,c){
+   var own=vis.filter(function(l){return l.grp===g}),ids={};own.forEach(function(l){ids[l.id]=1});
+   var s=own.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0)+C.lines.reduce(function(x,l){return x+(l.kit&&l.on&&ids[l.owner]?l.sum||0:0)},0);
+   return a+g+b+R0(s)+c});
+  return h};
+
+ if(typeof estParams==='function'){var _ep=estParams;estParams=function(){var h=_ep.apply(this,arguments);return h.replace('<div class="cov"><div><p class="sm">Выбрано','<div class="cov ro-w5-tot"><div><p class="sm">Выбрано')}}
+
+ /* итог: кнопка не меняется; ответ строкой (как в карточке товара) */
+ if(typeof cartBlock==='function'){var _cb=cartBlock;cartBlock=function(C,T){var r=_cb.apply(this,arguments);try{
+  var w=function(n){return n+'\u00a0'+pl(n,['товар','товара','товаров'])},go=' <button type="button" class="lnk" data-act="e-cartgo">Перейти в корзину</button>';
+  if(T.cart&&r.btn.indexOf('e-cartgo')>=0){var n=Object.keys(T.cart.items).length;r.btn='<button type="button" class="btn pri wide" data-act="e-cart"'+(C.on?'':' disabled')+'>Добавить в корзину</button>';r.st='<span class="ro-w5-cs">В корзине: '+w(n)+' на '+R0(cartSum(T.cart))+go+'</span>'}
+  else if(!T.cart&&T.kcart&&Object.keys(T.kcart).length){var ks=Object.keys(T.kcart),sm=ks.reduce(function(x,id){return x+(T.kcart[id].sum||0)},0);r.st='<span class="ro-w5-cs">В корзине: '+w(ks.length)+' на '+R0(sm)+go+'</span>'}
+  else if(T.cart&&r.btn.indexOf('e-sync')>=0&&T.cartMsg)r.st='<span class="ro-w5-cs">'+esc(T.cartMsg)+go+'</span>';
+ }catch(e){}return r}}
+
+ /* фокус на той же галочке после перерисовки; возврат к строке после «Назад к смете» */
+ var _rn=render;render=function(){var r=_rn.apply(this,arguments),id=S._w5f;S._w5f=null;
+  if(id){var e=document.getElementById(id);if(e&&document.activeElement!==e)try{e.focus({preventScroll:true})}catch(x){}}
+  var ret=S._w5ret;if(ret&&S.page==='editor'&&S.E&&S.E.stage==='est'&&S.E.est.mode!=='kdet'&&S.E.est.mode!=='kalt'){
+   var t=document.querySelector('#ui .estimate-list [data-id="'+ret+'"]');if(t){S._w5ret=null;var y=S._w5y;
+    requestAnimationFrame(function(){try{var sc=t.closest('.ctr')||document.getElementById('ui');t.scrollIntoView({block:'center'});t.focus({preventScroll:true})}catch(x){}})}}
+  return r};
+ var _ch=estChange;estChange=function(m,k,v,el){if(el&&el.id&&(m==='eon'||m==='w5g'||m==='eall'))S._w5f=el.id;
+  var T=S.E.est;if(!T.w5k)T.w5k={};
+  if(m==='w5g'){var E=S.E,p=String(k).split(':'),own=p[0];if(!T.kon)T.kon={};
+   var L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&l.role!=='need'});
+   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+'рекомендуем');L.forEach(function(l){T.w5k[l.id]=1;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
+  if(m==='eon')T.w5k[k]=1;
+  var r=_ch.apply(this,arguments);
+  if(m==='eall'){try{if(!T.kon)T.kon={};estCalc(S).lines.forEach(function(l){if(!l.kit)return;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]})}catch(e){}}
+  return r};
+ var _a=act;act=function(a,el,ev){var d=(el&&el.dataset)||{};
+  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};var o=d.v!=='hide';T.w5o[d.id]=o;
+   if(!o)estCalc(S).lines.forEach(function(l){if(l.kit&&l.owner===d.id)delete T.w5k[l.id]});render();
+   var b=document.querySelector('#ui .ro-w5-more[data-id="'+d.id+'"]')||document.getElementById('w5g-'+sid(d.id));if(b)b.focus({preventScroll:true});return}
+  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est')S._w5ret=d.id;
+  return _a.apply(this,arguments)};
  if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
 });
 <%/script>
@@ -19817,8 +20101,8 @@ const toStored=(E,i,disp,w)=>refRev(E,i)&&w>0?Math.round(wlen(E,i)-disp-w):disp;
 const dispOff=(E,f)=>{if(f.off===''||f.off==null)return '';const off=N(f.off);if(!isFinite(off))return f.off;if(f.wall==null||f.wall==='')return off;return toStored(E,+f.wall,off,N(f.w))};
 
 /* ---------- editor actions ---------- */
-const snap=E=>JSON.stringify({mode:E.mode,pickEnd:!!E.pickEnd,head:!!E.head,tpl:E.tpl,pts:E.pts,closed:E.closed,ops:E.ops,cnt:E.cnt,H:E.H,fm:E.fin.mats,fu:E.fur.items,es:{swap:E.est.swap,off:E.est.off}});
-const load=(E,s)=>{Object.assign(E,JSON.parse(s));if(E.es){E.est.swap=E.es.swap;E.est.off=E.es.off;delete E.es}E.est.mode='view';if(E.fm){E.fin.mats=E.fm;delete E.fm}if(E.fu){E.fur.items=E.fu;delete E.fu;E.fur.mode=E.fur.mode==='lib'?'lib':'view';E.fur.ghost=null;E.fur.menu=null;E.fur.errs={};if(!E.fur.items.some(i=>i.id===E.fur.sel))E.fur.sel=null;syncForm(E)}E.fin.mode='view';E.fin.zform=null;E.fin.zerrs={};E.sel=null;E.tool=null;E.form=null;E.errs={}};
+const snap=E=>JSON.stringify({mode:E.mode,pickEnd:!!E.pickEnd,head:!!E.head,tpl:E.tpl,pts:E.pts,closed:E.closed,ops:E.ops,cnt:E.cnt,H:E.H,fm:E.fin.mats,fu:E.fur.items,es:{swap:E.est.swap,off:E.est.off,kon:E.est.kon||{},kswap:E.est.kswap||{},kseen:E.est.kseen||{}}});
+const load=(E,s)=>{Object.assign(E,JSON.parse(s));if(E.es){E.est.swap=E.es.swap;E.est.off=E.es.off;if(E.es.kon)E.est.kon=E.es.kon;if(E.es.kswap)E.est.kswap=E.es.kswap;if(E.es.kseen)E.est.kseen=E.es.kseen;delete E.es}E.est.mode='view';if(E.fm){E.fin.mats=E.fm;delete E.fm}if(E.fu){E.fur.items=E.fu;delete E.fu;E.fur.mode=E.fur.mode==='lib'?'lib':'view';E.fur.ghost=null;E.fur.menu=null;E.fur.errs={};if(!E.fur.items.some(i=>i.id===E.fur.sel))E.fur.sel=null;syncForm(E)}E.fin.mode='view';E.fin.zform=null;E.fin.zerrs={};E.sel=null;E.tool=null;E.form=null;E.errs={}};
 const HIST_MAX=20;
 const histPush=(E,x)=>{if(typeof AI_ON!=='undefined'&&AI_ON)x.ai=1;E.hist.push(x);if(E.hist.length>HIST_MAX){E.hist.splice(0,E.hist.length-HIST_MAX);E.histCut=true}};
 const commit=(E,label)=>{histPush(E,{t:Date.now(),s:snap(E),label});E.fut=[];autosave(E)};
@@ -25153,7 +25437,7 @@ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.clo
 /* Р20: высота рабочей области на ПК = видимая высота окна под ней (520…700) */
 (function(){var t=0;function fit(){t=0;try{var g=document.querySelector('#ui .ed>.grid-c');if(!g||innerWidth<1101){document.documentElement.style.removeProperty('--ro-gh');return}
  var fe=frameElement,top=(fe?fe.getBoundingClientRect().top+parent.scrollY:0)+g.getBoundingClientRect().top+scrollY,vh=fe?parent.innerHeight:innerHeight;
- var h=Math.max(520,Math.min(700,Math.round(vh-top-16)));if(document.documentElement.style.getPropertyValue('--ro-gh')!==h+'px')document.documentElement.style.setProperty('--ro-gh',h+'px')}catch(x){}}
+ var h=Math.max(520,Math.round(vh-top-16));/*ro-w1-3 C14: без потолка 700*/if(document.documentElement.style.getPropertyValue('--ro-gh')!==h+'px')document.documentElement.style.setProperty('--ro-gh',h+'px')}catch(x){}}
  var q=function(){if(!t)t=requestAnimationFrame(fit)};addEventListener('resize',q);try{parent.addEventListener('resize',q)}catch(x){}
  new MutationObserver(q).observe(document.documentElement,{childList:true,subtree:true});q()})();
 

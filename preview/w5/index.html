@@ -18566,9 +18566,18 @@ document.addEventListener('DOMContentLoaded',function(){
 #ui .estimate-group>article.estimate-product~article.estimate-product{border-top:1px solid #E3E6EA}
 html body #ui .estimate-list h4.eg>span{font-size:16px!important;line-height:24px!important;font-weight:600!important;color:#152A4B!important}
 html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24px!important;font-weight:700!important;color:#152A4B!important}
-#ui .ro-w5-k{margin:0 66px 0 48px;padding:0 0 16px}
-#ui .ro-w5-gh{display:flex;align-items:center;gap:16px;min-height:40px;margin:0;font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273}
-#ui .ro-w5-gh label{cursor:pointer}
+#ui .ro-w5-k{margin:0 50px 8px 48px;padding:0 16px;border:1px solid #DCE4E2;border-radius:12px;background:#fff}
+#ui .ro-w5-kh{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;column-gap:16px;width:100%;min-height:48px;margin:0;padding:12px 0;border:0;background:none;text-align:left;cursor:pointer;font:inherit;box-sizing:border-box}
+#ui .ro-w5-kh .t{font:600 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;transition:color .15s ease}
+#ui .ro-w5-kh .m{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap;text-align:right}
+#ui .ro-w5-kh .a{display:inline-flex;align-items:center;gap:4px;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;white-space:nowrap;transition:color .15s ease}
+#ui .ro-w5-kh .a svg{width:16px;height:16px;transition:transform .15s ease}
+#ui .ro-w5-kh[aria-expanded="true"] .a svg{transform:rotate(180deg)}
+#ui .ro-w5-kh:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:8px}
+@media (hover:hover){#ui .ro-w5-kh:hover .a{color:#152A4B}}
+#ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px;border-top:1px solid #E3E6EA}
+#ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B;cursor:pointer}
+#ui .ro-w5-rh small{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;white-space:nowrap}
 #ui .ro-w5-r{display:grid;grid-template-columns:22px 40px minmax(0,1fr) auto 88px;align-items:center;column-gap:16px;min-height:56px;padding:8px 0;box-sizing:border-box}
 #ui .ro-w5-r .phimg,#ui .ro-w5-r svg{width:40px;height:40px;border-radius:8px;display:block;object-fit:cover}
 #ui .ro-w5-t{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
@@ -18583,13 +18592,7 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
 #ui .ro-w5-rh{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;column-gap:16px;min-height:48px}
 #ui .ro-w5-rh label{font:600 14px/21px Manrope,system-ui,sans-serif;color:#566273;cursor:pointer}
 #ui .ro-w5-rh label .x{font-weight:400}
-#ui .ro-w5-more{display:inline-flex;align-items:center;gap:4px;min-height:40px;margin:0;padding:0 4px;white-space:nowrap;border:0;background:none;cursor:pointer;text-align:left;font:600 14px/21px Manrope,system-ui,sans-serif;color:#006B79;transition:color .15s ease}
-#ui .ro-w5-more .x{font-weight:400;color:#566273}
-#ui .ro-w5-more svg{width:16px;height:16px;flex:none;transition:transform .15s ease}
-#ui .ro-w5-more[aria-expanded="true"] svg{transform:rotate(180deg)}
-#ui .ro-w5-more:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79;border-radius:4px}
-@media (hover:hover){#ui .ro-w5-more:hover{color:#152A4B}}
-#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin-top:8px;padding-top:12px;border-top:1px solid #E3E6EA}
+#ui .ro-w5-sum{display:flex;justify-content:flex-end;align-items:baseline;gap:16px;margin:0 66px 16px 48px}
 #ui .ro-w5-sum span{font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
 #ui .ro-w5-sum b{font:700 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;white-space:nowrap}
 /* итог в «Параметрах» сметы – без плашки (DESIGN-SYSTEM §17): подпись 14/21 над суммой */
@@ -18599,8 +18602,11 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
 /* название отделки: наведение – только цвет */
 @media (hover:hover){#ui .estimate-name .ln:hover{text-decoration:none!important;color:#006B79}}
 @media (max-width:700px){
- #ui .ro-w5-k{margin:0 48px 0 12px;padding-bottom:12px}
- #ui .ro-w5-gh{gap:12px}
+ #ui .ro-w5-k{margin:0 8px 8px 12px;padding:0 12px}
+ #ui .ro-w5-kh{grid-template-columns:minmax(0,1fr) auto;column-gap:12px}
+ #ui .ro-w5-kh .m{grid-column:1;grid-row:2;text-align:left;white-space:normal}
+ #ui .ro-w5-kh .a{grid-column:2;grid-row:1/3}
+ #ui .ro-w5-sum{margin:0 8px 12px 12px}
  #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
  #ui .ro-w5-r>.ro-w5-th{display:none}
  #ui .ro-w5-t{grid-column:2;grid-row:1/3}
@@ -18614,21 +18620,28 @@ html body #ui .estimate-list h4.eg>small{font-size:16px!important;line-height:24
  html body #ui .estimate-row.r2 .estimate-q .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important}
  html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
 }
-@media (prefers-reduced-motion:reduce){#ui .ro-w5-more svg,#ui .ro-w5-n,#ui .ro-w5-more{transition:none}}
+@media (prefers-reduced-motion:reduce){#ui .ro-w5-kh .a,#ui .ro-w5-kh .a svg,#ui .ro-w5-kh .t,#ui .ro-w5-n{transition:none}}
 </style>
 <script id="ro-w5-smeta">
-/* W5, S1 v3 (25.11, 16:59). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
-   – «Для поклейки / покраски / укладки» – обязательное (без чего работу не сделать), отмечено сразу один раз (T.kseen).
-   – «Рекомендуем» – инструменты и по желанию. Отмеченное видно всегда; неотмеченное – под «Показать ещё N: …» (T.w5o).
-     Снятая на виду строка не пропадает до «Скрыть» (T.w5k) – ничего не прыгает.
-   – «Итого» блока = отделка + отмеченные материалы; «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
+/* W5, S1 v4 (25.11, 19:30: фидбэк Алины 17:27 + решение A2). Данные и расчёт – из «ro-kit» (W1); здесь вид, галочки, итог блока.
+   Под отделкой – рамка «Материалы к обоям / краске …» (свёрнута; «в смете N из M, сумма»; «Показать / Скрыть» – выбор не меняется).
+   Внутри «Нужно для поклейки / покраски / укладки» и «Рекомендуем», у обеих галочка группы и «N из M». У строки – зачем товар и где.
+   Под рамкой – «Обои с материалами: сумма». Вид строки товара (A1) – прежний, до выбора Алины.
+   – «Нужно для …» отмечено сразу один раз (T.kseen); «Стены / Пол / Потолок» = сумма блоков; «Выбрать всё» – все строки.
    – Итог справа: кнопка «Добавить в корзину» не меняется; ответ «В корзине: N на … ₽» + «Перейти в корзину» (решение Алины).
    – «Назад к смете» и возврат из «Отделки» – к той же строке. */
 document.addEventListener('DOMContentLoaded',function(){
  if(typeof estCalc!=='function'||typeof estCenter!=='function'||!window.roKit)return;
  var ROLE={need:0,rec:1,opt:2};
  var KN={paper:'обои',paint:'краску',tile:'плитку',gres:'керамогранит',lam:'ламинат',lino:'линолеум'};
- var FORV={paper:'Для поклейки',paint:'Для покраски',tile:'Для укладки',gres:'Для укладки',lam:'Для укладки',lino:'Для укладки'};
+ var NEEDT={paper:'Нужно для поклейки',paint:'Нужно для покраски',tile:'Нужно для укладки',gres:'Нужно для укладки',lam:'Нужно для укладки',lino:'Нужно для укладки'};
+ var KTO={paper:'обоям',paint:'краске',tile:'плитке',gres:'керамограниту',lam:'ламинату',lino:'линолеуму'};
+ var KNOM={paper:'Обои',paint:'Краска',tile:'Плитка',gres:'Керамогранит',lam:'Ламинат',lino:'Линолеум'};
+ /* зачем товар – простыми словами (позже – поле «Зачем» у позиции набора в админке) */
+ var WHY={'KL-01':'Приклеить обои','GR-010':'Подготовить стены, чтобы покрытие держалось лучше','SH-D02':'Выровнять стены перед отделкой','TL-V01':'Нанести краску или клей',
+  'TL-K01':'Набирать краску на валик','ML-D02':'Закрыть углы и потолок от краски','KL-D01':'Приклеить плитку','KL-D02':'Приклеить керамогранит','ZT-101':'Заполнить швы между плитками',
+  'KR-S01':'Чтобы швы были ровными','TL-G01':'Нанести клей ровным слоем','TL-R01':'Втереть затирку в швы','PD-01':'Под ламинат: ровнее и тише','PL-01':'Закрыть край пола у стен',
+  'PZ-01':'Защитить пол от влаги снизу','PR-01':'Закрыть стык пола в дверном проёме'};
  var R0=function(n){return rub(n||0).replace(/ /g,'\u00a0')};
  var nf=function(x){return String(Math.round(x*10)/10).replace('.',',')};
  var sid=function(id){return String(id).replace(/\W/g,'')};
@@ -18648,31 +18661,31 @@ document.addEventListener('DOMContentLoaded',function(){
   if(w.length)parts.push((w.length>1?'стены ':'стена ')+w.join(', '));parts=parts.concat(oth);
   return ((o.rooms[ord[0]]||{}).name||'')+(parts.length?', '+parts.join(', '):'')}
  function kFor(l){var ar=0;Object.keys(l.kgeo||{}).forEach(function(k){ar+=l.kgeo[k].ar||0});
-  var kinds=(l.kkinds||[]).map(function(k){return KN[k]}).filter(Boolean),pre=kinds.length>1?'Под '+kinds.slice(0,-1).join(', ')+' и '+kinds[kinds.length-1]+', ':'',wh=kWhere(l);
-  if(l.kf==='obj')return 'Один на весь объект';
-  if(l.kf==='tape')return (pre?pre+'п':'П')+'о стыкам стен '+nf(l.amt)+' м'+(wh?': '+wh:'');
-  if(l.kf==='perim')return (pre?pre+'п':'П')+'о периметру '+nf(l.kper)+' м'+(wh?': '+wh:'');
-  if(l.kf==='doors')return (pre?pre+'н':'Н')+'а '+l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей'])+(wh?': '+wh:'');
-  return (pre?pre+'н':'Н')+'а '+nf(ar)+' м²'+(wh?': '+wh:'')}
-
+  var wh=kWhere(l),why=WHY[l.id]||WHY[l.sku]||'',q='';
+  if(l.kf==='obj')q='один на все комнаты';
+  else if(l.kf==='tape')q=nf(l.amt)+'\u00a0м стыков';
+  else if(l.kf==='perim')q='периметр '+nf(l.kper)+'\u00a0м';
+  else if(l.kf==='doors')q=l.kdrs+' '+pl(l.kdrs,['дверь','двери','дверей']);
+  else q=nf(ar)+'\u00a0м²';
+  var where=l.kf==='obj'?q:(wh?wh+', '+q:q);
+  return (why?why+'. ':'')+where.charAt(0).toUpperCase()+where.slice(1)}
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
    '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
    '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+esc(kFor(l))+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
- function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};
+ function grp(own,key,title,R){if(!R.length)return '';var on=R.filter(function(l){return l.on}).length,id='w5g-'+sid(own.id)+'-'+key;
+  return '<div class="ro-w5-rh"><input type="checkbox" id="'+id+'" data-m="w5g" data-k="'+own.id+':'+key+'"'+(on===R.length?' checked':'')+'><label for="'+id+'">'+title+'</label><small>'+on+' из '+R.length+'</small></div>'+R.map(row).join('')}
+ function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};
   var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
-  var kd=roKit.kindOf(own.eff),need=rows.filter(function(l){return l.role==='need'}),rec=rows.filter(function(l){return l.role!=='need'}),k=sid(own.id),op=!!T.w5o[own.id],h='<div class="ro-w5-k" data-own="'+own.id+'">';
-  if(need.length)h+='<p class="ro-w5-gh">'+(FORV[kd]||'Для работы')+'</p>'+need.map(row).join('');
-  if(rec.length){var on=rec.filter(function(l){return l.on}),vis=rec.filter(function(l){return op||l.on||T.w5k[l.id]}),hid=rec.filter(function(l){return vis.indexOf(l)<0}),nm=[];
-   hid.forEach(function(l){var w=noun(l.name);if(nm.indexOf(w)<0)nm.push(w)});
-   var lb='Рекомендуем'+(hid.length&&!vis.length?':<span class="x"> '+esc(nm.join(', '))+'</span>':'');
-   var tg=hid.length?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="false" aria-controls="w5b-'+k+'">'+(vis.length?'Показать ещё '+hid.length:'Показать')+I('down')+'</button>':((op||vis.some(function(l){return !l.on}))?'<button type="button" class="ro-w5-more" data-act="ro-w5-kt" data-v="hide" data-id="'+own.id+'" aria-expanded="true" aria-controls="w5b-'+k+'">Скрыть'+I('down')+'</button>':'');
-   h+='<div class="ro-w5-rh"><input type="checkbox" id="w5g-'+k+'" data-m="w5g" data-k="'+own.id+':opt"'+(on.length===rec.length?' checked':'')+' aria-label="Выбрать всё рекомендуемое"><label for="w5g-'+k+'">'+lb+'</label>'+tg+'</div>';
-   h+='<div id="w5b-'+k+'" role="group" aria-label="Рекомендуем">'+vis.map(row).join('')+'</div>'}
-  var tot=(own.on?own.sum||0:0)+rows.reduce(function(x,l){return x+(l.on?l.sum||0:0)},0);
-  h+='<p class="ro-w5-sum"><span>Итого</span><b>'+R0(tot)+'</b></p>';
-  return h+'</div>'}
+  var kd=roKit.kindOf(own.eff),k=sid(own.id),op=!!T.w5o[own.id],on=rows.filter(function(l){return l.on}),sm=on.reduce(function(x,l){return x+(l.sum||0)},0);
+  var meta=on.length?'в смете '+on.length+' из '+rows.length+', '+R0(sm):'в смете 0 из '+rows.length;
+  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'</span><span class="m">'+meta+'</span><span class="a">'+(op?'Скрыть':'Показать')+I('down')+'</span></button>';
+  if(op)h+='<div id="w5b-'+k+'">'+grp(own,'need',NEEDT[kd]||'Нужно для работы',rows.filter(function(l){return l.role==='need'}))+grp(own,'opt','Рекомендуем',rows.filter(function(l){return l.role!=='need'}))+'</div>';
+  h+='</div>';
+  var tot=(own.on?own.sum||0:0)+sm;
+  h+='<p class="ro-w5-sum"><span>'+(KNOM[kd]||'Отделка')+' с материалами</span><b>'+R0(tot)+'</b></p>';
+  return h}
 
  var _ce=estCenter;estCenter=function(){var h=_ce.apply(this,arguments),T=S.E.est;
   if(T.mode==='cmp'||T.mode==='kdet'||T.mode==='kalt'||h.indexOf('estimate-list-head')<0)return h;
@@ -18705,22 +18718,23 @@ document.addEventListener('DOMContentLoaded',function(){
   if(id){var e=document.getElementById(id);if(e&&document.activeElement!==e)try{e.focus({preventScroll:true})}catch(x){}}
   var ret=S._w5ret;if(ret&&S.page==='editor'&&S.E&&S.E.stage==='est'&&S.E.est.mode!=='kdet'&&S.E.est.mode!=='kalt'){
    var t=document.querySelector('#ui .estimate-list [data-id="'+ret+'"]');if(t){S._w5ret=null;var y=S._w5y;
-    requestAnimationFrame(function(){try{var sc=t.closest('.ctr')||document.getElementById('ui');t.scrollIntoView({block:'center'});t.focus({preventScroll:true})}catch(x){}})}}
+    requestAnimationFrame(function(){try{t.scrollIntoView({block:'center'});
+     if(y!=null){var sc=t.parentElement;while(sc&&sc!==document.body&&!(sc.scrollHeight>sc.clientHeight+1&&/auto|scroll/.test(getComputedStyle(sc).overflowY)))sc=sc.parentElement;
+      var dy=t.getBoundingClientRect().top-y;if(sc&&sc!==document.body)sc.scrollTop+=dy;else window.scrollBy(0,dy)}
+     t.focus({preventScroll:true})}catch(x){}})}}
   return r};
  var _ch=estChange;estChange=function(m,k,v,el){if(el&&el.id&&(m==='eon'||m==='w5g'||m==='eall'))S._w5f=el.id;
-  var T=S.E.est;if(!T.w5k)T.w5k={};
+  var T=S.E.est;
   if(m==='w5g'){var E=S.E,p=String(k).split(':'),own=p[0];if(!T.kon)T.kon={};
-   var L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&l.role!=='need'});
-   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+'рекомендуем');L.forEach(function(l){T.w5k[l.id]=1;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
-  if(m==='eon')T.w5k[k]=1;
+   var key=p[1],L=estCalc(S).lines.filter(function(l){return l.kit&&l.owner===own&&(key==='need'?l.role==='need':l.role!=='need')});
+   commit(E,(el.checked?'выбраны: ':'снят выбор: ')+(key==='need'?'нужно для работы':'рекомендуем'));L.forEach(function(l){if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]});T.cartMsg='';return true}
   var r=_ch.apply(this,arguments);
   if(m==='eall'){try{if(!T.kon)T.kon={};estCalc(S).lines.forEach(function(l){if(!l.kit)return;if(el.checked)T.kon[l.id]=1;else delete T.kon[l.id]})}catch(e){}}
   return r};
  var _a=act;act=function(a,el,ev){var d=(el&&el.dataset)||{};
-  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};if(!T.w5k)T.w5k={};var o=d.v!=='hide';T.w5o[d.id]=o;
-   if(!o)estCalc(S).lines.forEach(function(l){if(l.kit&&l.owner===d.id)delete T.w5k[l.id]});render();
-   var b=document.querySelector('#ui .ro-w5-more[data-id="'+d.id+'"]')||document.getElementById('w5g-'+sid(d.id));if(b)b.focus({preventScroll:true});return}
-  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est')S._w5ret=d.id;
+  if(a==='ro-w5-kt'){var T=S.E.est;if(!T.w5o)T.w5o={};T.w5o[d.id]=!T.w5o[d.id];render();
+   var bt=document.querySelector('#ui .ro-w5-kh[data-id="'+d.id+'"]');if(bt)bt.focus({preventScroll:true});return}
+  if((a==='ro-kit-det'||a==='e-sel')&&d.id&&S.E&&S.E.stage==='est'){S._w5ret=d.id;try{S._w5y=el.getBoundingClientRect().top}catch(x){S._w5y=null}}
   return _a.apply(this,arguments)};
  if(S.page==='editor'&&S.E&&S.E.stage==='est')render();
 });

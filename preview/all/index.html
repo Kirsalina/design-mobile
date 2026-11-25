@@ -15228,30 +15228,56 @@ const addrSug=q=>{q=String(q||'').trim().toLowerCase().replace(/ё/g,'е').repla
  return ADDR.map(a=>{const w=W(a);if(!q.every(x=>w.some(y=>y.startsWith(x))))return null;const st=w.slice(1).findIndex(y=>y.startsWith(q[0]));return[a,st<0?9:st]}).filter(Boolean).sort((x,y)=>x[1]-y[1]).map(x=>x[0]).slice(0,7)};
 
 
-/* W3-2 (25.11): доставка. Все цифры – ПРИМЕР для показа логики, у Димы – из админки / с сервера:
-   free – порог бесплатной доставки по городу (null – бесплатной нет); perKm – цена за км (считает сервер по адресу);
-   подъём: по лестнице – за этаж и каждые 100 кг, на лифте – за каждые 100 кг; занос в частный дом – за каждые 100 кг. */
+/* W3-2 (25.11): доставка по зонам (логика клиента 25.11 16:05). Все цифры – ПРИМЕР, у Димы – из админки / с сервера.
+   Зона – район или город с фиксированной ценой; у зоны свой порог «бесплатно от» (null – всегда платно).
+   Адрес вне зон – по расстоянию от склада: perKm × км (км считает сервер). Подъём / занос – отдельной строкой. */
 window.RO_DELIVERY = window.RO_DELIVERY || {
-  cities:[
-    {name:'Тольятти', to:'Тольятти', by:'Тольятти', free:30000},
-    {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску', free:30000},
-    {name:'Самара', to:'Самару', by:'Самаре', free:null}
+  zones:[
+    {city:'Тольятти', name:'Автозаводский район', price:390, free:30000,
+     streets:['Юбилейная','40 лет Победы','70 лет Октября','Тополиная','Льва Яшина','Автостроителей','Свердлова','Дзержинского','Революционная','Степана Разина','Ленинский','Приморский','Спортивная','Ворошилова','Маршала Жукова','Фрунзе','Орджоникидзе','Кулибина','Будённого','Гая','Туполева','Королёва','Баумана','Курчатова','Космонавтов']},
+    {city:'Тольятти', name:'Центральный район', price:490, free:30000,
+     streets:['Мира','Миронова','Карла Маркса','Ленина','Победы','Горького','Голосова','Белорусская','Лесная','Новозаводская']},
+    {city:'Тольятти', name:'Комсомольский район', price:590, free:40000,
+     streets:['Коммунистическая','Мурысева','Матросова','Гидротехническая','Комсомольская','Жилина','Ярославская','Чайкиной','Механизаторов']},
+    {city:'Жигулёвск', name:'Жигулёвск', price:1200, free:50000},
+    {city:'Самара', name:'Самара', price:2400, free:null}
   ],
-  perKm:40, stairs:60, lift:150, house:150,
+  cities:[ /* для выбора города; to / by – «в Самару», «по Самаре» */
+    {name:'Тольятти', to:'Тольятти', by:'Тольятти'},
+    {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску'},
+    {name:'Самара', to:'Самару', by:'Самаре'},
+    {name:'Сызрань', to:'Сызрань', by:'Сызрани', km:90},
+    {name:'Новокуйбышевск', to:'Новокуйбышевск', by:'Новокуйбышевску', km:95},
+    {name:'Чапаевск', to:'Чапаевск', by:'Чапаевску', km:85}
+  ],
+  perKm:45,
+  stairs:60, lift:150, house:150,  /* подъём: по лестнице – за этаж и 100 кг; на лифте и занос в дом – за 100 кг */
   kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
 };
 function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
-  var c=RO_DELIVERY.cities.find(function(x){return x.name===n});
-  return c||{name:n,to:n,by:n,free:null}}
+  return RO_DELIVERY.cities.find(function(x){return x.name===n})||{name:n,to:n,by:n,km:60}}
+function roZones(city){return RO_DELIVERY.zones.filter(function(z){return z.city===city})}
+/* зона по адресу (у Димы – сервер, по координатам) */
+function roZone(city,address){var zs=roZones(city);if(!zs.length)return null;if(zs.length===1)return zs[0];
+  var a=String(address||'').toLowerCase().replace(/ё/g,'е');
+  return zs.find(function(z){return (z.streets||[]).some(function(st){return a.indexOf(st.toLowerCase().replace(/ё/g,'е'))>=0})})||zs[0]}
+/* зона по сохранённому адресу (вошедший) – чтобы в корзине был порог его района */
+function roMyZone(){var c=roCity().name;try{var u=JSON.parse(localStorage.getItem('ro-user')||'null');var a=u&&(u.addresses||[]).find(function(x){return x.main})||u&&(u.addresses||[])[0];
+  if(a&&a.street&&(a.city||'Тольятти')===c)return roZone(c,a.street)}catch(e){}return null}
 function roUnitKg(item){var m=String(item.pack||'').replace(',','.').match(/(\d+(?:\.\d+)?)\s*(кг|л)\b/);
   if(m)return +m[1]; return RO_DELIVERY.kg[item.type]||RO_DELIVERY.kgDefault}
 function roWeight(lines){return Math.max(1,Math.round(lines.reduce(function(a,l){return a+roUnitKg(l.item)*l.quantity},0)))}
-function roKm(address){var h=0;for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return 6+h%19} /* пример: расстояние даёт сервер */
-function roDeliveryNote(sub){var c=roCity();
-  if(c.free==null)return 'Доставка в '+c.to+' по расстоянию: цена появится после ввода адреса';
-  if(sub>=c.free)return '<span class="ro-w3-ok">Доставка по '+c.by+' бесплатно</span>';
-  var pct=Math.max(4,Math.round(sub/c.free*100));
-  return 'До бесплатной доставки по '+c.by+' – ещё '+rub(c.free-sub)+'<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><span class="ro-w3-sub">Бесплатно от '+rub(c.free)+', сейчас по расстоянию</span>'}
+function roKm(city,address){var c=RO_DELIVERY.cities.find(function(x){return x.name===city});var base=c&&c.km||60,h=0;
+  for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12} /* пример: расстояние даёт сервер */
+function roDeliveryNote(sub){var c=roCity(),zs=roZones(c.name),my=roMyZone();
+  if(!zs.length)return 'Доставка в '+c.to+' по расстоянию: '+rub(RO_DELIVERY.perKm)+' за км<span class="ro-w3-sub">Цена появится после ввода адреса</span>';
+  var withFree=zs.filter(function(z){return z.free!=null});
+  if(!withFree.length){var z0=zs[0];return 'Доставка в '+c.to+' – '+rub(z0.price)+'<span class="ro-w3-sub">Бесплатной доставки в '+c.to+' нет</span>'}
+  var z=my&&my.free!=null?my:withFree.reduce(function(a,b){return a.free<=b.free?a:b});
+  var minP=Math.min.apply(null,zs.map(function(x){return x.price}));
+  if(sub>=z.free)return '<span class="ro-w3-ok">Доставка по '+c.by+' бесплатно</span>'+(my?'':'<span class="ro-w3-sub">В некоторых районах порог выше, точно – по адресу</span>');
+  var pct=Math.max(4,Math.round(sub/z.free*100));
+  return 'До бесплатной доставки по '+c.by+' – ещё '+rub(z.free-sub)+'<span class="ro-w3-bar" aria-hidden="true"><span style="width:'+pct+'%"></span></span><span class="ro-w3-sub">Бесплатно от '+rub(z.free)+', сейчас '+(my?rub(my.price)+' ('+my.name.toLowerCase()+')':'от '+rub(minP)+', зависит от района')+'</span>'}
 function roW3Sync(form,q){
   var f=form.elements,house=f.home&&f.home.value==='house',fl=f.floor.value.trim(),lift=f.lift?f.lift.value:'';
   form.querySelectorAll('[data-w3-flat]').forEach(function(el){el.hidden=house;el.querySelectorAll('input').forEach(function(i){i.disabled=house})});
@@ -15262,6 +15288,7 @@ function roW3Sync(form,q){
   t('d="in"',house?'Занесём в дом, на первый этаж.':'Поднимем'+(fl?' на '+fl+' этаж':' на этаж')+(lift==='cargo'?' на грузовом лифте':lift==='pass'?' на пассажирском лифте':lift==='none'?' по лестнице':'')+' и занесём в квартиру.');
   var pr=document.getElementById('ro-w3-in-pr');if(pr)pr.textContent=q?(Number.isFinite(q.lift)&&q.carry?'+'+rub(q.lift):Number.isFinite(q.lift)?'':'Выберите лифт'):'';
   var kg=document.getElementById('ro-w3-kg');if(kg)kg.textContent=q?'Вес заказа около '+q.kg+' кг. '+(house?'Занос считаем за каждые 100 кг.':'Подъём по лестнице считаем за этаж и каждые 100 кг, на лифте – за каждые 100 кг.'):'';
+  var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
   var row=document.getElementById('ro-w3-lift-row');
   if(row){row.hidden=!(q&&q.carry);var l=document.getElementById('ro-w3-lift-label'),c=document.getElementById('ro-w3-lift-cost');
     if(l)l.textContent=q&&q.liftLabel||'Подъём';if(c)c.textContent=q?rub(q.lift):''}
@@ -15276,12 +15303,14 @@ function deliveryQuote(form) {
      Подъём / занос – отдельная строка, считает сервер по весу, этажу и лифту (пока «N ₽»). */
   const city = roCity(), lines = selectedCartLines(), sub = cartTotals(lines).subtotal, R = RO_DELIVERY;
   const house = fields.home && fields.home.value==='house', carry = fields.carry && fields.carry.value==='in';
-  const kg = roWeight(lines), cwt = Math.ceil(kg/100), km = roKm(city.name+address), fl = Math.max(1,parseInt(fields.floor.value,10)||1);
+  const kg = roWeight(lines), cwt = Math.ceil(kg/100), fl = Math.max(1,parseInt(fields.floor.value,10)||1);
   const lt = fields.lift ? fields.lift.value : '';
-  const free = city.free!=null && sub>=city.free, ship = free ? 0 : km*R.perKm;
+  const zone = roZone(city.name,address), km = zone ? 0 : roKm(city.name,address);
+  const free = !!zone && zone.free!=null && sub>=zone.free, ship = zone ? (free ? 0 : zone.price) : km*R.perKm;
   const lift = !carry ? 0 : house ? cwt*R.house : lt==='cargo'||lt==='pass' ? cwt*R.lift : lt==='none' ? Math.max(0,fl-1)*cwt*R.stairs+cwt*R.house : NaN;
   const unit = !house && fields.unit.value.trim();
-  return {cost:ship+lift,ship,lift,carry,house,km,kg,free,window:'Через 1–2 дня',
+  return {cost:ship+lift,ship,lift,carry,house,km,kg,free,zone:zone?zone.name:'',window:zone ? 'Через 1–2 дня' : 'Через 2–3 дня',
+    where:zone ? (zone.name===city.name ? city.name : zone.name) : city.name+', '+km+' км от склада',
     liftLabel:carry ? (house ? 'Занос в дом' : 'Подъём на '+fl+' этаж') : '',
     destination:city.name+', '+address+(unit ? ', кв. '+unit : '')};
 }
@@ -15291,14 +15320,14 @@ function syncDelivery(form) {
   $('#address-fields').hidden = pickup;
   $('#pickup-note').hidden = !pickup;
   $('#address-fields').querySelectorAll('input,textarea').forEach(input => { input.disabled = pickup; });
-  $('#summary-delivery').textContent = quote ? pickup || quote.ship===0 ? 'Бесплатно' : rub(quote.ship)+', '+quote.km+' км' : '';
-  if (typeof roW3Sync==='function') roW3Sync(form,quote);
+  $('#summary-delivery').textContent = quote ? pickup || quote.ship===0 ? 'Бесплатно' : rub(quote.ship) : '';
   $('#summary-delivery').closest('div,p,li')?.toggleAttribute('hidden',!quote);
   $('#summary-total').textContent = quote ? rub(cartTotals(selectedCartLines()).subtotal+quote.cost) : 'После расчёта доставки';
   $('#summary-window').textContent = quote ? quote.window.charAt(0).toLowerCase()+quote.window.slice(1) : '';
   if ($('#summary-delivery-label')) $('#summary-delivery-label').textContent = pickup ? 'Самовывоз' : 'Доставка';
   $('#checkout-action-label').textContent = quote ? 'К оплате' : 'Итого за товары';
-  $('#checkout-action-total').textContent = rub(cartTotals(selectedCartLines()).subtotal+(quote?.cost || 0));
+  $('#checkout-action-total').textContent = rub(cartTotals(selectedCartLines()).subtotal+(quote ? quote.cost : 0));
+  if (typeof roW3Sync==='function') roW3Sync(form,quote);
   form.querySelectorAll('[aria-invalid=true][aria-describedby^="checkout-error-"]').forEach(field=>showCheckoutError(field,checkoutError(field)));
 }
 function checkoutError(field,strict) {
@@ -15405,7 +15434,7 @@ function renderCheckout() {
   syncDelivery(form);
   setupPhone(form);
   const addrInput = form.elements.address, addrList = $('#checkout-addr-list');
-  const showAddr = () => { const list = document.activeElement===addrInput ? addrSug(addrInput.value).filter(a=>a!==addrInput.value) : [];
+  const showAddr = () => { const list = document.activeElement===addrInput && roCity().name==='Тольятти' ? addrSug(addrInput.value).filter(a=>a!==addrInput.value) : [];
     addrList.innerHTML = list.map(a=>'<button type="button" role="option" data-addr="'+a+'">'+a+'</button>').join('');
     addrList.hidden = !list.length; addrInput.setAttribute('aria-expanded',String(!addrList.hidden)); };
   addrInput.addEventListener('input',showAddr); addrInput.addEventListener('focus',showAddr);
@@ -25735,7 +25764,7 @@ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.clo
 /* Р20: высота рабочей области на ПК = видимая высота окна под ней (520…700) */
 (function(){var t=0;function fit(){t=0;try{var g=document.querySelector('#ui .ed>.grid-c');if(!g||innerWidth<1101){document.documentElement.style.removeProperty('--ro-gh');return}
  var fe=frameElement,top=(fe?fe.getBoundingClientRect().top+parent.scrollY:0)+g.getBoundingClientRect().top+scrollY,vh=fe?parent.innerHeight:innerHeight;
- var h=Math.max(520,Math.min(700,Math.round(vh-top-16)));if(document.documentElement.style.getPropertyValue('--ro-gh')!==h+'px')document.documentElement.style.setProperty('--ro-gh',h+'px')}catch(x){}}
+ var h=Math.max(520,Math.round(vh-top-16));/*ro-w1-3 C14: без потолка 700*/if(document.documentElement.style.getPropertyValue('--ro-gh')!==h+'px')document.documentElement.style.setProperty('--ro-gh',h+'px')}catch(x){}}
  var q=function(){if(!t)t=requestAnimationFrame(fit)};addEventListener('resize',q);try{parent.addEventListener('resize',q)}catch(x){}
  new MutationObserver(q).observe(document.documentElement,{childList:true,subtree:true});q()})();
 
