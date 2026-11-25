@@ -20276,6 +20276,7 @@ function targetGeo(E,k,target){
 }
 function cost(E,id,k,target){
  const M=MAT[id],g=targetGeo(E,k,target);
+ if(!M)return{sum:0,qty:'',note:''};
  if(M.calc==='paper'){const st=Math.ceil(g.W/106),per=Math.max(1,Math.floor(1005/(g.h+10))),n=Math.ceil(st/per);return{sum:n*M.price,qty:n+' '+pl(n,['рулон','рулона','рулонов']),note:`${st} ${pl(st,['полоса','полосы','полос'])} по ${g.h+10} см`}}
  if(M.calc==='paint'){const l=g.area*(M.rate||.18),n=Math.max(1,Math.ceil(l/5-1e-9));return{sum:n*M.price,qty:n+' '+pl(n,['ведро','ведра','вёдер']),note:`расход ${fmtN(l)} л при норме ${fmtN(M.rate||.18)} л/м²`}}
  if(M.calc==='lin'){const len=Math.ceil(g.area*1.1/2*10)/10;return{sum:len*M.price,qty:fmtN(len)+' пог. м',note:'рулон шириной 2 м, запас 10%'}}
@@ -24930,8 +24931,15 @@ window.addEventListener('message',e=>{if(e.source!==parent)return;const d=e.data
   if(d.type==='auth'&&d.user&&lastR==='/ctor'&&S.auth==='user'&&S.page!=='editor'){fromShell=true;try{_act('nav',{dataset:{to:'ctor'}});render()}catch(err){}fromShell=false}
   if(d.type==='route'){fromShell=true;try{route(d.path||'/ctor',new URLSearchParams(d.q||''),!!d.under)}catch(err){console.error(err)}fromShell=false}
 });
-dev();render();
+/* 25.11: демо-обои (ro-try) – до первой отрисовки, иначе сохранённая комната с ними роняла запуск (вечное «Загружаем…»); ошибка первой отрисовки не мешает сообщить оболочке о готовности; после всех дополнений – ещё одна отрисовка */
+(function(){var D=function(id,base,o){if(!MAT[id]&&MAT[base])MAT[id]=Object.assign({},MAT[base],o)};D('OB-122','OB-101',{name:'Обои «Лён Серый»',c:'#CFCFCB',price:1690,lum:2,v:'Светло-серый лён',cg:'Серый'});
+ D('OB-123','OB-101',{name:'Обои «Рогожка»',c:'#DCCFB6',price:1290,lum:2,v:'Бежевая рогожка',cg:'Бежевый'});
+ D('OB-124','OB-103',{name:'Обои «Лён Плотный»',c:'#D3BE9C',price:2490,lum:2,v:'Плотный флизелин, бежевый',cg:'Бежевый'});
+ D('OB-120','OB-101',{name:'Обои «Шалфей»',c:'#B9C4AE',price:1590,lum:2,v:'Светлый шалфей',cg:'Зелёный'});
+ D('OB-121','OB-110',{name:'Обои «Графит»',c:'#7E8790',price:2290,lum:1,v:'Винил, ромб, графит',cg:'Серый'});})();
+dev();try{render()}catch(err){console.error(err)}
 post({type:'ready'});
+document.addEventListener('DOMContentLoaded',function(){setTimeout(function(){try{render()}catch(err){console.error(err)}},0)});
 })();
 
 /* Г6: поиск в конструкторе открывает карточку товара здесь же */
