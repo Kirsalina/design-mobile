@@ -17300,12 +17300,13 @@ html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:
 #transaction .cart-row-name>.meta{display:block;margin-top:2px;font-size:14px;line-height:21px;color:#566273;font-weight:400}
 #transaction .cart-row:has(.row-badge) .cart-row-name>.meta,#transaction .cart-row:has(.row-badge) a.ro-w3-nm{opacity:.55}
 #transaction a.cart-row-media{display:block;width:max-content;height:max-content;border-radius:10px}
-/* W3-1 O7: «Номер подтверждён» – метка (§10): белая плашка 28, рамка #DCE4E2, 14/20 700, #006B79 */
+/* W3-1 O7 (v2, Алина 14:59): «✓ Номер подтверждён» – в строке подписи «Телефон», справа, тем же размером */
 #transaction .phone-field input[readonly]{background:#fff!important}
-#transaction .phone-ok{display:flex;align-items:center;gap:12px;margin:0;color:#006B79;font-weight:700}
-#transaction .phone-ok>svg{display:none}
-#transaction .phone-ok>span{display:inline-flex;align-items:center;height:28px;padding:0 8px;border:1px solid #DCE4E2;border-radius:8px;background:#fff;font-size:14px;line-height:20px;font-weight:700;color:#006B79;white-space:nowrap}
-#transaction .phone-ok .link-button{margin-left:0!important}
+#transaction .phone-field{position:relative}
+#transaction #phone-verify:has(.phone-ok){position:absolute;top:0;right:0;margin:0!important;padding:0!important;min-height:0!important}
+#transaction .phone-ok{display:flex;align-items:center;gap:6px;margin:0;height:21px;font-size:14px;line-height:21px;font-weight:600;color:#006B79;white-space:nowrap}
+#transaction .phone-ok>svg{display:block;width:16px;height:16px;flex:none}
+#transaction .phone-ok .link-button{margin-left:10px!important}
 </style>
 </body>
 </html>
