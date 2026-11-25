@@ -2188,7 +2188,7 @@ html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew{display:flex;align-items:cent
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew svg{width:16px;height:16px;flex:none;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew b{font-weight:600;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{overflow:hidden;text-overflow:ellipsis}
-html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:"·";margin:0 6px 0 0}
+html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{margin-left:-6px}html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:",\00a0";margin:0}/* 25.11: запятая вместо «·» */
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l{display:inline-flex;align-items:center;min-height:40px;margin:0 0 0 6px;padding:0;border:0;background:none;color:#006B79;font:600 14px/21px Manrope,Arial,sans-serif;cursor:pointer}
 @media (hover:hover){html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:hover{text-decoration:underline;text-underline-offset:4px}}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
@@ -12462,7 +12462,7 @@ html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew{display:flex;align-items:cent
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew svg{width:16px;height:16px;flex:none;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew b{font-weight:600;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{overflow:hidden;text-overflow:ellipsis}
-html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:"·";margin:0 6px 0 0}
+html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{margin-left:-6px}html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:",\00a0";margin:0}/* 25.11: запятая вместо «·» */
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l{display:inline-flex;align-items:center;min-height:40px;margin:0 0 0 6px;padding:0;border:0;background:none;color:#006B79;font:600 14px/21px Manrope,Arial,sans-serif;cursor:pointer}
 @media (hover:hover){html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:hover{text-decoration:underline;text-underline-offset:4px}}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
@@ -17194,7 +17194,7 @@ html body .order-summary p#summary-window:not(:empty){margin:4px 0 12px!importan
 .cart-list-head>#cart-selected-count{margin-left:0!important;margin-right:auto!important}
 .cart-list-head .ro-delall{min-height:40px;margin:-8px 0;padding:0 4px;border:0;border-radius:8px;background:none;font:600 14px/21px Manrope,system-ui,sans-serif;color:#B42318;cursor:pointer;white-space:nowrap}
 @media (hover:hover){.cart-list-head .ro-delall:hover{text-decoration:underline;text-underline-offset:4px}}
-.cart-list-head .ro-delall:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79}
+.cart-list-head .ro-delall:focus-visible{outline:none;box-shadow:inset 0 0 0 1px #006B79} #transaction h1[tabindex="-1"]:focus,#transaction h1[tabindex="-1"]:focus-visible{outline:none!important;box-shadow:none!important}
 html body.shop #transaction .cart-row>label.cart-check,html body.shop #transaction .cart-row>.cart-row-media,html.shop body #transaction .cart-row>label.cart-check,html.shop body #transaction .cart-row>.cart-row-media,html .shop #transaction .cart-row>label.cart-check,html .shop #transaction .cart-row>.cart-row-media{align-self:center!important;margin-top:0!important}
 .unpaid-strip .unpaid-inner,#unpaid-strip .unpaid-inner{background:#fff!important;border:1px solid #DCE4E2!important;border-radius:12px!important;min-height:56px!important;padding:5px 5px 5px 16px!important;box-sizing:border-box!important;align-items:center!important;box-shadow:none!important}
 @media (max-width:700px){html body .unpaid-strip .unpaid-inner,html body #unpaid-strip .unpaid-inner{padding:12px!important}}
@@ -17216,9 +17216,13 @@ html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-in
   dlg.onclick=function(e){if(e.target===dlg||e.target.closest('[data-del-no]')){dlg.close();btn.focus();return}
    if(e.target.closest('[data-del-ok]')){var x=dlg.querySelector('.ro-del-x input'),P2=par();
     kids.forEach(function(k){if(x&&x.checked)cart.delete(k);delete P2[k]});try{localStorage.setItem('ro-kit-par',JSON.stringify(P2))}catch(_){}
-    dlg.close();ok=true;btn.click();ok=false}};
+    dlg.close();ok=true;btn.click();ok=false;if(!document.querySelector('.cart-row[data-cart-row]'))emptyFocus()}};
   dlg.showModal();dlg.querySelector('[data-del-ok]').focus();return false}
- function putAll(){var h=document.querySelector('.cart-list-head');if(!h||h.querySelector('.ro-delall'))return;var b=document.createElement('button');b.type='button';b.className='ro-delall';b.textContent='Удалить всё';h.appendChild(b)}
+ /* 25.11 (Алина): корзина опустела – фокус на заголовок «Корзина» без рамки и страница наверх.
+     Раньше кнопка, на которой был фокус, исчезала, и Safari обводил бирюзовой рамкой случайный блок. */
+  function emptyFocus(){setTimeout(function(){var h=document.querySelector('#transaction h1')||document.querySelector('main h1');try{window.scrollTo(0,0)}catch(_){}
+   if(h){if(!h.hasAttribute('tabindex'))h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true})}catch(_){}}},0)}
+  function putAll(){var h=document.querySelector('.cart-list-head');if(!h||h.querySelector('.ro-delall'))return;var b=document.createElement('button');b.type='button';b.className='ro-delall';b.textContent='Удалить всё';h.appendChild(b)}
  new MutationObserver(putAll).observe(document.body,{childList:true,subtree:true});putAll();
  function askAll(btn){var rows=[].slice.call(document.querySelectorAll('.cart-row[data-cart-row]'));if(!rows.length)return;var n=0,sum=0;
   rows.forEach(function(r){var q=r.querySelector('[data-cart-qty]');n+=q?(+q.value||0):1;var t=r.querySelector('[data-line-total]');sum+=t?(+t.textContent.replace(/[^\d]/g,'')||0):0});
@@ -17227,7 +17231,7 @@ html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-in
   dlg.innerHTML='<h2 id="ro-del-t">Очистить корзину?</h2><p>Удалим все товары: '+n+' '+pl3(n,['товар','товара','товаров'])+' на '+tot+'.</p><div class="ord-dialog-actions"><button class="button" type="button" data-del-ok>Удалить всё</button><button class="button secondary" type="button" data-del-no>Оставить</button></div>';
   dlg.onclick=function(e){if(e.target===dlg||e.target.closest('[data-del-no]')){dlg.close();btn.focus();return}
    if(e.target.closest('[data-del-ok]')){dlg.close();[...cart.keys()].forEach(function(k){cart.delete(k)});try{localStorage.setItem('ro-kit-par','{}')}catch(_){}
-    try{saveCart()}catch(_){}try{renderCart()}catch(_){}try{if(typeof renderFullCart==='function')renderFullCart()}catch(_){}}};
+    try{saveCart()}catch(_){}try{renderCart()}catch(_){}try{if(typeof renderFullCart==='function')renderFullCart()}catch(_){}emptyFocus()}};
   dlg.showModal();dlg.querySelector('[data-del-no]').focus()}
  window.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('.ro-delall');if(a){e.preventDefault();askAll(a)}});
  window.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-cart-remove]');if(!b||ok)return;e.preventDefault();e.stopImmediatePropagation();ask(b)},true);
@@ -17772,7 +17776,7 @@ html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew{display:flex;align-items:cent
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew svg{width:16px;height:16px;flex:none;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew b{font-weight:600;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{overflow:hidden;text-overflow:ellipsis}
-html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:"·";margin:0 6px 0 0}
+html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{margin-left:-6px}html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:",\00a0";margin:0}/* 25.11: запятая вместо «·» */
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l{display:inline-flex;align-items:center;min-height:40px;margin:0 0 0 6px;padding:0;border:0;background:none;color:#006B79;font:600 14px/21px Manrope,Arial,sans-serif;cursor:pointer}
 @media (hover:hover){html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:hover{text-decoration:underline;text-underline-offset:4px}}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
@@ -17998,7 +18002,7 @@ html body #ui .ro-lock-note .btn{grid-column:2!important;justify-self:start!impo
    box.addEventListener('mousedown',function(e){e.preventDefault()});
    box.addEventListener('click',function(e){var b=e.target.closest('.ro-fs-i');if(b){pick(b.dataset.id);return}if(e.target.closest('.ro-fs-all')){all_()}})}
   inp.setAttribute('aria-controls','ro-fs');inp.setAttribute('aria-expanded','true');inp.setAttribute('aria-autocomplete','list');
-  var h=ids.map(function(id,i){var M=MAT[id];return '<button type="button" role="option" id="ro-fs-'+i+'" class="ro-fs-i" data-id="'+esc(id)+'" aria-selected="false"><span class="ro-fs-sw">'+pfill(id,'rofs'+i)+'</span><span class="ro-fs-t"><b>'+hl(M.name,q)+'</b><small>'+esc(M.cat)+(M.d?' · '+esc(M.d):'')+'</small></span></button>'}).join('');
+  var h=ids.map(function(id,i){var M=MAT[id];return '<button type="button" role="option" id="ro-fs-'+i+'" class="ro-fs-i" data-id="'+esc(id)+'" aria-selected="false"><span class="ro-fs-sw">'+pfill(id,'rofs'+i)+'</span><span class="ro-fs-t"><b>'+hl(M.name,q)+'</b><small>'+esc(M.cat)+(M.d?', '+esc(M.d):'')+'</small></span></button>'}).join('');
   if(!ids.length)h='<p class="ro-fs-none">Ничего не нашлось. Попробуйте другое слово или артикул.</p>';
   else h+='<button type="button" class="ro-fs-all">Показать все: '+all.length+'</button>';
   box.innerHTML=h}
@@ -18135,16 +18139,34 @@ html.ro-site body #ui.dev-d{scrollbar-width:auto!important;scrollbar-gutter:stab
  for(var i=r.length-1;i>=0;i--){var x=r[i];if(x.selectorText&&/\.ro-site #ui::-webkit-scrollbar$/.test(x.selectorText.trim())&&/display:\s*none/.test(x.cssText))sh.deleteRule(i)}})}
  off();document.addEventListener('DOMContentLoaded',off)})();
 <%/script>
-<style id="ro-fin1-css">/* 25.11 «Отделка», партия 1: ссылки под «Заменить» с иконками 20; «Убрать» всегда справа (не прыгает) */
-#ui .pcard.cv .cv-l{flex-wrap:wrap;gap:0 12px}
-#ui .pcard.cv .cv-l .lnk{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;padding:0}
-#ui .pcard.cv .cv-l .lnk .ic{width:16px;height:16px;flex:none}
-#ui .pcard.cv .cv-l .lnk.err{margin-left:auto}
+<style id="ro-fin1-css">/* 25.11 «Отделка», партия 2 (решение Алины): под «Заменить» – контурная кнопка «Применить к другим стенам / в других комнатах»,
+   под ней постоянная строка «✓ Применено ещё к N стенам», ниже «Убрать» (ссылка удаления, слева). */
+#ui .pcard.cv .cv-a .btn.cp-btn{margin:0}
+#ui .pcard.cv .pdet-fb.cp-fb{margin:4px 0 0;min-height:24px}
+#ui .pcard.cv .cv-l{justify-content:flex-start}
+#ui .pcard.cv .cv-l .lnk{padding:0}
 #ui.dev-m .pcard.cv .cv-l .lnk{min-height:44px}
-#ui .pcard.cv .pdet-fb.cp-fb{margin:0;min-height:32px}
 /* ссылка-действие в строке ответа: подчёркивание только при наведении (DESIGN-SYSTEM §15) */
 #ui .ro-kd-fb .lnk{text-decoration:none!important}
 @media(hover:hover){#ui .ro-kd-fb .lnk:hover{text-decoration:underline!important;text-underline-offset:4px}}
+#ui .ro-mcard .btn.ro-mcp{width:100%;margin-top:-4px}
+#ui .ro-mcard .pdet-fb.cp-fb{margin:-4px 0 0;min-height:24px}
+/* окно «На какие ещё стены?»: метка «Эта комната» – наша метка (§10); строка выбора без подсказки, место под неё оставлено – ничего не прыгает */
+#ui .cp-here{display:inline-flex;align-items:center;height:28px;margin:0 0 0 8px;padding:0 8px;border:1px solid #DCE4E2;border-radius:8px;background:#fff;color:#152A4B;font:700 14px/20px Manrope,system-ui,sans-serif;vertical-align:middle;letter-spacing:0;text-transform:none}
+#ui .cp-head .cp-n{display:inline-flex;align-items:center;flex-wrap:wrap;gap:0}
+#ui .cp-sum>p{min-height:21px}
+/* шторка примерки (телефон): «Весь каталог» – контурная кнопка S, нажатие 44 */
+#ui .ro-ph{align-items:center}
+#ui .ro-ph .btn.ro-pall{min-height:44px;height:44px;padding:0 16px;border-radius:10px;font:700 14px/20px Manrope,system-ui,sans-serif;color:#152A4B;flex:none}
+/* сенсорные экраны: наведение не «залипает» после нажатия (кнопка оставалась серой) */
+@media (hover:none){
+#ui .btn:not(.pri):not(.danger):hover:not(:disabled):not(:active){background:#fff!important;border-color:#566273!important}
+#ui .btn.pri:hover:not(:disabled):not(:active){background:#19CBD8!important}
+}
+#ui .ro-ph .btn.ro-pall{border:1px solid #566273!important;background:#fff}
+/* ручка: зона нажатия 44 на всю ширину; видна только там, где шторку можно свернуть (есть строка-сводка) */
+#ui .sheet .ro-grab{height:32px!important;margin:-12px -16px -12px!important}
+#ui .sheet:not(:has(>.ro-minbar))>.ro-grab{visibility:hidden;pointer-events:none}
 </style>
 <script id="ro-fin1">
 /* 25.11 «Отделка», партия 1. Телефон: «Весь каталог» из примерки открывал пустой список («Ничего не нашлось»),
@@ -18153,7 +18175,17 @@ document.addEventListener('DOMContentLoaded',function(){
  if(typeof act!=='function')return;
  var _a=act;act=function(a,el,ev){try{var E=S.E,F=E&&E.fin;
   if(a==='f-list'&&F&&F.surf&&!F.cat){var k=surfKind(F.surf),id=F.tryMat||sm(E,F.surf).base;F.cat=id&&MAT[id]&&MAT[id].ks.indexOf(k)>=0?MAT[id].cat:CATS[k][0]}}catch(e){}
-  return _a.apply(this,arguments)};
+  var r=_a.apply(this,arguments);
+  /* 25.11 (Алина): телефон – после «Применить» шторка не закрывается, а показывает короткую карточку:
+     сразу видно «Применить к другим стенам» и «Применено ещё к N». */
+  try{if(a==='f-apply'&&S.dev==='m'&&S.E&&S.E.stage==='finish'&&S.E.fin.surf&&S.E.fin.mode==='view'){S.E.sheet='params';S.E.shMin=false;render()}}catch(e){}
+  return r};
+ /* Ручка шторки (телефон): на iPhone свайп шёл в прокрутку и не доходил до конца жеста. Слушаем и касания:
+    вниз больше 40 – свернуть, вверх – развернуть. Тап по ручке работает как раньше (кнопка). */
+ var ty=null;
+ document.addEventListener('touchstart',function(e){var g=e.target.closest&&e.target.closest('#ui .sheet .ro-grab, #ui .sheet .ro-minbar .ro-mt');ty=g&&e.touches[0]?e.touches[0].clientY:null},{passive:true,capture:true});
+ document.addEventListener('touchend',function(e){if(ty==null)return;var t=e.changedTouches[0],dy=t?t.clientY-ty:0;ty=null;var E=S.E;if(!E||Math.abs(dy)<=40)return;
+  if(dy>40&&!E.shMin){E.shMin=true;render()}else if(dy<-40&&E.shMin){E.shMin=false;render()}},{passive:true,capture:true});
 });
 <%/script>
 <style id="ro-kit-css">
@@ -18527,7 +18559,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var cur=F.target==='base'?sm(E,k).base:(zoneOf(E,F.target)||{}).mat;
   var L=[[base,'Вы выбрали']].concat(recs(base,kind));
   var row=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;
-   return '<button type="button" class="ro-tr" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'rt'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn" title="'+esc(MAT[x[0]].name)+'">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq">'+esc(c.qty)+(x[0]===cur?' · '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'сейчас'):'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></button>'};
+   return '<button type="button" class="ro-tr" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'rt'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn" title="'+esc(MAT[x[0]].name)+'">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq">'+esc(c.qty)+(x[0]===cur?', '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'сейчас'):'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></button>'};
   var all=Object.keys(MAT).filter(function(x){return MAT[x].cat===M.cat&&String(MAT[x].ks||'').indexOf(kind)>=0}).length;
   /* материалы для работы */
   var T=E.est||{},kon=T.kon||{},kit=kitFor(E,id,k,F.target),old=cur&&cur!==id?kitFor(E,cur,k,F.target):[];
@@ -18550,12 +18582,12 @@ document.addEventListener('DOMContentLoaded',function(){
   var cpb=F.target==='base'&&kind!=='ceil'?'<button type="button" class="btn wide" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'';
   var to=F.target==='base'?{wall:'к стене',floor:'к полу',ceil:'к потолку'}[kind]:'к зоне';
   if(S.dev==='m'){
-   var pc=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;return '<button type="button" class="ro-pc" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'pc'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq"><b>'+rub(c.sum)+'</b>'+(x[0]===cur?' · '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'сейчас'):'')+'</span></span></button>'};
+   var pc=function(x){var c=cost(E,x[0],k,F.target),on=x[0]===id;return '<button type="button" class="ro-pc" data-act="ro-try" data-id="'+x[0]+'" aria-pressed="'+on+'"><span class="ro-tth" aria-hidden="true">'+pthumb(x[0],'pc'+x[0].replace(/\W/g,''),48)+'</span><span class="ro-tt"><span class="ro-tn">'+esc(MAT[x[0]].name.replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум)\s+/,''))+'</span><span class="ro-tq"><b>'+rub(c.sum)+'</b>'+(x[0]===cur?', '+({wall:'на стене',floor:'на полу',ceil:'на потолке'}[kind]||'сейчас'):'')+'</span></span></button>'};
    var kp=kit.length&&!allIn?'<button type="button" class="ro-pk" role="checkbox" aria-checked="'+!!F.kitAdd+'" data-act="ro-kitadd"><span class="ro-tkb" aria-hidden="true">'+(F.kitAdd?I('check'):'')+'</span><span>Материалы для '+FOR[kd]+'</span><b>+'+rub(ks)+'</b></button>':'';
-   return '<div class="ro-try ro-tryp"><div class="ro-ph"><b>'+esc(targetName(E))+'</b><button type="button" class="ro-plink" data-act="f-list">Весь каталог</button></div>'+
+   return '<div class="ro-try ro-tryp"><div class="ro-ph"><b>'+esc(targetName(E))+'</b><button type="button" class="btn ro-plink ro-pall" data-act="f-list">Весь каталог</button></div>'+
     '<div class="ro-pl" role="group" aria-label="Варианты для примерки">'+L.map(pc).join('')+'</div>'+kp+
     '<div class="ro-pf"><span class="ro-pt"><small>Итого</small><b>'+rub(cNew)+'</b></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'+
-    (cpb?'<button type="button" class="ro-plink ro-pcp" data-act="ro-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'')+'</div>'}
+    '</div>'}
   return '<div class="ro-try"><div class="ro-thead"><button type="button" class="btn s40" data-act="f-list">'+I('back')+'Каталог</button><h3>Примерка: '+esc(targetName(E))+'</h3></div>'+
    '<div class="ro-tl" role="group" aria-label="Варианты для примерки">'+L.map(row).join('')+'</div>'+
    (all>L.length?'<button type="button" class="ro-tall" data-act="f-list">Все '+(CATN[M.cat]||M.cat.toLowerCase())+' в каталоге ('+all+') →</button>':'')+
@@ -18609,9 +18641,11 @@ document.addEventListener('DOMContentLoaded',function(){
   var k=F.surf,id=sm(E,k).base,M=id&&MAT[id],c=M?cost(E,id,k,'base'):null;
   return '<div class="ro-mcard"><h3>'+esc(surfName(k))+'</h3>'+
    (M?'<div class="ro-mrow"><span aria-hidden="true">'+pthumb(id,'mc',56)+'</span><span class="ro-mt"><b>'+esc(M.name)+'</b><span>'+esc(c.qty)+'</span></span><span class="ro-mp">'+rub(c.sum)+'</span></div>':'<p class="mut">Покрытие не выбрано</p>')+
-   '<div class="ro-mbtns">'+(M?'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Заменить</button><button type="button" class="btn" data-act="ro-full">Подробнее</button>':'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base" style="grid-column:1/-1">Выбрать покрытие</button>')+'</div></div>'};
+   '<div class="ro-mbtns">'+(M?'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Заменить</button><button type="button" class="btn" data-act="ro-full">Подробнее</button>':'<button type="button" class="btn pri" data-act="f-cat-open" data-t="base" style="grid-column:1/-1">Выбрать покрытие</button>')+'</div>'+
+   /* 25.11 (Алина): «Применить к другим стенам» – только когда покрытие уже стоит, и постоянная строка «Применено ещё к N» */
+   (M&&cpTargets(S).length?'<button type="button" class="btn ro-mcp" data-act="f-cp-dlg">'+(surfKind(k)==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'')+(M?roCpLine(id,surfKind(k)):'')+'</div>'};
  function minbar(){var E=S.E,F=E&&E.fin;if(!F||!F.surf)return '';var k=F.surf;
-  if(F.mode==='try'&&MAT[F.tryMat]){var c=cost(E,F.tryMat,k,F.target);return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(MAT[F.tryMat].name)+'</b><span>'+esc(surfName(k))+' · '+rub(c.sum)+'</span></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'}
+  if(F.mode==='try'&&MAT[F.tryMat]){var c=cost(E,F.tryMat,k,F.target);return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(MAT[F.tryMat].name)+'</b><span>'+esc(surfName(k))+', '+rub(c.sum)+'</span></span><button type="button" class="btn pri" data-act="f-apply">Применить</button></div>'}
   var id=curOf(E),M=id&&MAT[id];return '<div class="ro-minbar"><span class="ro-mt"><b>'+esc(surfName(k))+'</b><span>'+(M?esc(M.name):'Покрытие не выбрано')+'</span></span><button type="button" class="btn" data-act="f-cat-open" data-t="base">'+(M?'Заменить':'Выбрать')+'</button></div>'}
  function fit(){var ui=document.getElementById('ui');if(!ui)return;var pl=ui.querySelector('.ctr .plan'),sv=pl&&pl.querySelector(':scope>svg, svg');if(!sv)return;sv.style.transform='';sv.style.transformOrigin='';
   var sh=ui.querySelector('.sheet');if(!mob()||!sh)return;var r=sv.getBoundingClientRect(),top=sh.getBoundingClientRect().top-8,pt=pl.getBoundingClientRect().top+4;if(r.bottom<=top)return;
@@ -20354,6 +20388,10 @@ function catalogHTML(){
  :`<div class="empty" style="background:var(--paper)"><h3>Ничего не нашлось</h3><p class="mut">Проверьте запрос или снимите часть фильтров.</p><button type="button" class="btn" data-act="f-reset">Сбросить фильтры</button></div>`}`;
 }
 /* Товар внутри конструктора: те же сведения, что на странице товара в каталоге, плюс расчёт на выбранную поверхность. Комната и место в списке не теряются. */
+/* 25.11 (Алина): постоянная строка под кнопкой – на скольких ещё стенах / в скольких комнатах объекта лежит это же покрытие.
+   Видно, что замена коснётся только этой поверхности, а такое же покрытие есть ещё на N. */
+function roCpLine(id,kind){let n=0;try{cpTargets(S).forEach(t=>t.ks.forEach(k=>{if(cpMat(t.R,k).base===id)n++}))}catch(e){}
+ if(!n)return '';return `<p class="pdet-fb cp-fb">${I('check')}${kind==='wall'?'Применено ещё к '+n+' '+pl(n,['стене','стенам','стенам']):'Применено ещё в '+n+' '+pl(n,['комнате','комнатах','комнатах'])}</p>`}
 /* 25.11: количество в корзине словами по виду товара */
 function cartQty(id,q){const M=MAT[id];if(M.calc==='paper')return q+' '+pl(q,['рулон','рулона','рулонов']);if(M.calc==='paint')return q+' '+pl(q,['ведро','ведра','вёдер']);if(M.calc==='lin')return q+' пог. м';if(M.calc==='m2')return q+' м²';return q+' '+pl(q,['упаковка','упаковки','упаковок'])}
 function detailHTML(){
@@ -20427,10 +20465,10 @@ function cpDlg(){
  const row=(t,k,label)=>{const key=t.ri+':'+k,same=cpMat(t.R,k).base===id;return `<label class="chk tall cp-row${same?' dis':''}"><input type="checkbox" data-m="cp" data-k="${key}" ${c.sel[key]?'checked':''} ${same?'disabled':''}><span class="cp-t"><span class="cp-n">${esc(label)}</span><span class="cp-s">${esc(cur(t.R,k))}</span></span></label>`};
  let list;
  if(kind==='wall')list=T.map(t=>{const free=t.ks.filter(k=>cpMat(t.R,k).base!==id),on=free.filter(k=>c.sel[t.ri+':'+k]).length,open=c.open[t.ri]!==undefined?c.open[t.ri]:t.cur;
-   return `<section class="cp-room"><div class="cp-head"><label class="chk cp-all"><input type="checkbox" data-m="cp-all" data-k="${t.ri}" ${free.length&&on===free.length?'checked':''} ${free.length?'':'disabled'}><span class="cp-t"><span class="cp-n">${esc(t.name)}${t.cur?'<span class="cp-here">эта комната</span>':''}</span><span class="cp-s">${on?`выбрано ${on} из ${t.ks.length}`:pl(t.ks.length,['стена','стены','стен']).replace(/^/,t.ks.length+' ')}</span></span></label><button type="button" class="icb" data-act="f-cp-open" data-i="${t.ri}" aria-expanded="${open}" aria-label="${open?'Свернуть':'Показать'} стены: ${esc(t.name)}">${I('down')}</button></div>${open?`<div class="cp-walls">${t.ks.map(k=>row(t,k,surfName(k))).join('')}</div>`:''}</section>`}).join('');
+   return `<section class="cp-room"><div class="cp-head"><label class="chk cp-all"><input type="checkbox" data-m="cp-all" data-k="${t.ri}" ${free.length&&on===free.length?'checked':''} ${free.length?'':'disabled'}><span class="cp-t"><span class="cp-n">${esc(t.name)}${t.cur?'<span class="cp-here">Эта комната</span>':''}</span><span class="cp-s">${on?`выбрано ${on} из ${t.ks.length}`:pl(t.ks.length,['стена','стены','стен']).replace(/^/,t.ks.length+' ')}</span></span></label><button type="button" class="icb" data-act="f-cp-open" data-i="${t.ri}" aria-expanded="${open}" aria-label="${open?'Свернуть':'Показать'} стены: ${esc(t.name)}">${I('down')}</button></div>${open?`<div class="cp-walls">${t.ks.map(k=>row(t,k,surfName(k))).join('')}</div>`:''}</section>`}).join('');
  else list=T.map(t=>row(t,t.ks[0],t.name)).join('');
  const word=kind==='wall'?['стена','стены','стен']:['комната','комнаты','комнат'];
- const sum=L.length?`Выбрано: ${L.length} ${pl(L.length,word)}.${repl?` На ${repl} покрытие заменится.`:''}`:kind==='wall'?'Отметьте стены, на которые нужно это покрытие.':'Отметьте комнаты, в которых нужно это покрытие.';
+ const sum=L.length?`Выбрано: ${L.length} ${pl(L.length,word)}.${repl?` На ${repl} покрытие заменится.`:''}`:'';
  const zn=(sm(E,F.surf).zones||[]).length?'<p class="mut sm">Переносится только основное покрытие. Зоны остаются на своих местах.</p>':'';
  return `<div class="ovl"><div class="dlg dlg-cp" role="dialog" aria-modal="true" aria-labelledby="cp-t"><h3 id="cp-t">${kind==='wall'?'На какие ещё стены?':kind==='floor'?'В каких ещё комнатах?':'В каких ещё комнатах?'}</h3><div class="cp-mat"><span class="cp-th" aria-hidden="true">${pthumb(id,'cpth',52)}</span><span class="cp-t"><span class="cp-n">${M.name}</span><span class="cp-s">${kind==='wall'?'Покрытие стены':kind==='floor'?'Покрытие пола':'Покрытие потолка'}: ${esc(surfName(F.surf).toLowerCase())}, ${esc(E.name)}</span></span></div>${zn}<div class="cplist">${list}</div><div class="cp-sum"><p role="status">${sum}</p><dl class="ar"><div><dt>Смета объекта</dt><dd>${tot.after!==tot.before?`${rub(tot.before)} → <b>${rub(tot.after)}</b>`:rub(tot.before)}</dd></div></dl></div><div class="acts"><button type="button" class="btn pri" data-act="f-cp-apply" ${L.length?'':'disabled'}>Применить</button><button type="button" class="btn" data-act="f-cp-x">Отмена</button></div></div></div>`;
 }
@@ -20448,7 +20486,7 @@ function finParams(){
   :`<div class="acts"><button type="button" class="btn pri" data-act="f-zone-ok">Добавить зону</button><button type="button" class="btn" data-act="f-zone-cancel">Отменить</button></div>`}`}
  const op=null;
  let h=`${op?`<div class="note opnote"><div class="name-row"><b>${opName(op)}</b><button type="button" class="icb" data-act="f-op-x" aria-label="Закрыть">${I('x')}</button></div><p class="sm mut">${op.w} × ${op.h} см${op.kind==='win'?', подоконник '+op.sill+' см':''}. Проём вычитается из площади отделки стены.</p><button type="button" class="btn s48" data-act="f-op-plan">Изменить в «Планировке»</button></div>`:''}<h3>${surfName(k)}${kind==='wall'&&m.zones.length?', основная часть':''}</h3><dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,'base').area)} м²</dd></div></dl>
- ${covCard(m.base,{pid:'cb',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button><div class="cv-l">${cpTargets(S).length?`<button type="button" class="lnk cp-btn${kind==='wall'?' cp-wall':''}" data-act="f-cp-dlg">${I('copy')}${kind==='wall'?'Применить к другим стенам':'Применить в других комнатах'}</button>`:'<span></span>'}<button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>${F.copied&&F.copied.surf===F.surf&&F.copied.n?`<p class="pdet-fb cp-fb" role="status">${I('check')}${kind==='wall'?'Применено ещё к '+F.copied.n+' '+pl(F.copied.n,['стене','стенам','стенам']):'Применено ещё в '+F.copied.rooms+' '+pl(F.copied.rooms,['комнате','комнатах','комнатах'])}</p>`:''}`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
+ ${covCard(m.base,{pid:'cb',title:'Покрытие '+({wall:'стены '+surfName(k).replace(/^\D+/,''),floor:'пола',ceil:'потолка'}[kind]),rows:m.base?rows(m.base,'base'):null,extra:kind==='floor'&&m.base&&dirOn(m.base)?dirField(E,m.base):'',actions:F.mode==='catalog'||F.mode==='detail'?'':`<div class="cv-a">${m.base?`<button type="button" class="btn" data-act="f-cat-open" data-t="base">Заменить</button>${cpTargets(S).length?`<button type="button" class="btn cp-btn" data-act="f-cp-dlg">${kind==='wall'?'Применить к другим стенам':'Применить в других комнатах'}</button>`:''}${roCpLine(m.base,kind)}<div class="cv-l"><button type="button" class="lnk err" data-act="f-clear">Убрать</button></div>`:`<button type="button" class="btn pri" data-act="f-cat-open" data-t="base">Выбрать покрытие</button>`}</div>`})}`;
  if(kind==='wall')h+=`<div class="grp"><h4>Зоны отделки</h4>${m.zones.length?m.zones.map(z=>`<button type="button" class="tl" data-act="f-zone" data-id="${z.id}">Зона ${z.n}<span class="mut">${zoneSize(k,z)}, ${fmtN(targetGeo(E,k,z.id).area)} м²</span></button>`).join(''):`<p class="mut sm">Зон нет. Вся стена в одном покрытии.</p>`}<button type="button" class="btn wide" data-act="f-zone-new">${I('plus')}Добавить зону</button></div>`;
  return h;
 }
@@ -25203,14 +25241,14 @@ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.clo
  var ex=function(t){return String(t).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
  cmpHTML=function(C){var E=S.E,T=E.est,l=C.lines.find(function(x){return x.id===T.sel}),acc=!!ACC[l.id],A=acc?[]:alts(l),cur=A.find(function(a){return a.id===l.eff})||{sum:l.sum};
   var oth=A.filter(function(a){return a.id!==l.eff});
-  var head='<div class="ro-alg-top"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Назад</button></div><h2 class="ro-alg-t">Аналоги</h2><p class="ro-alg-c">'+(oth.length?A.length+' '+pl(A.length,['товар','товара','товаров'])+' · замена для '+l.name:'')+'</p>';
+  var head='<div class="ro-alg-top"><button type="button" class="btn s48" data-act="e-back">'+I('back')+'Назад</button></div><h2 class="ro-alg-t">Аналоги</h2><p class="ro-alg-c">'+(oth.length?A.length+' '+pl(A.length,['товар','товара','товаров'])+', замена для '+l.name:'')+'</p>';
   if(!oth.length)return '<div class="ro-alg">'+head+'<div class="empty" style="background:var(--paper)"><h3>Аналогов нет</h3><p class="mut">В каталоге нет других товаров того же назначения. В смете остаётся '+l.name+'.</p></div></div>';
   var cards=A.map(function(a){var M=MAT[a.id],d=a.sum-cur.sum,is=a.id===l.eff,u=String(M.unit||'').replace(/\s+\d.*$/,'');
    var diff=is?'<p class="ro-alg-d ro-alg-sp" aria-hidden="true">&nbsp;</p>':d<0?'<p class="ro-alg-d lo">Дешевле на '+rub(-d)+'</p>':d>0?'<p class="ro-alg-d hi">Дороже на '+rub(d)+'</p>':'<p class="ro-alg-d">Та же сумма</p>';
    return '<article class="ro-alg-card'+(is?' is':'')+'"><div class="ro-alg-ph">'+pthumb(a.id,'an'+a.id,160)+'<p class="ro-alg-b">'+(is?'Сейчас в смете':(M.st?'В наличии':'Нет в наличии'))+'</p></div>'+
     '<div class="ro-alg-bd"><h3>'+M.name+'</h3><p class="ro-alg-m">'+pMeta(M,a.id)+'</p>'+
     '<div class="ro-alg-btm"><p class="ro-alg-p"><strong>'+rub(M.price)+'</strong><span>'+ex(u)+'</span></p>'+
-    '<p class="ro-alg-q">К покупке '+a.buy+' · <b>'+rub(a.sum)+'</b></p>'+diff+
+    '<p class="ro-alg-q">К покупке '+a.buy+', <b>'+rub(a.sum)+'</b></p>'+diff+
     '<div class="ro-alg-a">'+(is?'<span class="ro-alg-in">В смете</span>':'<button type="button" class="btn pri" data-act="e-swap" data-id="'+a.id+'" title="Заменить в смете">Заменить<span class="ro-alg-x">в смете</span></button>')+'</div></div></div></article>'}).join('');
   return '<div class="ro-alg">'+head+'<p class="ro-alg-h">Сравнивайте сумму на всю площадь: упаковка дешевле может выйти дороже из-за расхода.</p><div class="ro-alg-g">'+cards+'</div></div>'};
  var ui=document.getElementById('ui');if(ui)new MutationObserver(function(){ui.querySelectorAll('[data-act=e-cmp]').forEach(function(b){if(b.textContent.trim()!=='Аналоги')b.textContent='Аналоги'})}).observe(ui,{childList:true,subtree:true});
@@ -29064,7 +29102,7 @@ html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew{display:flex;align-items:cent
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew svg{width:16px;height:16px;flex:none;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew b{font-weight:600;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{overflow:hidden;text-overflow:ellipsis}
-html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:"·";margin:0 6px 0 0}
+html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{margin-left:-6px}html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:",\00a0";margin:0}/* 25.11: запятая вместо «·» */
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l{display:inline-flex;align-items:center;min-height:40px;margin:0 0 0 6px;padding:0;border:0;background:none;color:#006B79;font:600 14px/21px Manrope,Arial,sans-serif;cursor:pointer}
 @media (hover:hover){html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:hover{text-decoration:underline;text-underline-offset:4px}}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
@@ -31024,7 +31062,7 @@ html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew{display:flex;align-items:cent
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew svg{width:16px;height:16px;flex:none;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew b{font-weight:600;color:#A32637}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{overflow:hidden;text-overflow:ellipsis}
-html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:"·";margin:0 6px 0 0}
+html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d{margin-left:-6px}html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .d::before{content:",\00a0";margin:0}/* 25.11: запятая вместо «·» */
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l{display:inline-flex;align-items:center;min-height:40px;margin:0 0 0 6px;padding:0;border:0;background:none;color:#006B79;font:600 14px/21px Manrope,Arial,sans-serif;cursor:pointer}
 @media (hover:hover){html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:hover{text-decoration:underline;text-underline-offset:4px}}
 html body #ui .ed .ctr>.tb.estimate-toolbar>.ro-ew .ro-ew-l:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
@@ -31844,7 +31882,7 @@ window.addEventListener('message',e=>{
     case 'imgs:res':{if(d.from&&frames[d.from])post(d.from,{type:'imgs:res',map:d.map||{}});break}
     case 'search:res':{if(d.from&&frames[d.from])post(d.from,{type:'search:res',id:d.id,html:d.html});break}
     case 'ready':ready[mod]=true;if(!window.__roPre){window.__roPre=1;setTimeout(()=>{const go=()=>{['catalog','info'].forEach(m=>{if(!frames[m]&&curMod!==m){mount(m);if(frames[m]&&curMod!==m&&overMod!==m)frames[m].hidden=true}})};(window.requestIdleCallback||((f)=>setTimeout(f,200)))(go,{timeout:4000})},1500)}/* Р47: каталог и инфостраницы заранее в фоне — первый переход без передёргивания */if(mod==='account')setTimeout(()=>{const f=frames.account;if(!f)return;if(overMod&&!shown[overMod])return;f.style.visibility='';if(overMod)try{f.focus()}catch(e){}},60);(queue[mod]||[]).splice(0).forEach(m=>post(mod,m));post(mod,{type:'cart',units:RO.cartUnits()});if(mod==='ctor')post(mod,{type:'cart:changed',lines:cartLines(),full:true});post(mod,{type:'auth',user:RO.user});if(!frames[mod].hidden)apply(location.hash);reveal(mod);break;
-    case 'nav':{if(d.path==='back'&&mod==='account'&&overMod==='ctor'&&!RO.user){if(/^\/objects/.test(RO.back||'')){lastRouted.ctor='/objects';nav('#/objects',{replace:true})}else nav('#/ctor',{replace:true});break} /* Р67 */
+    case 'nav':{if(d.path==='back'&&mod==='account'&&overMod==='ctor'&&!RO.user){/* 25.11 (Алина): гость с черновиком закрыл вход – остаётся там, откуда открыл (комната, «Мои объекты»), а не на «Создать свой интерьер» */const bk=RO.back||'';if(/^\/(objects|room\/)/.test(bk)){lastRouted.ctor=bk;nav('#'+bk,{replace:true})}else nav('#/ctor',{replace:true});break} /* Р67 */
                if(d.path==='back'){if(depth()>0)history.back();else nav('#'+(overMod&&RO.back&&RO.back!==RO.route?RO.back:'/'),{replace:true});break}
       const h=d.path?'#'+d.path:toPath(d.url,mod);if(h&&mod==='account'&&h===location.hash)break;if(h)nav(h,{replace:!!d.replace});break}
     case 'route':if(!frames[mod].hidden&&d.path)nav('#'+d.path,{fromModule:mod,replace:true});break;
