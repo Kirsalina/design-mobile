@@ -8810,6 +8810,39 @@ post({type:'ready'});
 @media (min-width:1101px) and (max-width:1240px){#design-app .header.is-open nav .nav-link{font-size:14px!important}}
 @media (max-width:1240px){#design-app .header{--open-header-gap:24px;--open-nav-gap:8px;--open-link-padding:8px}#design-app .header nav .nav-link{white-space:nowrap}}
 </style>
+<style id="ro-w4-btn">
+/* W4 G1, 25.11: кнопки, поля и логотип – «средний» вариант (Алина 25.11, 12:24–12:53). Образец: Context/TEAM/mock/knopki-srednee.css.
+   Скругление 10 у кнопок, полей, счётчиков (кнопка внутри строки поиска 8).
+   Бирюзовая: градиент #3DD6E1→#19CBD8→#13B8C4, мягкая тень своего цвета снизу; без кольца и без светлой линии сверху (Алина 25.11, 15:01).
+   Белая (контурная, «Назад», кнопка-иконка с рамкой, счётчик): белый→#F3F5F6, рамка #566273, светлая линия сверху, мягкая тень.
+   Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
+   Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
+   :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
+html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+/* удаление: белая кнопка, красный текст */
+html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
+/* кнопки внутри счётчика – без своего фона */
+html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:none!important;box-shadow:none!important;border-color:transparent!important}
+/* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
+html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
+/* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+/* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
+html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
+html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
+@media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
 </body></html>
 </script>
 <script type="text/x-ro-module" id="mod-catalog"><!doctype html>
@@ -13076,7 +13109,7 @@ function quantityLabel(item) {
   return 'Количество';
 }
 const priceFormatter = new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2});
-const rub = amount => priceFormatter.format(amount)+'\u00A0₽';
+const rub = amount => Number.isFinite(amount) ? priceFormatter.format(amount)+'\u00A0₽' : 'N\u00A0₽'; /* W3-2: неизвестная сумма (NaN) – «N ₽» */
 function comparisonPrice(item) {
   if (item.areaPerSaleUnit) return rub(Math.round(item.price/item.areaPerSaleUnit))+' за м²';
   const m = String(item.pack||'').match(/(\d+(?:,\d+)?)\s*(л|кг)(?![а-яё])/i);
@@ -15052,7 +15085,7 @@ function orderSummary(action = '') {
     <details class="order-products"><summary><span id="summary-count">${productCount(units)}</span>${icon('down')}</summary>
       <ul class="pos-list">${lines.map(({item,quantity})=>positionRow(item,quantity)).join('')}</ul></details>
     <p class="summary-row"><span>Товары</span><strong id="summary-subtotal">${rub(subtotal)}</strong></p>
-    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p>
+    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p>
     <p id="summary-window" class="meta" aria-live="polite"></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}</aside>`;
 }
 function transactionHeading(title,parent='',action='') {
@@ -15122,7 +15155,7 @@ function updateCartSummary() {
   $('#cart-selected-count').textContent = selected.length+' из '+cart.size;
   $('#cart-subtotal').textContent = rub(cartTotals(selected).subtotal);
   $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length));
-  $('#cart-summary-note').textContent = selected.length ? 'Доставку рассчитаем при оформлении' : 'Выберите товары для заказа';
+  $('#cart-summary-note').textContent = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
 }
 function changeCartQuantity(field,quantity) {
   const entry = cart.get(field.dataset.cartQty);
@@ -15149,13 +15182,53 @@ const ADDR=ADDR_ST.flatMap(([st,hs])=>hs.map(h=>`${st}, д. ${h}`));
 const addrSug=q=>{q=String(q||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').split(/\s+/).filter(Boolean);if(!q.length)return[];const W=a=>a.toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').split(/\s+/).filter(Boolean);
  return ADDR.map(a=>{const w=W(a);if(!q.every(x=>w.some(y=>y.startsWith(x))))return null;const st=w.slice(1).findIndex(y=>y.startsWith(q[0]));return[a,st<0?9:st]}).filter(Boolean).sort((x,y)=>x[1]-y[1]).map(x=>x[0]).slice(0,7)};
 
+
+/* W3-2 (25.11): города доставки. Одно место для настройки (у Димы – из админки):
+   free – порог бесплатной доставки (для логики макета; на экране «N ₽», пока заказчик не назовёт сумму);
+   free:null – бесплатной нет, доставка по расстоянию. to – «в <город>» для текстов. */
+window.RO_DELIVERY = window.RO_DELIVERY || {
+  cities:[
+    {name:'Тольятти', to:'Тольятти', by:'Тольятти', free:30000},
+    {name:'Жигулёвск', to:'Жигулёвск', by:'Жигулёвску', free:30000},
+    {name:'Самара', to:'Самару', by:'Самаре', free:null}
+  ],
+  hidden:true /* суммы не согласованы: показываем «N ₽» */
+};
+function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
+  var c=RO_DELIVERY.cities.find(function(x){return x.name===n});
+  return c||{name:n,to:n,by:n,free:null}}
+function roMoney(x){return RO_DELIVERY.hidden?'N ₽':rub(x)}
+function roDeliveryNote(sub){var c=roCity();
+  if(c.free==null)return 'Доставка в '+c.to+' по расстоянию, рассчитаем при оформлении';
+  if(sub>=c.free)return 'Доставка по '+c.by+' бесплатно';
+  return 'Доставка по '+c.by+' бесплатно от '+roMoney(c.free)+', осталось '+roMoney(c.free-sub)}
+function roW3Sync(form,q){
+  var f=form.elements,house=f.home&&f.home.value==='house',fl=f.floor.value.trim(),lift=f.lift?f.lift.value:'';
+  form.querySelectorAll('[data-w3-flat]').forEach(function(el){el.hidden=house;el.querySelectorAll('input').forEach(function(i){i.disabled=house})});
+  var t=function(k,v){var el=form.querySelector('[data-w3-'+k+']');if(el)el.textContent=v};
+  t('t="door"',house?'До ворот':'До подъезда');
+  t('d="door"',house?'Выгрузим из машины у ворот.':'Выгрузим из машины у подъезда.');
+  t('t="in"',house?'В дом':'В квартиру');
+  t('d="in"',house?'Занесём в дом, на первый этаж.':'Поднимем'+(fl?' на '+fl+' этаж':' на этаж')+(lift==='cargo'?' на грузовом лифте':lift==='pass'?' на пассажирском лифте':lift==='none'?' по лестнице':'')+' и занесём в квартиру.');
+  var row=document.getElementById('ro-w3-lift-row');
+  if(row){row.hidden=!(q&&q.carry);var l=document.getElementById('ro-w3-lift-label'),c=document.getElementById('ro-w3-lift-cost');
+    if(l)l.textContent=q&&q.liftLabel||'Подъём';if(c)c.textContent=q?rub(q.lift):''}
+}
 const addressComplete = value => /\d/.test(value) && /[а-яё]{2}/i.test(value);
 function deliveryQuote(form) {
   const fields = form.elements;
   if (fields.delivery.value === 'Самовывоз') return {cost:0,window:'На следующий день',destination:'Пункт выдачи RemOnLine, Тольятти'};
   const address = fields.address.value.trim();
   if (!addressComplete(address)) return null;
-  return {cost:590,window:'Через 1–2 дня',destination:'Тольятти, '+address+(fields.unit.value.trim() ? ', кв. '+fields.unit.value.trim() : '')};
+  /* W3-2: доставка бесплатна от порога в городах из списка, иначе – по расстоянию (считает сервер; пока «N ₽»).
+     Подъём / занос – отдельная строка, считает сервер по весу, этажу и лифту (пока «N ₽»). */
+  const city = roCity(), sub = cartTotals(selectedCartLines()).subtotal;
+  const house = fields.home && fields.home.value==='house', carry = fields.carry && fields.carry.value==='in';
+  const ship = city.free!=null && sub>=city.free ? 0 : NaN, lift = carry ? NaN : 0, fl = fields.floor.value.trim();
+  const unit = !house && fields.unit.value.trim();
+  return {cost:ship+lift,ship,lift,carry,house,window:'Через N дней',
+    liftLabel:carry ? (house ? 'Занос в дом' : fl ? 'Подъём на '+fl+' этаж' : 'Подъём на этаж') : '',
+    destination:city.name+', '+address+(unit ? ', кв. '+unit : '')};
 }
 function syncDelivery(form) {
   const pickup = form.elements.delivery.value === 'Самовывоз';
@@ -15163,7 +15236,8 @@ function syncDelivery(form) {
   $('#address-fields').hidden = pickup;
   $('#pickup-note').hidden = !pickup;
   $('#address-fields').querySelectorAll('input,textarea').forEach(input => { input.disabled = pickup; });
-  $('#summary-delivery').textContent = quote ? pickup ? 'Бесплатно' : rub(quote.cost) : '';
+  $('#summary-delivery').textContent = quote ? pickup || quote.ship===0 ? 'Бесплатно' : rub(quote.ship) : '';
+  if (typeof roW3Sync==='function') roW3Sync(form,quote);
   $('#summary-delivery').closest('div,p,li')?.toggleAttribute('hidden',!quote);
   $('#summary-total').textContent = quote ? rub(cartTotals(selectedCartLines()).subtotal+quote.cost) : 'После расчёта доставки';
   $('#summary-window').textContent = quote ? quote.window.charAt(0).toLowerCase()+quote.window.slice(1) : '';
@@ -15182,6 +15256,10 @@ function checkoutError(field,strict) {
     if (!/^\+?[\d ()-]+$/.test(value) || !/^\d{10,15}$/.test(value.replace(/\D/g,''))) return 'Проверьте номер телефона.';
     if (field.name==='phone' && !/^(7|8)9\d{9}$/.test(value.replace(/\D/g,''))) return 'Нужен номер мобильного телефона.';
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
+  }
+  if (field.name==='lift') {
+    const f = field.form.elements;
+    return f.home.value!=='house' && f.carry.value==='in' && !f.lift.value ? 'Выберите, есть ли лифт.' : '';
   }
   if (field.name==='address') {
     if (!value) return 'Введите улицу и дом.';
@@ -15237,14 +15315,19 @@ function renderCheckout() {
         </div>
         <div class="saved-addrs" id="saved-addrs" role="radiogroup" aria-label="Адреса доставки" hidden></div>
         <div class="checkout-fields address-grid" id="address-fields">
-          <input type="hidden" name="city" value="Тольятти">
-          <label class="full addr-field">Улица и дом<input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
-          <div class="addr-row full">
+          <input type="hidden" name="city" value="${roCity().name}">
+          <div class="full ro-w3-seg" role="radiogroup" aria-label="Тип жилья"><label><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
+          <label class="full addr-field"><span class="ro-w3-lrow">Улица и дом<span class="ro-w3-city">${roCity().name}</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
+          <div class="addr-row full" data-w3-flat>
             <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
             <label>Подъезд<input class="field" name="entrance" inputmode="numeric"></label>
             <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
           </div>
-          <label class="chk lift-check full"><input type="checkbox" name="lift">Есть грузовой лифт</label>
+          <div class="full ro-w3-segf" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="none"><span>Нет</span></label><label><input type="radio" name="lift" value="pass"><span>Пассажирский</span></label><label><input type="radio" name="lift" value="cargo"><span>Грузовой</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
+          <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
+            <label class="pay-option"><input type="radio" name="carry" value="door" checked><span><b data-w3-t="door">До подъезда</b><span class="meta" data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
+            <label class="pay-option"><input type="radio" name="carry" value="in"><span><b data-w3-t="in">В квартиру</b><span class="meta" data-w3-d="in">Поднимем на этаж и занесём в квартиру.</span></span><b class="ro-w3-pr">+N&nbsp;₽</b></label>
+          </div></div>
           <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает, позвоните за 30 минут"></textarea></label>
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
@@ -15287,7 +15370,7 @@ function renderCheckout() {
     const draft = Object.fromEntries(new FormData(form));
     checkoutDrafts.set(cart,draft);
     form.querySelectorAll('#address-fields input,#address-fields textarea').forEach(field => {
-      if (field.type!=='checkbox' || field.checked) draft[field.name] = field.type==='checkbox' ? 'on' : field.value;
+      if ((field.type!=='checkbox' && field.type!=='radio') || field.checked) draft[field.name] = field.type==='checkbox' ? 'on' : field.value;
     });
   });
 }
@@ -15317,12 +15400,12 @@ function roUserLogin(phone) {
 }
 const savedAddrKey = a => String(a.street||'').trim().toLowerCase().replace(/ё/g,'е').replace(/[.,]/g,' ').replace(/\s+/g,' ')+'|'+String(a.flat||'').trim();
 const savedAddrLine = a => a.street+(a.flat ? ', кв. '+a.flat : '');
-const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, a.lift&&'есть грузовой лифт'].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
+const savedAddrMeta = a => { const m = [a.entrance&&'подъезд '+a.entrance, a.floor&&'этаж '+a.floor, (a.liftType||(a.lift?'cargo':''))==='cargo'?'грузовой лифт':a.liftType==='pass'?'пассажирский лифт':a.liftType==='none'?'без лифта':''].filter(Boolean).join(', '); return m ? m[0].toUpperCase()+m.slice(1) : ''; };
 let savedAddrList = [];
 function fillAddress(form,a) {
   const f = form.elements;
   f.address.value = a ? a.street : ''; f.unit.value = a ? a.flat||'' : ''; f.entrance.value = a ? a.entrance||'' : '';
-  f.floor.value = a ? a.floor||'' : ''; f.lift.checked = !!(a && a.lift); f.comment.value = a ? a.comment||'' : '';
+  f.floor.value = a ? a.floor||'' : ''; f.lift.value = a ? a.liftType||(a.lift?'cargo':'') : ''; f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
   showCheckoutError(f.address,'');
 }
 function syncSavedAddress(form) {
@@ -15359,7 +15442,7 @@ function rememberCheckoutUser(form) {
   if (cart===exampleCart || !phoneAuth.account) return;
   const f = form.elements; if (f.delivery.value!=='Доставка') return;
   const u = roUser() || {phone:phoneAuth.account,name:'',email:'',addresses:[]};
-  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.checked,comment:f.comment.value.trim()};
+  const a = {street:f.address.value.trim(),flat:f.unit.value.trim(),entrance:f.entrance.value.trim(),floor:f.floor.value.trim(),lift:f.lift.value==='cargo',liftType:f.lift.value,home:f.home.value,comment:f.comment.value.trim()};
   let changed = false;
   if (!u.name && f.recipient.value.trim()) { u.name = f.recipient.value.trim(); changed = true; }
   if (a.street && !u.addresses.some(x=>savedAddrKey(x)===savedAddrKey(a))) { u.addresses.push({id:Date.now(),...a,main:!u.addresses.length}); changed = true; }
@@ -15506,7 +15589,7 @@ function restoreOrders() {
         if (!entry || !/^RO-[1-9][0-9]{3,8}$/.test(entry.id) || !Object.hasOwn(paymentStates,entry.payment)
           || !Number.isFinite(entry.created) || !Number.isFinite(new Date(entry.created).getTime())
           || !['Доставка','Самовывоз'].includes(entry.delivery)
-          || !Number.isFinite(entry.cost) || entry.cost<0 || typeof entry.window!=='string'
+          || (entry.cost!==null && (!Number.isFinite(entry.cost) || entry.cost<0)) || typeof entry.window!=='string'
           || !Array.isArray(entry.lines) || !entry.lines.length) continue;
         const lines = entry.lines.filter(line=>line && /^[A-Z0-9-]{2,50}$/.test(line.sku)
           && typeof line.name==='string' && typeof line.pack==='string'
@@ -15515,7 +15598,7 @@ function restoreOrders() {
         if (lines.length!==entry.lines.length) continue;
         if (kind==='example' && !['cart-example','cart-unavailable'].includes(entry.caseName)) continue;
         const {id,created,payment,delivery,cost,window} = entry;
-        bucket.set(id,{id,created,payment,delivery,quote:{cost,window},lines,subtotal:cartTotals(lines).subtotal,
+        bucket.set(id,{id,created,payment,delivery,quote:{cost:cost===null?NaN:cost,window},lines,subtotal:cartTotals(lines).subtotal,
           caseName:kind==='example' ? entry.caseName : '',statusChecks:entry.statusChecks===1 ? 1 : 0,
           returns:restoreReturnRequests(entry.returns,lines)});
       }
@@ -15707,7 +15790,7 @@ function renderOrder() {
         <ul class="pos-list">${current.lines.map(({item,quantity}) => positionRow(item,quantity,delivered ? '<div class="pos-extra">'+orderReturnMarkup(current,item.sku)+'</div>' : '')).join('')}</ul></details>
       <div class="ord-card ord-info">
         ${refund||['cancelled','expired'].includes(current.payment)?'':`<dl class="ord-dl"><div><dt>Доставка</dt><dd>${destination?'<span id="order-destination"></span>':'Тольятти'}<span class="meta">${orderText(current.quote.window)}</span></dd></div></dl>`}
-        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost ? rub(current.quote.cost) : 'Бесплатно'}</dd></div>
+        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost===0 ? 'Бесплатно' : rub(current.quote.cost)}</dd></div>
         <div class="ord-total"><dt>${paid?'Оплачено':refund?(current.payment==='refunded'?'Возвращено':'К возврату'):['cancelled','expired'].includes(current.payment)?'Сумма':'К оплате'}</dt><dd>${rub(total)}</dd></div></dl>
       </div>
     </div>
@@ -17292,6 +17375,39 @@ html body .unpaid-strip .unpaid-inner .button,html body #unpaid-strip .unpaid-in
    if(go2&&f.requestSubmit)f.requestSubmit()},250)});
 })();
 <%/script>
+<style id="ro-w4-btn">
+/* W4 G1, 25.11: кнопки, поля и логотип – «средний» вариант (Алина 25.11, 12:24–12:53). Образец: Context/TEAM/mock/knopki-srednee.css.
+   Скругление 10 у кнопок, полей, счётчиков (кнопка внутри строки поиска 8).
+   Бирюзовая: градиент #3DD6E1→#19CBD8→#13B8C4, мягкая тень своего цвета снизу; без кольца и без светлой линии сверху (Алина 25.11, 15:01).
+   Белая (контурная, «Назад», кнопка-иконка с рамкой, счётчик): белый→#F3F5F6, рамка #566273, светлая линия сверху, мягкая тень.
+   Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
+   Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
+   :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
+html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+/* удаление: белая кнопка, красный текст */
+html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
+/* кнопки внутри счётчика – без своего фона */
+html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:none!important;box-shadow:none!important;border-color:transparent!important}
+/* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
+html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
+/* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+/* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
+html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
+html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
+@media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
 <style id="ro-w3-1-css">
 /* W3-1 O6: кликаются только фото и название */
 html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm{display:inline!important;width:auto!important;min-height:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;text-decoration:none}
@@ -17308,6 +17424,40 @@ html body .shop #transaction .cart-row .cart-row-name a.ro-w3-nm strong{display:
 #transaction .phone-ok>svg{display:block;width:16px;height:16px;flex:none}
 #transaction .phone-ok .link-button{margin-left:10px!important}
 </style>
+<style id="ro-w3-2-css">
+/* W3-2: сегменты (§5: выбранный – тёплая плашка, 600 #152A4B; остальные без рамки #566273; высота 48) */
+#transaction .ro-w3-seg{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:4px!important;justify-self:start;width:auto!important}
+#transaction .ro-w3-seg label{display:block!important;flex:none!important;width:auto!important;min-height:0!important;position:relative;margin:0!important;padding:0!important;cursor:pointer}
+#transaction .ro-w3-seg input{position:absolute!important;inset:0;width:100%!important;height:100%!important;opacity:0;margin:0;cursor:pointer;appearance:none;border:0!important;background:none!important}
+#transaction .ro-w3-seg span{display:flex;align-items:center;height:48px;padding:0 16px;border-radius:12px;font-size:16px;line-height:24px;font-weight:600;color:#566273;transition:background .15s ease,color .15s ease}
+@media (hover:hover){#transaction .ro-w3-seg label:hover span{background:rgba(21,42,75,.05)}}
+#transaction .ro-w3-seg input:checked+span{background:#F3F1EB;color:#152A4B}
+#transaction .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 1px #006B79}
+#transaction .ro-w3-seg input:disabled+span{opacity:.5}
+#transaction .ro-w3-segf{display:grid;gap:4px}
+#transaction .ro-w3-segf[hidden],#transaction .addr-row[hidden]{display:none!important}
+#transaction .ro-w3-lbl{font-size:14px;line-height:21px;font-weight:600;color:#152A4B}
+#transaction .ro-w3-lrow{display:flex;justify-content:space-between;gap:12px}
+#transaction .ro-w3-city{font-size:14px;line-height:21px;font-weight:600;color:#566273}
+#transaction .ro-w3-how{display:grid;gap:12px;margin-top:4px}
+#transaction .ro-w3-how .pay-option{align-items:flex-start;padding:16px;margin:0}
+#transaction .ro-w3-how .pay-option>span{flex:1;min-width:0}
+#transaction .ro-w3-how .pay-option b{color:#152A4B}
+#transaction .ro-w3-how .pay-option .meta{font-size:14px;line-height:21px;color:#566273}
+#transaction .ro-w3-how .ro-w3-pr{white-space:nowrap;font-weight:700}
+#transaction .ro-w3-how input{margin-top:1px!important}
+#transaction #ro-w3-lift-row[hidden]{display:none}
+@media (max-width:420px){#transaction .ro-w3-seg span{padding:0 12px}}
+</style>
+<script id="ro-w3-2">
+/* лифт: ошибка проверяется по первой кнопке группы */
+document.addEventListener('change',function(e){var t=e.target;if(t&&t.form&&t.form.id==='checkout-form'&&(t.name==='home'||t.name==='carry'||t.name==='lift')){var lr=t.form.elements.lift[0];if(lr&&document.getElementById('checkout-error-lift').textContent)showCheckoutError(lr,checkoutError(lr))}});
+(function(){var mark=function(){var lr=document.querySelector('#checkout-form input[name=lift]');if(lr&&!lr.hasAttribute('aria-describedby'))lr.setAttribute('aria-describedby','checkout-error-lift')};
+ new MutationObserver(mark).observe(document.body,{childList:true,subtree:true});mark();
+ addEventListener('storage',function(e){if(e.key!=='ro-city')return;try{if(typeof updateCartSummary==='function'&&document.getElementById('cart-summary-note'))updateCartSummary()}catch(_){}
+  var f=document.getElementById('checkout-form');if(f){f.elements.city.value=roCity().name;var c=f.querySelector('.ro-w3-city');if(c)c.textContent=roCity().name;syncDelivery(f)}});
+})();
+<%/script>
 </body>
 </html>
 </script>
@@ -25319,7 +25469,40 @@ window.addEventListener('click',function(e){var a=e.target.closest&&e.target.clo
   return '<div class="ro-alg">'+head+'<p class="ro-alg-h">Сравнивайте сумму на всю площадь: упаковка дешевле может выйти дороже из-за расхода.</p><div class="ro-alg-g">'+cards+'</div></div>'};
  var ui=document.getElementById('ui');if(ui)new MutationObserver(function(){ui.querySelectorAll('[data-act=e-cmp]').forEach(function(b){if(b.textContent.trim()!=='Аналоги')b.textContent='Аналоги'})}).observe(ui,{childList:true,subtree:true});
 })();
-<%/script></body></html></script>
+<%/script><style id="ro-w4-btn">
+/* W4 G1, 25.11: кнопки, поля и логотип – «средний» вариант (Алина 25.11, 12:24–12:53). Образец: Context/TEAM/mock/knopki-srednee.css.
+   Скругление 10 у кнопок, полей, счётчиков (кнопка внутри строки поиска 8).
+   Бирюзовая: градиент #3DD6E1→#19CBD8→#13B8C4, мягкая тень своего цвета снизу; без кольца и без светлой линии сверху (Алина 25.11, 15:01).
+   Белая (контурная, «Назад», кнопка-иконка с рамкой, счётчик): белый→#F3F5F6, рамка #566273, светлая линия сверху, мягкая тень.
+   Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
+   Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
+   :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
+html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+/* удаление: белая кнопка, красный текст */
+html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
+/* кнопки внутри счётчика – без своего фона */
+html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:none!important;box-shadow:none!important;border-color:transparent!important}
+/* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
+html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
+/* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+/* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
+html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
+html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
+@media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
+</body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
 <head>
@@ -30055,6 +30238,39 @@ post({type:'ready'});
 /* 23.11: «← Главная» на ПК убрана – «Главная» есть в шапке. Телефон – без изменений. */
 @media (min-width:701px){html body .transaction-back[data-nav="/"]{display:none!important}}
 </style>
+<style id="ro-w4-btn">
+/* W4 G1, 25.11: кнопки, поля и логотип – «средний» вариант (Алина 25.11, 12:24–12:53). Образец: Context/TEAM/mock/knopki-srednee.css.
+   Скругление 10 у кнопок, полей, счётчиков (кнопка внутри строки поиска 8).
+   Бирюзовая: градиент #3DD6E1→#19CBD8→#13B8C4, мягкая тень своего цвета снизу; без кольца и без светлой линии сверху (Алина 25.11, 15:01).
+   Белая (контурная, «Назад», кнопка-иконка с рамкой, счётчик): белый→#F3F5F6, рамка #566273, светлая линия сверху, мягкая тень.
+   Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
+   Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
+   :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
+html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+/* удаление: белая кнопка, красный текст */
+html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
+/* кнопки внутри счётчика – без своего фона */
+html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:none!important;box-shadow:none!important;border-color:transparent!important}
+/* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
+html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
+/* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+/* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
+html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
+html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
+@media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
+</style>
 </body>
 </html>
 </script>
@@ -31746,6 +31962,39 @@ post({type:'ready'});
 <style id="ro-home-nv-css">
 /* 4 пункта шапки на узком ПК (1101–1240): плотнее, без переноса строки */
 @media (min-width:1101px) and (max-width:1240px){html body .hd{gap:24px!important}html body .hd nav:not(.mmenu){gap:8px!important}html body .hd nav:not(.mmenu) .nv{padding-left:8px!important;padding-right:8px!important;white-space:nowrap!important}}
+</style>
+<style id="ro-w4-btn">
+/* W4 G1, 25.11: кнопки, поля и логотип – «средний» вариант (Алина 25.11, 12:24–12:53). Образец: Context/TEAM/mock/knopki-srednee.css.
+   Скругление 10 у кнопок, полей, счётчиков (кнопка внутри строки поиска 8).
+   Бирюзовая: градиент #3DD6E1→#19CBD8→#13B8C4, мягкая тень своего цвета снизу; без кольца и без светлой линии сверху (Алина 25.11, 15:01).
+   Белая (контурная, «Назад», кнопка-иконка с рамкой, счётчик): белый→#F3F5F6, рамка #566273, светлая линия сверху, мягкая тень.
+   Наведение – темнее (только мышь); нажатие – на тон темнее, без тени (у белой – лёгкая тень внутрь); размер и место не меняются.
+   Не трогаем: неактивные кнопки, чипы-выбор, вкладки, кнопки-ссылки, кнопки-иконки без рамки, карточки.
+   :not(#ro-w4-a…c) ничего не отбирает, только поднимает вес правила над старыми правилами частей. */
+html body :is(.button,.btn:not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),.v-btn:not(.v-btn--icon):not(.v-chip),.icon-button,.gallery-control,.cart-stepper,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,form.search,form.gsearch,.v-field,:is(input,select,textarea).field,.fld :is(input,select),.objsel>button,.objsel>.fld>button,.cmp,.dd-trigger,.rsw-b,.room-trigger,.wrow input,#ui .objbar>.icb.ro-odel,.open-filters,.estimate-toggle,#ui .ochip):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:10px!important}
+html body :is(form.search,form.gsearch) :is(.button,.btn,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){border-radius:8px!important}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#3DD6E1 0%,#19CBD8 50%,#13B8C4 100%)!important;background-origin:border-box!important;border-color:transparent!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)!important;transition:background .15s ease,box-shadow .15s ease,border-color .15s ease}
+@media (hover:hover){html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#2FCCD7 0%,#12BAC6 50%,#0FA9B5 100%) border-box!important}}
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#22C4CF 0%,#14B6C2 100%) border-box!important;box-shadow:none!important}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:linear-gradient(180deg,#FFFFFF 0%,#F3F5F6 100%)!important;border-color:#566273!important;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.10),0 4px 10px -4px rgba(21,42,75,.14)!important;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease}
+@media (hover:hover){html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):hover{background:linear-gradient(180deg,#F8F9FA 0%,#EBEEF0 100%)!important;border-color:#152A4B!important;text-decoration:none!important}}
+html body :is(.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):active{background:linear-gradient(180deg,#EEF1F3 0%,#F5F7F8 100%)!important;box-shadow:inset 0 1px 2px rgba(21,42,75,.12)!important}
+/* удаление: белая кнопка, красный текст */
+html body :is(.btn.danger,#ui .objacts>.btn.ro-odel):not(:disabled):not([aria-disabled=true]):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){color:#A32637!important}
+/* кнопки внутри счётчика – без своего фона */
+html body .cart-stepper :is(button,.v-btn):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){background:none!important;box-shadow:none!important;border-color:transparent!important}
+/* Vuetify: своя подсветка наведения и нажатия поверх градиента не нужна */
+html body .v-btn:is(.bg-primary,.text-secondary) :is(.v-btn__overlay,.v-btn__underlay):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){opacity:0!important}
+/* фокус с клавиатуры (§6): рамка #006B79 + 1 px внутри */
+html body :is(.button:not(.secondary):not(.icon-button):not(.text-link):not(.link-button),.v-btn.bg-primary,.btn.pri,#ui .cmp .go,.button.secondary,.icon-button,.gallery-control,.catalog-back,.transaction-back,.page-back,#product-alternatives,:is(.department-banner,#category-banner) .text-link,.ro-ck button,.open-filters,.estimate-toggle,#ui .ochip,.v-btn.text-secondary.v-btn--variant-outlined,#ui .btn:not(.pri):not(.cnb):not(.ro-plink):not(.mini):not(.ao.chips .btn),#ui .objbar>.icb.ro-odel,.cart-stepper :is(button,input)):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c):focus-visible:not(:active){outline:0!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79,0 1px 2px rgba(21,42,75,.10)!important}
+/* «Аналоги»: иконка ⇆ (Lucide arrow-left-right) */
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){display:inline-flex!important;align-items:center;justify-content:center;gap:8px;font-weight:700!important;color:#152A4B!important}
+html body #detail #product-alternatives:not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c)::before{content:"";width:20px;height:20px;flex:none;background:currentColor;-webkit-mask:var(--ro-w4-an) center/20px no-repeat;mask:var(--ro-w4-an) center/20px no-repeat}
+:root{--ro-w4-an:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M8%203%204%207l4%204%22/%3E%3Cpath%20d%3D%22M4%207h16%22/%3E%3Cpath%20d%3D%22m16%2021%204-4-4-4%22/%3E%3Cpath%20d%3D%22M20%2017H4%22/%3E%3C/svg%3E")}
+/* логотип: текст 800, #152A4B, значок с лёгкой нейтральной тенью (без ореола) */
+html body :is(.brand img,.brand svg,img.brand-mark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){filter:drop-shadow(0 2px 3px rgba(21,42,75,.20))}
+html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){font-weight:800!important;letter-spacing:-.015em!important;color:#152A4B!important}
+@media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
 </body></html></script>
 
