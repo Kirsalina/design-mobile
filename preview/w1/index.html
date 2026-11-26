@@ -21206,7 +21206,7 @@ function elevSVG(){
  const opsTop=()=>OPS.map(q=>{const p=q.p;return `<g pointer-events="none"><rect x="${q.x}" y="${q.y}" width="${p.w}" height="${p.h}" fill="#fff" stroke="#152A4B" stroke-width="${2*kk}"/>${lab(q.x+p.w/2,q.y+p.h/2,0,0,0,kk,opName(p),'name',12)}</g>`}).join('');
  o+=opsTop();
  o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="none" stroke="#152A4B" stroke-width="${3*kk}" pointer-events="none"/>`;
- {const zsel=ok.find(z=>z.sel||z.draft)||(tr&&F.target!=='base'?ok.find(z=>z.id===+F.target):null);if(zsel)o+=selBand(H-zsel.from-zsel.h,zsel.h);else if(!F.zform){const R=(x,y,w,h,t)=>`M${x-t} ${y-t}h${w+2*t}v${h+2*t}h${-w-2*t}Z`,hw=WT/2*kk,ins=(WT/2-.75)*kk,rs=[[0,0,W,H]].concat(OPS.map(q=>[q.x,q.y,q.p.w,q.p.h]));o+=rs.map(r=>`<path d="${R(...r,hw)} ${R(...r,-hw)}" fill="${SMID}" fill-rule="evenodd" pointer-events="none"/><path d="${R(...r,ins)} ${R(...r,-ins)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`).join('')}}
+ {const zsel=ok.find(z=>z.sel||z.draft)||(tr&&F.target!=='base'?ok.find(z=>z.id===+F.target):null);if(zsel)o+=selBand(H-zsel.from-zsel.h,zsel.h);else if(!F.zform){const R=(x,y,w,h,t)=>`M${x-t} ${y-t}h${w+2*t}v${h+2*t}h${-w-2*t}Z`,hw=WT/2*kk,ins=(WT/2-.75)*kk,rs=(rest.length&&ok.some(z=>!z.draft)?rest.map(r=>[0,H-r[1],W,r[1]-r[0]]):[[0,0,W,H]]).concat(rest.length&&ok.some(z=>!z.draft)?[].concat(...OPS.map(q=>rest.map(r=>{const y0=Math.max(q.y,H-r[1]),y1=Math.min(q.y+q.p.h,H-r[0]);return y1>y0?[q.x,y0,q.p.w,y1-y0]:null}).filter(Boolean))):OPS.map(q=>[q.x,q.y,q.p.w,q.p.h]));o+=rs.map(r=>`<path d="${R(...r,hw)} ${R(...r,-hw)}" fill="${SMID}" fill-rule="evenodd" pointer-events="none"/><path d="${R(...r,ins)} ${R(...r,-ins)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`).join('')}}
  o+=labs;
  o+=lab(W/2,H,0,1,22,kk,W+' см','dim')+lab(0,H/2,-1,0,18,kk,H+' см','dim');
 
@@ -21350,7 +21350,7 @@ function cpDlg(){
  const F=E.fin,id=sm(E,F.surf).base,M=MAT[id];if(!M)return'';
  const kind=cpKind(E),T=cpTargets(S),L=cpSel(S),repl=L.filter(l=>{const b=cpMat(l.R,l.k).base;return b&&b!==id}).length,tot=cpTotals(S);
  const cur=(R,k)=>{const m=cpMat(R,k),b=m.base&&MAT[m.base]?MAT[m.base].name:'';return (b?(m.base===id?'уже это покрытие':'сейчас: '+b):'без покрытия')+((m.zones||[]).length?', зоны останутся':'')};
- const row=(t,k,label)=>{const key=t.ri+':'+k,same=cpMat(t.R,k).base===id;return `<label class="chk tall cp-row${same?' dis':''}"><input type="checkbox" data-m="cp" data-k="${key}" ${c.sel[key]?'checked':''} ${same?'disabled':''}><span class="cp-t"><span class="cp-n">${esc(label)}</span><span class="cp-s">${esc(cur(t.R,k))}</span></span></label>`};
+ const row=(t,k,label)=>{const key=t.ri+':'+k,same=cpMat(t.R,k).base===id;return `<label class="chk tall cp-row${same?' dis':''}"><input type="checkbox" data-m="cp" data-k="${key}" ${c.sel[key]||same?'checked':''} ${same?'disabled':''}><span class="cp-t"><span class="cp-n">${esc(label)}</span><span class="cp-s">${esc(cur(t.R,k))}</span></span></label>`};
  let list;
  if(kind==='wall')list=T.map(t=>{const free=t.ks.filter(k=>cpMat(t.R,k).base!==id),on=free.filter(k=>c.sel[t.ri+':'+k]).length,open=c.open[t.ri]!==undefined?c.open[t.ri]:t.cur;
    return `<section class="cp-room"><div class="cp-head"><label class="chk cp-all"><input type="checkbox" data-m="cp-all" data-k="${t.ri}" ${free.length&&on===free.length?'checked':''} ${free.length?'':'disabled'}><span class="cp-t"><span class="cp-n">${esc(t.name)}${t.cur?'<span class="cp-here">Эта комната</span>':''}</span><span class="cp-s">${on?`выбрано ${on} из ${t.ks.length}`:pl(t.ks.length,['стена','стены','стен']).replace(/^/,t.ks.length+' ')}</span></span></label><button type="button" class="icb" data-act="f-cp-open" data-i="${t.ri}" aria-expanded="${open}" aria-label="${open?'Свернуть':'Показать'} стены: ${esc(t.name)}">${I('down')}</button></div>${open?`<div class="cp-walls">${t.ks.map(k=>row(t,k,surfName(k))).join('')}</div>`:''}</section>`}).join('');
@@ -26306,6 +26306,15 @@ document.addEventListener('DOMContentLoaded',function(){if(typeof ACC==='undefin
 /* планировка – на всю высоту редактора, как отделка и обстановка */
 .dev-d .plan:has(>svg[aria-label="План комнаты"]){max-height:none!important}
 </style>
+<style id="ro-w1-7-css">
+html body #ui .pdet.ro-pd.ro-pd .pdet-vl>button[aria-pressed=true]{background:#fff!important;border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79!important}
+#ui .cp-row.dis{cursor:default}
+#ui .cp-row.dis input:disabled:checked{opacity:.45}
+</style>
+<script id="ro-w1-7">
+/* W1-7: клик по пустому месту плана при черновике зоны – отмена, при открытой зоне – закрыть зону */
+(function(){var _a=act;act=function(a,el,ev){try{var F=S.E&&S.E.fin;if(a==='f-bg'&&F&&F.zform&&F.mode!=='try')return _a.call(this,F.zform.id?'f-zone-close':'f-zone-cancel',el,ev)}catch(e){}return _a.apply(this,arguments)}})();
+<%/script>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
