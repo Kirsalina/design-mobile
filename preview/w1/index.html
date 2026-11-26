@@ -3448,7 +3448,7 @@ return function render(_ctx, _cache) {
       default: _withCtx(() => [_createElementVNode("span", _hoisted_1, [(['paint','primer','wallpaper','adhesive'].includes(kind))
         ? (_openBlock(), _createElementBlock("img", {
             key: 0,
-            src: 'assets/' + ({paint:'paint-bucket',primer:'primer-canister',wallpaper:'wallpaper-roll',adhesive:'adhesive-bag'}[kind]) + '.svg',
+            src: '../../assets/' + ({paint:'paint-bucket',primer:'primer-canister',wallpaper:'wallpaper-roll',adhesive:'adhesive-bag'}[kind]) + '.svg',
             alt: "",
             width: "120",
             height: "112"
@@ -8387,7 +8387,7 @@ app.component('category-link', {
 });
 app.component('catalog-group', {
   props: ['label', 'kind', 'target'],
-  template: `<v-card class="catalog-group" :href="'#' + target" :data-preview="label" variant="flat"><span class="group-image" aria-hidden="true"><img v-if="['paint','primer','wallpaper','adhesive'].includes(kind)" :src="'assets/' + ({paint:'paint-bucket',primer:'primer-canister',wallpaper:'wallpaper-roll',adhesive:'adhesive-bag'}[kind]) + '.svg'" alt="" width="120" height="112"><span v-else :class="['group-sample',kind]"></span></span><span class="group-label">{{ label }}<ui-icon name="chevron-right"></ui-icon></span></v-card>`
+  template: `<v-card class="catalog-group" :href="'#' + target" :data-preview="label" variant="flat"><span class="group-image" aria-hidden="true"><img v-if="['paint','primer','wallpaper','adhesive'].includes(kind)" :src="'../../assets/' + ({paint:'paint-bucket',primer:'primer-canister',wallpaper:'wallpaper-roll',adhesive:'adhesive-bag'}[kind]) + '.svg'" alt="" width="120" height="112"><span v-else :class="['group-sample',kind]"></span></span><span class="group-label">{{ label }}<ui-icon name="chevron-right"></ui-icon></span></v-card>`
 });
 app.component('plan-diagram', { template: `<svg class="room-plan" viewBox="0 0 280 220" role="img" aria-label="Иллюстрация плана 5 на 4 метра: окно слева, выбрана стена за диваном"><defs><pattern id="plan-grid" width="16" height="16" patternUnits="userSpaceOnUse"><path d="M16 0H0V16" fill="none" stroke="#dbe3df" stroke-width=".6"/></pattern></defs><rect x="36" y="36" width="208" height="156" fill="url(#plan-grid)"/><path d="M68 192H36V36h208v156H112" fill="none" stroke="#183c43" stroke-width="5"/><path class="plan-selected-wall" d="M36 36H244" fill="none" stroke="#006b79" stroke-width="7"/><path d="M113 192v-44m0 0a44 44 0 0 0-44 44" fill="none" stroke="#71868b" stroke-width="1.5"/><path d="M36 76v58" stroke="#f4f7f6" stroke-width="8"/><path d="M33 76v58m6-58v58" stroke="#006b79" stroke-width="2"/><path d="M36 20h208M36 15v10m208-10v10M260 36v156m-5-156h10m-10 156h10" stroke="#71868b" fill="none"/><rect x="112" y="7" width="56" height="24" fill="#f4f7f6"/><text x="140" y="24" text-anchor="middle" fill="#536467" font-family="Manrope,Arial" font-size="16">5 м</text><text x="262" y="120" text-anchor="middle" fill="#536467" font-family="Manrope,Arial" font-size="16" transform="rotate(90 262 120)">4 м</text><rect x="100" y="54" width="113" height="35" rx="7" fill="#dce7df" stroke="#a8b9ad"/><path d="M108 80v-20h97v20m-65-20v20m33-20v20" fill="none" stroke="#a8b9ad"/><rect x="128" y="110" width="65" height="32" rx="16" fill="#e8dfcf" stroke="#beb9a8"/></svg>` });
 app.component('room-demo', {
@@ -18882,7 +18882,7 @@ document.addEventListener('DOMContentLoaded',function(){
   /* 25.11 (Алина): «Назад к смете» из карточки товара, открытой из сметы; карточка выбранного покрытия открывается кликом */
   if(a==='ro-est-back'&&F){F.detFrom=null;F.mode='view';_a('stage',{dataset:{s:'3'}});return}
   if(a==='ro-det-back'&&F){F.detFrom=null;F.mode='view';render();return}
-  if(a==='ro-cv-open'&&F&&el&&el.dataset){F.target='base';openCat(E,'base');F.mode='detail';F.det=el.dataset.id;F.detFrom='view';if(S.dev==='m')E.sheet=null;render();var u=document.querySelector('#ui .ctr');if(u)u.scrollTop=0;return}
+  if(a==='ro-cv-open'&&F&&el&&el.dataset){var t0=el.dataset.t&&el.dataset.t!=='base'?el.dataset.t:'base';F.target=t0;openCat(E,t0);F.mode='detail';F.det=el.dataset.id;F.detFrom='view';if(S.dev==='m')E.sheet=null;render();var u=document.querySelector('#ui .ctr');if(u)u.scrollTop=0;return}
   if(F&&F.detFrom&&/^(f-list|f-cat-open|f-surf|f-all|stage|f-back)$/.test(a))F.detFrom=null;
   if(a==='f-list'&&F&&F.surf&&!F.cat){var k=surfKind(F.surf),id=F.tryMat||sm(E,F.surf).base;F.cat=id&&MAT[id]&&MAT[id].ks.indexOf(k)>=0?MAT[id].cat:CATS[k][0]}}catch(e){}
   var r=_a.apply(this,arguments);
@@ -20522,6 +20522,8 @@ const insetPoly=(P,d)=>{const n=P.length;let A=0;for(let i=0;i<n;i++){const p=P[
 /* Выбранная площадь (пол, потолок, зона): пунктир внутри контура, заливка не закрывает покрытие. */
 const selArea=(P,k,inset)=>`<polygon points="${insetPoly(P,inset).map(q=>q.join(',')).join(' ')}" fill="none" stroke="${SELC}" stroke-width="${1.5*k}" stroke-dasharray="${4*k} ${3*k}" stroke-linejoin="round" pointer-events="none"/>`;
 const e1Dash=k=>`stroke-dasharray="${4*k} ${3*k}" stroke-linecap="butt"`;
+/* W1-6: выделенная зона – как выделенная стена: полоса WT по контуру зоны + пунктир (без заливки всей зоны и без внешней рамки) */
+const roZB=(x,y,w,h,k)=>{const R=t=>`M${x-t} ${y-t}h${w+2*t}v${h+2*t}h${-w-2*t}Z`,hw=WT/2*k,ins=(WT/2-.75)*k;return `<path d="${R(hw)} ${R(-hw)}" fill="${SMID}" fill-rule="evenodd" pointer-events="none"/><path d="${R(ins)} ${R(-ins)}" fill="none" stroke="${SELC}" stroke-width="${1.5*k}" ${e1Dash(k)} pointer-events="none"/>`};
 /* Отрезок стены или окна в состоянии «выбрано»/«ошибка»: плотная заливка + пунктир внутри. */
 const selBar=(a,b,k,err)=>`<polygon points="${qd(a,b,WT/2*k,0)}" fill="${err?SMR:SMID}" pointer-events="none"/><polygon points="${qd(a,b,(WT/2-.75)*k,.75*k)}" fill="none" stroke="${err?SERR:SELC}" stroke-width="${1.5*k}" ${e1Dash(k)} pointer-events="none"/>`;
 /* Окно: пустой контур толщиной со стену. st: rest | sel | err | draft. */
@@ -21193,7 +21195,7 @@ function elevSVG(){
  let labs='';const OPS=E.ops.filter(p=>p.wall===i&&p.kind!=='niche').map(p=>{const b=p.kind==='win'?p.sill:0;return{p,x:rv?W-p.off-p.w:p.off,y:H-b-p.h,w:p.w,h:p.h}});
  /* Контур выбранной части стены огибает окна и двери: проём в отделку не входит. */
  const selBand=(y,h)=>{let d=`M0 ${y}H${W}V${y+h}H0Z`;OPS.forEach(q=>{const x0=Math.max(0,q.x),x1=Math.min(W,q.x+q.w),y0=Math.max(y,q.y),y1=Math.min(y+h,q.y+q.h);if(x1>x0&&y1>y0)d+=`M${x0} ${y0}H${x1}V${y1}H${x0}Z`});
-  return `<path d="${d}" fill="${SLT}" fill-opacity=".55" fill-rule="evenodd" pointer-events="none"/>`+opsTop()+ring([[0,y],[W,y],[W,y+h],[0,y+h]],kk)};
+  return roZB(0,y,W,h,kk)};
  o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="url(#pb)" pointer-events="none"/>`;
  rest.forEach(r=>{o+=`<rect data-act="f-base" tabindex="0" role="button" aria-label="${surfName(k)}, основная часть" style="cursor:pointer" x="0" y="${H-r[1]}" width="${W}" height="${r[1]-r[0]}" fill="#000" fill-opacity="0" stroke="#152A4B" stroke-width="${2*kk}"/>`});
  ok.forEach(z=>{const pid='pz'+z.id,id=tr&&+F.target===z.id?F.tryMat:z.mat,y=H-z.from-z.h,ar=z.draft?'':', '+fmtN(wallNet(E,i,z.from,z.from+z.h))+' м²';
@@ -21229,7 +21231,7 @@ function flatSVG(ceil,pick){
  let zdefs='';const zs=m.zones.map(z=>F.zform&&F.zform.id===z.id?{...z,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),sel:1}:z);
  if(!pick&&F.zform&&!F.zform.id&&F.surf===k)zs.push({id:0,n:0,x:N(F.zform.x),y:N(F.zform.y),w:N(F.zform.w),l:N(F.zform.l),mat:null,draft:1});
  zs.forEach(z=>{if(!(z.w>0)||!(z.l>0)||!(z.x>=0)||!(z.y>=0))return;const zid=!pick&&F.mode==='try'&&+F.target===z.id?F.tryMat:z.mat,x0=ceil?b.x+b.w-z.x-z.w:b.x+z.x,y0=b.y+z.y;zdefs+=patDef(zid,'pz'+z.id,0);
-  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="#152A4B" stroke-width="${1.5*kk}"/>${z.sel||z.draft||(!pick&&F.mode==='try'&&+F.target===z.id)?`<rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="${SLT}" fill-opacity=".55" pointer-events="none"/><rect x="${x0+.75*kk}" y="${y0+.75*kk}" width="${Math.max(0,z.w-1.5*kk)}" height="${Math.max(0,z.l-1.5*kk)}" fill="none" stroke="${SELC}" stroke-width="${1.5*kk}" ${e1Dash(kk)} pointer-events="none"/>`:''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
+  o+=`<g ${z.draft||pick?'pointer-events="none"':`data-act="f-zone" data-id="${z.id}" tabindex="0" role="button" aria-label="Зона ${z.n}" style="cursor:pointer"`}><rect x="${x0}" y="${y0}" width="${z.w}" height="${z.l}" fill="url(#pz${z.id})" stroke="#152A4B" stroke-width="${1.5*kk}"/>${z.sel||z.draft||(!pick&&F.mode==='try'&&+F.target===z.id)?`${roZB(x0,y0,z.w,z.l,kk)}`:''}${lab(x0+8*kk,y0+12*kk,1,0,0,kk,(z.draft?'Новая зона':'Зона '+z.n)+(zid||z.draft?'':', без покрытия'),z.sel?'sel':'name')}</g>`});
  o+=wallsSVG(E,kk,fx,!ceil);
  E.ops.forEach(p=>{const w=wall(E,p.wall),a0=[w.a[0]+w.d[0]*p.off,w.a[1]+w.d[1]*p.off],c0=[a0[0]+w.d[0]*p.w,a0[1]+w.d[1]*p.w],a=fx(a0),c=fx(c0);
   if(p.kind==='win')o+=winSym(a,c,kk,'rest');
@@ -21277,6 +21279,8 @@ function roCpNote(id,kind){let n=0;try{cpTargets(S).forEach(t=>t.ks.forEach(k=>{
 function roCpLine(id,kind){let n=0;try{cpTargets(S).forEach(t=>t.ks.forEach(k=>{if(cpMat(t.R,k).base===id)n++}))}catch(e){}
  if(!n)return '';return `<p class="pdet-fb cp-fb">${I('check')}${kind==='wall'?'Применено ещё к '+n+' '+pl(n,['стене','стенам','стенам']):'Применено ещё в '+n+' '+pl(n,['комнате','комнатах','комнатах'])}</p>`}
 /* 25.11: количество в корзине словами по виду товара */
+/* W1-6: сколько товара в настоящей корзине сайта (общее хранилище с каталогом) */
+function roCartQ(id){try{const r=JSON.parse(localStorage.getItem('remonline-catalog-demo-cart')||'[]'),e=Array.isArray(r)&&r.find(x=>Array.isArray(x)&&x[0]===id);return e?Math.max(0,+e[1]||0):0}catch(e){return 0}}
 function cartQty(id,q){const M=MAT[id];if(M.calc==='paper')return q+' '+pl(q,['рулон','рулона','рулонов']);if(M.calc==='paint')return q+' '+pl(q,['ведро','ведра','вёдер']);if(M.calc==='lin')return q+' пог. м';if(M.calc==='m2')return q+' м²';return q+' '+pl(q,['упаковка','упаковки','упаковок'])}
 function detailHTML(){
  const E=S.E,F=E.fin,id=F.det,M=MAT[id],g=targetGeo(E,F.surf,F.target),c=cost(E,id,F.surf,F.target),kind=surfKind(F.surf);
@@ -21289,7 +21293,7 @@ function detailHTML(){
    ${vars.length>1?`<div class="pdet-v"><h4>Варианты</h4><div class="pdet-vl" role="group" aria-label="Варианты товара">${vars.map(v=>`<button type="button" data-act="f-more" data-id="${v}" aria-pressed="${v===id}"><span class="sw">${pfill(v,'v'+v)}</span>${MAT[v].name.replace(/^.*«|».*$/g,'')}</button>`).join('')}</div></div>`:''}
    <div class="pdet-calc"><h4>${surfInto(E,F.target)}: ${targetName(E)}</h4><dl class="ar"><div><dt>К покупке</dt><dd>${c.qty}</dd></div><div><dt>Сумма</dt><dd>${rub(c.sum)}</dd></div><div><dt>Расчёт</dt><dd>${c.note}</dd></div></dl></div>
    <div class="pdet-a"><button type="button" class="btn pri" data-act="f-try" data-id="${id}">Примерить</button><button type="button" class="btn" data-act="f-cart" data-id="${id}">В корзину</button><button type="button" class="btn" data-act="f-analog">Аналоги</button></div>
-   <p class="pdet-fb ro-kd-fb" role="status">${inCart&&inCart.q?`${I('check')}<span>В корзине: ${cartQty(id,inCart.q)} на ${rub(inCart.sum)}</span>`:''}</p>
+   <div class="ro-w1-pstw" role="status">${(q=>q?`<div class="ro-w1-pst"><span class="ro-w1-pst-i" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><p><strong class="nowrap">В корзине ${cartQty(id,q)}</strong> <span class="nowrap">на ${rub(q*M.price)}</span></p><button type="button" class="ro-w1-pst-go" data-act="e-cartgo">Перейти в корзину</button></div>`:'')(roCartQ(id))}</div>
    <h4>Характеристики</h4><dl class="ar">${spec.map(r=>`<div><dt>${r[0]}</dt><dd>${r[1]}</dd></div>`).join('')}</dl>
    <a class="lnk pdet-l" href="#${id}" data-act="f-page" data-id="${id}">Открыть страницу товара в каталоге${I('arrow')}</a></div></article>`;
 }
@@ -21365,8 +21369,8 @@ function finParams(){
  if(F.zform){const f=F.zform,ex=!!f.id,z=ex&&m.zones.find(z=>z.id===f.id),e=F.zerrs;
   const flds=kind==='wall'?fld('zone','from','Отступ от пола, см',f.from,e.from,{num:1})+fld('zone','h','Высота зоны, см',f.h,e.h,{num:1,fx:fx('h')})
    :`<div class="row2">${fld('zone','x','От левой стены, см',f.x,e.x,{num:1})}${fld('zone','y','От верхней стены, см',f.y,e.y,{num:1})}</div><div class="row2">${fld('zone','w','Ширина, см',f.w,e.w,{num:1,fx:fx('h')})}${fld('zone','l','Длина, см',f.l,e.l,{num:1})}</div>${kind==='ceil'?fld('zone','drop','Ниже основного потолка, см',f.drop,e.drop,{num:1}):''}`;
-  return `<h3>${ex?'Зона '+f.n:'Новая зона'}</h3>${ex?`<dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,f.id).area)} м²</dd></div></dl>`:''}${ex?covCard(z.mat,{pid:'cz',title:'Покрытие зоны '+f.n,rows:z.mat?rows(z.mat,f.id):null,actions:`<div class="cv-a"><button type="button" class="btn ${z.mat?'':'pri'}" data-act="f-cat-open" data-t="${f.id}">${z.mat?'Заменить':'Выбрать покрытие'}</button></div>`}):''}${flds}
-  ${ex?`<div class="acts"><button type="button" class="btn danger" data-act="f-zone-del">${I('trash')}Удалить зону</button><button type="button" class="btn" data-act="f-zone-close">Готово</button></div>`
+  return `<h3>${ex?'Зона '+f.n:'Новая зона'}</h3>${ex?`<dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,f.id).area)} м²</dd></div></dl>`:''}${ex?covCard(z.mat,{pid:'cz',open:String(f.id),title:'Покрытие зоны '+f.n,rows:z.mat?rows(z.mat,f.id):null,actions:`<div class="cv-a"><button type="button" class="btn ${z.mat?'':'pri'}" data-act="f-cat-open" data-t="${f.id}">${z.mat?'Заменить':'Выбрать покрытие'}</button></div>`}):''}${flds}
+  ${ex?`<div class="acts"><button type="button" class="btn danger" data-act="f-zone-del">${I('trash')}Удалить зону</button></div>`
   :`<div class="acts"><button type="button" class="btn pri" data-act="f-zone-ok">Добавить зону</button><button type="button" class="btn" data-act="f-zone-cancel">Отменить</button></div>`}`}
  const op=null;
  let h=`${op?`<div class="note opnote"><div class="name-row"><b>${opName(op)}</b><button type="button" class="icb" data-act="f-op-x" aria-label="Закрыть">${I('x')}</button></div><p class="sm mut">${op.w} × ${op.h} см${op.kind==='win'?', подоконник '+op.sill+' см':''}. Проём вычитается из площади отделки стены.</p><button type="button" class="btn s48" data-act="f-op-plan">Изменить в «Планировке»</button></div>`:''}<h3>${surfName(k)}${kind==='wall'&&m.zones.length?', основная часть':''}</h3><dl class="ar parea"><div><dt>Площадь отделки</dt><dd>${fmtN(targetGeo(E,k,'base').area)} м²</dd></div></dl>
@@ -26281,6 +26285,27 @@ html body #ui .pdet-fb.ro-kd-fb:not(:empty)>svg{flex:none;margin-top:2px}
 document.addEventListener('DOMContentLoaded',function(){if(typeof ACC==='undefined')return;var T={"GR-010":{"name":"Грунтовка «Контакт»","pack":"канистра 5 л","price":950,"ps":5.0,"unit":"л","pk":["канистра","канистры","канистр"]},"GR-D01":{"name":"Грунтовка «Глубокая»","pack":"канистра 5 л","price":750,"ps":5.0,"unit":"л","pk":["канистра","канистры","канистр"]},"GR-D02":{"name":"Грунтовка «Универсальная»","pack":"канистра 5 л","price":790,"ps":5.0,"unit":"л","pk":["канистра","канистры","канистр"]},"KL-01":{"name":"Клей «Флизелин»","pack":"упаковка на 25 м²","price":450,"ps":25.0,"unit":"м²","pk":["упаковка","упаковки","упаковок"]},"KL-02":{"name":"Клей «Винил»","pack":"упаковка на 30 м²","price":520,"ps":30.0,"unit":"м²","pk":["упаковка","упаковки","упаковок"]},"KL-D01":{"name":"Клей «Керамика»","pack":"упаковка 5 кг","price":590,"ps":5.0,"unit":"кг","pk":["упаковка","упаковки","упаковок"]},"KL-D02":{"name":"Клей «Камень»","pack":"упаковка 5 кг","price":790,"ps":5.0,"unit":"кг","pk":["упаковка","упаковки","упаковок"]},"KL-D06":{"name":"Клей «Влагостойкий»","pack":"упаковка 5 кг","price":920,"ps":5.0,"unit":"кг","pk":["упаковка","упаковки","упаковок"]},"KR-S01":{"name":"Крестики 2 мм","pack":"упаковка 200 шт.","price":120,"ps":200.0,"unit":"шт.","pk":["упаковка","упаковки","упаковок"]},"ML-D01":{"name":"Лента «Точный край»","pack":"рулон 50 м","price":190,"ps":50.0,"unit":"м","pk":["рулон","рулона","рулонов"]},"ML-D02":{"name":"Лента «Малярная»","pack":"рулон 50 м","price":230,"ps":50.0,"unit":"м","pk":["рулон","рулона","рулонов"]},"PD-01":{"name":"Подложка под ламинат","pack":"рулон 10 м²","price":890,"ps":10.0,"unit":"м²","pk":["рулон","рулона","рулонов"]},"PD-D02":{"name":"Подложка «Тихий пол»","pack":"рулон 10 м²","price":990,"ps":10.0,"unit":"м²","pk":["рулон","рулона","рулонов"]},"PL-01":{"name":"Плинтус напольный","pack":"планка 2,5 м","price":390,"ps":2.5,"unit":"м","pk":["планка","планки","планок"]},"PR-01":{"name":"Порожек 90 см","pack":"1 шт.","price":450,"ps":1,"unit":"шт.","pk":["штука","штуки","штук"]},"PZ-01":{"name":"Плёнка пароизоляционная","pack":"рулон 30 м²","price":690,"ps":30.0,"unit":"м²","pk":["рулон","рулона","рулонов"]},"SH-D02":{"name":"Шпаклёвка «Финиш»","pack":"коробка 5 кг","price":680,"ps":5.0,"unit":"кг","pk":["коробка","коробки","коробок"]},"SH-D04":{"name":"Шпаклёвка «Белая»","pack":"коробка 5 кг","price":720,"ps":5.0,"unit":"кг","pk":["коробка","коробки","коробок"]},"SH-D06":{"name":"Шпаклёвка «Влагостойкая»","pack":"коробка 5 кг","price":810,"ps":5.0,"unit":"кг","pk":["коробка","коробки","коробок"]},"TL-G01":{"name":"Шпатель зубчатый 8 мм","pack":"1 шт.","price":290,"ps":1,"unit":"шт.","pk":["штука","штуки","штук"]},"TL-K01":{"name":"Кювета малярная","pack":"1 шт.","price":190,"ps":1,"unit":"шт.","pk":["штука","штуки","штук"]},"TL-R01":{"name":"Шпатель резиновый","pack":"1 шт.","price":190,"ps":1,"unit":"шт.","pk":["штука","штуки","штук"]},"TL-V01":{"name":"Валик малярный 25 см","pack":"1 шт.","price":450,"ps":1,"unit":"шт.","pk":["штука","штуки","штук"]},"ZT-101":{"name":"Затирка «Белая»","pack":"коробка 2 кг","price":580,"ps":2.0,"unit":"кг","pk":["коробка","коробки","коробок"]},"ZT-102":{"name":"Затирка «Светлый камень»","pack":"коробка 2 кг","price":640,"ps":2.0,"unit":"кг","pk":["коробка","коробки","коробок"]},"ZT-103":{"name":"Затирка «Графит»","pack":"коробка 2 кг","price":640,"ps":2.0,"unit":"кг","pk":["коробка","коробки","коробок"]}};
  Object.keys(T).forEach(function(k){if(!ACC[k])return;var t=T[k];ACC[k].name=t.name;ACC[k].pack=t.pack;ACC[k].price=t.price;ACC[k].ps=t.ps;ACC[k].unit=t.unit;ACC[k].pk=t.pk})});
 <%/script>
+<style id="ro-w1-6-css">
+/* W1-6 */
+#ui .ro-w1-pstw{container-type:inline-size;margin:12px 0 0}
+#ui .ro-w1-pstw:empty{display:none}
+#ui .ro-w1-pst{display:grid;grid-template-columns:24px minmax(0,1fr);align-items:center;gap:4px 12px;padding:14px 16px;min-height:52px;box-sizing:border-box;background:#F3F1EB;border-radius:12px;color:#152A4B;font:400 16px/24px Manrope,system-ui,sans-serif}
+#ui .ro-w1-pst-go{grid-column:2;justify-self:start}
+@container (min-width:460px){#ui .ro-w1-pst{grid-template-columns:24px minmax(0,1fr) auto}#ui .ro-w1-pst-go{grid-column:auto}}
+#ui .ro-w1-pst-i{flex:none;width:24px;height:24px;border-radius:50%;background:#19CBD8;color:#152A4B;display:grid;place-items:center}
+#ui .ro-w1-pst-i svg{width:16px;height:16px;display:block}
+#ui .ro-w1-pst p{min-width:0;margin:0}
+#ui .ro-w1-pst strong{font-weight:600}
+#ui .ro-w1-pst-go{min-height:24px;padding:0;border:0;background:none;font:600 16px/24px Manrope,system-ui,sans-serif;color:#006B79;text-decoration:none;cursor:pointer}
+@media (hover:hover){#ui .ro-w1-pst-go:hover{color:#19A9B6;text-decoration:none}}
+#ui .ro-w1-pst-go:focus-visible{outline:2px solid #006B79;outline-offset:2px;border-radius:4px}
+/* образец цвета в списке вариантов – без белой подложки */
+#ui .pdet-vl span.sw{padding:0!important;background:none!important;gap:0!important;box-shadow:none!important}
+/* панель справа и шторка телефона не прокручиваются вбок */
+#ui .pan,#ui section.sheet{overflow-x:hidden!important}
+/* планировка – на всю высоту редактора, как отделка и обстановка */
+.dev-d .plan:has(>svg[aria-label="План комнаты"]){max-height:none!important}
+</style>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
