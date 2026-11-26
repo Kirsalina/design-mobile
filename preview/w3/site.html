@@ -15305,7 +15305,7 @@ function roAddrDD(d){if(!d.list||!d.list.length)return '';var cur=d.a||d.list[0]
 function roDlvHTML(sub){var d=roDlvInfo(sub),h='<p class="ro-w3-dh'+(d.ok?' ro-w3-ok':'')+'"><span>Доставка</span><b>'+d.price+'</b></p>'+roAddrDD(d);
   if(d.free!=null&&(d.left>0||d.ok)){var pct=d.ok?100:Math.max(4,Math.round(sub/d.free*100));
     h+='<span class="ro-w3-bar'+(d.ok?' ro-w3-full':'')+'" aria-hidden="true"><span style="width:'+pct+'%"></span></span>';
-    h+=d.ok?'<p class="ro-w3-sub ro-w3-done">'+icon('check')+'<span>Заказ от '+rub(d.free)+' – доставим за наш счёт</span></p>':'<p class="ro-w3-sub">Добавьте товаров на '+rub(d.left)+' – доставка станет бесплатной</p>'}
+    h+=d.ok?'<p class="ro-w3-sub ro-w3-done">'+icon('check')+'<span>Доставка за наш счёт</span></p>':'<p class="ro-w3-sub">Добавьте товаров на '+rub(d.left)+' – доставка станет бесплатной</p>'}
   if(d.note)h+='<p class="ro-w3-sub">'+d.note+'</p>';
   return h}
 function roCartDlv(sel){var sub=cartTotals(sel).subtotal,html=sel.length?roDlvHTML(sub):'';
@@ -15322,7 +15322,7 @@ function roW3Sync(form,q){
   t('t="door"',house?'До ворот':'До подъезда');
   t('d="door"',house?'Выгрузим у ворот':'Выгрузим у подъезда');
   t('t="in"',house?'В дом':'В квартиру');
-  t('d="in"',house?'Занесём в дом':'Поднимем и занесём в квартиру');
+  t('d="in"',house?'Занесём в дом, на первый этаж':'Поднимем и занесём в квартиру');
   var c=roCarry(house,lift,fl,cwt),pr=document.getElementById('ro-w3-in-pr');
   if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(cwt*(house?R.house:R.lift));
   var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, считаем как '+cwt*100+' кг. '+(house?'Занос – '+rub(R.house)+' за каждые 100 кг.':'Подъём на лифте – '+rub(R.lift)+' за каждые 100 кг, без лифта – ещё '+rub(R.stairs)+' за каждый этаж выше первого.');
@@ -15377,6 +15377,7 @@ function checkoutError(field,strict) {
     if (field.name==='phone' && !/^(7|8)9\d{9}$/.test(value.replace(/\D/g,''))) return 'Нужен номер мобильного телефона.';
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
   }
+  if (field.name==='entrance') return field.form.elements.home.value!=='house' && !value ? 'Укажите подъезд.' : '';
   if (field.name==='lift') {
     const f = field.form.elements, fl = f.floor.value.trim();
     if (f.home.value==='house' || f.carry.value!=='in') return '';
@@ -15423,13 +15424,13 @@ function renderCheckout() {
     <div class="transaction-layout"><form class="checkout-form" id="checkout-form" novalidate>
       <h2>Покупатель</h2>
       <div class="checkout-fields">
-        <label>Имя и фамилия<input class="field" name="recipient" autocomplete="name" aria-describedby="checkout-error-recipient" required><span class="checkout-field-error" id="checkout-error-recipient" aria-live="polite"></span></label>
-        <div class="phone-field"><label>Телефон<input class="field" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" aria-describedby="checkout-error-phone" required><span class="checkout-field-error" id="checkout-error-phone" aria-live="polite"></span></label><button class="button secondary phone-send" type="button" data-phone-send>Получить код</button>
+        <label><span class="ro-w3-lt">Имя и фамилия<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="recipient" autocomplete="name" aria-describedby="checkout-error-recipient" required><span class="checkout-field-error" id="checkout-error-recipient" aria-live="polite"></span></label>
+        <div class="phone-field"><label><span class="ro-w3-lt">Телефон<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 900 000-00-00" aria-describedby="checkout-error-phone" required><span class="checkout-field-error" id="checkout-error-phone" aria-live="polite"></span></label><button class="button secondary phone-send" type="button" data-phone-send>Получить код</button>
           <div class="phone-verify full" id="phone-verify" aria-live="polite"></div></div>
         <label class="chk lift-check other-recipient full"><input type="checkbox" name="other">Получать будет другой человек</label>
         <div class="checkout-fields other-fields full" id="other-fields" hidden>
-          <label>Имя получателя<input class="field" name="otherName" autocomplete="off" aria-describedby="checkout-error-otherName" required disabled><span class="checkout-field-error" id="checkout-error-otherName" aria-live="polite"></span></label>
-          <label>Телефон получателя<input class="field" name="otherPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="+7 900 000-00-00" aria-describedby="checkout-error-otherPhone" required disabled><span class="checkout-field-error" id="checkout-error-otherPhone" aria-live="polite"></span></label>
+          <label><span class="ro-w3-lt">Имя получателя<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="otherName" autocomplete="off" aria-describedby="checkout-error-otherName" required disabled><span class="checkout-field-error" id="checkout-error-otherName" aria-live="polite"></span></label>
+          <label><span class="ro-w3-lt">Телефон получателя<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="otherPhone" type="tel" inputmode="tel" autocomplete="off" placeholder="+7 900 000-00-00" aria-describedby="checkout-error-otherPhone" required disabled><span class="checkout-field-error" id="checkout-error-otherPhone" aria-live="polite"></span></label>
         </div>
       </div>
       <fieldset><legend>Получение заказа</legend>
@@ -15440,17 +15441,17 @@ function renderCheckout() {
         <div class="saved-addrs" id="saved-addrs" role="radiogroup" aria-label="Адреса доставки" hidden></div>
         <div class="checkout-fields address-grid" id="address-fields">
           <input type="hidden" name="city" value="${roCity().name}">
-          <div class="full ro-w3-seg" role="radiogroup" aria-label="Тип жилья"><label><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
-          <label class="full addr-field">Улица и дом<input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
+          <div class="full ro-w3-cards" role="radiogroup" aria-label="Тип жилья"><label class="pay-option ro-w3-c"><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label class="pay-option ro-w3-c"><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
+          <label class="full addr-field"><span class="ro-w3-lt">Улица и дом<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
           <div class="addr-row full" data-w3-flat>
             <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
-            <label>Подъезд<input class="field" name="entrance" inputmode="numeric"></label>
+            <label><span class="ro-w3-lt">Подъезд<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="entrance" inputmode="numeric" aria-describedby="checkout-error-entrance"><span class="checkout-field-error" id="checkout-error-entrance" aria-live="polite"></span></label>
             <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
           </div>
-          <div class="full ro-w3-lift" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт в доме</span><div class="ro-w3-seg" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label><input type="radio" name="lift" value="yes"><span>Есть</span></label><label><input type="radio" name="lift" value="no"><span>Нет</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
-          <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
+                    <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
             <label class="pay-option ro-w3-po"><input type="radio" name="carry" value="door" checked><span class="ro-w3-ot"><b data-w3-t="door">До подъезда</b><span data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
             <label class="pay-option ro-w3-po"><input type="radio" name="carry" value="in"><span class="ro-w3-ot"><b data-w3-t="in">В квартиру</b><span data-w3-d="in"></span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
+            <div class="ro-w3-lift" data-w3-flat><span class="ro-w3-lbl" id="ro-w3-lift-l">Лифт в доме<span class="ro-w3-req" aria-hidden="true">*</span></span><div class="ro-w3-cards" role="radiogroup" aria-labelledby="ro-w3-lift-l"><label class="pay-option ro-w3-c"><input type="radio" name="lift" value="yes"><span>Есть</span></label><label class="pay-option ro-w3-c"><input type="radio" name="lift" value="no"><span>Нет</span></label></div><span class="checkout-field-error" id="checkout-error-lift" aria-live="polite"></span></div>
           </div><p class="meta" id="ro-w3-kg"></p></div>
           <label class="full">Комментарий курьеру<textarea class="field" name="comment" rows="3" placeholder="Например, домофон не работает"></textarea></label>
         </div>
@@ -15722,7 +15723,7 @@ function restoreOrders() {
         if (lines.length!==entry.lines.length) continue;
         if (kind==='example' && !['cart-example','cart-unavailable'].includes(entry.caseName)) continue;
         const {id,created,payment,delivery,cost,window} = entry;
-        bucket.set(id,{id,created,payment,delivery,quote:{cost:cost===null?NaN:cost,window},lines,subtotal:cartTotals(lines).subtotal,
+        bucket.set(id,{id,created,payment,delivery,quote:{cost:cost===null?NaN:cost,window,lift:Number.isFinite(entry.lift)?entry.lift:0,liftLabel:typeof entry.liftLabel==='string'?entry.liftLabel:''},lines,subtotal:cartTotals(lines).subtotal,
           caseName:kind==='example' ? entry.caseName : '',statusChecks:entry.statusChecks===1 ? 1 : 0,
           returns:restoreReturnRequests(entry.returns,lines)});
       }
@@ -15738,7 +15739,7 @@ function persistOrders(bucket) {
     storage.setItem(ordersKey,JSON.stringify([...bucket.values()].map(order=>({
       id:order.id,created:order.created,payment:order.payment,
       statusChecks:order.statusChecks,delivery:order.delivery,caseName:order.caseName,
-      cost:order.quote.cost,window:order.quote.window,
+      cost:order.quote.cost,window:order.quote.window,lift:Number.isFinite(order.quote.lift)?order.quote.lift:0,liftLabel:order.quote.liftLabel||'',
       lines:order.lines.map(({item,quantity})=>({sku:item.sku,name:item.name,pack:item.pack,price:item.price,quantity})),
       returns:saveReturns(order)
     }))));
@@ -15754,7 +15755,7 @@ function createOrder(quote,delivery,lines) {
   const orderLines = lines.map(({item:{sku,name,pack,price},quantity})=>({item:{sku,name,pack,price},quantity}));
   const order = {
     id:'RO-'+number,created:Date.now(),payment:'waiting',statusChecks:0,delivery,
-    quote:{cost:quote.cost,window:quote.window},lines:orderLines,subtotal:cartTotals(orderLines).subtotal,
+    quote:{cost:quote.cost,window:quote.window,lift:Number.isFinite(quote.lift)?quote.lift:0,liftLabel:quote.liftLabel||''},lines:orderLines,subtotal:cartTotals(orderLines).subtotal,
     caseName:isExample ? new URLSearchParams(activeRoute).get('case') : '',returns:new Map()
   };
   orderDestinations.set(order,quote.destination);
@@ -15914,7 +15915,7 @@ function renderOrder() {
         <ul class="pos-list">${current.lines.map(({item,quantity}) => positionRow(item,quantity,delivered ? '<div class="pos-extra">'+orderReturnMarkup(current,item.sku)+'</div>' : '')).join('')}</ul></details>
       <div class="ord-card ord-info">
         ${refund||['cancelled','expired'].includes(current.payment)?'':`<dl class="ord-dl"><div><dt>Доставка</dt><dd>${destination?'<span id="order-destination"></span>':'Тольятти'}<span class="meta">${orderText(current.quote.window)}</span></dd></div></dl>`}
-        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost===0 ? 'Бесплатно' : rub(current.quote.cost)}</dd></div>
+        <dl class="ord-sums"><div><dt>Товары</dt><dd>${rub(current.subtotal)}</dd></div><div><dt>Доставка</dt><dd>${current.quote.cost-(current.quote.lift||0)===0 ? 'Бесплатно' : rub(current.quote.cost-(current.quote.lift||0))}</dd></div>${current.quote.lift>0 ? `<div><dt>${current.quote.liftLabel||'Подъём'}</dt><dd>${rub(current.quote.lift)}</dd></div>` : ''}
         <div class="ord-total"><dt>${paid?'Оплачено':refund?(current.payment==='refunded'?'Возвращено':'К возврату'):['cancelled','expired'].includes(current.payment)?'Сумма':'К оплате'}</dt><dd>${rub(total)}</dd></div></dl>
       </div>
     </div>
@@ -18032,6 +18033,15 @@ html body .shop #transaction .order-products summary,html body .shop #transactio
 #transaction #checkout-form .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 2px #006B79}
 /* карточки «Как привезти» – короткий текст в одну строку */
 #transaction .ro-w3-ot span{white-space:normal}
+</style>
+<style id="ro-w3-6-css">
+/* W3-6: «Квартира / Частный дом», «Лифт в доме» – карточки сайта (.pay-option) в ряд */
+#transaction #checkout-form .ro-w3-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:420px}
+html body .shop #transaction #checkout-form label.pay-option.ro-w3-c{min-height:48px!important;padding-top:12px!important;padding-bottom:12px!important;margin:0!important;font-size:16px;line-height:24px;font-weight:600;color:#152A4B;align-items:center!important}
+#transaction #checkout-form .ro-w3-lift{display:grid;gap:4px;padding:4px 0 0}
+#transaction #checkout-form .ro-w3-lift[hidden]{display:none!important}
+/* обязательное поле */
+#transaction .ro-w3-req{color:#A32637;margin-left:2px}
 </style>
 </body>
 </html>
