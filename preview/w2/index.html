@@ -8861,7 +8861,7 @@ html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){
 html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
 </style>
 <style id="ro-w2-home-css">
-/* W2 v7 (26.11, Алина: каркас лучше, но не в стиле главной; кнопка «висит»). Блок как остальные разделы главной:
+/* W2 v8 (26.11, Алина: каркас лучше, но не в стиле главной; кнопка «висит»). Блок как остальные разделы главной:
    заголовок + описание слева, ссылка «Все интерьеры →» справа (как «Все материалы →»), ниже 4 карточки в стиле карточек Стены/Пол/Потолок.
    Телефон: карточки лентой с прокруткой пальцем. */
 #design-app .ro-w2-banner{margin:40px 0 0}
@@ -17804,6 +17804,10 @@ html body .shop #detail .ro-w2-grp h3{font-size:16px!important;line-height:24px!
 html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw{margin-top:16px}
 html body #ro-w2-dlg .ro-w2-aptrooms .ro-w2-fs{margin-top:16px}
 html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
+/* 26.11 15:53: описание интерьера и что даёт конструктор – во всю ширину колонки, как «Материалы» */
+#detail .ro-w2-about{display:flex;flex-direction:column;gap:8px;margin-top:24px}
+#detail .ro-w2-about p{margin:0;font-size:16px;line-height:24px;color:#152A4B}
+#detail .ro-w2-about p+p{font-size:14px;line-height:21px;color:#566273}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -17841,6 +17845,8 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
   ['ent-light','entry','Светлая прихожая',6.8,'1,9 × 3,6',2.7,['ent1','ent2','ent3'],[['Стены',24.3,[['KR-D01',2]]],['Пол',6.8,[['LM-D03',4]]],['Потолок',6.8,[['NT-D01',6.8]]]]],
   ['ent-oak','entry','Прихожая «Дуб»',5.9,'1,7 × 3,5',2.7,['ent2','ent1'],[['Стены',22.1,[['OB-D06',5]]],['Пол',5.9,[['LM-201',3]]],['Потолок',5.9,[['NT-D02',5.9]]]]]
  ].map(function(r){return{id:r[0],folder:r[1],name:r[2],area:r[3],size:r[4],h:r[5],img:r[6],groups:r[7]}});
+ /* Описание интерьера (Алина 26.11 15:53: «продать» интерьер; источник – админка, поле «Описание», D7) */
+ var DESC={"liv-olive": "Глубокие оливковые стены, светлый дуб на полу и матовый белый потолок. Спокойная природная гамма: комната выглядит тёплой днём и уютной вечером.", "liv-light": "Молочные шёлковые обои и белёный дуб: много света и воздуха. Подходит небольшим и северным комнатам – визуально делает их просторнее.", "liv-oak": "Светло-серые стены оттеняют тёмный дымчатый дуб, сатиновый потолок мягко отражает свет. Сдержанная гостиная с характером.", "liv-graphite": "Тёмно-серые обои и тёплый орех – контрастная гостиная для солнечной стороны. Светлый потолок не даёт комнате стать тяжёлой.", "kit-white": "Белая плитка над столешницей, меловые стены и бежевый керамогранит под камень. Чистая кухня, на которой легко ухаживать за поверхностями.", "kit-sage": "Зелёная плитка «Шалфей» и стены в тон, пол под светлый бетон. Свежая современная кухня в модной зелёной гамме.", "kit-stone": "Бежевая плитка под песчаник, белые стены и серый сланец на полу. Тёплая кухня с природной фактурой камня.", "bed-calm": "Бежевые обои и песочный дуб – мягкая тёплая гамма для отдыха. Ничего лишнего, глазу не за что зацепиться перед сном.", "bed-canvas": "Светло-серые обои с фактурой холста и тёплый ясень. Лёгкая спальня в скандинавском духе.", "kid-mint": "Мятные стены и тёплый линолеум под дерево: практичный пол, который не боится игр, и спокойный цвет для детской.", "kid-sky": "Небесно-синие стены и светлый дуб, жемчужный потолок. Яркая, но не утомляющая детская.", "bath-stone": "Светло-серая плитка «Соль» и сланец на полу – ванная в светлом камне, где не видно разводов от воды.", "bath-sand": "Бежевая плитка под песчаник и керамогранит под известняк. Тёплая ванная, похожая на спа.", "ent-light": "Белые стены и медовый дуб: светлая прихожая, которая встречает теплом и выглядит больше, чем есть.", "ent-oak": "Льняные обои «Камыш» и натуральный дуб – уютная прихожая с природной фактурой."};
  function sum(d){var s=0;d.groups.forEach(function(g){g[2].forEach(function(x){var p=P(x[0]);if(p)s+=Math.round(p.price*x[1])})});return s}
  /* Вспомогательные (Алина 25.11 22:25): в цене интерьера – отделка + «Нужно для …», «Рекомендуем» отдельно (A2).
     Комплекты KIT и замены ALT – копия из ro-kit-cat каталога (логика C7, владелец W1), считаются так же: area – по площади поверхности ×1,1, perim – по периметру комнаты. */
@@ -17899,7 +17905,8 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
     (d.img.length>1?'<div class="gallery-thumbs" role="group" aria-label="Выбор фотографии">'+d.img.map(function(k,i){return '<button type="button" class="gallery-thumb" data-w2-slide="'+i+'" aria-current="'+(i===0)+'" aria-label="Фото '+(i+1)+' из '+d.img.length+'"><img src="'+img(k)+'" alt="" draggable="false"></button>'}).join('')+'</div>':'')+'</div>'+
    '<div class="detail-copy"><div class="ro-w2-sum"><p class="offer-price"><strong class="price">'+rub(t)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p>'+
     '<dl class="ro-w2-split"><div><dt>Отделка</dt><dd>'+rub(f)+'</dd></div><div><dt>Для работы</dt><dd>'+rub(A.need)+'</dd></div>'+(A.rec?'<div class="is-rec"><dt>Рекомендуем, не входит в сумму</dt><dd>'+rub(A.rec)+'</dd></div>':'')+'</dl>'+
-    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button><p class="ro-w2-hint">В конструкторе интерьер ляжет на вашу комнату: количество пересчитается под её размеры, любой материал можно заменить. Оттуда – смета и корзина.</p></div>'+
+    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
+    '<div class="ro-w2-about">'+(DESC[d.id]?'<p>'+esc(DESC[d.id])+'</p>':'')+'<p>Примерьте интерьер в конструкторе: как готовую комнату или на своей квартире – выберите типовую планировку или нарисуйте комнаты сами, интерьер ляжет на них в пару кликов. Материалы, количество и смету посчитаем за вас.</p></div>'+
     '<section class="detail-info ro-w2-mat" aria-labelledby="ro-w2-mt"><h2 id="ro-w2-mt">Материалы</h2>'+
     d.groups.map(function(g){return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);return p?rowHTML(p,x[1],Math.round(p.price*x[1])):''}).join('')+'</div></div>'}).join('')+
     (function(){var M={need:{},rec:{}};A.groups.forEach(function(X){['need','rec'].forEach(function(r){X[r].forEach(function(x){var o=M[r][x.p.sku];if(o){o.q+=x.q;o.sum+=x.sum}else M[r][x.p.sku]={p:x.p,q:x.q,sum:x.sum}})})});
@@ -17973,9 +17980,8 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
   function aptVal(){var a=(f.elements.aptS||{}).value,v=(f.elements.aptV||{}).value;return a&&v?a+'|'+v:''}
   function aptRooms(){var v=aptVal();if(!v)return null;var k=v.split('|'),a=APT.find(function(x){return x[0]===k[0]}),vr=a&&a[3].find(function(x){return x[0]===k[1]});return vr?vr[2].filter(function(r){return r[1]!=='balcony'&&r[1]!=='store'}):null}
   function drawAptRooms(){var box=slot.querySelector('.ro-w2-aptrooms');if(!box)return;var R=aptRooms();
-   if(!R){box.innerHTML='';label();return}
-   var want=MATCH[d.folder]||[],pick=R.findIndex(function(r){return want.indexOf(r[1])>=0});
-   box.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+row('room','new','Новая комната как в интерьере',esc(base)+', '+sizeLine(d),pick<0)+
+   R=R||[];var want=MATCH[d.folder]||[],pick=R.findIndex(function(r){return want.indexOf(r[1])>=0});
+   box.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+row('room','new','Новая комната',esc(base)+', '+sizeLine(d),pick<0)+
     R.map(function(r,k){return row('room',k,r[0],nb(num(r[2])+' м²'),k===pick)}).join('')+'</div></fieldset>';label()}
   function ddClose(w,focus){if(!w)return;var t=w.querySelector('.ro-w2-ddt'),l=w.querySelector('.ro-w2-ddl');t.setAttribute('aria-expanded','false');l.hidden=true;if(focus)t.focus()}
   function ddOpen(w){f.querySelectorAll('.ro-w2-dd').forEach(function(x){if(x!==w)ddClose(x)});var t=w.querySelector('.ro-w2-ddt'),l=w.querySelector('.ro-w2-ddl');t.setAttribute('aria-expanded','true');l.hidden=false;(l.querySelector('[aria-selected=true]')||l.querySelector('.ro-w2-ddo')).focus()}
@@ -18000,7 +18006,7 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
     drawAptRooms()}
    else{var o=O[+v],full=!user&&o.rooms.length>=GUEST_ROOMS;
     slot.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+
-     row('room','new','Новая комната как в интерьере',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':esc(base)+', '+sizeLine(d),true)+
+     row('room','new','Новая комната',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':esc(base)+', '+sizeLine(d),true)+
      o.rooms.map(function(n,k){return row('room',k,n,'',false)}).join('')+'</div></fieldset>'}
    label()}
   function needLogin(){var v=objVal();if(user)return false;if(v==='new')return O.length>0;var o=O[+v];return roomVal()==='new'&&o.rooms.length>=GUEST_ROOMS}
