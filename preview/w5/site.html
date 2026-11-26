@@ -19292,6 +19292,48 @@ html body #ui.ro-w5-est .ctr>.empty{order:3;flex:1 1 100%;margin:0!important;bac
  html body #ui .estimate-list article .estimate-row.r2>button.estimate-toggle{align-self:center!important}
 }
 @media (prefers-reduced-motion:reduce){#ui .ro-w5-kh>svg,#ui .ro-w5-kh .t,#ui .ro-w5-n{transition:none}}
+/* W5-5 (26.11 20:30) смета как таблица (Алина 20:14): все суммы в одной колонке, стрелки – своей колонкой справа.
+   Уровни: группа – серая полоса с суммой; покрытие – строка с фото, 16 жирная цена; материалы – тихие строки 14 серым, без фото, без серого блока. */
+#ui .ro-w5-k{margin:0;padding:0;border:0;border-radius:0;background:none}
+html body #ui .estimate-list h4.eg{display:grid!important;grid-template-columns:minmax(0,1fr) 110px 40px;column-gap:12px;align-items:center;margin:0!important;padding:12px 14px!important;background:#F4F6F8!important;border:0!important}
+html body #ui .estimate-list h4.eg>small{grid-column:2;text-align:right;white-space:nowrap}
+#ui .ro-w5-kh,#ui .ro-w5-rh,#ui .ro-w5-r{display:grid;grid-template-columns:22px 64px minmax(0,1fr) 120px 110px 40px;column-gap:12px;align-items:center;margin:0;padding:0 14px;box-sizing:border-box;width:100%}
+#ui .ro-w5-kh{min-height:44px;padding-top:4px;padding-bottom:4px;border-top:1px dashed #E3E6EA}
+#ui .ro-w5-kh .t{grid-column:3;font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-kh .m{font:inherit;color:inherit}
+#ui .ro-w5-kh .s,#ui .ro-w5-kh .s.z{grid-column:5;margin:0;font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273;text-align:right}
+#ui .ro-w5-kh>svg{grid-column:6;justify-self:center}
+@media (hover:hover){#ui .ro-w5-kh:hover .t,#ui .ro-w5-kh:hover>svg{color:#152A4B}}
+#ui .ro-w5-rh{min-height:40px;border-top:0}
+#ui .ro-w5-rh>input{grid-column:2;justify-self:start}
+#ui .ro-w5-rh .t{grid-column:3/6;font:600 14px/21px Manrope,system-ui,sans-serif;color:#152A4B}
+#ui .ro-w5-r{min-height:40px;padding-top:6px;padding-bottom:6px}
+#ui .ro-w5-r>input{grid-column:2;justify-self:start}
+#ui .ro-w5-t{grid-column:3}
+#ui .ro-w5-n{font:400 14px/21px Manrope,system-ui,sans-serif}
+#ui .ro-w5-w{font-size:12px;line-height:18px}
+#ui .ro-w5-r .ro-w5-q{grid-column:4;text-align:right}
+#ui .ro-w5-s,#ui .ro-w5-r.off .ro-w5-s{grid-column:5;font:400 14px/21px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-k .ro-w5-r{padding-left:14px;padding-right:14px}
+#ui .ro-w5-k>div[id^="w5b-"]{padding-bottom:8px}
+@media (min-width:701px){
+ html body #ui .estimate-list .estimate-row.r2{grid-template-columns:22px 64px minmax(0,1fr) 242px 40px!important;column-gap:12px!important}
+ html body #ui .estimate-list .estimate-row.r2>.estimate-q{display:grid!important;grid-template-columns:120px 110px;column-gap:12px;justify-items:end;align-items:center}
+ html body #ui .estimate-list .estimate-row.r2 .estimate-sum{font-size:16px!important;line-height:24px!important;font-weight:700!important;white-space:nowrap}
+}
+@media (max-width:700px){
+ html body #ui .estimate-list h4.eg{grid-template-columns:minmax(0,1fr) auto 32px;column-gap:8px;padding:10px 8px 10px 12px!important}
+ #ui .ro-w5-kh,#ui .ro-w5-rh,#ui .ro-w5-r,#ui .ro-w5-k .ro-w5-r{grid-template-columns:22px 40px minmax(0,1fr) auto 32px;column-gap:8px;padding-left:12px;padding-right:8px}
+ #ui .ro-w5-kh .s,#ui .ro-w5-kh .s.z,#ui .ro-w5-s,#ui .ro-w5-r.off .ro-w5-s{grid-column:4;grid-row:auto}
+ #ui .ro-w5-kh>svg{grid-column:5}
+ #ui .ro-w5-kh .m{display:block;font-size:12px;line-height:18px}
+ #ui .ro-w5-kh .m .d{display:none}
+ #ui .ro-w5-rh .t{grid-column:3/5}
+ #ui .ro-w5-r>input{grid-column:2;grid-row:1/3;align-self:center}
+ #ui .ro-w5-t{grid-column:3;grid-row:1}
+ #ui .ro-w5-r .ro-w5-q{grid-column:3;grid-row:2;text-align:left}
+ #ui .ro-w5-s{grid-row:1/3;align-self:center}
+}
 </style>
 <script id="ro-w5-smeta">
 /* W5, S1 v5 (25.11, 22:40: фидбэк Алины 19:55 – улучшить в контексте конструктора, не «как корзина»).
@@ -19335,7 +19377,6 @@ document.addEventListener('DOMContentLoaded',function(){
   var t=[M.v?pNb(M.v):'',M.pack?(typeof pPack==='function'?pPack(M.pack):M.pack):'',l.eff].filter(Boolean).join(', ');return t.charAt(0).toUpperCase()+t.slice(1)}
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
-   '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),40)+'</span>'+
    '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+kFor(l)+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
  function grp(own,key,title,R){if(!R.length)return '';var on=R.filter(function(l){return l.on}).length,id='w5g-'+sid(own.id)+'-'+key;
@@ -19343,8 +19384,8 @@ document.addEventListener('DOMContentLoaded',function(){
  function kitBox(C,own){var T=S.E.est;if(!T.w5o)T.w5o={};
   var rows=C.lines.filter(function(l){return l.kit&&l.owner===own.id}).sort(function(a,b){return ROLE[a.role]-ROLE[b.role]});if(!rows.length)return '';
   var kd=roKit.kindOf(own.eff),k=sid(own.id),op=!!T.w5o[own.id],on=rows.filter(function(l){return l.on}),sm=on.reduce(function(x,l){return x+(l.sum||0)},0);
-  var meta='в смете '+on.length+' из '+rows.length;
-  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="tt"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'</span><span class="m">'+meta+'</span></span><b class="s'+(on.length?'':' z')+'">'+R0(sm)+'</b>'+I('down')+'</button>';
+  var meta=on.length+' из '+rows.length;
+  var h='<div class="ro-w5-k" data-own="'+own.id+'"><button type="button" class="ro-w5-kh" data-act="ro-w5-kt" data-id="'+own.id+'" aria-expanded="'+op+'" aria-controls="w5b-'+k+'"><span class="t">Материалы к '+(KTO[kd]||'отделке')+'<span class="m"><span class="d"> · </span>'+meta+'</span></span><b class="s'+(on.length?'':' z')+'">'+R0(sm)+'</b>'+I('down')+'</button>';
   if(op)h+='<div id="w5b-'+k+'">'+grp(own,'need',NEEDT[kd]||'Нужно для работы',rows.filter(function(l){return l.role==='need'}))+grp(own,'opt','Рекомендуем',rows.filter(function(l){return l.role!=='need'}))+'</div>';
   h+='</div>';
   return h}
@@ -19381,7 +19422,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var all=C.lines.length&&C.on===C.lines.length;
   h=h.replace(/(<input type="checkbox" id="eall"[^>]*?)\s?checked(?=[\s>])/,'$1');
   if(all)h=h.replace('<input type="checkbox" id="eall"','<input type="checkbox" id="eall" checked');
-  h=h.replace(/(<label class="estimate-list-head">[\s\S]*?<small>)[^<]*(<\/small>)/,'$1'+C.on+' из '+C.lines.length+'$2');
+  var cv=C.lines.filter(function(l){return !l.kit});h=h.replace(/(<label class="estimate-list-head">[\s\S]*?<small>)[^<]*(<\/small>)/,'$1'+cv.filter(function(l){return l.on}).length+' из '+cv.length+'$2');
   var vis=C.lines.filter(function(l){return !l.kit&&(!T.grp||l.grp===T.grp)});
   h=h.replace(/(<h4 class="eg"><span>)([^<]+)(<\/span><small>)[^<]*(<\/small>)/g,function(m,a,g,b,c){
    var own=vis.filter(function(l){return l.grp===g}),ids={};own.forEach(function(l){ids[l.id]=1});
@@ -19390,6 +19431,7 @@ document.addEventListener('DOMContentLoaded',function(){
   return h};
 
  if(typeof estParams==='function'){var _ep=estParams;estParams=function(){var h=_ep.apply(this,arguments);h=h.replace('<div class="cov"><div><p class="sm">Выбрано','<div class="cov ro-w5-tot"><div><p class="sm">Выбрано');
+  try{var CA=estCalc(S),cv=CA.lines.filter(function(l){return !l.kit});h=h.replace(/Выбрано[\s\u00a0]*\d+[\s\u00a0]*из[\s\u00a0]*\d+[\s\u00a0]*позици[а-я]*/,'Выбрано покрытий: '+cv.filter(function(l){return l.on}).length+' из '+cv.length)}catch(e){}
   var T=S.E.est;if(T.w5room!=null){var C1=scoped(function(){return estCalc(S)});h=h.replace('</p></div></div>','</p><p class="sm ro-w5-scope">'+esc(roomName(T.w5room))+': '+R0(C1.total)+'</p></div></div>')}
   /* «Без покрытия»: кликается только «Выбрать» (ссылка-действие), не вся строка */
   h=h.replace(/<button type="button" class="tl ro-miss" data-act="e-go" data-ri="(\d+)" data-k="([^"]*)">(<span class="ro-miss-t">[\s\S]*?<\/span><\/span>)<span class="mut">Выбрать<\/span><\/button>/g,
