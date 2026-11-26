@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>W4 Кнопки – Стиль сайта: 3 направления</title>
+<title>W4 Кнопки – Стиль сайта: смесь</title>
 <style>
 @font-face{font-family:Manrope;src:url(../../assets/4b4ec43c70e7.woff2) format("woff2");font-weight:200 800}
 *{box-sizing:border-box}body{margin:0;font:400 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;background:#fff}
@@ -81,8 +81,26 @@
 .t3 .step{background:rgba(255,255,255,.85);border:1px solid rgba(25,150,170,.28);border-radius:16px}
 .t3 .tabs{background:rgba(255,255,255,.55);border-radius:16px;box-shadow:inset 0 0 0 1px rgba(25,160,180,.15)}.t3 .tab.on{background:#fff;border-radius:12px;color:#0C5F6B;box-shadow:0 4px 12px -6px rgba(18,120,150,.55)}
 .t3 .ck{background:linear-gradient(135deg,#22D2DE,#13B4D3);border-radius:7px;color:#fff}.t3 .chip{background:rgba(255,255,255,.8);border:1px solid rgba(25,160,180,.25);border-radius:999px}.t3 .chip.on{background:linear-gradient(105deg,#22D2DE,#13B4D3);color:#fff;border-color:transparent}
-</style></head><body><div class="wrap">
-<section class="t t0"><p class="cap">Для сравнения</p><h2 class="name">Как на сайте</h2><p class="why">Градиентные кнопки на песочном фоне. Объём есть только у кнопок, всё остальное плоское, поэтому кнопки выглядят «наклеенными».</p>
+
+/* ===== 4. Смесь: свет и стекло, чище ===== */
+.t4{background:radial-gradient(500px 360px at 90% 0%,rgba(25,203,216,.14),transparent 70%),radial-gradient(420px 320px at 0% 55%,rgba(80,140,255,.07),transparent 70%),#F7FAFB}
+.t4 .hd,.t4 .card,.t4 .buy,.t4 .est,.t4 .tot{background:rgba(255,255,255,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.95);border-radius:16px;box-shadow:0 0 0 1px rgba(21,42,75,.05),0 1px 2px rgba(21,42,75,.04),0 10px 26px -18px rgba(21,42,75,.28)}
+.t4 .nav{background:#EDF6F7;color:#152A4B;border-radius:10px}
+.t4 .cartic b{background:linear-gradient(135deg,#2ED6E1,#1B9FD6);color:#fff}
+.t4 .search,.t4 .field{background:rgba(255,255,255,.9);border:1px solid rgba(25,150,170,.30);border-radius:10px;box-shadow:inset 0 1px 2px rgba(21,42,75,.06)}
+.t4 .search .pri{border-radius:8px}
+.t4 .pri{background:linear-gradient(105deg,#22D2DE 0%,#13B4D3 100%);color:#fff;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)}
+.t4 .pri:hover{background:linear-gradient(105deg,#1AC6D2 0%,#0FA2C2 100%)}
+.t4 .pri:active{background:linear-gradient(105deg,#14B3BF 0%,#0C92B0 100%);box-shadow:inset 0 1px 2px rgba(5,60,80,.25)}
+.t4 .sec{background:#fff;color:#152A4B;border-radius:10px;box-shadow:0 0 0 1px rgba(21,42,75,.14),0 1px 2px rgba(21,42,75,.06),0 4px 10px -6px rgba(21,42,75,.22)}
+.t4 .sec:hover{box-shadow:0 0 0 1px rgba(21,42,75,.28),0 1px 2px rgba(21,42,75,.06),0 6px 14px -8px rgba(21,42,75,.28)}
+.t4 .bd{background:rgba(255,255,255,.9);backdrop-filter:blur(6px);border-radius:8px;color:#006B79}
+.t4 .step{background:rgba(255,255,255,.9);border:1px solid rgba(25,150,170,.30);border-radius:10px}
+.t4 .tabs{background:rgba(255,255,255,.55);border-radius:12px;box-shadow:inset 0 0 0 1px rgba(25,160,180,.18)}
+.t4 .tab.on{background:#fff;border-radius:8px;color:#152A4B;box-shadow:0 1px 2px rgba(21,42,75,.08),0 4px 10px -6px rgba(21,42,75,.25)}
+.t4 .ck{background:linear-gradient(135deg,#22D2DE,#13B4D3);border-radius:7px;color:#fff}
+.t4 .chip{background:rgba(255,255,255,.85);border:1px solid rgba(21,42,75,.14);border-radius:10px}.t4 .chip.on{border-color:#19CBD8;background:#E6FAFB}
+</style></head><body><div class="wrap"><section class="t t0"><p class="cap">Для сравнения</p><h2 class="name">Как на сайте</h2><p class="why">Градиентные кнопки на песочном фоне. Объём есть только у кнопок, всё остальное плоское, поэтому кнопки выглядят «наклеенными».</p>
 <div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
 <div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
 <div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
@@ -110,7 +128,7 @@
 <div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
 <div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
 <div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
-</section><section class="t t2"><p class="cap">Вариант 2</p><h2 class="name">Контраст</h2><p class="why">Тёмно-синий из логотипа как второй акцент: шапка, итог, выбранное. Кнопки-«таблетки», бирюза светится на тёмном. Смело и современно, как Revolut и Linear.</p>
+</section><section class="t t3"><p class="cap">Вариант 3</p><h2 class="name">Свет и стекло</h2><p class="why">Глянец по-новому: полупрозрачные карточки над мягким бирюзовым светом, кнопка с градиентом бирюза → голубой, бликом сверху и свечением. Ближе всего к «глянцу и глубине», но без 90-х.</p>
 <div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
 <div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
 <div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
@@ -124,7 +142,7 @@
 <div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
 <div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
 <div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
-</section><section class="t t3"><p class="cap">Вариант 3</p><h2 class="name">Свет и стекло</h2><p class="why">Глянец по-новому: полупрозрачные карточки над мягким бирюзовым светом, кнопка с градиентом бирюза → голубой, бликом сверху и свечением. Ближе всего к «глянцу и глубине», но без 90-х.</p>
+</section><section class="t t4"><p class="cap">Новый</p><h2 class="name">Смесь: свет и стекло, чище</h2><p class="why">Основа – вариант 3 (фон, поля, вкладки, галочки, корзина), но без свечения: тень кнопок как сейчас на сайте, скругление 10 (как просили ребята). Белые кнопки и выбранная вкладка – чистые, как в 1. Выбранная пилюля – светлая, как в 2.</p>
 <div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
 <div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
 <div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>

@@ -15263,7 +15263,7 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {name:'Новокуйбышевск', to:'Новокуйбышевск', by:'Новокуйбышевску', km:95},
     {name:'Чапаевск', to:'Чапаевск', by:'Чапаевску', km:85}
   ],
-  perKm:45, lift:100, stairs:60, house:100, maxFloor:40,
+  perKm:45, lift:200, stairs:120, house:200, maxFloor:40,
   kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
 };
 function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
@@ -15281,7 +15281,7 @@ function roLiftVal(a){if(!a)return '';var t=a.liftType;if(t==='yes'||t==='cargo'
 /* подъём / занос: число, или NaN – не хватает ответа (лифт) */
 /* W3-5: с лифтом – lift за 100 кг; без лифта – lift за 100 кг + stairs за каждый этаж выше первого за 100 кг (без лифта всегда дороже) */
 function roCarry(house,lift,floor,cwt){var R=RO_DELIVERY;if(house)return cwt*R.house;if(lift==='yes')return cwt*R.lift;
-  if(lift==='no')return cwt*R.lift+Math.max(0,(floor||1)-1)*cwt*R.stairs;return NaN}
+  if(lift==='no')return cwt*Math.max(R.lift,(floor||1)*R.stairs);return NaN} /* W3-7: без лифта – stairs за этаж за 100 кг, не дешевле лифта */
 /* сохранённые адреса вошедшего и выбранный в корзине */
 function roMyAddrs(){var u=typeof roUser==='function'?roUser():null;return u?u.addresses:null}
 function roPickedAddr(list){if(!list||!list.length)return null;var id=null;try{id=localStorage.getItem('ro-w3-addr')}catch(e){}
@@ -15325,7 +15325,8 @@ function roW3Sync(form,q){
   t('d="in"',house?'Занесём в дом, на первый этаж':'Поднимем и занесём в квартиру');
   var c=roCarry(house,lift,fl,cwt),pr=document.getElementById('ro-w3-in-pr');
   if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(cwt*(house?R.house:R.lift));
-  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, считаем как '+cwt*100+' кг. '+(house?'Занос – '+rub(R.house)+' за каждые 100 кг.':'Подъём на лифте – '+rub(R.lift)+' за каждые 100 кг, без лифта – ещё '+rub(R.stairs)+' за каждый этаж выше первого.');
+  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.innerHTML='<span>'+(house?'Занос в дом – '+rub(R.house)+' за каждые 100 кг.':'С лифтом – '+rub(R.lift)+' за каждые 100 кг, на любой этаж. Без лифта – '+rub(R.stairs)+' за каждый этаж за каждые 100 кг.')+'</span><span>Грузчики считают вес сотнями: заказ до 100 кг – как 100 кг. Ваш заказ весит около '+kg+' кг.</span>';
+  form.querySelectorAll('.ro-w3-req-in').forEach(function(x){x.hidden=house||!carry});
   var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
   var row=document.getElementById('ro-w3-lift-row');
   if(row){row.hidden=!(q&&q.carry&&!q.liftPending);var l=document.getElementById('ro-w3-lift-label'),cc=document.getElementById('ro-w3-lift-cost');
@@ -15378,12 +15379,16 @@ function checkoutError(field,strict) {
     /* 23.11: в оформлении телефон без SMS-кода – как в ТЗ (форма получателя: ФИО, телефон, адрес) */
   }
   if (field.name==='entrance') return field.form.elements.home.value!=='house' && !value ? 'Укажите подъезд.' : '';
+  if (field.name==='unit' || field.name==='floor') {
+    const f = field.form.elements; if (f.home.value==='house' || f.carry.value!=='in') return '';
+    if (!value) return field.name==='unit' ? 'Укажите квартиру.' : 'Укажите этаж.';
+    if (field.name==='floor' && !(+value>=1 && +value<=RO_DELIVERY.maxFloor)) return 'Проверьте этаж.';
+    return '';
+  }
   if (field.name==='lift') {
     const f = field.form.elements, fl = f.floor.value.trim();
     if (f.home.value==='house' || f.carry.value!=='in') return '';
     if (!f.lift.value) return 'Выберите, есть ли лифт.';
-    if (f.lift.value==='no' && !fl) return 'Укажите этаж – от него зависит цена подъёма.';
-    if (fl && !(+fl>=1 && +fl<=RO_DELIVERY.maxFloor)) return 'Проверьте этаж.';
     return '';
   }
   if (field.name==='address') {
@@ -15444,10 +15449,11 @@ function renderCheckout() {
           <div class="full ro-w3-cards" role="radiogroup" aria-label="Тип жилья"><label class="pay-option ro-w3-c"><input type="radio" name="home" value="flat" checked><span>Квартира</span></label><label class="pay-option ro-w3-c"><input type="radio" name="home" value="house"><span>Частный дом</span></label></div>
           <label class="full addr-field"><span class="ro-w3-lt">Улица и дом<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="address" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="checkout-addr-list" aria-expanded="false" placeholder="Например, ул. Мира, д. 48" aria-describedby="checkout-error-address" required><span class="checkout-field-error" id="checkout-error-address" aria-live="polite"></span><span class="addr-list" id="checkout-addr-list" role="listbox" hidden></span></label>
           <div class="addr-row full" data-w3-flat>
-            <label>Квартира<input class="field" name="unit" inputmode="numeric"></label>
+            <label><span class="ro-w3-lt">Квартира<span class="ro-w3-req ro-w3-req-in" aria-hidden="true">*</span></span><input class="field" name="unit" inputmode="numeric" aria-describedby="checkout-error-unit"><span class="checkout-field-error" id="checkout-error-unit" aria-live="polite"></span></label>
             <label><span class="ro-w3-lt">Подъезд<span class="ro-w3-req" aria-hidden="true">*</span></span><input class="field" name="entrance" inputmode="numeric" aria-describedby="checkout-error-entrance"><span class="checkout-field-error" id="checkout-error-entrance" aria-live="polite"></span></label>
-            <label>Этаж<input class="field" name="floor" inputmode="numeric"></label>
+            <label><span class="ro-w3-lt">Этаж<span class="ro-w3-req ro-w3-req-in" aria-hidden="true">*</span></span><input class="field" name="floor" inputmode="numeric" aria-describedby="checkout-error-floor"><span class="checkout-field-error" id="checkout-error-floor" aria-live="polite"></span></label>
           </div>
+          <p class="full checkout-field-error ro-w3-rowerr" id="ro-w3-rowerr" aria-live="polite" data-w3-flat></p>
                     <div class="full ro-w3-segf"><span class="ro-w3-lbl" id="ro-w3-how-l">Как привезти</span><div class="ro-w3-how" role="radiogroup" aria-labelledby="ro-w3-how-l">
             <label class="pay-option ro-w3-po"><input type="radio" name="carry" value="door" checked><span class="ro-w3-ot"><b data-w3-t="door">До подъезда</b><span data-w3-d="door">Выгрузим из машины у подъезда.</span></span><b class="ro-w3-pr">Входит</b></label>
             <label class="pay-option ro-w3-po"><input type="radio" name="carry" value="in"><span class="ro-w3-ot"><b data-w3-t="in">В квартиру</b><span data-w3-d="in"></span></span><b class="ro-w3-pr" id="ro-w3-in-pr"></b></label>
@@ -15457,7 +15463,7 @@ function renderCheckout() {
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
       </fieldset>
-      </form>${orderSummary('<button class="button" type="submit" form="checkout-form">Подтвердить заказ</button><p id="checkout-submit-error" role="alert" hidden></p>')}</div>`;
+      </form>${orderSummary('<button class="button" type="submit" form="checkout-form">Подтвердить заказ</button><p id="checkout-submit-error" role="alert" hidden></p><p class="meta ro-w3-consent-bar">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>')}</div>`;
   const form = $('#checkout-form');
   const failedExample = cart===exampleCart && new URLSearchParams(activeRoute).get('form')==='invalid';
   const checkoutDraft = (!failedExample && checkoutDrafts.get(cart)) || (cart===exampleCart ? {
@@ -18043,6 +18049,55 @@ html body .shop #transaction #checkout-form label.pay-option.ro-w3-c{min-height:
 /* обязательное поле */
 #transaction .ro-w3-req{color:#A32637;margin-left:2px}
 </style>
+<style id="ro-w3-7-css">
+/* W3-7: корзина (ПК) – «Итого за товары» и сумма в одну строку, до кнопки 16 */
+@container shop (min-width:1021px){
+ #transaction .cart-summary .cart-summary-total{display:flex!important;justify-content:space-between;align-items:baseline;gap:12px}
+ #transaction .cart-summary .cart-summary-total strong{margin:0!important}
+ #transaction .ro-w3-dlv.ro-w3-d{margin-bottom:16px!important}
+}
+/* строка «Квартира / Подъезд / Этаж»: ошибки – одной строкой под строкой */
+#transaction #checkout-form .addr-row .checkout-field-error{display:none!important}
+#transaction #checkout-form .ro-w3-rowerr{margin:-8px 0 0}
+#transaction #checkout-form .ro-w3-rowerr:empty{display:none}
+#transaction #checkout-form .ro-w3-rowerr[hidden]{display:none}
+#transaction .ro-w3-req[hidden]{display:none}
+/* правила подъёма – две строки */
+#transaction #ro-w3-kg{display:grid;gap:2px}
+/* «Ваш заказ» в оформлении – ровные строки */
+#transaction .order-summary .summary-row{margin:0!important;padding:0!important;border:0!important;display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:16px;line-height:24px}
+#transaction .order-summary .summary-row>span:first-child{color:#566273}
+#transaction .order-summary .summary-row>:last-child{color:#152A4B;font-weight:600;text-align:right}
+#transaction .order-summary .summary-row+.summary-row,#transaction .order-summary #summary-window+.summary-row{margin-top:8px!important}
+#transaction .order-summary #summary-window{margin:2px 0 0!important;font-size:14px;line-height:21px;color:#566273}
+#transaction .order-summary #summary-window:empty{display:none}
+#transaction .order-summary .summary-row.summary-total{margin-top:16px!important;padding-top:16px!important;border-top:1px solid #E3E6EA!important}
+#transaction .order-summary .summary-row.summary-total>*{color:#152A4B!important;font-weight:700}
+#transaction .order-summary .order-products{margin-bottom:16px!important}
+/* согласие: на ПК – под кнопкой в «Вашем заказе»; на телефоне / планшете – в нижней панели */
+#transaction .ro-w3-consent-bar{display:none;margin:8px 0 0;font-size:12px;line-height:18px;color:#566273;grid-column:1/-1}
+#transaction .ro-w3-consent-bar a{color:#006B79;text-decoration:underline;text-underline-offset:2px}
+@container shop (max-width:1020px){
+ #transaction .ro-w3-consent-bar{display:block}
+ #transaction .order-summary .ro-w3-consent{display:none}
+}
+</style>
+<script id="ro-w3-7">
+/* W3-7: ошибки строки «Квартира / Подъезд / Этаж» – одной фразой под строкой */
+(function(){
+ function rowErr(){var box=document.getElementById('ro-w3-rowerr');if(!box)return;
+  var names={unit:'квартиру',entrance:'подъезд',floor:'этаж'},need=[],other=[];
+  ['unit','entrance','floor'].forEach(function(k){var e=document.getElementById('checkout-error-'+k);var t=e&&e.textContent;if(!t)return;
+    if(/^Укажите /.test(t))need.push(names[k]);else other.push(t)});
+  var msg=need.length?'Укажите '+(need.length>1?need.slice(0,-1).join(', ')+' и '+need[need.length-1]:need[0])+'.':'';
+  if(other.length)msg=(msg?msg+' ':'')+other.join(' ');
+  var ic=msg?(document.querySelector('#checkout-form .checkout-field-error svg')||null):null;
+  if(box.dataset.msg!==msg){box.dataset.msg=msg;box.textContent=msg}}
+ if(typeof showCheckoutError==='function'&&!showCheckoutError.__w3){var o=showCheckoutError;showCheckoutError=function(f,m){o(f,m);rowErr()};showCheckoutError.__w3=1}
+ document.addEventListener('input',function(e){var f=e.target.form;if(!f||f.id!=='checkout-form')return;
+  ['unit','floor','entrance'].forEach(function(k){var el=f.elements[k],er=document.getElementById('checkout-error-'+k);if(el&&er&&er.textContent)showCheckoutError(el,checkoutError(el))});rowErr()});
+})();
+<%/script>
 </body>
 </html>
 </script>
