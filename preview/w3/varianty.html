@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W3 – варианты: дизайн-проект и город</title>
+<style>
+@font-face{font-family:Manrope;src:url("../../assets/4b4ec43c70e7.woff2");font-weight:200 800;font-display:swap}
+*{box-sizing:border-box}
+body{margin:0;background:#EEF5F6;color:#152A4B;font:16px/24px Manrope,Arial,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 24px 80px}
+h1{font-size:32px;line-height:40px;margin:0 0 8px;font-weight:700}
+h2{font-size:24px;line-height:32px;margin:48px 0 8px;font-weight:700}
+h3{font-size:18px;line-height:26px;margin:0 0 8px;font-weight:700}
+p{margin:0 0 8px}
+.mut{color:#566273}.s{font-size:14px;line-height:21px}.xs{font-size:12px;line-height:18px}
+.acc{color:#006B79}.err{color:#A32637}
+.tag{display:inline-block;font-size:12px;line-height:18px;font-weight:700;padding:2px 8px;border-radius:8px;background:#fff;border:1px solid #BCDDE2;color:#566273;margin-bottom:8px}
+.tag.rec{background:#19CBD8;border-color:#19CBD8;color:#0E2A33}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:900px){.g2,.g3{grid-template-columns:1fr}}
+.card{background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:24px}
+.card.pick{border-color:#006B79}
+.screen{background:#fff;border:1px solid #BCDDE2;border-radius:10px;padding:16px;margin:12px 0}
+.row{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:10px;font:700 16px/24px Manrope,Arial,sans-serif;border:1px solid #BCDDE2;background:#fff;color:#152A4B;white-space:nowrap}
+.btn.p{background:#19CBD8;border-color:#19CBD8;color:#0E2A33}
+.btn.sm{height:40px;font-size:14px;padding:0 14px}
+.ul{margin:8px 0 0;padding-left:20px}.ul li{margin:4px 0}
+.ph{width:64px;height:64px;border-radius:8px;background:linear-gradient(135deg,#D8E7E2,#B9CFC6);flex:none}
+.cartrow{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid #E3EDEF}
+.cartrow:first-child{border-top:0}
+.ck{width:24px;height:24px;border-radius:6px;background:linear-gradient(180deg,#5FDCE6,#19CBD8);flex:none;position:relative;margin-top:20px}
+.ck:after{content:"";position:absolute;left:8px;top:4px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.ck.off{background:#fff;border:1px solid #BCDDE2}.ck.off:after{display:none}
+.doc{width:64px;height:64px;border-radius:8px;background:#E6F4F6;display:flex;align-items:center;justify-content:center;flex:none}
+.old{text-decoration:line-through;color:#566273;font-weight:400;margin-right:6px}
+.bar{height:6px;border-radius:3px;background:#DCE4E2;margin:8px 0 4px;overflow:hidden}.bar i{display:block;height:100%;background:#19CBD8;border-radius:3px}
+.pages{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.pg{width:120px;height:86px;border-radius:8px;border:1px solid #BCDDE2;background:#fff;padding:8px;font-size:11px;line-height:14px;color:#566273;display:flex;flex-direction:column;justify-content:flex-end}
+.pg b{color:#152A4B;font-size:12px}
+.pg.r{background:linear-gradient(160deg,#F4EFE6 0 55%,#C9B9A0 55% 100%)}
+.pg.pl{background:repeating-linear-gradient(0deg,#fff 0 13px,#EEF5F6 13px 14px),#fff}
+.hdr{display:flex;align-items:center;gap:20px;padding:12px 16px;border:1px solid #BCDDE2;border-radius:10px;background:#fff;font-size:15px}
+.logo{font-weight:800;font-size:20px}.logo span{color:#19CBD8}
+.nav{display:flex;gap:18px;color:#152A4B;flex:1}
+.city{display:inline-flex;align-items:center;gap:6px;color:#152A4B;font-weight:600;white-space:nowrap}
+.city svg{flex:none}
+.pop{position:relative;margin:10px 0 0 auto;width:300px;background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:16px;box-shadow:0 12px 32px rgba(21,42,75,.12)}
+.modal{background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:24px;max-width:460px;box-shadow:0 12px 32px rgba(21,42,75,.12)}
+.inp{height:48px;border:1px solid #BCDDE2;border-radius:10px;display:flex;align-items:center;padding:0 14px;color:#566273;gap:8px}
+.opt{display:flex;justify-content:space-between;padding:10px 12px;border-radius:8px}
+.opt.on{background:#EEF5F6;font-weight:700}
+.dd{border:1px solid #BCDDE2;border-radius:10px;overflow:hidden;width:240px}
+.dd .opt{border-radius:0}
+.phone{width:300px;border:1px solid #BCDDE2;border-radius:24px;background:#fff;padding:16px;margin-top:12px}
+.note{border-left:3px solid #19CBD8;padding:4px 0 4px 12px;margin:12px 0}
+.q{background:#fff;border:1px solid #006B79;border-radius:16px;padding:24px;margin-top:48px}
+/* fixes */
+.grid>*{min-width:0}.row{flex-wrap:wrap}.row>b:first-child{flex:1 1 160px}
+.row>b:last-child,.row>span.btn{white-space:nowrap;flex:none}
+.hdr{flex-wrap:wrap;overflow:hidden}
+.pop{max-width:100%}
+@media (max-width:700px){.nav{display:none}.wrap{padding:24px 16px 64px}.card{padding:16px}h1{font-size:26px;line-height:34px}}
+hr{border:0;border-top:1px solid #E3EDEF;margin:16px 0}
+</style></head><body><div class="wrap">
+
+<h1>Дизайн-проект и выбор города – варианты</h1>
+<p class="mut">W3. Все цены – примеры: дизайн-проект 2 990 ₽, бесплатно при материалах от 50 000 ₽; доставка бесплатно от 30 000 ₽. Сначала выбираете вы, потом делаю.</p>
+
+<!-- ============ ДИЗАЙН-ПРОЕКТ ============ -->
+<h2>1. Дизайн-проект: что в файле</h2>
+<div class="card">
+ <p>PDF одной комнаты – готового интерьера или своей из конструктора. Собирает сервер из той же комнаты, что в конструкторе (ничего не рисуем руками).</p>
+ <div class="pages">
+  <div class="pg r"><b>Обложка</b>Название, площадь, дата</div>
+  <div class="pg r"><b>Виды 3D</b>4 ракурса комнаты</div>
+  <div class="pg pl"><b>План с размерами</b>стены, двери, окна</div>
+  <div class="pg pl"><b>Развёртки стен</b>какой материал где</div>
+  <div class="pg"><b>Материалы</b>артикул, кол-во, цена</div>
+  <div class="pg"><b>Как делать</b>порядок работ, расход</div>
+ </div>
+ <p class="s mut" style="margin-top:12px">~8–12 страниц. Файл делается на момент заказа: если комнату потом поменять – в заказе останется та версия, что купили.</p>
+</div>
+
+<h2>2. Дизайн-проект: где кнопка</h2>
+<div class="grid g3">
+ <div class="card pick"><span class="tag rec">А · рекомендую</span>
+  <h3>Кнопка у интерьера и в смете → строка в корзине → скачать в заказе</h3>
+  <ul class="ul s">
+   <li>На странице интерьера и на этапе «Смета»: белая кнопка «Дизайн-проект» рядом с «В корзину».</li>
+   <li>Нажали – в корзине появляется строка «Дизайн-проект».</li>
+   <li>Если материалы из сметы уже в корзине – строка добавляется сама (её можно снять галочкой).</li>
+   <li>Скачать – в заказе, сразу после оформления.</li>
+  </ul>
+  <p class="s mut" style="margin-top:8px">Человек видит предложение там, где выбирает интерьер; дальше – как обычный товар.</p>
+ </div>
+ <div class="card"><span class="tag">Б</span>
+  <h3>Только в корзине</h3>
+  <ul class="ul s">
+   <li>Строка появляется сама, когда в корзине материалы из интерьера или сметы.</li>
+   <li>Ни на интерьере, ни в смете кнопки нет.</li>
+   <li>Скачать – в заказе.</li>
+  </ul>
+  <p class="s mut" style="margin-top:8px">Проще, но про проект узнают только в корзине – мало кто купит его отдельно.</p>
+ </div>
+ <div class="card"><span class="tag">В</span>
+  <h3>Скачать сразу, без заказа</h3>
+  <ul class="ul s">
+   <li>У интерьера и в смете «Скачать дизайн-проект» – сразу файл.</li>
+   <li>Бесплатно – только облегчённый (виды и список), полный – с заказом.</li>
+  </ul>
+  <p class="s mut" style="margin-top:8px">Два вида файла – двойная работа сервера и путаница «какой у меня». Не советую.</p>
+ </div>
+</div>
+
+<h2>3. Строка в корзине – 3 состояния (вариант А)</h2>
+<div class="grid g2">
+ <div class="card">
+  <p class="xs mut">Корзина, ПК и телефон одинаково – обычная строка, только без количества</p>
+  <div class="screen">
+   <div class="cartrow"><div class="ck"></div><div class="doc"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+    <div style="flex:1"><div class="row"><b>Дизайн-проект «Оливковая гостиная»</b><b>2 990 ₽</b></div>
+     <p class="s mut">PDF: виды 3D, план, развёртки, материалы</p>
+     <div class="bar"><i style="width:75%"></i></div>
+     <p class="s">Добавьте материалов на 12 400 ₽ – проект будет бесплатным</p></div></div>
+   <p class="xs mut" style="margin:0">① Не набрал: цена есть, полоса и сколько осталось – как у доставки</p>
+  </div>
+  <div class="screen">
+   <div class="cartrow"><div class="ck"></div><div class="doc"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+    <div style="flex:1"><div class="row"><b>Дизайн-проект «Оливковая гостиная»</b><b><span class="old">2 990 ₽</span><span class="acc">0 ₽</span></b></div>
+     <p class="s mut">PDF: виды 3D, план, развёртки, материалы</p>
+     <p class="s acc">✓ В подарок к материалам от 50 000 ₽</p></div></div>
+   <p class="xs mut" style="margin:0">② Набрал: старая цена зачёркнута, 0 ₽ бирюзовым</p>
+  </div>
+  <div class="screen">
+   <div class="cartrow"><div class="ck"></div><div class="doc"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg></div>
+    <div style="flex:1"><div class="row"><b>Дизайн-проект «Кухня, Юбилейная 25»</b><b>2 990 ₽</b></div>
+     <p class="s mut">PDF: виды 3D, план, развёртки, материалы</p>
+     <p class="s mut">Без материалов – платно. С материалами от 50 000 ₽ – бесплатно</p></div></div>
+   <p class="xs mut" style="margin:0">③ Платно: материалов нет (или сняты галочкой) – только цена и условие</p>
+  </div>
+ </div>
+ <div class="card">
+  <p class="xs mut">Итог корзины и заказ</p>
+  <div class="screen">
+   <div class="row"><span>Товары, 14 шт.</span><b>52 380 ₽</b></div>
+   <div class="row" style="margin-top:8px"><span>Дизайн-проект</span><b><span class="old">2 990 ₽</span><span class="acc">0 ₽</span></b></div>
+   <div class="row" style="margin-top:8px"><span>Доставка</span><b class="acc">Бесплатно</b></div>
+   <hr><div class="row"><b>К оплате</b><b>52 380 ₽</b></div>
+   <p class="xs mut" style="margin-top:8px">Порог проекта считается только по материалам, как и доставка. Проект в порог доставки не входит.</p>
+  </div>
+  <div class="screen">
+   <p class="xs mut">Страница заказа</p>
+   <div class="row" style="align-items:center"><div style="display:flex;gap:12px;align-items:center"><div class="doc" style="width:48px;height:48px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="1.8"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></div><div><b>Дизайн-проект «Оливковая гостиная»</b><p class="s mut" style="margin:0">PDF, 10 страниц, 6 МБ</p></div></div><span class="btn sm">Скачать</span></div>
+   <p class="xs mut" style="margin-top:8px">Пока файл собирается (до минуты) – «Готовим файл…». Ссылку дублируем в СМС / почту.</p>
+  </div>
+  <div class="screen">
+   <p class="xs mut">Страница интерьера и «Смета» (вариант А)</p>
+   <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="btn p">В корзину</span><span class="btn">Дизайн-проект</span></div>
+   <p class="s mut" style="margin-top:8px">Дизайн-проект – 2 990 ₽, бесплатно к материалам от 50 000 ₽</p>
+  </div>
+ </div>
+</div>
+<div class="note s">Реализация: цена и порог – в админке; PDF собирает сервер из сохранённой комнаты; строка корзины – отдельный тип «услуга» (без количества, одна на комнату). Кнопки на интерьере (W2) и в смете (W5) – их зоны, согласую через PM.</div>
+
+<!-- ============ ГОРОД ============ -->
+<h2>4. Выбор города: как выглядит</h2>
+<p class="mut">Место решено – шапка. Вопрос – какой контрол. Наших городов немного (пример: Тольятти, Самара, Жигулёвск, Сызрань).</p>
+<div class="grid g2">
+ <div class="card pick"><span class="tag rec">А · рекомендую</span>
+  <h3>Город в шапке + «Ваш город – Тольятти?» + окно с поиском</h3>
+  <div class="hdr"><span class="logo">Rem<span>On</span>Line</span><span class="nav s"><span>Каталог</span><span>Мои объекты</span></span>
+   <span class="city s"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Тольятти</span><span class="s">Войти</span><span class="s">Корзина</span></div>
+  <div class="pop"><p class="s" style="margin-bottom:12px"><b>Ваш город – Тольятти?</b><br><span class="mut">От него зависят доставка и её цена</span></p><div style="display:flex;gap:8px"><span class="btn sm p">Да</span><span class="btn sm">Выбрать другой</span></div></div>
+  <p class="s mut" style="margin-top:12px">Подсказка – только при первом входе, город угадываем по IP. Так делают крупные строительные магазины (Лемана, Петрович).</p>
+  <div class="modal" style="margin-top:16px">
+   <h3>Город доставки</h3>
+   <div class="inp s"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#566273" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Поиск города</div>
+   <div style="margin-top:8px">
+    <div class="opt on s">Тольятти<span class="acc">✓</span></div>
+    <div class="opt s">Самара</div><div class="opt s">Жигулёвск</div><div class="opt s">Сызрань</div>
+   </div>
+   <hr><p class="s mut" style="margin:0">Нет в списке? Введите свой – привезём по расстоянию: 45 ₽ за км от Тольятти</p>
+  </div>
+ </div>
+ <div class="card"><span class="tag">Б</span>
+  <h3>Город в шапке + наш выпадающий список</h3>
+  <div class="hdr"><span class="logo">Rem<span>On</span>Line</span><span class="nav s"><span>Каталог</span></span><span class="city s">Тольятти ▾</span><span class="s">Войти</span></div>
+  <div class="dd" style="margin:10px 0 0 auto"><div class="opt on s">Тольятти</div><div class="opt s">Самара</div><div class="opt s">Жигулёвск</div><div class="opt s">Сызрань</div><div class="opt s mut">Другой город…</div></div>
+  <p class="s mut" style="margin-top:12px">Проще и быстрее, без окна. Но без подсказки при первом входе человек может не заметить, что город не его; и при росте списка нужен поиск – тогда всё равно окно.</p>
+ </div>
+</div>
+
+<h2>5. Город на телефоне и что от него меняется</h2>
+<div class="grid g2">
+ <div class="card">
+  <h3>Телефон</h3>
+  <div class="phone"><div class="row"><span>☰</span><span class="logo" style="font-size:18px">Rem<span>On</span>Line</span><span>🛒</span></div>
+   <div class="city xs" style="margin-top:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#006B79" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>Тольятти</div></div>
+  <p class="s mut" style="margin-top:12px">Строка с городом – под логотипом над поиском (шапка W4). Ещё – первой строкой в меню ☰.</p>
+ </div>
+ <div class="card">
+  <h3>Сменили город → меняется</h3>
+  <ul class="ul s">
+   <li>Страница «Доставка»: зоны, цены и пороги этого города.</li>
+   <li>Корзина: цена доставки и порог «бесплатно».</li>
+   <li>Оформление: подсказки адреса и районы этого города.</li>
+   <li>Подвал и тексты, где упомянут город.</li>
+   <li>Заказы не меняются – в них свой адрес.</li>
+  </ul>
+  <p class="s" style="margin-top:12px"><b>Адрес в другом городе.</b> В оформлении ввели адрес в Самаре при «Тольятти» – город меняется сам, под адресом: «Город доставки – Самара. Цена пересчитана.»</p>
+ </div>
+</div>
+
+<h2>6. Город вне наших зон – по расстоянию</h2>
+<div class="grid g2">
+ <div class="card"><p class="xs mut">Корзина, город «Новокуйбышевск» (нет в зонах)</p>
+  <div class="screen"><div class="row"><b>Доставка</b><b>от 2 700 ₽</b></div>
+   <p class="s mut">По расстоянию: 45 ₽ за км. Точная цена – после адреса</p>
+   <p class="s mut">Бесплатной доставки в этот город нет</p></div>
+ </div>
+ <div class="card"><p class="xs mut">Оформление, после адреса</p>
+  <div class="screen"><div class="row"><span>Доставка</span><b>3 150 ₽</b></div>
+   <p class="s mut" style="margin:0">70 км от Тольятти · через 2–3 дня</p></div>
+  <p class="s mut">Расстояние считает сервер (по карте). Если сервер не ответил – «Цену доставки скажет менеджер при звонке», заказ оформить можно.</p>
+ </div>
+</div>
+
+<div class="q">
+ <h3>Что выбрать</h3>
+ <ol class="ul">
+  <li><b>Дизайн-проект:</b> А (кнопка у интерьера и в смете, строка в корзине, скачать в заказе)? Советую А.</li>
+  <li><b>Город:</b> А (город в шапке + «Ваш город – Тольятти?» + окно с поиском)? Советую А.</li>
+ </ol>
+ <p class="s mut" style="margin:8px 0 0">Цены доставки взять от клиента (Автозаводский р-н – 1 500 ₽, Самара – 5 000 ₽) или оставить нынешние примеры (390 ₽)? Советую клиентские – ближе к правде.</p>
+</div>
+</div></body></html>
