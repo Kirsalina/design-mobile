@@ -8861,7 +8861,7 @@ html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){
 html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
 </style>
 <style id="ro-w2-home-css">
-/* W2 v9 (26.11, Алина: каркас лучше, но не в стиле главной; кнопка «висит»). Блок как остальные разделы главной:
+/* W2 v10 (26.11, Алина: каркас лучше, но не в стиле главной; кнопка «висит»). Блок как остальные разделы главной:
    заголовок + описание слева, ссылка «Все интерьеры →» справа (как «Все материалы →»), ниже 4 карточки в стиле карточек Стены/Пол/Потолок.
    Телефон: карточки лентой с прокруткой пальцем. */
 #design-app .ro-w2-banner{margin:40px 0 0}
@@ -17814,6 +17814,82 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
 #ro-w2-dlg .ro-w2-warn{display:flex;gap:8px;align-items:flex-start;margin:16px 0 0;padding:12px 14px;border-radius:12px;background:#FFF4E5;color:#152A4B;font-size:14px;line-height:21px}
 #ro-w2-dlg .ro-w2-warn[hidden]{display:none}
 #ro-w2-dlg .ro-w2-warn svg{width:20px;height:20px;flex:none;color:#B25E09}
+/* ===== 26.11 21:10 – страница «Готовые интерьеры» как витрина (Алина: «конфетки», без фильтров) ===== */
+#ro-w2 .ro-w2-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:32px;align-items:center;margin-top:16px;padding:40px;border-radius:24px;background:#F3F1EB}
+#ro-w2 .ro-w2-hero h1{margin:0;font-size:40px;line-height:48px;letter-spacing:-.025em}
+#ro-w2 .ro-w2-hero .ro-w2-lead{margin:12px 0 0;font-size:16px;line-height:24px;color:#3B4A5E;max-width:34em}
+#ro-w2 .ro-w2-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+#ro-w2 .ro-w2-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid #DCE4E2;border-radius:999px;background:#fff;color:#152A4B;font-size:16px;line-height:24px;font-weight:500;text-decoration:none;transition:border-color .15s ease,color .15s ease}
+#ro-w2 .ro-w2-chip span{font-size:14px;color:#566273;font-weight:400}
+@media (hover:hover){#ro-w2 .ro-w2-chip:hover{border-color:#006B79;color:#006B79}}
+#ro-w2 .ro-w2-chip:focus-visible{outline:2px solid #006B79;outline-offset:2px}
+#ro-w2 .ro-w2-mosaic{display:grid;grid-template-columns:1.6fr 1fr;grid-template-rows:1fr 1fr;gap:12px;height:380px;min-width:0}
+#ro-w2 .ro-w2-mosaic img{width:100%;height:100%;object-fit:cover;border-radius:16px;display:block;min-width:0}
+#ro-w2 .ro-w2-mosaic .m0{grid-row:1 / span 2}
+/* выбор недели */
+#ro-w2 .ro-w2-feat{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);margin-top:32px;border:1px solid #DCE4E2;border-radius:24px;overflow:hidden;background:#fff}
+#ro-w2 .ro-w2-fimg2{display:block;min-height:420px;background:#F3F1EB;overflow:hidden}
+#ro-w2 .ro-w2-fimg2 img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+@media (hover:hover){#ro-w2 .ro-w2-feat:hover .ro-w2-fimg2 img{transform:scale(1.02)}}
+#ro-w2 .ro-w2-fbody{display:flex;flex-direction:column;gap:8px;padding:32px}
+#ro-w2 .ro-w2-badge2{align-self:flex-start;padding:2px 10px;border-radius:999px;background:#E3F3F4;color:#00525D;font-size:14px;line-height:21px;font-weight:600}
+#ro-w2 .ro-w2-feat h2{margin:4px 0 0;font-size:28px;line-height:35px;font-weight:600;letter-spacing:-.02em}
+#ro-w2 .ro-w2-feat h2 a{color:#152A4B;text-decoration:none}
+@media (hover:hover){#ro-w2 .ro-w2-feat h2 a:hover{color:#006B79}}
+#ro-w2 .ro-w2-feat .meta{margin:0;font-size:14px;line-height:21px;color:#566273}
+#ro-w2 .ro-w2-fdesc{margin:8px 0 0;font-size:16px;line-height:24px;color:#152A4B}
+#ro-w2 .ro-w2-mlist{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+#ro-w2 .ro-w2-mlist li{display:flex;align-items:center;gap:12px;font-size:14px;line-height:21px;color:#152A4B}
+#ro-w2 .ro-w2-mlist b{font-weight:600;margin-right:4px}
+#ro-w2 .ro-w2-fbuy{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:auto;padding-top:20px}
+#ro-w2 .ro-w2-fbuy .offer-price{margin:0;display:flex;flex-direction:column}
+#ro-w2 .ro-w2-fbuy .price{font-size:28px;line-height:35px}
+#ro-w2 .ro-w2-fbuy .price-note{font-size:14px;line-height:21px;color:#566273}
+/* образцы материалов */
+.ro-w2-sws{display:flex;gap:6px;margin-top:12px}
+.ro-w2-sw{display:inline-block;flex:none;width:28px;height:28px;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(21,42,75,.12);background:#F3F1EB}
+.ro-w2-sw img{width:100%;height:100%;object-fit:cover;display:block}
+#ro-w2 .ro-w2-mlist .ro-w2-sw{width:36px;height:36px}
+/* как это работает */
+#ro-w2 .ro-w2-steps{list-style:none;counter-reset:s;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:40px 0 0;padding:0}
+#ro-w2 .ro-w2-steps li{counter-increment:s;display:flex;flex-direction:column;gap:4px;position:relative;padding-left:52px}
+#ro-w2 .ro-w2-steps li::before{content:counter(s);position:absolute;left:0;top:0;width:36px;height:36px;border-radius:50%;background:#E3F3F4;color:#00525D;font-weight:600;display:flex;align-items:center;justify-content:center}
+#ro-w2 .ro-w2-steps b{font-size:18px;line-height:25px;font-weight:600;color:#152A4B}
+#ro-w2 .ro-w2-steps span{font-size:14px;line-height:21px;color:#566273}
+/* разделы по комнатам */
+#ro-w2 .ro-w2-sec{margin-top:48px;scroll-margin-top:96px}
+#ro-w2 .ro-w2-shead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+#ro-w2 .ro-w2-shead h2{margin:0;font-size:24px;line-height:32px;font-weight:600;letter-spacing:-.02em;color:#152A4B}
+#ro-w2 .ro-w2-all{display:inline-flex;align-items:center;gap:4px;color:#006B79;font-size:16px;line-height:32px;font-weight:600;text-decoration:none;white-space:nowrap}
+#ro-w2 .ro-w2-all svg{width:20px;height:20px}
+@media (hover:hover){#ro-w2 .ro-w2-all:hover{color:#00525D}}
+#ro-w2 .ro-w2-sec .ro-w2-grid{margin-top:16px}
+@media (max-width:1100px){
+ #ro-w2 .ro-w2-hero{grid-template-columns:minmax(0,1fr);padding:32px}
+ #ro-w2 .ro-w2-mosaic{height:300px}
+ #ro-w2 .ro-w2-feat{grid-template-columns:minmax(0,1fr)}
+ #ro-w2 .ro-w2-fimg2{min-height:0;aspect-ratio:16/9}}
+@media (max-width:700px){
+ #ro-w2 .ro-w2-hero{padding:24px 16px;border-radius:16px;gap:20px}
+ #ro-w2 .ro-w2-hero h1{font-size:30px;line-height:37px}
+ #ro-w2 .ro-w2-mosaic{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto;height:auto;gap:8px}
+ #ro-w2 .ro-w2-mosaic img{aspect-ratio:1;border-radius:12px}
+ #ro-w2 .ro-w2-mosaic .m0{grid-row:auto}
+ #ro-w2 .ro-w2-chip{min-height:40px;padding:0 14px;font-size:15px}
+ #ro-w2 .ro-w2-feat{border-radius:16px;margin-top:24px}
+ #ro-w2 .ro-w2-fimg2{aspect-ratio:4/3}
+ #ro-w2 .ro-w2-fbody{padding:20px 16px}
+ #ro-w2 .ro-w2-feat h2{font-size:24px;line-height:30px}
+ #ro-w2 .ro-w2-fbuy .button{width:100%}
+ #ro-w2 .ro-w2-steps{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:32px}
+ #ro-w2 .ro-w2-sec{margin-top:40px;scroll-margin-top:72px}
+ #ro-w2 .ro-w2-shead{flex-direction:column;gap:0}}
+@media (prefers-reduced-motion:reduce){#ro-w2 .ro-w2-fimg2 img,#ro-w2 .ro-w2-chip{transition:none}}
+#ro-w2 .ro-w2-sec .ro-w2-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+#ro-w2 .ro-w2-sec .ro-w2-card .card-art,#ro-w2 .ro-w2-sec .ro-w2-card .photo{aspect-ratio:4/3}
+@media (max-width:1100px){#ro-w2 .ro-w2-sec .ro-w2-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media (max-width:700px){#ro-w2 .ro-w2-sec .ro-w2-grid{grid-template-columns:minmax(0,1fr)!important}}
+@media (max-width:700px){#ro-w2 .ro-w2-sec .ro-w2-card:nth-child(n+3){display:none}}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -17887,14 +17963,37 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw:first-child{margin-top:4px}
  document.getElementById('detail').before(page);
  var detail=document.getElementById('detail');
  var loc=function(crumbs,back){return '<div class="catalog-location"><a class="catalog-back ro-w2-back" href="#'+(back||'')+'" data-route>'+icon('back')+'<span>Назад</span></a>'+(crumbs?'<nav class="crumbs" aria-label="Хлебные крошки">'+crumbs+'</nav>':'')+'</div>'};
+ /* образцы материалов интерьера: главный материал каждой поверхности (фото товара в кружке) */
+ function mats(d){var L=[];d.groups.forEach(function(g){g[2].forEach(function(x){var p=P(x[0]);if(p)L.push({s:g[0],p:p})})});return L}
+ function swatches(d,big){var L=mats(d);return '<span class="ro-w2-sws'+(big?' is-big':'')+'" role="img" aria-label="Материалы: '+esc(L.map(function(m){return m.p.name}).join(', '))+'">'+L.map(function(m){return '<span class="ro-w2-sw" title="'+esc(m.s+': '+m.p.name)+'">'+productVisual(m.p)+'</span>'}).join('')+'</span>'}
  function card(d){var s=total(d);
   return '<article class="card ro-w2-card" data-design="'+d.id+'"><div class="photo product-visual"><div class="card-art" aria-hidden="true"><img src="'+img(d.img[0])+'" alt="" loading="lazy"></div></div>'+
-   '<div class="card-body"><div class="card-head"><h3><a class="card-link" href="#design='+d.id+'" data-route>'+esc(d.name)+'</a></h3><div class="meta"><p>'+esc(folderName(d.folder))+', '+sizeLine(d)+'</p></div></div>'+
+   '<div class="card-body"><div class="card-head"><h3><a class="card-link" href="#design='+d.id+'" data-route>'+esc(d.name)+'</a></h3><div class="meta"><p>'+esc(folderName(d.folder))+', '+nb(num(d.area)+' м²')+'</p></div></div>'+
+   swatches(d)+
    '<div class="card-bottom"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div></div></article>'}
- function drawHome(){
-  page.innerHTML=loc('','')+'<h1 id="ro-w2-t" tabindex="-1">Готовые интерьеры</h1><p class="ro-w2-lead">Выберите интерьер и посмотрите его в своей квартире. Материалы и смету посчитаем, с размерами поможет ИИ-помощник.</p>'+
-   '<div class="ro-w2-folders">'+FOLDERS.map(function(f){var L=inFolder(f[0]);if(!L.length)return '';
-    return '<a class="ro-w2-folder" href="#designs='+f[0]+'" data-route><span class="ro-w2-fimg" aria-hidden="true"><img src="'+img(L[0].img[0])+'" alt="" loading="lazy"></span><span class="ro-w2-ftx"><b>'+esc(f[1])+'</b><small>'+L.length+' '+pl(L.length,'интерьер','интерьера','интерьеров')+'</small></span></a>'}).join('')+'</div>';
+ var PLURAL={living:'Гостиные',kitchen:'Кухни',bed:'Спальни',kids:'Детские',bath:'Ванные',entry:'Прихожие'};
+ var PICK='liv-olive'; /* «Выбор недели» – в админке отметка (D7) */
+ function drawHome(){var F=D.filter(function(d){return d.id===PICK})[0]||D[0];
+  var hero=['liv-olive','bath-stone','kit-stone'].map(function(id){var d=D.filter(function(x){return x.id===id})[0];return d?img(d.img[0]):''});
+  page.innerHTML=loc('','')+
+   '<div class="ro-w2-hero"><div class="ro-w2-hcopy"><h1 id="ro-w2-t" tabindex="-1">Готовые интерьеры</h1>'+
+    '<p class="ro-w2-lead">Современные интерьеры, где материалы уже подобраны и сочетаются. Посмотрите понравившийся в своей квартире – смету посчитаем, с размерами поможет ИИ-помощник.</p>'+
+    '<nav class="ro-w2-chips" aria-label="Комнаты">'+FOLDERS.map(function(f){var n=inFolder(f[0]).length;return n?'<a class="ro-w2-chip" href="#designs='+f[0]+'" data-w2-jump="'+f[0]+'">'+esc(PLURAL[f[0]])+'<span>'+n+'</span></a>':''}).join('')+'</nav></div>'+
+    '<div class="ro-w2-mosaic" aria-hidden="true">'+hero.map(function(src,i){return '<img class="m'+i+'" src="'+src+'" alt="" loading="'+(i?'lazy':'eager')+'">'}).join('')+'</div></div>'+
+   '<section class="ro-w2-feat" aria-labelledby="ro-w2-ft"><a class="ro-w2-fimg2" href="#design='+F.id+'" data-route tabindex="-1" aria-hidden="true"><img src="'+img(F.img[0])+'" alt="" loading="lazy"></a>'+
+    '<div class="ro-w2-fbody"><span class="ro-w2-badge2">Выбор недели</span><h2 id="ro-w2-ft"><a href="#design='+F.id+'" data-route>'+esc(F.name)+'</a></h2><p class="meta">'+esc(folderName(F.folder))+', '+sizeLine(F)+'</p>'+
+    (DESC[F.id]?'<p class="ro-w2-fdesc">'+esc(DESC[F.id])+'</p>':'')+
+    '<ul class="ro-w2-mlist">'+mats(F).map(function(m){return '<li><span class="ro-w2-sw">'+productVisual(m.p)+'</span><span><b>'+esc(m.s)+'</b> '+esc(m.p.name)+'</span></li>'}).join('')+'</ul>'+
+    '<div class="ro-w2-fbuy"><p class="offer-price"><strong class="price">'+rub(total(F))+'</strong><span class="price-note">за материалы на '+nb(num(F.area)+' м²')+'</span></p><a class="button" href="#design='+F.id+'" data-route>Смотреть интерьер</a></div></div></section>'+
+   '<ol class="ro-w2-steps" aria-label="Как это работает">'+
+    '<li><b>Выберите интерьер</b><span>Материалы стен, пола и потолка уже подобраны и сочетаются.</span></li>'+
+    '<li><b>Посмотрите в своей квартире</b><span>Возьмите типовую планировку или нарисуйте комнату – с размерами поможет ИИ-помощник.</span></li>'+
+    '<li><b>Купите одним заказом</b><span>Посчитаем количество и смету, привезём всё вместе.</span></li></ol>'+
+   FOLDERS.map(function(f){var L=inFolder(f[0]);if(!L.length)return '';
+    return '<section class="ro-w2-sec" id="ro-w2-s-'+f[0]+'" aria-labelledby="ro-w2-h-'+f[0]+'"><div class="ro-w2-shead"><h2 id="ro-w2-h-'+f[0]+'">'+esc(PLURAL[f[0]])+'</h2>'+
+     '<a class="ro-w2-all" href="#designs='+f[0]+'" data-route>Все '+esc(PLURAL[f[0]].toLowerCase())+' · '+L.length+icon('right')+'</a></div>'+
+     '<div class="product-grid ro-w2-grid">'+L.slice(0,3).map(card).join('')+'</div></section>'}).join('');
+  page.querySelectorAll('[data-w2-jump]').forEach(function(a){a.addEventListener('click',function(e){var t=document.getElementById('ro-w2-s-'+a.getAttribute('data-w2-jump'));if(!t)return;e.preventDefault();e.stopPropagation();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})})});
  }
  function drawFolder(k){var L=inFolder(k),n=folderName(k);
   page.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<span aria-current="page">'+esc(n)+'</span>','designs=1')+
