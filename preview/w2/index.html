@@ -8861,23 +8861,34 @@ html body #design-app .product-card .product-action:not(#ro-w4-a):not(#ro-w4-b){
 html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-a){display:none!important}
 </style>
 <style id="ro-w2-home-css">
-/* W2 v2: второй баннер главной. Фон, радиус, отступы и кнопка – как у первого баннера (.founder-hero) */
-#design-app .ro-w2-banner{display:grid;grid-template-columns:1fr 1.08fr;align-items:center;gap:24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:32px}
-#design-app .ro-w2-banner h2{font-size:32px;line-height:1.21;font-weight:600;letter-spacing:-.035em;margin:0;color:var(--ink)}
-#design-app .ro-w2-bdesc{font-size:16px;line-height:1.5;max-width:30em;margin:12px 0 20px}
-#design-app .ro-w2-banner .actions{display:flex;gap:12px;margin:0}
-#design-app .ro-w2-btiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
-#design-app .ro-w2-btile{display:flex;flex-direction:column;background:#fff;border-radius:12px;overflow:hidden;color:var(--ink);text-decoration:none;transition:box-shadow .15s ease}
-#design-app .ro-w2-bimg{display:block;aspect-ratio:2/1;overflow:hidden;background:#F3F1EB}
-#design-app .ro-w2-bimg img{width:100%;height:100%;object-fit:cover;display:block}
-#design-app .ro-w2-btx{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:8px 12px}
-#design-app .ro-w2-btx b{font-size:16px;line-height:24px;font-weight:600}
-#design-app .ro-w2-btx small{font-size:14px;line-height:21px;color:#566273;white-space:nowrap}
-@media (hover:hover){#design-app .ro-w2-btile:hover{box-shadow:0 6px 20px rgba(21,42,75,.10)}}
-#design-app .ro-w2-btile:focus-visible{outline:0;box-shadow:inset 0 0 0 1px #006B79}
-@media (max-width:1100px){#design-app .ro-w2-banner{grid-template-columns:1fr;padding:32px}#design-app .ro-w2-btiles{grid-template-columns:repeat(4,minmax(0,1fr))}#design-app .ro-w2-btx{flex-direction:column;gap:0}}
-@media (max-width:700px){#design-app .ro-w2-banner{padding:24px 16px;gap:24px;margin-top:16px}#design-app .ro-w2-banner h2{font-size:28px;line-height:35px}#design-app .ro-w2-btiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}#design-app .ro-w2-btx{padding:8px 12px 12px}#design-app .ro-w2-banner .actions .button{width:100%}}
-@media (prefers-reduced-motion:reduce){#design-app .ro-w2-btile{transition:none}}
+/* W2 v4 (25.11, 23:30, Алина: баннер громоздкий): шапка в строку (заголовок + описание слева, кнопка справа), под ней 4 плитки в ряд,
+   название и число интерьеров – на фото. Телефон: плитки лентой с прокруткой пальцем, кнопка под лентой. Фон, радиус, кнопка – как у первого баннера. */
+#design-app .ro-w2-banner{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"copy act" "tiles tiles";align-items:end;gap:20px 24px;background:var(--brand-wash);border-radius:16px;margin:24px 0 0;padding:28px 32px 32px}
+#design-app .ro-w2-bcopy{grid-area:copy;min-width:0}
+#design-app .ro-w2-banner h2{font-size:28px;line-height:35px;font-weight:600;letter-spacing:-.03em;margin:0;color:var(--ink)}
+#design-app .ro-w2-bdesc{font-size:16px;line-height:24px;margin:4px 0 0;color:#566273}
+#design-app .ro-w2-banner .actions{grid-area:act;display:flex;margin:0}
+#design-app .ro-w2-btiles{grid-area:tiles;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;min-width:0}
+#design-app .ro-w2-btile{position:relative;display:block;aspect-ratio:16/10;border-radius:12px;overflow:hidden;background:#F3F1EB;color:#fff;text-decoration:none;transition:box-shadow .15s ease}
+#design-app .ro-w2-btile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+#design-app .ro-w2-btile::after{content:"";position:absolute;inset:40% 0 0;background:linear-gradient(to top,rgba(14,24,40,.72),rgba(14,24,40,0))}
+#design-app .ro-w2-btx{position:absolute;left:0;right:0;bottom:0;z-index:1;display:flex;flex-direction:column;padding:12px 16px}
+#design-app .ro-w2-btx b{font-size:18px;line-height:25px;font-weight:600}
+#design-app .ro-w2-btx small{font-size:14px;line-height:21px;opacity:.9;white-space:nowrap}
+@media (hover:hover){#design-app .ro-w2-btile:hover{box-shadow:0 6px 20px rgba(21,42,75,.14)}#design-app .ro-w2-btile:hover img{transform:scale(1.03)}}
+#design-app .ro-w2-btile:focus-visible{outline:2px solid #006B79;outline-offset:2px}
+@media (max-width:1100px){#design-app .ro-w2-banner{padding:24px}#design-app .ro-w2-btiles{gap:12px}#design-app .ro-w2-btx{padding:8px 12px}#design-app .ro-w2-btx b{font-size:16px;line-height:24px}}
+@media (max-width:700px){
+ #design-app .ro-w2-banner{grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "tiles" "act";gap:16px;margin-top:16px;padding:20px 0 20px 16px}
+ #design-app .ro-w2-bcopy,#design-app .ro-w2-banner .actions{padding-right:16px}
+ #design-app .ro-w2-banner h2{font-size:24px;line-height:30px}
+ #design-app .ro-w2-bdesc{font-size:14px;line-height:21px}
+ #design-app .ro-w2-btiles{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-right:16px;scroll-padding-left:0}
+ #design-app .ro-w2-btiles::-webkit-scrollbar{display:none}
+ #design-app .ro-w2-btile{flex:0 0 156px;aspect-ratio:4/3;scroll-snap-align:start}
+ #design-app .ro-w2-btx{padding:8px 10px}#design-app .ro-w2-btx b{font-size:16px;line-height:22px}#design-app .ro-w2-btx small{font-size:13px;line-height:18px}
+ #design-app .ro-w2-banner .actions .button{width:100%}}
+@media (prefers-reduced-motion:reduce){#design-app .ro-w2-btile,#design-app .ro-w2-btile img{transition:none}}
 </style>
 <script id="ro-w2-home">
 (function(){
@@ -8886,9 +8897,9 @@ html body #detail .detail-copy>.buy-group:not(:has(>:not([hidden]))):not(#ro-w4-
  var T=[{"k": "living", "n": "Гостиная", "c": 4, "i": "../../assets/75fbbb6487de.webp"}, {"k": "kitchen", "n": "Кухня", "c": 3, "i": "../../assets/2f6be14c1a94.webp"}, {"k": "bed", "n": "Спальня", "c": 2, "i": "../../assets/753c61eaf0e1.webp"}, {"k": "bath", "n": "Ванная", "c": 2, "i": "../../assets/972574c2df2c.webp"}];
  var pl=function(n,a,b,c){var m=Math.abs(n)%100,k=m%10;return m>10&&m<20?c:k>1&&k<5?b:k===1?a:c};
  var arrow='<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
- function html(){return '<div class="ro-w2-bcopy"><h2 id="ro-w2-bt">Готовые интерьеры от дизайнеров</h2><p class="ro-w2-bdesc">Выберите интерьер для гостиной, кухни или спальни. Откройте его в конструкторе на размерах своей комнаты, а материалы и смета посчитаются сами.</p>'+
-  '<div class="actions"><a href="#" data-w2-path="/designs" class="v-btn v-theme--desiign bg-primary v-btn--density-default elevation-0 rounded-lg v-btn--size-default v-btn--variant-flat button"><span class="v-btn__overlay"></span><span class="v-btn__underlay"></span><span class="v-btn__content">Смотреть интерьеры '+arrow+'</span></a></div></div>'+
-  '<div class="ro-w2-btiles">'+T.map(function(t){return '<a class="ro-w2-btile" href="#" data-w2-path="/designs/'+t.k+'"><span class="ro-w2-bimg" aria-hidden="true"><img src="'+t.i+'" alt="" loading="lazy"></span><span class="ro-w2-btx"><b>'+t.n+'</b><small>'+t.c+'\u00A0'+pl(t.c,'интерьер','интерьера','интерьеров')+'</small></span></a>'}).join('')+'</div>'}
+ function html(){return '<div class="ro-w2-bcopy"><h2 id="ro-w2-bt">Готовые интерьеры от дизайнеров</h2><p class="ro-w2-bdesc">Откройте на размерах своей комнаты – материалы и смета посчитаются сами.</p></div>'+
+  '<div class="actions"><a href="#" data-w2-path="/designs" class="v-btn v-theme--desiign bg-primary v-btn--density-default elevation-0 rounded-lg v-btn--size-default v-btn--variant-flat button"><span class="v-btn__overlay"></span><span class="v-btn__underlay"></span><span class="v-btn__content">Смотреть интерьеры '+arrow+'</span></a></div>'+
+  '<div class="ro-w2-btiles">'+T.map(function(t){return '<a class="ro-w2-btile" href="#" data-w2-path="/designs/'+t.k+'"><img src="'+t.i+'" alt="" loading="lazy"><span class="ro-w2-btx"><b>'+t.n+'</b><small>'+t.c+'\u00A0'+pl(t.c,'интерьер','интерьера','интерьеров')+'</small></span></a>'}).join('')+'</div>'}
  function put(){var h=[].slice.call(document.querySelectorAll('#design-app .founder-hero')).find(function(x){return x.getClientRects().length});if(!h)return;
   var after=h.nextElementSibling&&h.nextElementSibling.classList.contains('project-area')?h.nextElementSibling:h;
   if(after.nextElementSibling&&after.nextElementSibling.classList.contains('ro-w2-banner'))return;
