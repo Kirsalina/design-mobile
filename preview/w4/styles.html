@@ -117,8 +117,8 @@
 .t5 .sec:active{background:#EEF5F6;box-shadow:inset 0 1px 2px rgba(21,42,75,.08)}
 .t5 .bd{background:#fff;border:1px solid var(--line);border-radius:8px;color:#006B79}
 .t5 .tabs{background:rgba(255,255,255,.6);border:1px solid var(--line);border-radius:10px;padding:3px}
-.t5 .tab.on{background:#fff;border-radius:8px;color:#152A4B;box-shadow:0 1px 2px rgba(21,42,75,.10),0 3px 8px -4px rgba(21,42,75,.20)}
-.t5 .ck{background:linear-gradient(135deg,#22D2DE,#13B4D3);border-radius:7px;color:#fff}
+.t5 .tab.on{background:#fff;border-radius:8px;color:#152A4B;box-shadow:inset 0 0 0 1px #7FB9C2,0 1px 2px rgba(21,42,75,.10),0 3px 8px -4px rgba(21,42,75,.20)}
+.t5 .ck{background:linear-gradient(135deg,#16BED4,#0B8FB4);border-radius:7px;color:#fff}
 .t5 .chip{background:#fff;border:1px solid var(--line);border-radius:10px}.t5 .chip.on{border-color:#19CBD8;background:#E6FAFB}
 .t5 .ban{background:var(--tint);border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:16px}
 .t5 .ban h5{margin:0 0 6px;font:700 18px/25px Manrope}.t5 .ban p{margin:0 0 12px;font-size:13px;line-height:20px;opacity:.8}
@@ -135,19 +135,25 @@
 .sg{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
 .sb{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
 .sb h3{margin:0 0 10px;font:700 14px/20px Manrope;text-transform:uppercase;letter-spacing:.04em;opacity:.6}
-.sr{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px}.sr>span:first-child{width:92px;flex:none;opacity:.7}
+.sr{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px}.sr>span:first-child{width:84px;flex:none;opacity:.7}
 .t5 .pri.hov{background:#14BDC9}.t5 .pri.prs{background:#10AAB5;box-shadow:inset 0 1px 2px rgba(10,80,90,.25)}
-.t5 .btn.foc{border-color:#006B79!important;box-shadow:inset 0 0 0 1px #006B79}
-.t5 .btn.dis{background:#EEF5F6;color:#7D8996;border-color:transparent;box-shadow:none;cursor:default}
+.t5 .btn.foc{border:1px solid #006B79!important}
+.t5 .btn.dis{border-radius:10px;border:1px solid transparent;background:#EEF5F6;color:#7D8996;border-color:transparent;box-shadow:none;cursor:default}
 .t5 .sec.hov{border-color:var(--line-strong);background:#F7FBFC}.t5 .sec.prs{background:#EEF5F6;box-shadow:inset 0 1px 2px rgba(21,42,75,.08)}
 .t5 .sec.del{color:#A32637}
 .spin{width:16px;height:16px;border:2px solid rgba(21,42,75,.25);border-top-color:#152A4B;border-radius:50%;display:inline-block;margin-right:8px;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
 .t5 .fld2{height:44px;flex:1;display:flex;align-items:center;padding:0 12px;background:#fff;border:1px solid var(--line);border-radius:10px;font-size:14px;box-shadow:inset 0 1px 2px rgba(21,42,75,.05)}
-.t5 .fld2.foc{border-color:#006B79;box-shadow:inset 0 0 0 1px #006B79}.t5 .fld2.err{border-color:#A32637;box-shadow:inset 0 0 0 1px #A32637}.t5 .fld2.dis{background:#F3F7F8;color:#7D8996;box-shadow:none}
+.t5 .fld2.foc{border-color:#006B79}.t5 .fld2.err{border-color:#A32637}.t5 .fld2.dis{background:#F3F7F8;color:#7D8996;box-shadow:none}
 .t5 .ck.off{background:#fff;border:1.5px solid var(--line-strong)}.t5 .ck.mix{color:#fff}.t5 .ck.dis{background:#DCE8EA;color:#fff}
 .t5 .lbl{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:#fff;font:700 13px/18px Manrope}
 .t5 .rad{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line-strong);background:#fff;display:inline-grid;place-items:center}.t5 .rad.on{border:0;background:linear-gradient(135deg,#22D2DE,#13B4D3)}.t5 .rad.on::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
 .t5 .gate{background:var(--tint);border:1px solid var(--line);border-radius:16px;padding:14px;font-size:13px}
+
+.opt{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px;margin-top:16px}
+.t5 .pri.icn svg{flex:none}
+@keyframes nud{0%,100%{transform:translateX(0)}40%{transform:translateX(3px) rotate(-6deg)}70%{transform:translateX(-1px)}}
+.t5 .pri.anim:hover svg{animation:nud .5s ease}
+.t5 .pri.w8{font-weight:800;letter-spacing:.01em}
 </style></head><body><div class="wrap"><section class="t t0"><p class="cap">Для сравнения</p><h2 class="name">Как на сайте</h2><p class="why">Градиентные кнопки на песочном фоне. Объём есть только у кнопок, всё остальное плоское, поэтому кнопки выглядят «наклеенными».</p>
 <div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
 <div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
@@ -196,7 +202,7 @@
 <div class="sr"><span>наведение</span><button class="btn s pri hov">В корзину</button></div>
 <div class="sr"><span>нажатие</span><button class="btn s pri prs">В корзину</button></div>
 <div class="sr"><span>фокус</span><button class="btn s pri foc">В корзину</button></div>
-<div class="sr"><span>загрузка</span><button class="btn s pri"><i class="spin"></i>Отправляем…</button></div>
+<div class="sr"><span>загрузка</span><button class="btn s pri" style="padding:0 12px"><i class="spin"></i>Отправляем…</button></div>
 <div class="sr"><span>неактивна</span><button class="btn s dis">В корзину</button></div></div>
 <div class="sb"><h3>Белая кнопка</h3>
 <div class="sr"><span>обычная</span><button class="btn s sec">Аналоги</button></div>
@@ -215,7 +221,7 @@
 <div class="sb"><h3>Выбор</h3>
 <div class="sr"><span>галочка</span><span class="ck off"></span><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="ck mix"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 12h12"/></svg></span><span class="ck dis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span></div>
 <div class="sr"><span></span><span style="font-size:12px;opacity:.7">нет · да · часть · неактивна</span></div>
-<div class="sr"><span>радио</span><span class="rad"></span><span class="rad on"></span></div>
+
 <div class="sr"><span>пилюли</span><span class="chip on">Светлые</span><span class="chip">Дуб</span></div>
 <div class="sr"><span>вкладки</span><div class="tabs" style="margin:0;flex:1"><span class="tab">2D</span><span class="tab on">3D</span></div></div>
 <div class="sr"><span>счётчик</span><div class="step" style="height:40px;width:110px"><span>−</span><span>1</span><span>+</span></div></div></div>
@@ -226,19 +232,20 @@
 <div class="sr"><span>нейтрально</span><span class="lbl" style="color:#152A4B">Ждёт оплаты</span></div>
 <div class="sr"><span>закрыто</span><span class="lbl" style="color:#566273">Доставлен</span></div>
 <div class="sr"><span>счётчик</span><span class="cartic" style="color:#152A4B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b style="background:linear-gradient(135deg,#2ED6E1,#1B9FD6);color:#fff">14</b></span></div></div>
-<div class="sb"><h3>Блоки</h3>
-<div class="gate"><b style="display:block;font-size:15px;margin-bottom:4px">Войдите, чтобы сохранить объект</b>Код придёт по СМС.<div style="margin-top:10px"><button class="btn s pri">Войти</button></div></div>
-<div class="gate" style="margin-top:10px;background:#fff"><b style="display:block;font-size:15px;margin-bottom:4px">Корзина пуста</b>Добавьте материалы из каталога или сметы.<div style="margin-top:10px"><button class="btn s sec">Открыть каталог</button></div></div></div>
+<div class="sb"><h3>Блок-сообщение (один для всех)</h3><div class="gate"><b style="display:block;font-size:15px;margin-bottom:4px">Войдите, чтобы сохранить объект</b>Код придёт по СМС.<div style="margin-top:10px"><button class="btn s pri">Войти</button></div></div><div class="gate" style="margin-top:10px"><b style="display:block;font-size:15px;margin-bottom:4px">Корзина пуста</b>Добавьте материалы из каталога или сметы.<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn s pri">Открыть каталог</button><button class="btn s sec">Перейти к смете</button></div></div></div></div><h2 style="margin-top:28px">«В корзину» – как сделать живее</h2><p class="sub">Бирюзовый #19CBD8 закреплён за кнопками. Белый текст на нём читается плохо (контраст 2:1, нужно 4,5:1), поэтому текст остаётся тёмным. Живость даём иконкой и движением.</p><div class="opt">
+<div class="sb"><h3>А – как сейчас</h3><button class="btn pri w">В корзину</button></div>
+<div class="sb"><h3>Б – с иконкой</h3><button class="btn pri w icn"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>В корзину</button></div>
+<div class="sb"><h3>В – иконка «подпрыгивает» при наведении</h3><button class="btn pri w icn anim"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>В корзину</button><p style="font-size:12px;margin:8px 0 0;opacity:.7">Наведите мышь. После нажатия – уже принятый полёт товара в корзину.</p></div>
 </div></section><section class="tok"><h2>Правила «Смеси 2» – одни для всего сайта</h2><table>
 <tr><td>Фон страницы</td><td><span class="sw" style="background:#F7FAFB"></span>#F7FAFB + мягкий бирюзовый свет в углу (только на больших фонах)</td></tr>
 <tr><td>Фоновый цвет плашек</td><td><span class="sw" style="background:#EEF5F6"></span>#EEF5F6 – вместо песочного #F3F1EB: баннеры, фон конструктора, сметы, пустые состояния, итог</td></tr>
 <tr><td>Поверхность</td><td><span class="sw" style="background:#fff"></span>белый (карточки, окна, панели; можно 82 % + размытие)</td></tr>
-<tr><td>Контур – один</td><td><span class="sw" style="background:#BCDDE2"></span>1 px #BCDDE2 (светло-бирюзовый) у всего: карточки, поля, поиск, счётчик, вкладки, пилюли, белые кнопки, метки. Наведение – #7FB9C2. Фокус – #006B79 + 1 px внутри</td></tr>
+<tr><td>Контур – один</td><td><span class="sw" style="background:#BCDDE2"></span>1 px #BCDDE2 (светло-бирюзовый) у всего: карточки, поля, поиск, счётчик, вкладки, пилюли, белые кнопки, метки. Наведение – #7FB9C2. Фокус – контур #006B79 1 px · ошибка – контур #A32637 1 px (толщина не меняется)</td></tr>
 <tr><td>Скругления</td><td>10 – кнопки, поля, поиск, счётчик, вкладки, пилюли · 8 – вложенное («Найти» в поиске, выбранная вкладка, метки) · 16 – карточки, окна, баннеры · галочка 7</td></tr>
 <tr><td>Бирюзовая кнопка</td><td>#19CBD8, текст #152A4B, без градиента; блик inset 0 1px 0 rgba(255,255,255,.35); тень 0 1px 2px rgba(21,42,75,.14), 0 4px 10px -4px rgba(16,140,150,.35). Наведение #14BDC9, нажатие #10AAB5 без тени</td></tr>
 <tr><td>Белая кнопка</td><td>белый, контур 1 px #BCDDE2, тень 0 1px 2px rgba(21,42,75,.06). Наведение – контур #7FB9C2, фон #F7FBFC. Нажатие #EEF5F6</td></tr>
 <tr><td>Тени</td><td>кнопки – см. выше · карточки 0 1px 2px rgba(21,42,75,.04), 0 10px 26px -18px rgba(21,42,75,.25) · окна и меню – как сейчас</td></tr>
-<tr><td>Выбранное</td><td>вкладка – белая плашка в контуре · пилюля – контур #19CBD8, фон #E6FAFB · галочка – градиент #22D2DE→#13B4D3, белая галка (единственный градиент в системе, как и кружок корзины) · пункт шапки – #EDF6F7</td></tr>
+<tr><td>Выбранное</td><td>вкладка – белая плашка в контуре · пилюля – контур #19CBD8, фон #E6FAFB · галочка – градиент #16BED4→#0B8FB4, белая галка (контраст ≥ 3:1) (единственный градиент в системе, как и кружок корзины) · пункт шапки – #EDF6F7</td></tr>
 </table>
 <h2 style="margin-top:24px">Для Vuetify (Дима)</h2>
 <pre>const vuetify = createVuetify({

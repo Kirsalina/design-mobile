@@ -8350,7 +8350,7 @@ app.component('store-header', {
  props:{compact:Boolean},
  render(){return Vue.h('header',{class:['header wrap',this.compact?'is-compact':'is-open']},(this.compact?['navigation','brand','account','status']:['brand','navigation','account','status']).map(name=>Vue.h(Vue.Fragment,{key:name},this.$slots[name]?.())));}
 });
-// Точная геометрия lucide-static 1.65.0 из проверенного #32; ISC/MIT в ../../assets/lucide-LICENSE.txt.
+// Точная геометрия lucide-static 1.65.0 из проверенного #32; ISC/MIT в assets/lucide-LICENSE.txt.
 const icons = {
   "play": '<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" />',
   "pause": '<rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" />',
@@ -15140,8 +15140,7 @@ function orderSummary(action = '') {
     <details class="order-products"><summary><span id="summary-count">${productCount(units)}</span>${icon('down')}</summary>
       <ul class="pos-list">${lines.map(({item,quantity})=>positionRow(item,quantity)).join('')}</ul></details>
     <p class="summary-row"><span>Товары</span><strong id="summary-subtotal">${rub(subtotal)}</strong></p>
-    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p>
-    <p id="summary-window" class="meta" aria-live="polite"></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}${action ? '<p class="meta ro-w3-consent">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>' : ''}</aside>`;
+    <p class="summary-row ro-w3-drow"><span class="ro-w3-dcol"><span id="summary-delivery-label">Доставка</span><span id="summary-window" class="meta" aria-live="polite"></span></span><span id="summary-delivery">По адресу</span></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}${action && roW3Consent() ? '<p class="meta ro-w3-consent">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>' : ''}</aside>`;
 }
 function transactionHeading(title,parent='',action='') {
   const heading = `<h1 tabindex="-1">${title}</h1>`;
@@ -15169,7 +15168,7 @@ function renderCartRow({item,quantity,selected,issue}) {
         <div class="cart-stepper">
           <button type="button" data-cart-step="-1" ${issue?'disabled':''} aria-label="Уменьшить количество: ${item.name}" aria-disabled="${quantity<=1}">${icon('minus')}</button>
           <input type="number" inputmode="numeric" min="1" value="${quantity}" step="1" required ${issue?'disabled':''} data-cart-qty="${sku}" aria-label="${quantityLabel(item)}: ${item.name}, ${sku}" aria-describedby="cart-error-${sku}">
-          <button type="button" data-cart-step="1" ${issue?'disabled':''} aria-label="Увеличить количество: ${item.name}">${icon('plus')}</button>
+          <button type="button" data-cart-step="1" ${issue?'disabled':''} aria-disabled="${quantity>=RO_QMAX}" aria-label="Увеличить количество: ${item.name}">${icon('plus')}</button>
         </div>
         <span class="cart-quantity-error" id="cart-error-${sku}" data-cart-error aria-live="polite"></span>
       </div>
@@ -15209,19 +15208,21 @@ function updateCartSummary() {
   selectAll.indeterminate = selected.length>0 && selected.length<availableCount;
   $('#cart-selected-count').textContent = selected.length+' из '+cart.size;
   $('#cart-subtotal').textContent = rub(cartTotals(selected).subtotal);
-  $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length));
-  $('#cart-summary-note').textContent = selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
+  const roOver = cartTotals(selected).subtotal>RO_OMAX;
+  $('#cart-checkout').setAttribute('aria-disabled',String(!selected.length||roOver));
+  $('#transaction .cart-summary').classList.toggle('ro-w3-over',roOver);
+  $('#cart-summary-note').textContent = roOver ? 'Заказ – до 99 999 999 ₽. Уменьшите количество.' : selected.length ? roDeliveryNote(cartTotals(selected).subtotal) : 'Выберите товары для заказа';
   roCartDlv(selected);
 }
 function changeCartQuantity(field,quantity) {
   const entry = cart.get(field.dataset.cartQty);
   const row = field.closest('.cart-row');
   const error = $('[data-cart-error]',row);
-  const valid = Number.isSafeInteger(quantity) && quantity>=1 && Number.isSafeInteger(quantity*Math.round(entry.item.price*100));
+  const valid = Number.isSafeInteger(quantity) && quantity>=1 && quantity<=RO_QMAX && Number.isSafeInteger(quantity*Math.round(entry.item.price*100));
   if (!valid) {
     field.value = entry.quantity;
     field.setAttribute('aria-invalid','true');
-    error.textContent = Number.isSafeInteger(quantity) && quantity>1 ? 'Уменьшите количество.' : 'Введите целое число от 1.';
+    error.textContent = Number.isSafeInteger(quantity) && quantity>RO_QMAX ? 'Максимум – 9 999.' : Number.isSafeInteger(quantity) && quantity>1 ? 'Уменьшите количество.' : 'Введите целое число от 1.';
     return;
   }
   field.removeAttribute('aria-invalid');
@@ -15229,6 +15230,7 @@ function changeCartQuantity(field,quantity) {
   field.value = entry.quantity = quantity;
   $('[data-line-total]',row).textContent = rub(entry.item.price*quantity);
   $('[data-cart-step="-1"]',row).setAttribute('aria-disabled',String(quantity<=1));
+  $('[data-cart-step="1"]',row).setAttribute('aria-disabled',String(quantity>=RO_QMAX));
   renderCart();
   updateCartSummary();
 }
@@ -15327,11 +15329,15 @@ function roW3Sync(form,q){
   if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(cwt*(house?R.house:R.lift));
   var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.innerHTML='<span>'+(house?'Занос в дом – '+rub(R.house)+' за каждые 100 кг.':'С лифтом – '+rub(R.lift)+' за каждые 100 кг, на любой этаж. Без лифта – '+rub(R.stairs)+' за каждый этаж за каждые 100 кг.')+'</span><span>Грузчики считают вес сотнями: заказ до 100 кг – как 100 кг. Ваш заказ весит около '+kg+' кг.</span>';
   form.querySelectorAll('.ro-w3-req-in').forEach(function(x){x.hidden=house||!carry});
-  var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
+  var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+'\n'+q.window.replace(/ /g,'\u00a0'); /* W3-8: район и срок – двумя строками */
   var row=document.getElementById('ro-w3-lift-row');
   if(row){row.hidden=!(q&&q.carry&&!q.liftPending);var l=document.getElementById('ro-w3-lift-label'),cc=document.getElementById('ro-w3-lift-cost');
     if(l)l.textContent=q&&q.liftLabel||'Подъём';if(cc)cc.textContent=q?rub(q.lift):''}
 }
+/* W3-8: лимиты – интерфейс держит суммы до десятков миллионов; больше – ошибка (сервер проверяет то же). */
+const RO_QMAX = 9999, RO_OMAX = 99999999;
+/* W3-8: согласие с офертой у кнопки – только для гостя; вошедший согласился при входе. Гость, подтвердивший телефон в оформлении, видит согласие до конца. */
+function roW3Consent(){ if (!phoneAuth.account) window.roW3Guest = 1; return !!window.roW3Guest; }
 const addressComplete = value => /\d/.test(value) && /[а-яё]{2}/i.test(value);
 function deliveryQuote(form) {
   const fields = form.elements;
@@ -15463,7 +15469,7 @@ function renderCheckout() {
         </div>
         <p class="pickup-note" id="pickup-note" hidden><strong>Самовывоз в Тольятти</strong><span class="meta">Получение на следующий день</span></p>
       </fieldset>
-      </form>${orderSummary('<button class="button" type="submit" form="checkout-form">Подтвердить заказ</button><p id="checkout-submit-error" role="alert" hidden></p><p class="meta ro-w3-consent-bar">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>')}</div>`;
+      </form>${orderSummary('<button class="button" type="submit" form="checkout-form">Подтвердить заказ</button><p id="checkout-submit-error" role="alert" hidden></p>'+(roW3Consent() ? '<p class="meta ro-w3-consent-bar">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>' : ''))}</div>`;
   const form = $('#checkout-form');
   const failedExample = cart===exampleCart && new URLSearchParams(activeRoute).get('form')==='invalid';
   const checkoutDraft = (!failedExample && checkoutDrafts.get(cart)) || (cart===exampleCart ? {
@@ -18097,6 +18103,32 @@ html body .shop #transaction #checkout-form label.pay-option.ro-w3-c{min-height:
  document.addEventListener('input',function(e){var f=e.target.form;if(!f||f.id!=='checkout-form')return;
   ['unit','floor','entrance'].forEach(function(k){var el=f.elements[k],er=document.getElementById('checkout-error-'+k);if(el&&er&&er.textContent)showCheckoutError(el,checkoutError(el))});rowErr()});
 })();
+<%/script>
+<style id="ro-w3-8-css">
+/* W3-8: «Ваш заказ» – район и срок под «Доставка» */
+#transaction .order-summary .summary-row.ro-w3-drow{display:grid!important;grid-template-columns:minmax(0,1fr) auto;column-gap:16px;align-items:start}
+#transaction .order-summary .ro-w3-dcol{display:flex;flex-direction:column;gap:2px;min-width:0}
+#transaction .order-summary .ro-w3-dcol #summary-window{display:block;white-space:pre-line;margin:0!important;font-size:14px;line-height:21px;font-weight:400;color:#566273}
+#transaction .order-summary .ro-w3-dcol #summary-window:empty{display:none}
+#transaction .order-summary .ro-w3-drow #summary-delivery{text-align:right;white-space:nowrap}
+/* W3-8: большие числа в строке корзины (до 9 999 шт., до 29 697 030 ₽) – поле вмещает 4 цифры, сумма строки не вылезает: если не влезает рядом – переносится под количество */
+html body .shop #transaction .cart-row .cart-row-total{flex:none;white-space:nowrap}
+@container shop (max-width:700px){
+ html body .shop #transaction .cart-row .cart-stepper{grid-template-columns:40px minmax(40px,1fr) 40px}
+ html body .shop #transaction .cart-row .cart-row-buy{flex-wrap:wrap!important;row-gap:8px!important}
+}
+/* W3-8: сумма больше лимита */
+html body .shop #transaction .cart-summary.ro-w3-over #cart-summary-note{display:block!important;visibility:visible!important;height:auto!important;margin:0 0 12px!important;font-size:14px!important;line-height:21px!important;color:#A32637!important;white-space:normal!important}
+/* W3-8: ссылки в согласии – как все ссылки: без подчёркивания, при наведении меняется цвет */
+#transaction :is(.ro-w3-consent,.ro-w3-consent-bar) a{text-decoration:none!important;color:#006B79}
+#transaction :is(.ro-w3-consent,.ro-w3-consent-bar) a:hover{color:#152A4B}
+/* W3-8: подвал – хит-бокс по слову, наведение без подчёркивания */
+html body footer.shop-footer .shop-footer-grid nav a,html body footer.shop-footer .shop-footer-legal a{width:fit-content!important;max-width:100%;justify-self:start;align-self:flex-start}
+html body footer.shop-footer a:hover,html body footer.shop-footer .shop-footer-legal a:hover,html body footer.shop-footer nav a:hover{color:#006B79!important;text-decoration:none!important}
+</style>
+<script id="ro-w3-8">
+/* W3-8: неактивная «Оформить заказ» (сумма больше лимита / ничего не выбрано) не открывает оформление */
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('#cart-checkout[aria-disabled="true"]');if(a){e.preventDefault();e.stopImmediatePropagation()}},true);
 <%/script>
 </body>
 </html>

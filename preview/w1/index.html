@@ -21056,7 +21056,7 @@ function editorPage(){
  const stages=`<div class="stages">${['Планировка','Отделка','Обстановка','Смета'].map((t,i)=>`<button type="button" class="stg" data-act="stage" data-s="${i}" ${i===({plan:0,finish:1,fur:2,est:3}[E.stage])?'aria-current="step"':''} ${E.phase==='create'&&i>0?'disabled':''}>${t}</button>`).join('')}</div>`;
  const tabs=`<div class="tabs" role="tablist"><button type="button" role="tab" aria-selected="${E.rtab==='params'}" data-act="rt-p">${I('params')}Параметры</button><button type="button" role="tab" aria-selected="${E.rtab==='ai'}" data-act="rt-a">${I('ai')}ИИ-помощник</button></div>`;
  const rname=E.phase==='create'?String(E.nameDraft??'').trim():E.name;
- const rlist=E.phase==='edit'&&E.ref&&o&&o.rooms.length>1?o.rooms:null,stN={plan:'Планировка',finish:'Отделка',fur:'Обстановка',est:'Смета'},isEst=E.stage==='est',eAll=isEst&&E.est.room==null,curI=isEst&&E.est.room!=null?E.est.room:(E.ref?E.ref[1]:-1),rlab=eAll?'Все комнаты':(rlist&&rlist[curI]?rlist[curI].name:rname);
+ const rlist=E.phase==='edit'&&E.ref&&o&&o.rooms.length>0?o.rooms:null,stN={plan:'Планировка',finish:'Отделка',fur:'Обстановка',est:'Смета'},isEst=E.stage==='est',eAll=isEst&&E.est.room==null,curI=isEst&&E.est.room!=null?E.est.room:(E.ref?E.ref[1]:-1),rlab=eAll?'Все комнаты':(rlist&&rlist[curI]?rlist[curI].name:rname);
  const crumb=rlist?`<div class="crumbs"><div class="rsw"><button type="button" class="rsw-b" data-act="room-menu" aria-haspopup="listbox" aria-expanded="${!!S.rmenu}" aria-label="${isEst?'Смета':'Комната'}: ${esc(rlab)}. Выбрать"><span class="croom">${esc(rlab)}</span>${I('down')}</button>${S.rmenu&&!(mob&&!window.__tab)?`<div class="rsw-pop" role="listbox" aria-label="Комнаты объекта">${rmItems(E,o,isEst,eAll,curI)}</div>`:''}</div></div>`:`<div class="crumbs"><span class="croom">${esc(rname||'Новая комната')}</span></div>`;
  const top=`<div class="sub"><div class="in">${mob?crumb+stages:stages+crumb}</div></div>`;
  if(!mob)return `${top}<div class="ed"><div class="grid-c"><aside class="pan" aria-label="Инструменты"><p class="ptitle">${I('tools')}Инструменты</p>${toolsHTML()}</aside><section class="ctr">${centerHTML()}</section><aside class="pan">${tabs}${E.rtab==='ai'?chatHTML():paramsHTML()}</aside></div></div>`;
@@ -26313,7 +26313,7 @@ html body #ui .pdet.ro-pd.ro-pd .pdet-vl>button[aria-pressed=true]{background:#f
 </style>
 <script id="ro-w1-7">
 /* W1-7: клик по пустому месту плана при черновике зоны – отмена, при открытой зоне – закрыть зону */
-(function(){var _a=act;act=function(a,el,ev){try{var F=S.E&&S.E.fin;if(a==='f-bg'&&F&&F.zform&&F.mode!=='try')return _a.call(this,F.zform.id?'f-zone-close':'f-zone-cancel',el,ev)}catch(e){}return _a.apply(this,arguments)}})();
+(function(){var _a=act;act=function(a,el,ev){try{var F=S.E&&S.E.fin;if(a==='f-bg'&&F&&F.zform&&F.mode!=='try'){if(!F.zform.id)return _a.call(this,'f-zone-cancel',el,ev);return}}catch(e){}return _a.apply(this,arguments)}})();
 <%/script>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
