@@ -15140,8 +15140,8 @@ function orderSummary(action = '') {
     <details class="order-products"><summary><span id="summary-count">${productCount(units)}</span>${icon('down')}</summary>
       <ul class="pos-list">${lines.map(({item,quantity})=>positionRow(item,quantity)).join('')}</ul></details>
     <p class="summary-row"><span>Товары</span><strong id="summary-subtotal">${rub(subtotal)}</strong></p>
-    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p>
-    <p id="summary-window" class="meta" aria-live="polite"></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}</aside>`;
+    <p class="summary-row"><span id="summary-delivery-label">Доставка</span><span id="summary-delivery">По адресу</span></p>
+    <p id="summary-window" class="meta" aria-live="polite"></p><p class="summary-row" id="ro-w3-lift-row" hidden><span id="ro-w3-lift-label">Подъём</span><span id="ro-w3-lift-cost"></span></p><p class="summary-row summary-total"><strong>К оплате</strong><span id="summary-total">После расчёта доставки</span></p>${action ? `<div class="checkout-action"><p class="checkout-action-price"><span id="checkout-action-label">Итого за товары</span><strong id="checkout-action-total">${rub(subtotal)}</strong></p>${action}</div>` : ''}${action ? '<p class="meta ro-w3-consent">Нажимая «Подтвердить заказ», вы соглашаетесь с <a href="../info/index.html#/info/offer" target="_top">публичной офертой</a> и <a href="../info/index.html#/info/privacy" target="_top">политикой обработки персональных данных</a>.</p>' : ''}</aside>`;
 }
 function transactionHeading(title,parent='',action='') {
   const heading = `<h1 tabindex="-1">${title}</h1>`;
@@ -15263,7 +15263,7 @@ window.RO_DELIVERY = window.RO_DELIVERY || {
     {name:'Новокуйбышевск', to:'Новокуйбышевск', by:'Новокуйбышевску', km:95},
     {name:'Чапаевск', to:'Чапаевск', by:'Чапаевску', km:85}
   ],
-  perKm:45, lift:150, stairs:80, house:150, maxFloor:40,
+  perKm:45, lift:100, stairs:60, house:100, maxFloor:40,
   kg:{'Ламинат':16,'Плитка':22,'Обои':1.5,'Паркетная доска':14}, kgDefault:3
 };
 function roCity(){var n='Тольятти';try{n=JSON.parse(localStorage.getItem('ro-city'))||n}catch(e){}
@@ -15279,8 +15279,9 @@ function roKm(city,address){var c=RO_DELIVERY.cities.find(function(x){return x.n
   for(var i=0;i<address.length;i++)h=(h*31+address.charCodeAt(i))>>>0;return base+h%12}
 function roLiftVal(a){if(!a)return '';var t=a.liftType;if(t==='yes'||t==='cargo'||t==='pass')return 'yes';if(t==='no'||t==='none')return 'no';return a.lift?'yes':''}
 /* подъём / занос: число, или NaN – не хватает ответа (лифт) */
+/* W3-5: с лифтом – lift за 100 кг; без лифта – lift за 100 кг + stairs за каждый этаж выше первого за 100 кг (без лифта всегда дороже) */
 function roCarry(house,lift,floor,cwt){var R=RO_DELIVERY;if(house)return cwt*R.house;if(lift==='yes')return cwt*R.lift;
-  if(lift==='no')return Math.max(1,floor||1)*cwt*R.stairs;return NaN}
+  if(lift==='no')return cwt*R.lift+Math.max(0,(floor||1)-1)*cwt*R.stairs;return NaN}
 /* сохранённые адреса вошедшего и выбранный в корзине */
 function roMyAddrs(){var u=typeof roUser==='function'?roUser():null;return u?u.addresses:null}
 function roPickedAddr(list){if(!list||!list.length)return null;var id=null;try{id=localStorage.getItem('ro-w3-addr')}catch(e){}
@@ -15304,7 +15305,7 @@ function roAddrDD(d){if(!d.list||!d.list.length)return '';var cur=d.a||d.list[0]
 function roDlvHTML(sub){var d=roDlvInfo(sub),h='<p class="ro-w3-dh'+(d.ok?' ro-w3-ok':'')+'"><span>Доставка</span><b>'+d.price+'</b></p>'+roAddrDD(d);
   if(d.free!=null&&(d.left>0||d.ok)){var pct=d.ok?100:Math.max(4,Math.round(sub/d.free*100));
     h+='<span class="ro-w3-bar'+(d.ok?' ro-w3-full':'')+'" aria-hidden="true"><span style="width:'+pct+'%"></span></span>';
-    h+=d.ok?'<p class="ro-w3-sub ro-w3-done">'+icon('check')+'<span>Порог '+rub(d.free)+' набран</span></p>':'<p class="ro-w3-sub">Бесплатно от '+rub(d.free)+', ещё '+rub(d.left)+'</p>'}
+    h+=d.ok?'<p class="ro-w3-sub ro-w3-done">'+icon('check')+'<span>Заказ от '+rub(d.free)+' – доставим за наш счёт</span></p>':'<p class="ro-w3-sub">Добавьте товаров на '+rub(d.left)+' – доставка станет бесплатной</p>'}
   if(d.note)h+='<p class="ro-w3-sub">'+d.note+'</p>';
   return h}
 function roCartDlv(sel){var sub=cartTotals(sel).subtotal,html=sel.length?roDlvHTML(sub):'';
@@ -15319,12 +15320,12 @@ function roW3Sync(form,q){
   var lb=form.querySelector('.ro-w3-lift');if(lb){var off=house;lb.hidden=off;lb.querySelectorAll('input').forEach(function(i){i.disabled=off})}
   var t=function(k,v){var el=form.querySelector('[data-w3-'+k+']');if(el)el.textContent=v};
   t('t="door"',house?'До ворот':'До подъезда');
-  t('d="door"',house?'Выгрузим из машины у ворот.':'Выгрузим из машины у подъезда.');
+  t('d="door"',house?'Выгрузим у ворот':'Выгрузим у подъезда');
   t('t="in"',house?'В дом':'В квартиру');
-  t('d="in"',house?'Занесём в дом. '+rub(R.house)+' за каждые 100 кг.':'Поднимем и занесём в квартиру. На лифте – '+rub(R.lift)+' за каждые 100 кг, по лестнице – '+rub(R.stairs)+' за этаж за каждые 100 кг.');
+  t('d="in"',house?'Занесём в дом':'Поднимем и занесём в квартиру');
   var c=roCarry(house,lift,fl,cwt),pr=document.getElementById('ro-w3-in-pr');
-  if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(Math.min(cwt*R.lift,Math.max(1,fl||1)*cwt*R.stairs));
-  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, для подъёма считаем '+cwt*100+' кг.';
+  if(pr)pr.textContent=Number.isFinite(c)?'+'+rub(c):'от '+rub(cwt*(house?R.house:R.lift));
+  var kgp=document.getElementById('ro-w3-kg');if(kgp)kgp.textContent='Вес заказа около '+kg+' кг, считаем как '+cwt*100+' кг. '+(house?'Занос – '+rub(R.house)+' за каждые 100 кг.':'Подъём на лифте – '+rub(R.lift)+' за каждые 100 кг, без лифта – ещё '+rub(R.stairs)+' за каждый этаж выше первого.');
   var wn=document.getElementById('summary-window');if(wn&&q&&q.where)wn.textContent=q.where+', '+q.window.charAt(0).toLowerCase()+q.window.slice(1);
   var row=document.getElementById('ro-w3-lift-row');
   if(row){row.hidden=!(q&&q.carry&&!q.liftPending);var l=document.getElementById('ro-w3-lift-label'),cc=document.getElementById('ro-w3-lift-cost');
@@ -15528,7 +15529,7 @@ let savedAddrList = [];
 function fillAddress(form,a) {
   const f = form.elements;
   f.address.value = a ? a.street : ''; f.unit.value = a ? a.flat||'' : ''; f.entrance.value = a ? a.entrance||'' : '';
-  f.floor.value = a ? a.floor||'' : ''; f.lift.value = roLiftVal(a); f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
+  f.floor.value = a ? a.floor||'' : ''; [].forEach.call(f.lift,function(r){r.checked=!!a&&r.value===roLiftVal(a)}); f.home.value = a && a.home==='house' ? 'house' : 'flat'; f.comment.value = a ? a.comment||'' : '';
   showCheckoutError(f.address,'');
 }
 function syncSavedAddress(form) {
@@ -18016,6 +18017,22 @@ html body .shop #transaction #checkout-form :is(.pay-option,.delivery-choice):ha
   else if(e.key==='ArrowUp'){e.preventDefault();(it[k-1]||it[it.length-1]).focus()}});
 })();
 <%/script>
+<style id="ro-w3-5-css">
+/* W3-5: «Ваш заказ» – «N товаров» тёмным; название товара – бирюзовое при наведении (как в корзине) */
+html body .shop #transaction .order-products summary,html body .shop #transaction .order-products summary:hover{color:#152A4B!important}
+@media (hover:hover){html body .shop #transaction .order-products .pos-text a:hover strong{color:#006B79;text-decoration:none}}
+/* согласие под кнопкой */
+#transaction .ro-w3-consent{margin:12px 0 0;font-size:14px;line-height:21px;color:#566273}
+#transaction .ro-w3-consent a{color:#006B79;text-decoration:underline;text-underline-offset:3px}
+/* сегменты «Квартира / Частный дом», «Лифт в доме» – легче: рамка группы, выбранный – тонкая рамка и текст #006B79 */
+#transaction #checkout-form .ro-w3-seg{padding:3px!important;gap:2px!important;border:1px solid #DCE4E2;border-radius:12px;background:#fff}
+#transaction #checkout-form .ro-w3-seg span{height:40px;padding:0 16px;border-radius:9px;font-weight:500;color:#566273}
+#transaction #checkout-form .ro-w3-seg input:checked+span{background:#fff;color:#006B79;font-weight:600;box-shadow:inset 0 0 0 1px #006B79}
+@media (hover:hover){#transaction #checkout-form .ro-w3-seg label:hover input:not(:checked)+span{background:rgba(21,42,75,.05)}}
+#transaction #checkout-form .ro-w3-seg input:focus-visible+span{box-shadow:inset 0 0 0 2px #006B79}
+/* карточки «Как привезти» – короткий текст в одну строку */
+#transaction .ro-w3-ot span{white-space:normal}
+</style>
 </body>
 </html>
 </script>
