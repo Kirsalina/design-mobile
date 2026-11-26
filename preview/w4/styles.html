@@ -1,0 +1,141 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W4 Кнопки – Стиль сайта: 3 направления</title>
+<style>
+@font-face{font-family:Manrope;src:url(../../assets/4b4ec43c70e7.woff2) format("woff2");font-weight:200 800}
+*{box-sizing:border-box}body{margin:0;font:400 16px/24px Manrope,system-ui,sans-serif;color:#152A4B;background:#fff}
+.wrap{display:grid;grid-template-columns:repeat(4,minmax(330px,1fr));gap:0;min-width:0}
+@media (max-width:1300px){.wrap{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.wrap{grid-template-columns:1fr}}
+.t{padding:28px 24px 40px;min-width:0}
+.cap{font:700 13px/18px Manrope;letter-spacing:.06em;text-transform:uppercase;opacity:.7;margin:0 0 4px}
+.name{font:700 24px/32px Manrope;margin:0 0 4px}.why{font-size:14px;line-height:21px;opacity:.8;margin:0 0 20px;min-height:84px}
+.hd{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-bottom:14px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;letter-spacing:-.015em;font-size:18px}
+.logo i{width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#7BE6EE,#19CBD8 55%,#1291C9);display:block}
+.nav{margin-left:auto;font-size:13px;font-weight:600;padding:6px 10px}
+.cartic{position:relative;width:24px;height:24px}.cartic svg{width:24px;height:24px}.cartic b{position:absolute;left:13px;top:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;font:700 12px/20px Manrope;text-align:center}
+.search{display:flex;align-items:center;height:48px;padding:0 4px 0 14px;gap:8px;margin-bottom:16px}.search span{flex:1;font-size:14px;opacity:.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 20px;font:700 16px/22px Manrope;cursor:pointer;border:1px solid transparent;transition:all .15s ease;white-space:nowrap}
+.btn.s{height:40px;padding:0 16px;font-size:14px}.btn.w{width:100%}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.card{overflow:hidden;display:grid;grid-template-rows:auto 1fr auto}
+.ph{aspect-ratio:1/1;background:center/cover;position:relative}.ph .bd{position:absolute;left:8px;top:8px;font:700 12px/18px Manrope;padding:2px 8px}
+.cb{padding:10px 12px 0}.cb h4{margin:0;font:600 15px/21px Manrope;min-height:42px}.cb p{margin:4px 0 0;font-size:12px;line-height:18px;opacity:.7}
+.pr{font:700 20px/28px Manrope;margin-top:8px}.cf{padding:10px 12px 12px}
+.buy{padding:16px;margin-bottom:16px}.buy .pr{font-size:24px;line-height:32px;margin:0}.row{display:flex;gap:8px;margin-top:12px;align-items:center}
+.step{display:flex;align-items:center;height:48px;width:120px;justify-content:space-between;padding:0 12px;font-weight:600}
+.col{display:grid;gap:8px;margin-top:8px}
+.tabs{display:flex;gap:4px;padding:4px;margin-bottom:16px}.tab{flex:1;text-align:center;font:600 13px/20px Manrope;padding:8px 4px}
+.est{padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px}.ck{width:22px;height:22px;flex:none;display:grid;place-items:center}
+.ck svg{width:14px;height:14px}.est .n{flex:1;font:600 14px/20px Manrope}.est .n small{display:block;font:400 12px/18px Manrope;opacity:.7}.est .p{font:700 15px/22px Manrope}
+.tot{padding:16px;display:grid;gap:10px}.tot .l{font-size:13px;opacity:.75}.tot .s{font:700 26px/34px Manrope}
+.field{height:48px;padding:0 14px;display:flex;align-items:center;font-size:14px;margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.chip{font:600 13px/18px Manrope;padding:7px 12px}
+
+/* ===== Сейчас ===== */
+.t0{background:#F3F1EB}.t0 .hd,.t0 .card,.t0 .buy,.t0 .est,.t0 .tot{background:#fff;border:1px solid #DCE4E2;border-radius:16px}
+.t0 .nav{background:#F3F1EB;border-radius:12px}.t0 .cartic b{background:#19CBD8}
+.t0 .search{background:#fff;border:1px solid #566273;border-radius:10px}
+.t0 .pri{background:linear-gradient(180deg,#3DD6E1,#19CBD8 50%,#13B8C4);color:#152A4B;border-radius:10px;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)}
+.t0 .sec{background:linear-gradient(180deg,#fff,#F3F5F6);border-color:#566273;color:#152A4B;border-radius:10px;box-shadow:inset 0 1px 0 #fff,0 1px 2px rgba(21,42,75,.1),0 4px 10px -4px rgba(21,42,75,.14)}
+.t0 .bd{background:#fff;border:1px solid #DCE4E2;border-radius:8px;color:#006B79}.t0 .step{border:1px solid #566273;border-radius:10px;background:linear-gradient(180deg,#fff,#F3F5F6)}
+.t0 .tabs{background:transparent}.t0 .tab.on{background:#fff;border-radius:10px}.t0 .ck{background:#19CBD8;border-radius:7px}
+.t0 .field{background:#fff;border:1px solid #566273;border-radius:10px}.t0 .chip{border:1px solid #DCE4E2;border-radius:999px;background:#fff}.t0 .chip.on{background:#F3F1EB}
+
+/* ===== 1. Мягкая глубина ===== */
+.t1{background:#F4F7F8}
+.t1 .hd{background:rgba(255,255,255,.9);border-radius:18px;box-shadow:0 1px 2px rgba(21,42,75,.05),0 10px 30px -18px rgba(21,42,75,.25)}
+.t1 .card,.t1 .buy,.t1 .est,.t1 .tot{background:#fff;border-radius:20px;box-shadow:0 0 0 1px rgba(21,42,75,.05),0 2px 4px rgba(21,42,75,.03),0 14px 34px -20px rgba(21,42,75,.30)}
+.t1 .nav{background:#EAF7F8;color:#0A6B76;border-radius:12px}.t1 .cartic b{background:#19CBD8;box-shadow:0 2px 6px rgba(25,203,216,.5)}
+.t1 .search{background:#EEF2F4;border-radius:14px}.t1 .field{background:#EEF2F4;border-radius:14px}
+.t1 .pri{background:#19CBD8;color:#0F2340;border-radius:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(16,120,130,.25),0 8px 18px -8px rgba(25,203,216,.8)}
+.t1 .pri:hover{background:#14BDC9;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 1px 2px rgba(16,120,130,.25),0 12px 22px -8px rgba(25,203,216,.9)}
+.t1 .sec{background:#fff;color:#152A4B;border-radius:14px;box-shadow:0 0 0 1px rgba(21,42,75,.12),0 1px 2px rgba(21,42,75,.06),0 6px 14px -8px rgba(21,42,75,.25)}
+.t1 .bd{background:rgba(255,255,255,.92);border-radius:999px;color:#006B79;box-shadow:0 2px 6px rgba(21,42,75,.12)}
+.t1 .step{background:#EEF2F4;border-radius:14px}.t1 .tabs{background:#E8EEF0;border-radius:14px}.t1 .tab.on{background:#fff;border-radius:10px;box-shadow:0 1px 2px rgba(21,42,75,.08),0 4px 10px -6px rgba(21,42,75,.25)}
+.t1 .ck{background:#19CBD8;border-radius:7px;box-shadow:0 3px 8px -2px rgba(25,203,216,.7)}.t1 .chip{background:#fff;border-radius:999px;box-shadow:0 0 0 1px rgba(21,42,75,.10)}.t1 .chip.on{background:#152A4B;color:#fff;box-shadow:none}
+
+/* ===== 2. Контраст: тёмно-синий + бирюза ===== */
+.t2{background:#FFFFFF}
+.t2 .hd{background:#152A4B;color:#fff;border-radius:16px}.t2 .nav{background:rgba(255,255,255,.1);border-radius:999px}.t2 .cartic{color:#fff}.t2 .cartic b{background:#19CBD8;color:#0F2340}
+.t2 .card,.t2 .buy,.t2 .est{background:#fff;border:1px solid #E5E9EE;border-radius:20px}
+.t2 .tot{background:radial-gradient(130% 160% at 100% 0%,#244A7A 0%,#152A4B 55%,#0E1E37 100%);color:#fff;border-radius:20px}
+.t2 .search,.t2 .field{background:#fff;border:1.5px solid #D5DBE2;border-radius:999px}
+.t2 .pri{background:#19CBD8;color:#0F2340;border-radius:999px;box-shadow:0 0 0 1px rgba(25,203,216,.25),0 10px 24px -12px rgba(25,203,216,.95)}
+.t2 .pri:hover{background:#2FD6E2}
+.t2 .sec{background:#fff;color:#152A4B;border:1.5px solid #152A4B;border-radius:999px}.t2 .sec:hover{background:#152A4B;color:#fff}
+.t2 .tot .pri{box-shadow:0 0 0 6px rgba(25,203,216,.12),0 10px 28px -10px rgba(25,203,216,1)}
+.t2 .bd{background:#152A4B;color:#5FE3EC;border-radius:999px}.t2 .bd[style]{background:#fff;box-shadow:0 0 0 1px #F0CFD4}.t2 .step{border:1.5px solid #D5DBE2;border-radius:999px}
+.t2 .tabs{background:#F1F4F7;border-radius:999px}.t2 .tab.on{background:#152A4B;color:#fff;border-radius:999px}
+.t2 .ck{background:#152A4B;border-radius:7px;color:#19CBD8}.t2 .chip{border:1.5px solid #D5DBE2;border-radius:999px}.t2 .chip.on{border-color:#19CBD8;background:#E6FAFB}
+
+/* ===== 3. Свет и стекло (глянец по-новому) ===== */
+.t3{background:radial-gradient(500px 360px at 90% 0%,rgba(25,203,216,.20),transparent 70%),radial-gradient(420px 320px at 0% 55%,rgba(80,140,255,.10),transparent 70%),#F7FBFC}
+.t3 .hd,.t3 .card,.t3 .buy,.t3 .est,.t3 .tot{background:rgba(255,255,255,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:0 1px 1px rgba(21,42,75,.04),0 16px 40px -24px rgba(18,120,150,.45)}
+.t3 .nav{background:linear-gradient(180deg,#fff,#EFF9FA);border-radius:12px;box-shadow:0 0 0 1px rgba(25,160,180,.18)}.t3 .cartic b{background:linear-gradient(135deg,#2ED6E1,#1B9FD6);color:#fff}
+.t3 .search,.t3 .field{background:rgba(255,255,255,.85);border:1px solid rgba(25,150,170,.28);border-radius:16px;box-shadow:inset 0 1px 2px rgba(21,42,75,.06)}
+.t3 .pri{background:linear-gradient(105deg,#22D2DE 0%,#13B4D3 100%);color:#fff;text-shadow:0 1px 1px rgba(8,70,90,.3);border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(8,90,120,.2),0 10px 24px -10px rgba(19,170,210,.85)}
+.t3 .pri:hover{background:linear-gradient(105deg,#1AC6D2 0%,#0FA2C2 100%)}
+.t3 .sec{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(240,250,251,.95));color:#0C5F6B;border:1px solid rgba(25,160,180,.35);border-radius:16px;box-shadow:inset 0 1px 0 #fff,0 4px 12px -8px rgba(18,120,150,.45)}
+.t3 .bd{background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:999px;color:#006B79}
+.t3 .step{background:rgba(255,255,255,.85);border:1px solid rgba(25,150,170,.28);border-radius:16px}
+.t3 .tabs{background:rgba(255,255,255,.55);border-radius:16px;box-shadow:inset 0 0 0 1px rgba(25,160,180,.15)}.t3 .tab.on{background:#fff;border-radius:12px;color:#0C5F6B;box-shadow:0 4px 12px -6px rgba(18,120,150,.55)}
+.t3 .ck{background:linear-gradient(135deg,#22D2DE,#13B4D3);border-radius:7px;color:#fff}.t3 .chip{background:rgba(255,255,255,.8);border:1px solid rgba(25,160,180,.25);border-radius:999px}.t3 .chip.on{background:linear-gradient(105deg,#22D2DE,#13B4D3);color:#fff;border-color:transparent}
+</style></head><body><div class="wrap">
+<section class="t t0"><p class="cap">Для сравнения</p><h2 class="name">Как на сайте</h2><p class="why">Градиентные кнопки на песочном фоне. Объём есть только у кнопок, всё остальное плоское, поэтому кнопки выглядят «наклеенными».</p>
+<div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
+<div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
+<div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
+<div class="cards">
+<div class="card"><div class="ph" style="background-image:url(../../assets/dafb483ff55e.jpg)"><span class="bd">В наличии</span></div><div class="cb"><h4>Ламинат «Дуб Натур»</h4><p>Светлый дуб, 2,2 м²</p><div class="pr">2 860 ₽</div></div><div class="cf"><button class="btn s w pri">В корзину</button></div></div>
+<div class="card"><div class="ph" style="background-image:url(../../assets/53435bf3b775.webp)"><span class="bd" style="color:#A32637">Нет в наличии</span></div><div class="cb"><h4>Ламинат «Дуб Дымчатый»</h4><p>Тёмный дуб, 1,98 м²</p><div class="pr">2 970 ₽</div></div><div class="cf"><button class="btn s w sec">Аналоги</button></div></div>
+</div>
+<div class="buy"><div class="pr">2 860 ₽ <small style="font:400 13px Manrope;opacity:.7">за упаковку</small></div>
+<div class="row"><div class="step"><span>−</span><span>1</span><span>+</span></div><button class="btn pri" style="flex:1">В корзину</button></div>
+<div class="col"><button class="btn sec">Примерить в своей комнате</button><button class="btn sec">Рассчитать по площади</button></div>
+<div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
+<div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
+<div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
+</section><section class="t t1"><p class="cap">Вариант 1</p><h2 class="name">Мягкая глубина</h2><p class="why">Глубина у всей системы: карточки и шапка «парят» на мягкой тени, кнопка ровная бирюзовая с цветным свечением, поля мягко залиты. Фон холодный светлый. Спокойно и дорого, как Apple и Airbnb.</p>
+<div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
+<div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
+<div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
+<div class="cards">
+<div class="card"><div class="ph" style="background-image:url(../../assets/dafb483ff55e.jpg)"><span class="bd">В наличии</span></div><div class="cb"><h4>Ламинат «Дуб Натур»</h4><p>Светлый дуб, 2,2 м²</p><div class="pr">2 860 ₽</div></div><div class="cf"><button class="btn s w pri">В корзину</button></div></div>
+<div class="card"><div class="ph" style="background-image:url(../../assets/53435bf3b775.webp)"><span class="bd" style="color:#A32637">Нет в наличии</span></div><div class="cb"><h4>Ламинат «Дуб Дымчатый»</h4><p>Тёмный дуб, 1,98 м²</p><div class="pr">2 970 ₽</div></div><div class="cf"><button class="btn s w sec">Аналоги</button></div></div>
+</div>
+<div class="buy"><div class="pr">2 860 ₽ <small style="font:400 13px Manrope;opacity:.7">за упаковку</small></div>
+<div class="row"><div class="step"><span>−</span><span>1</span><span>+</span></div><button class="btn pri" style="flex:1">В корзину</button></div>
+<div class="col"><button class="btn sec">Примерить в своей комнате</button><button class="btn sec">Рассчитать по площади</button></div>
+<div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
+<div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
+<div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
+</section><section class="t t2"><p class="cap">Вариант 2</p><h2 class="name">Контраст</h2><p class="why">Тёмно-синий из логотипа как второй акцент: шапка, итог, выбранное. Кнопки-«таблетки», бирюза светится на тёмном. Смело и современно, как Revolut и Linear.</p>
+<div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
+<div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
+<div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
+<div class="cards">
+<div class="card"><div class="ph" style="background-image:url(../../assets/dafb483ff55e.jpg)"><span class="bd">В наличии</span></div><div class="cb"><h4>Ламинат «Дуб Натур»</h4><p>Светлый дуб, 2,2 м²</p><div class="pr">2 860 ₽</div></div><div class="cf"><button class="btn s w pri">В корзину</button></div></div>
+<div class="card"><div class="ph" style="background-image:url(../../assets/53435bf3b775.webp)"><span class="bd" style="color:#A32637">Нет в наличии</span></div><div class="cb"><h4>Ламинат «Дуб Дымчатый»</h4><p>Тёмный дуб, 1,98 м²</p><div class="pr">2 970 ₽</div></div><div class="cf"><button class="btn s w sec">Аналоги</button></div></div>
+</div>
+<div class="buy"><div class="pr">2 860 ₽ <small style="font:400 13px Manrope;opacity:.7">за упаковку</small></div>
+<div class="row"><div class="step"><span>−</span><span>1</span><span>+</span></div><button class="btn pri" style="flex:1">В корзину</button></div>
+<div class="col"><button class="btn sec">Примерить в своей комнате</button><button class="btn sec">Рассчитать по площади</button></div>
+<div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
+<div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
+<div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
+</section><section class="t t3"><p class="cap">Вариант 3</p><h2 class="name">Свет и стекло</h2><p class="why">Глянец по-новому: полупрозрачные карточки над мягким бирюзовым светом, кнопка с градиентом бирюза → голубой, бликом сверху и свечением. Ближе всего к «глянцу и глубине», но без 90-х.</p>
+<div class="hd"><span class="logo"><i></i>RemOnLine</span><span class="nav">Каталог</span><span class="cartic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><b>14</b></span></div>
+<div class="search"><span>Товар, категория или артикул</span><button class="btn s pri">Найти</button></div>
+<div class="tabs"><span class="tab">Планировка</span><span class="tab">Отделка</span><span class="tab on">Смета</span></div>
+<div class="cards">
+<div class="card"><div class="ph" style="background-image:url(../../assets/dafb483ff55e.jpg)"><span class="bd">В наличии</span></div><div class="cb"><h4>Ламинат «Дуб Натур»</h4><p>Светлый дуб, 2,2 м²</p><div class="pr">2 860 ₽</div></div><div class="cf"><button class="btn s w pri">В корзину</button></div></div>
+<div class="card"><div class="ph" style="background-image:url(../../assets/53435bf3b775.webp)"><span class="bd" style="color:#A32637">Нет в наличии</span></div><div class="cb"><h4>Ламинат «Дуб Дымчатый»</h4><p>Тёмный дуб, 1,98 м²</p><div class="pr">2 970 ₽</div></div><div class="cf"><button class="btn s w sec">Аналоги</button></div></div>
+</div>
+<div class="buy"><div class="pr">2 860 ₽ <small style="font:400 13px Manrope;opacity:.7">за упаковку</small></div>
+<div class="row"><div class="step"><span>−</span><span>1</span><span>+</span></div><button class="btn pri" style="flex:1">В корзину</button></div>
+<div class="col"><button class="btn sec">Примерить в своей комнате</button><button class="btn sec">Рассчитать по площади</button></div>
+<div class="field">Площадь, м²</div><div class="chips"><span class="chip on">Светлые</span><span class="chip">Дуб</span><span class="chip">33 класс</span></div></div>
+<div class="est"><span class="ck"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="n">Обои «Лён Светлый»<small>2 рулона, Гостиная</small></span><span class="p">2 980 ₽</span></div>
+<div class="tot"><span class="l">Выбрано 12 из 22 позиций</span><span class="s">88 110 ₽</span><button class="btn w pri">Добавить в корзину</button></div>
+</section></div></body></html>
