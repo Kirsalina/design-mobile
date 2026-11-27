@@ -11,23 +11,98 @@ html,body{margin:0;height:100%;background:#EEF1F3;font:600 14px/20px Manrope,sys
 iframe{border:0;background:#fff;display:block;transform-origin:top left;position:absolute;top:0;left:0}
 .full .box{margin:0;width:100%!important;height:100%!important;box-shadow:none}
 .full iframe{width:100%!important;height:100%!important;transform:none!important}
+
+.bar .dm{margin-left:auto;background:#19CBD8;color:#152A4B}
+.bar .dm[aria-pressed=true]{background:#fff}
+#dp{position:fixed;top:56px;left:8px;z-index:11;width:300px;max-height:calc(100% - 72px);overflow:auto;background:#fff;border:1px solid #BCDDE2;border-radius:12px;box-shadow:0 8px 24px rgba(21,42,75,.18);padding:12px;display:none;font:400 13px/18px Manrope,system-ui,sans-serif}
+#dp.on{display:block}
+#dp h4{margin:0 0 4px;font:700 14px/20px Manrope,system-ui,sans-serif}
+#dp .row{display:flex;gap:8px;margin:8px 0}
+#dp .row button{flex:1;height:32px;border:1px solid #BCDDE2;border-radius:8px;background:#fff;font:600 13px/18px Manrope,system-ui,sans-serif;color:#152A4B;cursor:pointer}
+#dp .row button.go{background:#19CBD8;border-color:#19CBD8}
+#dp ol{margin:0;padding:0 0 0 20px}
+#dp li{padding:4px 6px;border-radius:6px;cursor:pointer;margin:1px 0}
+#dp li:hover{background:#EEF5F6}
+#dp li.cur{background:#E6FAFB;outline:1px solid #19CBD8}
+#dp li.done{color:#566273}
+#dp li b{font-weight:600;color:#152A4B}
+#dp .st{margin-top:6px;color:#566273}
 </style></head><body>
-<div class="bar"><b>W6 Помощник</b><button data-w="0">Компьютер</button><button data-w="768">Планшет</button><button data-w="390">Телефон</button></div>
+<div class="bar"><b>W6 Помощник</b><button data-w="0">Компьютер</button><button data-w="768">Планшет</button><button data-w="390">Телефон</button><button class="dm" id="dmb" type="button">Демо помощника</button></div>
+<div id="dp" role="dialog" aria-label="Сквозной диалог"><h4>Сквозной диалог: все виды ответов</h4><div>Нажмите «Проиграть всё» или любой шаг. Работает на всех трёх ширинах.</div><div class="row"><button class="go" id="dpgo" type="button">Проиграть всё</button><button id="dpst" type="button">Стоп</button></div><ol id="dpl"></ol><div class="st" id="dps"></div></div>
 <div class="stage" id="st"><div class="box" id="bx"><iframe id="fr" title="Сайт"></iframe></div></div>
 <script>
 var fr=document.getElementById('fr'),st=document.getElementById('st'),bx=document.getElementById('bx'),W=0;
 try{W=+(localStorage.getItem('ro-pv-w6')||0)}catch(_){}
 if([0,768,390].indexOf(W)<0)W=0;
 fr.src='site.html'+location.hash;
-function fit(){document.querySelectorAll('.bar button').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.w===W))});
+function fit(){document.querySelectorAll('.bar button[data-w]').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.w===W))});
  st.classList.toggle('full',!W);if(!W)return;
  var H={768:1024,390:844}[W],k=Math.min(1,(st.clientWidth-16)/W),h=Math.max(H,Math.floor((st.clientHeight-16)/k));
  fr.style.width=W+'px';fr.style.height=h+'px';fr.style.transform='scale('+k+')';
  bx.style.width=Math.round(W*k)+'px';bx.style.height=Math.round(h*k)+'px'}
-document.querySelector('.bar').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;W=+b.dataset.w;try{localStorage.setItem('ro-pv-w6',W)}catch(_){}fit()});
+document.querySelector('.bar').addEventListener('click',function(e){var b=e.target.closest('button');if(!b||!b.dataset.w&&b.dataset.w!=='0')return;W=+b.dataset.w;try{localStorage.setItem('ro-pv-w6',W)}catch(_){}fit()});
 addEventListener('resize',fit);fit();
 function noBars(w){try{var d=w.document;if(!d.getElementById('pv-nb')){var s=d.createElement('style');s.id='pv-nb';s.textContent='html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0}';(d.head||d.documentElement).appendChild(s)}
  for(var i=0;i<w.frames.length;i++)noBars(w.frames[i])}catch(_){}}
 setInterval(function(){if(W)noBars(fr.contentWindow)},800);
 fr.addEventListener('load',function(){try{fr.contentWindow.addEventListener('hashchange',function(){history.replaceState(null,'',fr.contentWindow.location.hash)})}catch(_){}});
+
+/* ===== Демо помощника (только в предпросмотре W6, не на сайте) ===== */
+(function(){
+var stop=false,running=false;
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function cw(){function f(w){try{if(typeof w.chatHTML==='function')return w}catch(_){}try{for(var i=0;i<w.frames.length;i++){var r=f(w.frames[i]);if(r)return r}}catch(_){}return null}return f(fr.contentWindow)}
+function vis(e){return e&&e.offsetParent!=null}
+function byText(w,t,last){var d=w.document,L=[].slice.call(d.querySelectorAll('button,[role=button],a')).filter(function(e){var x=String(e.innerText||'').trim();return vis(e)&&(x.replace(/\s+/g,' ')===t||x.split('\n')[0].trim()===t)});return last?L[L.length-1]:L[0]}
+function allText(t){/* кнопки сайта вне конструктора (куки) */try{var d=fr.contentWindow.document;var e=[].slice.call(d.querySelectorAll('button')).filter(function(b){return String(b.innerText||'').trim()===t&&b.offsetParent})[0];if(e){e.click();return true}}catch(_){}return false}
+async function waitCw(ms){for(var i=0;i<ms/250;i++){var w=cw();if(w&&w.document.getElementById('ui'))return w;await sleep(250)}return null}
+async function click(t,last){var w=cw();var e=w&&byText(w,t,last);if(!e){note('Не нашла кнопку «'+t+'»');return false}e.scrollIntoView({block:'nearest'});e.click();await sleep(1100);return true}
+function mob(){var w=cw();var ui=w&&w.document.getElementById('ui');return ui&&ui.classList.contains('dev-m')}
+async function aiOpen(){var w=cw();if(!w)return;var E=w.eval('S').E;if(mob()?E.sheet==='ai':E.rtab==='ai')return;await click('ИИ-помощник',true)}
+async function stage(n){var w=cw();if(w.eval('S').E.stage===({'Планировка':'plan','Отделка':'finish','Обстановка':'fur','Смета':'est'})[n])return aiOpen();var e=[].slice.call(w.document.querySelectorAll('#ui button,#ui [role=tab]')).filter(function(b){return String(b.innerText||'').trim()===n})[0];if(e){e.click();await sleep(900)}await aiOpen()}
+async function say(t){await aiOpen();var w=cw(),i=w.document.querySelector('#ui #chat-in');if(!i){note('Нет поля ввода');return}i.focus();i.value='';
+ for(var k=1;k<=t.length;k++){if(stop)return;i.value=t.slice(0,k);i.dispatchEvent(new w.Event('input',{bubbles:true}));await sleep(28)}
+ await sleep(250);var g=w.document.querySelector('#ui .cmp .go');if(g)g.click();await sleep(1900)}
+async function sw(n){var w=cw(),L=w.document.querySelectorAll('#ui .ro-w6-s:not([disabled])');if(L[n]){L[n].click();await sleep(1200)}}
+async function ev(code,ms){var w=cw();try{w.eval(code)}catch(e){note('Ошибка шага: '+e.message)}await sleep(ms||1200)}
+async function openRoom(){location.hash='';fr.contentWindow.location.hash='#/objects';await sleep(2500);allText('Принять');var w=await waitCw(8000);if(!w)return note('Конструктор не открылся');
+ var pr=[].slice.call(w.document.querySelectorAll('button')).filter(function(b){return String(b.innerText||'').trim()==='Принять'&&b.offsetParent})[0];if(pr){pr.click();await sleep(400)}
+ var e=[].slice.call(w.document.querySelectorAll('button,a,[role=button]')).filter(function(b){return /Открыть комнату/.test(String(b.innerText||''))&&b.offsetParent})[0];if(!e){note('Нет кнопки «Открыть комнату»');return}e.click();await sleep(1800);await stage('Планировка')}
+var STEPS=[
+ ['Открыть комнату «Гостиная»','приветствие и подсказки',async function(){await openRoom()}],
+ ['Планировка: «светлые стены»','Подтверждение: перейти в «Отделку» / остаться',async function(){await stage('Планировка');await say('светлые стены')}],
+ ['«Перейти в «Отделку»»','Уточнение: выбор стены строками',async function(){await click('Перейти в «Отделку»',true)}],
+ ['«Стена 3»','примерка: ряд образцов, первый на плане',async function(){await click('Стена 3',true)}],
+ ['Третий образец','на плане обои, выбранный обведён',async function(){await sw(2)}],
+ ['«Применить»','Готово с карточкой товара + «Нужно для поклейки»',async function(){await click('Применить',true)}],
+ ['«Добавить в смету»','Готово строкой',async function(){await click('Добавить в смету',true)}],
+ ['«тёмный ламинат на пол» → «В другие комнаты»','окно выбора комнат (закроется само)',async function(){await say('тёмный ламинат на пол');await click('В другие комнаты',true);await sleep(1500);var w=cw(),x=w.document.querySelector('#ui .dlg [aria-label="Закрыть"],#ui .dlg .x');var c=byText(w,'Отмена',true);if(c)c.click();else if(x)x.click();await sleep(800);await click('Не добавлять',true)}],
+ ['«обои на стену 5»','Уточнение: такой стены нет',async function(){await say('обои на стену 5')}],
+ ['«Стена 4» → «Не менять»','отказ от примерки',async function(){await click('Стена 4',true);await click('Не менять',true)}],
+ ['«убери покрытие со стены 1» → «Вернуть как было» → «Сделать снова»','Готово, отмена, повтор',async function(){await say('убери покрытие со стены 1');await click('Вернуть как было',true);await click('Сделать снова',true)}],
+ ['Планировка: окно и дверь одним сообщением','Не выполнено с вариантами',async function(){await stage('Планировка');await say('добавь окно 120 см на стену 1 и дверь на стену 3')}],
+ ['«удали все окна» → «Не удалять»','Подтверждение, отказ',async function(){await say('удали все окна');await click('Не удалять',true)}],
+ ['«сделай комнату 5 на 4»','Подтверждение размера',async function(){await say('сделай комнату 5 на 4');await click('Не менять',true)}],
+ ['Обстановка: «поставь диван к стене 1», «поверни диван»','Готово и Не выполнено',async function(){await stage('Обстановка');await say('поставь диван к стене 1');await say('поверни диван')}],
+ ['«что не помещается?»','обычный ответ без метки',async function(){await say('что не помещается?')}],
+ ['Смета: «сколько всего стоит?»','расчёт: строки и суммы',async function(){await stage('Смета');await say('сколько всего стоит?')}],
+ ['«найди аналог дешевле»','выбор товара с ценами',async function(){await say('найди аналог дешевле')}],
+ ['«добавь всё в корзину» → «Не добавлять»','Подтверждение с суммой',async function(){await say('добавь всё в корзину');await click('Не добавлять',true)}],
+ ['«распечатай смету»','отказ: чего помощник не умеет',async function(){await say('распечатай смету')}],
+ ['Голос','запись: полоски, «Слушаю вас…», стоп',async function(){await aiOpen();var w=cw(),m=w.document.querySelector('#ui .cmp .micb');if(m){m.click();await sleep(3000);var s=w.document.querySelector('#ui .cmp .stopb');if(s)s.click();await sleep(1200)}}],
+ ['Ошибка микрофона','плашка над полем',async function(){await ev("micStop&&micStop(1);S.E.mic=false;S.E.micErr=MICERR['not-allowed'];render()",2200)}],
+ ['Нет связи → «Повторить»','плашка с «Повторить»',async function(){await ev("S.E.micErr='';S.E.netErr='Не получилось отправить: нет связи.';render()",2200);await ev("S.E.netErr='';render()",600)}]
+];
+var ol=document.getElementById('dpl'),dps=document.getElementById('dps'),dp=document.getElementById('dp');
+function note(t){dps.textContent=t;(window.__dlog=window.__dlog||[]).push(t)}
+STEPS.forEach(function(s,i){var li=document.createElement('li');li.innerHTML='<b></b><br><span></span>';li.querySelector('b').textContent=s[0];li.querySelector('span').textContent=s[1];li.addEventListener('click',function(){run(i,i)});ol.appendChild(li)});
+function mark(i){[].forEach.call(ol.children,function(li,j){li.classList.toggle('cur',j===i);li.classList.toggle('done',j<i)})}
+async function run(a,b){if(running)return;running=true;stop=false;note('');
+ try{if(a>0&&!cw())await STEPS[0][2]();for(var i=a;i<=b&&!stop;i++){mark(i);await STEPS[i][2]()}}catch(e){note('Ошибка: '+e.message)}
+ running=false;if(!stop&&b===STEPS.length-1){mark(STEPS.length);note('Готово: все виды ответов показаны.')}}
+document.getElementById('dpgo').addEventListener('click',function(){run(0,STEPS.length-1)});
+document.getElementById('dpst').addEventListener('click',function(){stop=true;note('Остановлено.')});
+document.getElementById('dmb').addEventListener('click',function(){var on=!dp.classList.contains('on');dp.classList.toggle('on',on);this.setAttribute('aria-pressed',String(on))});
+})();
 </script></body></html>
