@@ -8126,6 +8126,7 @@ window.desiignProducts = [
  {group:'prep',sku:'GR-010',name:'Грунтовка «Контакт»',variant:'Грунтовка',pack:'Канистра 5 л',price:'950',unit:'канистра',saleUnit:'канистру 5 л',image:'packaging-ash.jpg'},
  {group:'prep',sku:'SH-020',state:'unknown',name:'Шпаклёвка «Гладь»',variant:'Финишная',pack:'Коробка 5 кг',price:'620',unit:'упаковка',saleUnit:'коробку 5 кг',image:'adhesive-photo.jpg'},
  {group:'prep',sku:'KL-01',state:'soldout',name:'Клей «Флизелин»',variant:'Для обоев',pack:'Упаковка на 25 м²',price:'450',unit:'упаковка',saleUnit:'упаковку на 25 м²',image:'adhesive-photo.jpg'},
+ {group:'prep',sku:'KL-02',name:'Клей «Винил»',variant:'Для обоев',pack:'Упаковка на 30 м²',price:'520',unit:'упаковка',saleUnit:'упаковку на 30 м²',image:'adhesive-photo.jpg'},
  {group:'prep',sku:'ML-4851',name:'Лента «Чистый край Плюс»',variant:'Малярная',pack:'Рулон 50 м',price:'250',unit:'рулон',saleUnit:'рулон 50 м',image:'tape-photo.jpg'}
 ];
 // Только внешний стресс-лист: длинная цена и скидка — вымышленные образцы, не акция.
@@ -9100,18 +9101,24 @@ html body #design-app .category-copy:not(#z1):not(#z2):not(#z3){gap:4px!importan
 html body #design-app .category-copy>strong:not(#z1):not(#z2):not(#z3){margin:0!important;line-height:32px!important}
 /* 6. Главная: полка без товаров «нет в наличии» – 3 карточки занимают ряд целиком */
 @media (min-width:768px){html body #design-app .product-grid:has(>:nth-child(3):last-child):not(#z1):not(#z2):not(#z3){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-/* 7. Видео на главной: во время показа – кнопка «Пауза» в углу, 40, белая (как кнопки-иконки) */
-html body .hero-motion.ro-hv[data-playing="true"]>.hero-play:not(#z1):not(#z2):not(#z3),html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:1!important;inset:auto 12px 12px auto!important;margin:0!important;width:40px!important;height:40px!important;border:1px solid #BCDDE2!important;border-radius:10px!important;background:#FFFFFF!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.06)!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)>svg:not(#z1){display:none!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat}
-@media (hover:hover){html body :is(.hero-motion.ro-hv[data-playing="true"]:hover>.hero-play,.ai-video[data-playing="true"] .ai-play:hover):not(#z1):not(#z2):not(#z3){background:#F7FBFC!important;border-color:#7FB9C2!important;color:#152A4B!important}}
+/* 7. Видео на главной – один плеер, как у первого экрана: играет само, клик по видео – пауза, на паузе – круглая кнопка «Смотреть» по центру. Отдельной кнопки «Пауза» нет (Алина 18:48) */
+html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:0!important;pointer-events:none}
+html body .ai-video .ai-play:not(#z1):not(#z2):not(#z3){transition:opacity .2s}
+/* 8. Поиск в конструкторе («Мои объекты», «Создать свой интерьер») – текст на том же месте, что на других страницах */
+html body #ui form.gsearch:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){gap:8px!important}
 </style>
 <script id="ro-w4-6js">
-/* W4-6: пауза у видео помощника на главной – кнопка остаётся видимой во время показа и ставит на паузу */
-(function(){function go(){var v=document.querySelector('.ai-section video'),b=document.querySelector('.ai-play'),box=v&&v.closest('.ai-video');if(!v||!b||!box||box.dataset.roPause)return;box.dataset.roPause='1';
-function upd(){var on=!v.paused&&!v.ended;box.dataset.playing=on?'true':'false';b.hidden=false;b.setAttribute('aria-label',on?'Пауза':'Воспроизвести пример подбора отделки')}
-b.addEventListener('click',function(e){if(!v.paused){e.preventDefault();e.stopImmediatePropagation();v.pause()}},true);
-['play','playing','pause','ended'].forEach(function(t){v.addEventListener(t,function(){setTimeout(upd,0)})});upd()}
+/* W4-6: видео помощника на главной ведёт себя как видео первого экрана: играет само (без звука), когда видно;
+   клик по видео – пауза / продолжить; на паузе видна кнопка «Смотреть». Отдельной кнопки «Пауза» нет. */
+(function(){var red=window.matchMedia?matchMedia('(prefers-reduced-motion: reduce)'):{matches:false};
+function go(){var v=document.querySelector('.ai-section video'),b=document.querySelector('.ai-play'),box=v&&v.closest('.ai-video');if(!v||!b||!box||box.dataset.roAuto)return;box.dataset.roAuto='1';
+var want=!red.matches,vis=false;v.muted=true;v.defaultMuted=true;v.setAttribute('muted','');v.playsInline=true;v.setAttribute('playsinline','');v.loop=true;
+function upd(){var on=!v.paused&&!v.ended;box.dataset.playing=on?'true':'false';b.hidden=false;b.setAttribute('aria-label',on?'Пауза: пример подбора отделки':'Смотреть пример подбора отделки')}
+function sync(){if(want&&vis&&!document.hidden){var p=v.play();if(p&&p.catch)p.catch(function(){want=false;upd()})}else v.pause();upd()}
+box.addEventListener('click',function(e){e.stopImmediatePropagation();e.preventDefault();want=v.paused;sync()},true);
+['play','playing','pause','ended'].forEach(function(t){v.addEventListener(t,function(){setTimeout(upd,0)})});
+document.addEventListener('visibilitychange',sync);
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){vis=es[0].isIntersecting;sync()},{threshold:.2}).observe(box)}else{vis=true;sync()}upd()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',go);else go();setTimeout(go,1500)})();
 <%/script>
 </body></html>
@@ -18790,11 +18797,11 @@ html body #design-app .category-copy:not(#z1):not(#z2):not(#z3){gap:4px!importan
 html body #design-app .category-copy>strong:not(#z1):not(#z2):not(#z3){margin:0!important;line-height:32px!important}
 /* 6. Главная: полка без товаров «нет в наличии» – 3 карточки занимают ряд целиком */
 @media (min-width:768px){html body #design-app .product-grid:has(>:nth-child(3):last-child):not(#z1):not(#z2):not(#z3){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-/* 7. Видео на главной: во время показа – кнопка «Пауза» в углу, 40, белая (как кнопки-иконки) */
-html body .hero-motion.ro-hv[data-playing="true"]>.hero-play:not(#z1):not(#z2):not(#z3),html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:1!important;inset:auto 12px 12px auto!important;margin:0!important;width:40px!important;height:40px!important;border:1px solid #BCDDE2!important;border-radius:10px!important;background:#FFFFFF!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.06)!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)>svg:not(#z1){display:none!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat}
-@media (hover:hover){html body :is(.hero-motion.ro-hv[data-playing="true"]:hover>.hero-play,.ai-video[data-playing="true"] .ai-play:hover):not(#z1):not(#z2):not(#z3){background:#F7FBFC!important;border-color:#7FB9C2!important;color:#152A4B!important}}
+/* 7. Видео на главной – один плеер, как у первого экрана: играет само, клик по видео – пауза, на паузе – круглая кнопка «Смотреть» по центру. Отдельной кнопки «Пауза» нет (Алина 18:48) */
+html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:0!important;pointer-events:none}
+html body .ai-video .ai-play:not(#z1):not(#z2):not(#z3){transition:opacity .2s}
+/* 8. Поиск в конструкторе («Мои объекты», «Создать свой интерьер») – текст на том же месте, что на других страницах */
+html body #ui form.gsearch:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){gap:8px!important}
 </style>
 </body>
 </html>
@@ -27666,11 +27673,11 @@ html body #design-app .category-copy:not(#z1):not(#z2):not(#z3){gap:4px!importan
 html body #design-app .category-copy>strong:not(#z1):not(#z2):not(#z3){margin:0!important;line-height:32px!important}
 /* 6. Главная: полка без товаров «нет в наличии» – 3 карточки занимают ряд целиком */
 @media (min-width:768px){html body #design-app .product-grid:has(>:nth-child(3):last-child):not(#z1):not(#z2):not(#z3){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-/* 7. Видео на главной: во время показа – кнопка «Пауза» в углу, 40, белая (как кнопки-иконки) */
-html body .hero-motion.ro-hv[data-playing="true"]>.hero-play:not(#z1):not(#z2):not(#z3),html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:1!important;inset:auto 12px 12px auto!important;margin:0!important;width:40px!important;height:40px!important;border:1px solid #BCDDE2!important;border-radius:10px!important;background:#FFFFFF!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.06)!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)>svg:not(#z1){display:none!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat}
-@media (hover:hover){html body :is(.hero-motion.ro-hv[data-playing="true"]:hover>.hero-play,.ai-video[data-playing="true"] .ai-play:hover):not(#z1):not(#z2):not(#z3){background:#F7FBFC!important;border-color:#7FB9C2!important;color:#152A4B!important}}
+/* 7. Видео на главной – один плеер, как у первого экрана: играет само, клик по видео – пауза, на паузе – круглая кнопка «Смотреть» по центру. Отдельной кнопки «Пауза» нет (Алина 18:48) */
+html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:0!important;pointer-events:none}
+html body .ai-video .ai-play:not(#z1):not(#z2):not(#z3){transition:opacity .2s}
+/* 8. Поиск в конструкторе («Мои объекты», «Создать свой интерьер») – текст на том же месте, что на других страницах */
+html body #ui form.gsearch:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){gap:8px!important}
 </style>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
@@ -32562,11 +32569,11 @@ html body #design-app .category-copy:not(#z1):not(#z2):not(#z3){gap:4px!importan
 html body #design-app .category-copy>strong:not(#z1):not(#z2):not(#z3){margin:0!important;line-height:32px!important}
 /* 6. Главная: полка без товаров «нет в наличии» – 3 карточки занимают ряд целиком */
 @media (min-width:768px){html body #design-app .product-grid:has(>:nth-child(3):last-child):not(#z1):not(#z2):not(#z3){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-/* 7. Видео на главной: во время показа – кнопка «Пауза» в углу, 40, белая (как кнопки-иконки) */
-html body .hero-motion.ro-hv[data-playing="true"]>.hero-play:not(#z1):not(#z2):not(#z3),html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:1!important;inset:auto 12px 12px auto!important;margin:0!important;width:40px!important;height:40px!important;border:1px solid #BCDDE2!important;border-radius:10px!important;background:#FFFFFF!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.06)!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)>svg:not(#z1){display:none!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat}
-@media (hover:hover){html body :is(.hero-motion.ro-hv[data-playing="true"]:hover>.hero-play,.ai-video[data-playing="true"] .ai-play:hover):not(#z1):not(#z2):not(#z3){background:#F7FBFC!important;border-color:#7FB9C2!important;color:#152A4B!important}}
+/* 7. Видео на главной – один плеер, как у первого экрана: играет само, клик по видео – пауза, на паузе – круглая кнопка «Смотреть» по центру. Отдельной кнопки «Пауза» нет (Алина 18:48) */
+html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:0!important;pointer-events:none}
+html body .ai-video .ai-play:not(#z1):not(#z2):not(#z3){transition:opacity .2s}
+/* 8. Поиск в конструкторе («Мои объекты», «Создать свой интерьер») – текст на том же месте, что на других страницах */
+html body #ui form.gsearch:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){gap:8px!important}
 </style>
 </body>
 </html>
@@ -34414,11 +34421,11 @@ html body #design-app .category-copy:not(#z1):not(#z2):not(#z3){gap:4px!importan
 html body #design-app .category-copy>strong:not(#z1):not(#z2):not(#z3){margin:0!important;line-height:32px!important}
 /* 6. Главная: полка без товаров «нет в наличии» – 3 карточки занимают ряд целиком */
 @media (min-width:768px){html body #design-app .product-grid:has(>:nth-child(3):last-child):not(#z1):not(#z2):not(#z3){grid-template-columns:repeat(3,minmax(0,1fr))!important}}
-/* 7. Видео на главной: во время показа – кнопка «Пауза» в углу, 40, белая (как кнопки-иконки) */
-html body .hero-motion.ro-hv[data-playing="true"]>.hero-play:not(#z1):not(#z2):not(#z3),html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:1!important;inset:auto 12px 12px auto!important;margin:0!important;width:40px!important;height:40px!important;border:1px solid #BCDDE2!important;border-radius:10px!important;background:#FFFFFF!important;color:#152A4B!important;box-shadow:0 1px 2px rgba(21,42,75,.06)!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)>svg:not(#z1){display:none!important}
-html body :is(.hero-motion.ro-hv[data-playing="true"]>.hero-play,.ai-video[data-playing="true"] .ai-play)::before{content:"";width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='4' width='4' height='16' rx='1'/%3E%3Crect x='14' y='4' width='4' height='16' rx='1'/%3E%3C/svg%3E") center/contain no-repeat}
-@media (hover:hover){html body :is(.hero-motion.ro-hv[data-playing="true"]:hover>.hero-play,.ai-video[data-playing="true"] .ai-play:hover):not(#z1):not(#z2):not(#z3){background:#F7FBFC!important;border-color:#7FB9C2!important;color:#152A4B!important}}
+/* 7. Видео на главной – один плеер, как у первого экрана: играет само, клик по видео – пауза, на паузе – круглая кнопка «Смотреть» по центру. Отдельной кнопки «Пауза» нет (Алина 18:48) */
+html body .ai-video[data-playing="true"] .ai-play:not(#z1):not(#z2):not(#z3){opacity:0!important;pointer-events:none}
+html body .ai-video .ai-play:not(#z1):not(#z2):not(#z3){transition:opacity .2s}
+/* 8. Поиск в конструкторе («Мои объекты», «Создать свой интерьер») – текст на том же месте, что на других страницах */
+html body #ui form.gsearch:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){gap:8px!important}
 </style>
 </body></html></script>
 
