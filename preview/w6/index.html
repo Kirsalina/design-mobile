@@ -12,7 +12,9 @@ iframe{border:0;background:#fff;display:block;transform-origin:top left;position
 .full .box{margin:0;width:100%!important;height:100%!important;box-shadow:none}
 .full iframe{width:100%!important;height:100%!important;transform:none!important}
 
-.bar .dm{margin-left:auto;background:#19CBD8;color:#152A4B}
+.bar .sy{margin-left:auto;height:32px;padding:0 10px;border-radius:8px;display:inline-flex;align-items:center;color:#fff;text-decoration:none;border:1px solid #4A5D7A;white-space:nowrap}
+.bar .sy:hover{background:#22385C}
+.bar .dm{margin-left:8px;background:#19CBD8;color:#152A4B}
 .bar .dm[aria-pressed=true]{background:#fff}
 #dp{position:fixed;top:56px;left:8px;z-index:11;width:300px;max-height:calc(100% - 72px);overflow:auto;background:#fff;border:1px solid #BCDDE2;border-radius:12px;box-shadow:0 8px 24px rgba(21,42,75,.18);padding:12px;display:none;font:400 13px/18px Manrope,system-ui,sans-serif}
 #dp.on{display:block}
@@ -28,7 +30,7 @@ iframe{border:0;background:#fff;display:block;transform-origin:top left;position
 #dp li b{font-weight:600;color:#152A4B}
 #dp .st{margin-top:6px;color:#566273}
 </style></head><body>
-<div class="bar"><b>W6 Помощник</b><button data-w="0">Компьютер</button><button data-w="768">Планшет</button><button data-w="390">Телефон</button><button class="dm" id="dmb" type="button">Демо помощника</button></div>
+<div class="bar"><b>W6 Помощник</b><button data-w="0">Компьютер</button><button data-w="768">Планшет</button><button data-w="390">Телефон</button><a class="sy" href="system.html" target="_blank" rel="noopener">Система помощника</a><button class="dm" id="dmb" type="button">Демо помощника</button></div>
 <div id="dp" role="dialog" aria-label="Сквозной диалог"><h4>Сквозной диалог: все виды ответов</h4><div>Нажмите «Проиграть всё» или любой шаг. Работает на всех трёх ширинах.</div><div class="row"><button class="go" id="dpgo" type="button">Проиграть всё</button><button id="dpst" type="button">Стоп</button></div><ol id="dpl"></ol><div class="st" id="dps"></div></div>
 <div class="stage" id="st"><div class="box" id="bx"><iframe id="fr" title="Сайт"></iframe></div></div>
 <script>

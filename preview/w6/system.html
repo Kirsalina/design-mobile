@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W6 Помощник – система</title>
+<style>
+@font-face{font-family:Manrope;src:url(../../assets/4b4ec43c70e7.woff2) format("woff2");font-weight:200 800;font-display:swap}
+:root{--ink:#152A4B;--mut:#566273;--line:#BCDDE2;--lineH:#7FB9C2;--sel:#006B79;--act:#19CBD8;--err:#A32637;--bg:#EEF5F6;--pill:#E6FAFB;--sep:#E3E6EA}
+*{box-sizing:border-box}
+html,body{margin:0;background:#F7FAFB;color:var(--ink);font:400 16px/24px Manrope,system-ui,sans-serif}
+.page{max-width:1240px;margin:0 auto;padding:32px 24px 96px}
+h1{font:600 32px/38px Manrope;margin:0 0 8px}
+.lead{color:var(--mut);margin:0 0 32px;max-width:820px}
+h2{font:600 24px/32px Manrope;margin:56px 0 4px}
+h2 small{font:600 14px/21px Manrope;color:var(--mut);margin-left:8px}
+.rule{color:var(--mut);font-size:14px;line-height:21px;margin:0 0 16px;max-width:880px}
+.rule b{color:var(--ink);font-weight:600}
+.grid{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.cap{font:600 14px/21px Manrope;color:var(--mut);margin:0 0 8px}
+.col{width:360px;max-width:100%}
+@media (max-width:600px){.page{padding:24px 16px 64px}.pan,.ph{max-width:100%}.ph{width:100%}.grid>div{max-width:100%}.lead,.rule{max-width:100%}}
+/* панель чата (ширина правой панели конструктора) */
+.pan{width:360px;max-width:100%;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 1px 2px rgba(21,42,75,.04),0 10px 26px -18px rgba(21,42,75,.25)}
+/* сообщения */
+.b{max-width:88%;padding:12px 16px;border-radius:16px;font-size:16px;line-height:24px}
+.b.a{align-self:flex-start;background:#fff;border:1px solid var(--line)}
+.b.u{align-self:flex-end;background:var(--sel);color:#fff}
+.ans{align-self:stretch;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.ans p{margin:0}
+.lbl{align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 8px;border:1px solid var(--line);border-radius:8px;font:700 14px/20px Manrope;background:#fff}
+.lbl svg{width:16px;height:16px}
+.lbl.ask{color:var(--sel)}.lbl.conf{color:var(--ink)}.lbl.ok{color:var(--sel)}.lbl.no{color:var(--err)}
+/* кнопки по §0 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 20px;border-radius:10px;font:700 16px/22px Manrope;cursor:pointer;white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(21,42,75,.06)}
+.btn:hover{border-color:var(--lineH);background:#F7FBFC}
+.btn.pri{border-color:transparent;background:linear-gradient(180deg,rgba(255,255,255,.22) 0,rgba(255,255,255,0) 52%),#19CBD8;box-shadow:0 1px 2px rgba(21,42,75,.14),0 4px 10px -4px rgba(16,140,150,.35)}
+.btn.pri:hover{background:linear-gradient(180deg,rgba(255,255,255,.22) 0,rgba(255,255,255,0) 52%),#14BDC9}
+.btn.s{height:40px;padding:0 16px;font-size:14px;line-height:20px}
+.btn.w{width:100%}
+.btn svg{width:20px;height:20px}
+.btn.s svg{width:16px;height:16px}
+.acts{display:flex;flex-direction:column;gap:8px}
+.acts.row{flex-direction:row}.acts.row .btn{flex:1;padding:0 12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:600 14px/20px Manrope;color:var(--ink);cursor:pointer}
+.chip:hover{border-color:var(--lineH)}
+/* строка товара – одна для чата, сметы, корзины */
+.pr{display:grid;grid-template-columns:56px minmax(0,1fr) auto;column-gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;transition:border-color .15s,background-color .15s}
+.pr:hover{border-color:var(--lineH)}
+.pr img,.pr .sw{width:56px;height:56px;border-radius:8px;object-fit:cover;display:block;border:1px solid var(--line)}
+.pr .t{min-width:0}
+.pr .n{font:600 16px/24px Manrope;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;transition:color .15s}
+.pr .n:hover{color:var(--sel)}
+.pr .s{font-size:14px;line-height:21px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr .m{text-align:right;white-space:nowrap;padding-top:0}
+.pr img,.pr .sw{align-self:center}
+.pr .p{font:700 16px/24px Manrope}
+.pr .q{font-size:14px;line-height:21px;color:var(--mut)}
+.pr .tag{display:inline-flex;align-items:center;height:24px;padding:0 6px;border:1px solid var(--line);border-radius:6px;font:700 12px/18px Manrope;color:var(--sel);margin-bottom:2px}
+.pr .tag.out{color:var(--err)}
+.pr[aria-pressed=true]{border-color:var(--act);background:var(--pill)}
+.pr.dis{cursor:default;opacity:1}.pr.dis .n,.pr.dis .p{color:var(--mut)}
+.list{display:flex;flex-direction:column;gap:8px}
+/* строка-вариант без фото */
+.opt{display:grid;grid-template-columns:minmax(0,1fr) 20px;align-items:center;column-gap:12px;min-height:48px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;text-align:left;font:inherit;color:inherit;width:100%}
+.opt:hover{border-color:var(--lineH)}
+.opt b{display:block;font:600 16px/24px Manrope}
+.opt span{display:block;font-size:14px;line-height:21px;color:var(--mut)}
+.opt svg{width:20px;height:20px;color:var(--mut)}
+/* примерка */
+.try{display:flex;flex-direction:column;gap:8px}
+.tryh{display:flex;justify-content:space-between;align-items:baseline;font-size:14px;line-height:21px;color:var(--mut)}
+.tryh b{color:var(--ink);font-weight:600;font-size:16px;line-height:24px}
+.more{align-self:flex-start}
+/* итог */
+.sum{border:1px solid var(--line);border-radius:12px;padding:12px 16px;background:var(--bg);display:flex;flex-direction:column;gap:4px}
+.sum .r{display:flex;justify-content:space-between;gap:12px;font-size:14px;line-height:21px;color:var(--mut)}
+.sum .r b{color:var(--ink);font-weight:600}
+.sum .tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.sum .tot span{font-size:14px;line-height:21px;color:var(--mut)}
+.sum .tot b{font:700 20px/28px Manrope}
+/* шаги */
+.steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.steps li{display:grid;grid-template-columns:20px 1fr;column-gap:8px;font-size:16px;line-height:24px}
+.steps li svg{width:20px;height:20px;margin-top:2px}
+.steps li.ok svg{color:var(--sel)}.steps li.no svg{color:var(--err)}
+.steps li span{font-size:14px;line-height:21px;color:var(--mut);display:block}
+/* поле ввода */
+.cmp{display:flex;align-items:center;gap:4px;min-height:52px;padding:3px 3px 3px 14px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:inset 0 1px 2px rgba(21,42,75,.05)}
+.cmp .tx{flex:1;color:#7D8996;font-size:16px;line-height:24px;padding:10px 0;min-width:0}
+.cmp .tx.v{color:var(--ink)}
+.ib{width:44px;height:44px;border-radius:10px;border:0;background:none;display:grid;place-items:center;color:var(--ink);flex:none}
+.ib svg{width:20px;height:20px}
+.ib.go{background:linear-gradient(180deg,rgba(255,255,255,.22) 0,rgba(255,255,255,0) 52%),#19CBD8}
+.ib.stop{border:1px solid var(--line);background:#fff}
+.ib.stop i{width:14px;height:14px;border-radius:3px;background:var(--ink);display:block}
+.cmp.err{border-color:var(--err)}
+.ferr{display:flex;gap:6px;font-size:14px;line-height:21px;color:var(--err);margin-top:4px}
+.ferr svg{width:16px;height:16px;margin-top:2px;flex:none}
+.bars{display:flex;align-items:center;gap:3px;height:24px}
+.bars i{width:3px;border-radius:2px;background:var(--sel);animation:bb 1s ease-in-out infinite}
+.bars i:nth-child(1){height:8px}.bars i:nth-child(2){height:16px;animation-delay:.1s}.bars i:nth-child(3){height:22px;animation-delay:.2s}.bars i:nth-child(4){height:12px;animation-delay:.3s}.bars i:nth-child(5){height:18px;animation-delay:.4s}
+@keyframes bb{50%{transform:scaleY(.45)}}
+@media (prefers-reduced-motion:reduce){.bars i,.dots i{animation:none}}
+.dots{display:inline-flex;gap:4px;padding:4px 0}.dots i{width:8px;height:8px;border-radius:50%;background:#9AA6B2;animation:dd 1.2s infinite}.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes dd{40%{background:var(--sel)}}
+.fail{align-self:flex-end;display:flex;align-items:center;gap:8px;font-size:14px;line-height:21px;color:var(--err);margin-top:-6px}
+.fail svg{width:16px;height:16px}
+.fail .btn{height:32px;padding:0 10px;font-size:14px}
+/* телефон */
+.ph{width:390px;height:780px;border:1px solid var(--line);border-radius:28px;background:#fff;position:relative;overflow:hidden;box-shadow:0 10px 26px -18px rgba(21,42,75,.35)}
+.ph .hd{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;border-bottom:1px solid var(--sep);font:700 18px/24px Manrope}
+.ph .cv{position:absolute;left:0;right:0;top:56px;height:316px;background:#F7FAFB;background-image:linear-gradient(#E3EEF0 1px,transparent 1px),linear-gradient(90deg,#E3EEF0 1px,transparent 1px);background-size:20px 20px}
+.ph .room{position:absolute;left:32px;right:32px;top:34px;bottom:44px;border:6px solid var(--ink);background:#D9C7A8;background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 2px,transparent 2px 38px)}
+.ph .room.dark{background-color:#7F6650}
+.ph .room .dim{position:absolute;bottom:-30px;left:0;right:0;text-align:center;font-size:12px;line-height:18px;color:var(--mut)}
+.ph .sh{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:16px 16px 0 0;border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(21,42,75,.12);display:flex;flex-direction:column}
+.ph .sh.full{top:0;border-radius:0;border-top:0;box-shadow:none}
+.ph .sh.half{top:372px}
+.ph .shh{display:flex;align-items:center;gap:4px;height:56px;padding:0 8px 0 16px;border-bottom:1px solid var(--sep);flex:none}
+.ph .shh b{flex:1;font:600 18px/25px Manrope}
+.ph .chat{flex:1;overflow:hidden;padding:12px 16px;display:flex;flex-direction:column;gap:12px;justify-content:flex-end}
+.ph .foot{padding:8px 16px 16px;flex:none}
+.ph .pan{width:auto;border:0;box-shadow:none;padding:0}
+.note{font-size:14px;line-height:21px;color:var(--mut);max-width:390px;margin-top:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px;line-height:21px;margin-top:8px}
+.tbl td,.tbl th{border-bottom:1px solid var(--sep);padding:8px 12px 8px 0;text-align:left;vertical-align:top}
+.tbl th{color:var(--mut);font-weight:600}
+code{font:500 13px/18px ui-monospace,Menlo,monospace;background:var(--bg);padding:1px 4px;border-radius:4px}
+</style></head><body><div class="page">
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="i-q" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol>
+<symbol id="i-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></symbol>
+<symbol id="i-no" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10a7 7 0 0 1-14 0M12 17v5"/></symbol>
+<symbol id="i-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-half" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 12h18"/></symbol>
+<symbol id="i-full" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></symbol>
+<symbol id="i-undo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+</defs></svg>
+
+<h1>ИИ-помощник: система</h1>
+<p class="lead">Из чего собирается любой ответ помощника. Разработчик берёт эти блоки как детали: новая задача помощника = текст + один-два блока отсюда. Стиль – «Смесь 2»: контур #BCDDE2, скругления 16 / 12 / 10 / 8, бирюзовая кнопка – одна главная на ответ. Ширина образцов – правая панель конструктора (360) и телефон (390).</p>
+
+<h2>1. Окно помощника <small>компьютер, планшет, телефон</small></h2>
+<p class="rule"><b>Компьютер:</b> вкладка «ИИ-помощник» в правой панели, на всю высоту холста. <b>Планшет:</b> окно справа поверх холста, по высоте холста. <b>Телефон – два состояния:</b> на весь экран (по умолчанию, удобно писать) и на полэкрана (план виден сверху). Переключает человек кнопкой в шапке окна; во время примерки помощник один раз предлагает «Посмотреть на плане» – это та же половина. План в половине приближается к поверхности, о которой речь, с полями 10–15 % по краям.</p>
+<div class="grid">
+ <div><p class="cap">Телефон – на весь экран</p>
+ <div class="ph"><div class="sh full"><div class="shh"><b>ИИ-помощник</b><button class="ib" aria-label="На полэкрана" title="На полэкрана"><svg><use href="#i-half"/></svg></button><button class="ib" aria-label="Закрыть"><svg><use href="#i-x"/></svg></button></div>
+  <div class="chat"><div class="b a">Подберу покрытие для пола, стен или потолка и посчитаю, сколько нужно. Что ищем?</div>
+  <div class="chips"><button class="chip">Светлый ламинат на пол</button><button class="chip">Обои на стену 2</button></div>
+  <div class="b u">тёмный ламинат на пол</div>
+  <div class="ans"><span class="lbl ask"><svg><use href="#i-q"/></svg>Уточнение</span><p>Для пола подходит 3 варианта. Нажмите на любой – покажу на плане.</p><button class="btn s more"><svg><use href="#i-half"/></svg>Посмотреть на плане</button></div></div>
+  <div class="foot"><div class="cmp"><span class="tx">Напишите сообщение</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div></div></div></div>
+ </div>
+ <div><p class="cap">Телефон – на полэкрана, идёт примерка</p>
+ <div class="ph"><div class="hd">RemOnLine<span style="font:400 14px/20px Manrope;color:#566273">Гостиная</span></div><div class="cv"><div class="room dark"><div class="dim">Пол, 14 м²</div></div></div>
+ <div class="sh half"><div class="shh"><b>ИИ-помощник</b><button class="ib" aria-label="На весь экран"><svg><use href="#i-full"/></svg></button><button class="ib" aria-label="Закрыть"><svg><use href="#i-x"/></svg></button></div>
+  <div class="chat" style="justify-content:flex-start"><div class="try">
+   <div class="pr" aria-pressed="true"><img src="../../assets/dea55aef698e.webp" alt=""><div class="t"><div class="n">Ламинат «Дуб Дымчатый»</div><div class="s">8 упаковок</div></div><div class="m"><div class="p">23 760 ₽</div></div></div>
+   <div class="acts row"><button class="btn pri">Применить</button><button class="btn">В другие комнаты</button></div></div></div>
+  <div class="foot"><div class="cmp"><span class="tx">Напишите сообщение</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div></div></div></div>
+ <p class="note">В половине видна только выбранная строка и кнопки; список вариантов – прокруткой выше. Холст приближает пол с полями 10–15 %.</p></div>
+ <div><p class="cap">Компьютер – правая панель</p>
+ <div class="pan" style="height:780px;justify-content:flex-end"><div class="b a">Могу добавить или сдвинуть окно и дверь, поменять размеры комнаты или высоту потолка. Чем помочь?</div><div class="chips"><button class="chip">Добавь окно на стену 2</button><button class="chip">Какая площадь?</button></div><div style="flex:1"></div><div class="cmp"><span class="tx">Напишите сообщение</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div></div></div>
+</div>
+
+<h2>2. Сообщения <small>пять видов</small></h2>
+<p class="rule"><b>Обычный ответ</b> – пузырь без метки (объяснение, справка). <b>Карточка с меткой</b> – когда нужно решение или что-то изменилось: «Уточнение» (выбрать из вариантов), «Подтверждение» (сделать / не делать), «Готово» (сделано, можно вернуть), «Не выполнено» (почему и что можно вместо). Метка – 28, контур, скругление 8, цвет по смыслу. В ответе максимум 3 коротких абзаца, затем блоки. Кнопки показываются только у последнего ответа.</p>
+<div class="grid">
+ <div class="col"><p class="cap">Обычный ответ + человек</p><div class="pan"><div class="b u">какая площадь?</div><div class="b a">Площадь пола 14 м², стен без окон и дверей – 36,5 м². Что ещё посчитать?</div></div></div>
+ <div class="col"><p class="cap">Уточнение</p><div class="pan"><div class="ans"><span class="lbl ask"><svg><use href="#i-q"/></svg>Уточнение</span><p>Стены 5 нет, в комнате их 4. Для какой стены подобрать обои?</p>
+  <div class="list"><button class="opt"><div><b>Стена 1</b><span>Краска «Комфорт», шалфей</span></div><svg><use href="#i-chev"/></svg></button><button class="opt"><div><b>Стена 3</b><span>Без покрытия</span></div><svg><use href="#i-chev"/></svg></button><button class="opt"><div><b>Все стены</b><span>4 стены, 36,5 м²</span></div><svg><use href="#i-chev"/></svg></button></div></div></div></div>
+ <div class="col"><p class="cap">Подтверждение</p><div class="pan"><div class="ans"><span class="lbl conf"><svg><use href="#i-q"/></svg>Подтверждение</span><p>Удалить окно 1 и окно 2? Вместе с ними уберу откосы и подоконники из сметы.</p><div class="acts"><button class="btn pri w">Удалить 2 окна</button><button class="btn w">Не удалять</button></div></div></div></div>
+ <div class="col"><p class="cap">Готово</p><div class="pan"><div class="ans"><span class="lbl ok"><svg><use href="#i-ok"/></svg>Готово</span><p>Положил ламинат «Дуб Дымчатый» на пол вместо «Дуб Натур».</p>
+  <div class="pr"><img src="../../assets/dea55aef698e.webp" alt=""><div class="t"><div class="n">Ламинат «Дуб Дымчатый»</div><div class="s">Тёмный дуб, 8 мм</div></div><div class="m"><div class="p">23 760 ₽</div><div class="q">8 упаковок</div></div></div>
+  <button class="btn s more"><svg><use href="#i-undo"/></svg>Вернуть как было</button></div></div></div>
+ <div class="col"><p class="cap">Не выполнено</p><div class="pan"><div class="ans"><span class="lbl no"><svg><use href="#i-no"/></svg>Не выполнено</span><p>Окно 120 см не помещается на стену 1: свободно только 90 см между дверью и углом.</p>
+  <div class="list"><button class="opt"><div><b>Окно 90 см на стену 1</b><span>Встанет между дверью и углом</span></div><svg><use href="#i-chev"/></svg></button><button class="opt"><div><b>Окно 120 см на стену 2</b><span>По центру, места хватает</span></div><svg><use href="#i-chev"/></svg></button></div></div></div></div>
+</div>
+
+<h2>3. Строка товара <small>одна деталь для чата, сметы и корзины</small></h2>
+<p class="rule">Фото 56 (скругление 8, контур), название 16/24 600 – ссылка на карточку товара (при наведении бирюзовое), под ним вариант или количество 14/21, справа сумма 16/24 700 и количество. Вся строка нажимается: в примерке – показать на плане, в остальных ответах – открыть товар. <b>Состояния:</b> обычная, наведение (контур #7FB9C2), выбрана (контур #19CBD8, фон #E6FAFB – как выбранная пилюля фильтра), «Сейчас на полу» (метка), нет в наличии (красная метка, сумма серым, строка не выбирается). В одном ответе – не больше 4 строк, остальное кнопкой «Ещё N».</p>
+<div class="grid">
+ <div class="col"><div class="pan">
+  <div class="pr"><img src="../../assets/dafb483ff55e.webp" alt=""><div class="t"><div class="n">Ламинат «Дуб Натур»</div><div class="s">Светлый дуб, 8 мм</div></div><div class="m"><div class="p">20 020 ₽</div><div class="q">7 упаковок</div></div></div>
+  <div class="pr" style="border-color:#7FB9C2"><img src="../../assets/dea55aef698e.webp" alt=""><div class="t"><div class="n" style="color:#006B79">Ламинат «Дуб Дымчатый»</div><div class="s">наведение</div></div><div class="m"><div class="p">23 760 ₽</div><div class="q">8 упаковок</div></div></div>
+  <div class="pr" aria-pressed="true"><img src="../../assets/bc0a75fc1e2d.webp" alt=""><div class="t"><div class="n">Керамогранит «Стоун»</div><div class="s">выбрана</div></div><div class="m"><div class="p">24 090 ₽</div><div class="q">11 упаковок</div></div></div>
+  <div class="pr"><img src="../../assets/dafb483ff55e.webp" alt=""><div class="t"><span class="tag">Сейчас на полу</span><div class="n">Ламинат «Дуб Натур»</div></div><div class="m"><div class="p">20 020 ₽</div><div class="q">7 упаковок</div></div></div>
+  <div class="pr dis"><img src="../../assets/6ebb783331e7.webp" alt=""><div class="t"><span class="tag out">Нет в наличии</span><div class="n">Линолеум «Камень»</div></div><div class="m"><div class="p">16 520 ₽</div><div class="q">14 м</div></div></div>
+ </div></div>
+ <div style="max-width:min(520px,100%)"><table class="tbl"><tr><th>Что передаёт разработчик</th><th></th></tr>
+ <tr><td><code>sku</code>, <code>photo</code>, <code>name</code></td><td>из каталога</td></tr>
+ <tr><td><code>sub</code></td><td>вариант или «8 упаковок»</td></tr>
+ <tr><td><code>sum</code>, <code>qty</code></td><td>расчёт на эту поверхность</td></tr>
+ <tr><td><code>state</code></td><td>normal · selected · current · out</td></tr>
+ <tr><td><code>action</code></td><td>try (примерка) · open (карточка товара)</td></tr></table>
+ <p class="note">В смете и корзине та же строка шире: справа добавляются галочка и «Удалить». Владелец строки – W4 (общая деталь сайта); помощник берёт её как есть.</p></div>
+</div>
+
+<h2>4. Примерка в чате</h2>
+<p class="rule">Помощник ничего не кладёт сам. Он показывает до 4 вариантов строками товара: первой – то, что <b>сейчас</b> на поверхности (метка «Сейчас на полу»), если оно есть. Нажатие на строку – вариант показан на плане (проба, комната не меняется), строка выбрана. Пока ничего не выбрано, кнопки неактивны. Внизу: <b>«Применить»</b> (главная) и <b>«На другие стены» / «В другие комнаты»</b>. Если вариантов больше 4 – белая кнопка «Ещё 5 вариантов» раскрывает список здесь же, без ссылок и пустых мест. Новое сообщение или выход из отделки – проба снимается сама, план возвращается.</p>
+<div class="grid">
+ <div class="col"><p class="cap">Сначала: ничего не выбрано</p><div class="pan"><div class="b u">покажи весь ламинат</div><div class="ans"><span class="lbl ask"><svg><use href="#i-q"/></svg>Уточнение</span><p>Ламинат для пола, 14 м². Нажмите на вариант – покажу на плане.</p>
+  <div class="try"><div class="pr"><img src="../../assets/dea55aef698e.webp" alt=""><div class="t"><span class="tag">Сейчас на полу</span><div class="n">Ламинат «Дуб Дымчатый»</div></div><div class="m"><div class="p">23 760 ₽</div><div class="q">8 упаковок</div></div></div>
+  <div class="pr"><img src="../../assets/dafb483ff55e.webp" alt=""><div class="t"><div class="n">Ламинат «Дуб Натур»</div><div class="s">Светлый дуб, 8 мм</div></div><div class="m"><div class="p">20 020 ₽</div><div class="q">7 упаковок</div></div></div>
+  <div class="pr"><img src="../../assets/dafb483ff55e.webp" alt="" style="filter:saturate(.6) brightness(1.08)"><div class="t"><div class="n">Ламинат «Ясень Белый»</div><div class="s">Белёный ясень, 10 мм</div></div><div class="m"><div class="p">25 740 ₽</div><div class="q">9 упаковок</div></div></div>
+  <button class="btn s more"><svg><use href="#i-down"/></svg>Ещё 3 варианта</button>
+  <div class="acts row"><button class="btn pri" disabled style="background:#EEF5F6;color:#7D8996;box-shadow:none;cursor:default">Применить</button><button class="btn" disabled style="color:#7D8996;cursor:default">В другие комнаты</button></div></div></div></div></div>
+ <div class="col"><p class="cap">Нажали «Дуб Натур» – на плане проба</p><div class="pan"><div class="ans"><span class="lbl ask"><svg><use href="#i-q"/></svg>Уточнение</span><p>Ламинат для пола, 14 м². Нажмите на вариант – покажу на плане.</p>
+  <div class="try"><div class="pr"><img src="../../assets/dea55aef698e.webp" alt=""><div class="t"><span class="tag">Сейчас на полу</span><div class="n">Ламинат «Дуб Дымчатый»</div></div><div class="m"><div class="p">23 760 ₽</div><div class="q">8 упаковок</div></div></div>
+  <div class="pr" aria-pressed="true"><img src="../../assets/dafb483ff55e.webp" alt=""><div class="t"><div class="n">Ламинат «Дуб Натур»</div><div class="s">Светлый дуб, 8 мм</div></div><div class="m"><div class="p">20 020 ₽</div><div class="q">7 упаковок</div></div></div>
+  <div class="pr"><img src="../../assets/dafb483ff55e.webp" alt="" style="filter:saturate(.6) brightness(1.08)"><div class="t"><div class="n">Ламинат «Ясень Белый»</div><div class="s">Белёный ясень, 10 мм</div></div><div class="m"><div class="p">25 740 ₽</div><div class="q">9 упаковок</div></div></div>
+  <button class="btn s more"><svg><use href="#i-down"/></svg>Ещё 3 варианта</button>
+  <div class="acts row"><button class="btn pri">Применить</button><button class="btn">В другие комнаты</button></div></div></div></div></div>
+ <div class="col"><p class="cap">«Применить» – Готово и материалы</p><div class="pan"><div class="b u">Применить</div><div class="ans"><span class="lbl ok"><svg><use href="#i-ok"/></svg>Готово</span><p>Положил ламинат «Дуб Натур» на пол вместо «Дуб Дымчатый». В смете пол стал дешевле на 3 740 ₽.</p><button class="btn s more"><svg><use href="#i-undo"/></svg>Вернуть как было</button></div>
+  <div class="ans"><span class="lbl conf"><svg><use href="#i-q"/></svg>Подтверждение</span><p>Материалы к ламинату. Нужно для укладки:</p>
+  <div class="list"><div class="pr"><img src="../../assets/314b5d1e78a7.webp" alt=""><div class="t"><div class="n">Подложка «Термо»</div><div class="s">1 рулон</div></div><div class="m"><div class="p">690 ₽</div></div></div><div class="pr"><img src="../../assets/7a50c96dd66e.webp" alt=""><div class="t"><div class="n">Плинтус «Дуб»</div><div class="s">7 штук</div></div><div class="m"><div class="p">1 330 ₽</div></div></div></div>
+  <div class="acts"><button class="btn pri w">Добавить в смету, 2 020 ₽</button><button class="btn w">Не добавлять</button></div></div></div></div>
+</div>
+
+<h2>5. Итог <small>большая смета коротко</small></h2>
+<p class="rule">Помощник не расписывает всю смету в чате. Итог – не больше 4 строк (по группам или по комнатам, самые крупные), сумма и кнопка «Открыть смету». Если комнат больше 4, последняя строка – «Ещё 9 комнат». Предупреждения – одной строкой под итогом.</p>
+<div class="grid">
+ <div class="col"><p class="cap">Одна комната</p><div class="pan"><div class="b u">сколько всё стоит?</div><div class="ans"><p>Гостиная: материалы на 107 290 ₽, 11 товаров.</p><div class="sum"><div class="r"><span>Стены</span><b>30 450 ₽</b></div><div class="r"><span>Пол</span><b>45 660 ₽</b></div><div class="r"><span>Потолок</span><b>2 500 ₽</b></div><div class="r"><span>Материалы к покрытиям</span><b>28 680 ₽</b></div><div class="tot"><span>Итого</span><b>107 290 ₽</b></div></div><p style="font-size:14px;line-height:21px;color:#566273">У стены 3 и стены 4 нет покрытия.</p><button class="btn w"><svg><use href="#i-list"/></svg>Открыть смету</button></div></div></div>
+ <div class="col"><p class="cap">Объект на 12 комнат</p><div class="pan"><div class="b u">сколько всё стоит?</div><div class="ans"><p>Квартира: 12 комнат, материалы на 1 284 600 ₽.</p><div class="sum"><div class="r"><span>Гостиная</span><b>214 300 ₽</b></div><div class="r"><span>Кухня</span><b>186 900 ₽</b></div><div class="r"><span>Спальня</span><b>142 750 ₽</b></div><div class="r"><span>Ещё 9 комнат</span><b>740 650 ₽</b></div><div class="tot"><span>Итого</span><b>1 284 600 ₽</b></div></div><button class="btn w"><svg><use href="#i-list"/></svg>Открыть смету</button></div></div></div>
+ <div class="col"><p class="cap">Найти дешевле – строки товара, не текст</p><div class="pan"><div class="b u">найди аналог дешевле</div><div class="ans"><span class="lbl ask"><svg><use href="#i-q"/></svg>Уточнение</span><p>Что заменить? Сначала самые дорогие позиции.</p><div class="list">
+  <button class="opt" style="padding:12px"><div style="display:grid;grid-template-columns:56px 1fr;column-gap:12px;align-items:center"><img src="../../assets/bc0a75fc1e2d.webp" alt="" style="width:56px;height:56px;border-radius:8px;border:1px solid #BCDDE2;object-fit:cover"><div><b>Плитка «Мел»</b><span>19 упаковок, 26 220 ₽</span></div></div><svg><use href="#i-chev"/></svg></button>
+  <button class="opt" style="padding:12px"><div style="display:grid;grid-template-columns:56px 1fr;column-gap:12px;align-items:center"><img src="../../assets/dea55aef698e.webp" alt="" style="width:56px;height:56px;border-radius:8px;border:1px solid #BCDDE2;object-fit:cover"><div><b>Ламинат «Дуб Дымчатый»</b><span>8 упаковок, 23 760 ₽</span></div></div><svg><use href="#i-chev"/></svg></button></div></div></div></div>
+</div>
+
+<h2>6. Несколько задач в одном сообщении</h2>
+<p class="rule">Список шагов: что сделано (галочка) и что нет (красный значок + причина одной строкой). Одна кнопка «Вернуть всё как было» отменяет все сделанные шаги этого сообщения.</p>
+<div class="grid"><div class="col"><div class="pan"><div class="b u">комната 4 на 3,5, окно на стену 2, дверь на стену 3 и светлый ламинат</div><div class="ans"><span class="lbl ok"><svg><use href="#i-ok"/></svg>Готово</span><ol class="steps">
+ <li class="ok"><svg><use href="#i-ok"/></svg><div>Комната 4 × 3,5 м</div></li><li class="ok"><svg><use href="#i-ok"/></svg><div>Окно 120 × 130 см на стене 2</div></li>
+ <li class="no"><svg><use href="#i-no"/></svg><div>Дверь на стену 3<span>Там уже окно 2 – выберите место ниже</span></div></li><li class="ok"><svg><use href="#i-ok"/></svg><div>Ламинат «Дуб Натур» на полу</div></li></ol>
+ <button class="btn s more"><svg><use href="#i-undo"/></svg>Вернуть всё как было</button></div></div></div></div>
+
+<h2>7. Поле ввода, голос, ошибки</h2>
+<p class="rule">Поле 52, одна строка, растёт до 7 строк, потом прокрутка. <b>Голос:</b> полоски и «Слушаю вас…», микрофон становится кнопкой «Стоп»; текст попадает в поле, отправляет человек. <b>Ошибки не висят в воздухе:</b> ошибка голоса – под полем, как у любого поля сайта; не ушло сообщение – прямо под этим сообщением, с «Повторить»; введённое не теряется.</p>
+<div class="grid">
+ <div class="col"><p class="cap">Пусто / набор / печатает</p><div class="pan"><div class="cmp"><span class="tx">Напишите сообщение</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div>
+  <div class="cmp"><span class="tx v">Добавь окно 120 см на стену 2 по центру, от пола 90 см</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div>
+  <div class="b a"><span class="dots" aria-label="Печатает"><i></i><i></i><i></i></span></div></div></div>
+ <div class="col"><p class="cap">Голос: запись и ошибка</p><div class="pan"><div class="cmp"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span class="tx v" style="padding-left:8px">Слушаю вас…</span><button class="ib stop" aria-label="Стоп"><i></i></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div>
+  <div><div class="cmp err"><span class="tx">Напишите сообщение</span><button class="ib"><svg><use href="#i-mic"/></svg></button><button class="ib go"><svg><use href="#i-up"/></svg></button></div><div class="ferr"><svg><use href="#i-no"/></svg>Нет доступа к микрофону. Разрешите его в настройках браузера.</div></div></div></div>
+ <div class="col"><p class="cap">Нет связи – у самого сообщения</p><div class="pan"><div class="b u">добавь окно 120 см на стену 2</div><div class="fail"><svg><use href="#i-no"/></svg>Не отправлено<button class="btn">Повторить</button></div></div></div>
+</div>
+
+<h2>8. Правила текста</h2>
+<p class="rule">Помощник говорит от первого лица в мужском роде («Положил», «Сделал»), коротко и вежливо. Главная кнопка называет действие с предметом: «Удалить 2 окна», «Применить», «Добавить в смету, 2 020 ₽». Кнопка отказа – «Не …» по смыслу: «Не удалять», «Не добавлять», «Не менять». Отмена сделанного – «Вернуть как было». Цены – «23 760 ₽» (тысячи через пробел, ₽ через неразрывный). Без «—», без «·», без служебного текста.</p>
+</div></body></html>
