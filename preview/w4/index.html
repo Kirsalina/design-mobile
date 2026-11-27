@@ -8965,9 +8965,11 @@ html body :is(#ui .stages>.stg,#ui .sw>button,#ui .tabs>button,#ui .ro-w5-seg>bu
 html body #ui .ro-w5-seg>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important}
 /* на светлом поле холста (2D/3D) заливка не видна – там выбранный белый, как правило «белый на светлом» */
 html body #ui .sw>button[aria-pressed=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#FFFFFF!important;box-shadow:0 1px 2px rgba(21,42,75,.1)!important}
-/* вкладки панели «Параметры / ИИ-помощник» – на всю ширину, сегменты поровну */
-html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
-html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 0!important;min-width:0!important;padding:0 12px!important}
+/* этапы и вкладки панели занимают прежние 48 по высоте (сегмент 40 по центру) – иначе на «Смете» вся страница прыгала на 4–8 px */
+html body :is(#ui .stages,#ui .tabs):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){min-height:48px!important;height:48px!important;align-items:center!important}
+/* вкладки панели «Параметры / ИИ-помощник» – по ширине слова, отступ 12 с обеих сторон (Алина 27.11: заливка должна ровно обнимать слово) */
+html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important;justify-content:flex-start!important}
+html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:0 0 auto!important;min-width:0!important;padding:0 12px!important}
 @media (max-width:767px){
 html body #ui .stages:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
 html body #ui .stages>.stg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important;min-width:0!important;padding:0 8px!important;font-size:14px!important;line-height:20px!important}
@@ -8980,6 +8982,28 @@ html body :is(#ui .empty,#ui .gate,.status-panel,.shop .cart-empty,#transaction 
 html body :is(#ui .gate .note,#ui .gate .ro-gwarn,.cart-empty-icon):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#fff!important}
 /* Поля: ошибка сильнее общего контура W4-4 (W3, 26.11 23:00) – 1 px #A32637 */
 html body :is(input,select,textarea,.field,.room-trigger,.dd-trigger)[aria-invalid=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#A32637!important;box-shadow:none!important}
+/* 27.11 08:21 – замечания Алины */
+/* галочка: градиент не повторяется под прозрачной рамкой (был «квадрат в квадрате») */
+html body input[type=checkbox]:checked:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background-origin:border-box!important;background-clip:border-box!important;background-repeat:no-repeat!important}
+/* бирюзовая кнопка внутри поля («Найти», «Отправить» помощника) – без внешней тени, она вылезала под поле */
+html body :is(form.search,form.gsearch,#ui .cmp) :is(button,.btn,.go,.button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important}
+/* счётчик − 1 +: при вводе числа – без тёмного квадрата; фокус – контур всего счётчика #006B79 */
+html body :is(.cart-stepper,#ui .qty) input:is(:focus,:focus-visible):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important;outline:0!important;border-color:transparent!important;background:transparent!important}
+html body :is(.cart-stepper,#ui .qty):focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6):not(#z7):not(#z8):not(#z9):not(#z10){border-color:#006B79!important}
+/* «Артикул для конструктора» – поле как все: контур #BCDDE2 */
+html body .tryon-code-row:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important;border-width:1px!important;border-radius:10px!important}
+html body .tryon-code-row:focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#006B79!important}
+/* выбранная карточка-вариант (адрес, «Как привезти», оплата, окна): заливка #EDF6F7 + контур 1 px #19CBD8 вместо толстой тёмной рамки; галочка #006B79 */
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EDF6F7!important;border-width:1px!important;border-style:solid!important;border-color:#19CBD8!important;box-shadow:none!important}
+html body .shop :is(#saved-addrs,.pay-options) .pay-option:has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){padding:16px!important}
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):not(:has(input:checked)):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+/* статус заказа (Отменён, Оплачен…) – блок-сообщение */
+html body .ord-card.ord-status:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EEF5F6!important;border-color:#EEF5F6!important;box-shadow:none!important}
+/* «Ничего не нашлось» в поиске конструктора – блок-сообщение */
+html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!important;padding:24px!important;border-radius:16px!important;background:#EEF5F6!important;color:#152A4B!important;font-size:16px!important;line-height:24px!important}
+/* аудит 27.11: старая рамка #DCE4E2 и тёмно-серая #566273 у карточек, панелей, меток – один контур #BCDDE2 (DS §0) */
+html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
 </body></html>
 </script>
@@ -18429,9 +18453,11 @@ html body :is(#ui .stages>.stg,#ui .sw>button,#ui .tabs>button,#ui .ro-w5-seg>bu
 html body #ui .ro-w5-seg>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important}
 /* на светлом поле холста (2D/3D) заливка не видна – там выбранный белый, как правило «белый на светлом» */
 html body #ui .sw>button[aria-pressed=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#FFFFFF!important;box-shadow:0 1px 2px rgba(21,42,75,.1)!important}
-/* вкладки панели «Параметры / ИИ-помощник» – на всю ширину, сегменты поровну */
-html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
-html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 0!important;min-width:0!important;padding:0 12px!important}
+/* этапы и вкладки панели занимают прежние 48 по высоте (сегмент 40 по центру) – иначе на «Смете» вся страница прыгала на 4–8 px */
+html body :is(#ui .stages,#ui .tabs):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){min-height:48px!important;height:48px!important;align-items:center!important}
+/* вкладки панели «Параметры / ИИ-помощник» – по ширине слова, отступ 12 с обеих сторон (Алина 27.11: заливка должна ровно обнимать слово) */
+html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important;justify-content:flex-start!important}
+html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:0 0 auto!important;min-width:0!important;padding:0 12px!important}
 @media (max-width:767px){
 html body #ui .stages:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
 html body #ui .stages>.stg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important;min-width:0!important;padding:0 8px!important;font-size:14px!important;line-height:20px!important}
@@ -18444,6 +18470,28 @@ html body :is(#ui .empty,#ui .gate,.status-panel,.shop .cart-empty,#transaction 
 html body :is(#ui .gate .note,#ui .gate .ro-gwarn,.cart-empty-icon):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#fff!important}
 /* Поля: ошибка сильнее общего контура W4-4 (W3, 26.11 23:00) – 1 px #A32637 */
 html body :is(input,select,textarea,.field,.room-trigger,.dd-trigger)[aria-invalid=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#A32637!important;box-shadow:none!important}
+/* 27.11 08:21 – замечания Алины */
+/* галочка: градиент не повторяется под прозрачной рамкой (был «квадрат в квадрате») */
+html body input[type=checkbox]:checked:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background-origin:border-box!important;background-clip:border-box!important;background-repeat:no-repeat!important}
+/* бирюзовая кнопка внутри поля («Найти», «Отправить» помощника) – без внешней тени, она вылезала под поле */
+html body :is(form.search,form.gsearch,#ui .cmp) :is(button,.btn,.go,.button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important}
+/* счётчик − 1 +: при вводе числа – без тёмного квадрата; фокус – контур всего счётчика #006B79 */
+html body :is(.cart-stepper,#ui .qty) input:is(:focus,:focus-visible):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important;outline:0!important;border-color:transparent!important;background:transparent!important}
+html body :is(.cart-stepper,#ui .qty):focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6):not(#z7):not(#z8):not(#z9):not(#z10){border-color:#006B79!important}
+/* «Артикул для конструктора» – поле как все: контур #BCDDE2 */
+html body .tryon-code-row:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important;border-width:1px!important;border-radius:10px!important}
+html body .tryon-code-row:focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#006B79!important}
+/* выбранная карточка-вариант (адрес, «Как привезти», оплата, окна): заливка #EDF6F7 + контур 1 px #19CBD8 вместо толстой тёмной рамки; галочка #006B79 */
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EDF6F7!important;border-width:1px!important;border-style:solid!important;border-color:#19CBD8!important;box-shadow:none!important}
+html body .shop :is(#saved-addrs,.pay-options) .pay-option:has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){padding:16px!important}
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):not(:has(input:checked)):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+/* статус заказа (Отменён, Оплачен…) – блок-сообщение */
+html body .ord-card.ord-status:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EEF5F6!important;border-color:#EEF5F6!important;box-shadow:none!important}
+/* «Ничего не нашлось» в поиске конструктора – блок-сообщение */
+html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!important;padding:24px!important;border-radius:16px!important;background:#EEF5F6!important;color:#152A4B!important;font-size:16px!important;line-height:24px!important}
+/* аудит 27.11: старая рамка #DCE4E2 и тёмно-серая #566273 у карточек, панелей, меток – один контур #BCDDE2 (DS §0) */
+html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
 </body>
 </html>
@@ -27090,9 +27138,11 @@ html body :is(#ui .stages>.stg,#ui .sw>button,#ui .tabs>button,#ui .ro-w5-seg>bu
 html body #ui .ro-w5-seg>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important}
 /* на светлом поле холста (2D/3D) заливка не видна – там выбранный белый, как правило «белый на светлом» */
 html body #ui .sw>button[aria-pressed=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#FFFFFF!important;box-shadow:0 1px 2px rgba(21,42,75,.1)!important}
-/* вкладки панели «Параметры / ИИ-помощник» – на всю ширину, сегменты поровну */
-html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
-html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 0!important;min-width:0!important;padding:0 12px!important}
+/* этапы и вкладки панели занимают прежние 48 по высоте (сегмент 40 по центру) – иначе на «Смете» вся страница прыгала на 4–8 px */
+html body :is(#ui .stages,#ui .tabs):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){min-height:48px!important;height:48px!important;align-items:center!important}
+/* вкладки панели «Параметры / ИИ-помощник» – по ширине слова, отступ 12 с обеих сторон (Алина 27.11: заливка должна ровно обнимать слово) */
+html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important;justify-content:flex-start!important}
+html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:0 0 auto!important;min-width:0!important;padding:0 12px!important}
 @media (max-width:767px){
 html body #ui .stages:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
 html body #ui .stages>.stg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important;min-width:0!important;padding:0 8px!important;font-size:14px!important;line-height:20px!important}
@@ -27105,6 +27155,28 @@ html body :is(#ui .empty,#ui .gate,.status-panel,.shop .cart-empty,#transaction 
 html body :is(#ui .gate .note,#ui .gate .ro-gwarn,.cart-empty-icon):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#fff!important}
 /* Поля: ошибка сильнее общего контура W4-4 (W3, 26.11 23:00) – 1 px #A32637 */
 html body :is(input,select,textarea,.field,.room-trigger,.dd-trigger)[aria-invalid=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#A32637!important;box-shadow:none!important}
+/* 27.11 08:21 – замечания Алины */
+/* галочка: градиент не повторяется под прозрачной рамкой (был «квадрат в квадрате») */
+html body input[type=checkbox]:checked:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background-origin:border-box!important;background-clip:border-box!important;background-repeat:no-repeat!important}
+/* бирюзовая кнопка внутри поля («Найти», «Отправить» помощника) – без внешней тени, она вылезала под поле */
+html body :is(form.search,form.gsearch,#ui .cmp) :is(button,.btn,.go,.button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important}
+/* счётчик − 1 +: при вводе числа – без тёмного квадрата; фокус – контур всего счётчика #006B79 */
+html body :is(.cart-stepper,#ui .qty) input:is(:focus,:focus-visible):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important;outline:0!important;border-color:transparent!important;background:transparent!important}
+html body :is(.cart-stepper,#ui .qty):focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6):not(#z7):not(#z8):not(#z9):not(#z10){border-color:#006B79!important}
+/* «Артикул для конструктора» – поле как все: контур #BCDDE2 */
+html body .tryon-code-row:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important;border-width:1px!important;border-radius:10px!important}
+html body .tryon-code-row:focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#006B79!important}
+/* выбранная карточка-вариант (адрес, «Как привезти», оплата, окна): заливка #EDF6F7 + контур 1 px #19CBD8 вместо толстой тёмной рамки; галочка #006B79 */
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EDF6F7!important;border-width:1px!important;border-style:solid!important;border-color:#19CBD8!important;box-shadow:none!important}
+html body .shop :is(#saved-addrs,.pay-options) .pay-option:has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){padding:16px!important}
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):not(:has(input:checked)):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+/* статус заказа (Отменён, Оплачен…) – блок-сообщение */
+html body .ord-card.ord-status:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EEF5F6!important;border-color:#EEF5F6!important;box-shadow:none!important}
+/* «Ничего не нашлось» в поиске конструктора – блок-сообщение */
+html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!important;padding:24px!important;border-radius:16px!important;background:#EEF5F6!important;color:#152A4B!important;font-size:16px!important;line-height:24px!important}
+/* аудит 27.11: старая рамка #DCE4E2 и тёмно-серая #566273 у карточек, панелей, меток – один контур #BCDDE2 (DS §0) */
+html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
@@ -31929,9 +32001,11 @@ html body :is(#ui .stages>.stg,#ui .sw>button,#ui .tabs>button,#ui .ro-w5-seg>bu
 html body #ui .ro-w5-seg>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important}
 /* на светлом поле холста (2D/3D) заливка не видна – там выбранный белый, как правило «белый на светлом» */
 html body #ui .sw>button[aria-pressed=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#FFFFFF!important;box-shadow:0 1px 2px rgba(21,42,75,.1)!important}
-/* вкладки панели «Параметры / ИИ-помощник» – на всю ширину, сегменты поровну */
-html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
-html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 0!important;min-width:0!important;padding:0 12px!important}
+/* этапы и вкладки панели занимают прежние 48 по высоте (сегмент 40 по центру) – иначе на «Смете» вся страница прыгала на 4–8 px */
+html body :is(#ui .stages,#ui .tabs):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){min-height:48px!important;height:48px!important;align-items:center!important}
+/* вкладки панели «Параметры / ИИ-помощник» – по ширине слова, отступ 12 с обеих сторон (Алина 27.11: заливка должна ровно обнимать слово) */
+html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important;justify-content:flex-start!important}
+html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:0 0 auto!important;min-width:0!important;padding:0 12px!important}
 @media (max-width:767px){
 html body #ui .stages:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
 html body #ui .stages>.stg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important;min-width:0!important;padding:0 8px!important;font-size:14px!important;line-height:20px!important}
@@ -31944,6 +32018,28 @@ html body :is(#ui .empty,#ui .gate,.status-panel,.shop .cart-empty,#transaction 
 html body :is(#ui .gate .note,#ui .gate .ro-gwarn,.cart-empty-icon):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#fff!important}
 /* Поля: ошибка сильнее общего контура W4-4 (W3, 26.11 23:00) – 1 px #A32637 */
 html body :is(input,select,textarea,.field,.room-trigger,.dd-trigger)[aria-invalid=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#A32637!important;box-shadow:none!important}
+/* 27.11 08:21 – замечания Алины */
+/* галочка: градиент не повторяется под прозрачной рамкой (был «квадрат в квадрате») */
+html body input[type=checkbox]:checked:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background-origin:border-box!important;background-clip:border-box!important;background-repeat:no-repeat!important}
+/* бирюзовая кнопка внутри поля («Найти», «Отправить» помощника) – без внешней тени, она вылезала под поле */
+html body :is(form.search,form.gsearch,#ui .cmp) :is(button,.btn,.go,.button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important}
+/* счётчик − 1 +: при вводе числа – без тёмного квадрата; фокус – контур всего счётчика #006B79 */
+html body :is(.cart-stepper,#ui .qty) input:is(:focus,:focus-visible):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important;outline:0!important;border-color:transparent!important;background:transparent!important}
+html body :is(.cart-stepper,#ui .qty):focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6):not(#z7):not(#z8):not(#z9):not(#z10){border-color:#006B79!important}
+/* «Артикул для конструктора» – поле как все: контур #BCDDE2 */
+html body .tryon-code-row:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important;border-width:1px!important;border-radius:10px!important}
+html body .tryon-code-row:focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#006B79!important}
+/* выбранная карточка-вариант (адрес, «Как привезти», оплата, окна): заливка #EDF6F7 + контур 1 px #19CBD8 вместо толстой тёмной рамки; галочка #006B79 */
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EDF6F7!important;border-width:1px!important;border-style:solid!important;border-color:#19CBD8!important;box-shadow:none!important}
+html body .shop :is(#saved-addrs,.pay-options) .pay-option:has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){padding:16px!important}
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):not(:has(input:checked)):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+/* статус заказа (Отменён, Оплачен…) – блок-сообщение */
+html body .ord-card.ord-status:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EEF5F6!important;border-color:#EEF5F6!important;box-shadow:none!important}
+/* «Ничего не нашлось» в поиске конструктора – блок-сообщение */
+html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!important;padding:24px!important;border-radius:16px!important;background:#EEF5F6!important;color:#152A4B!important;font-size:16px!important;line-height:24px!important}
+/* аудит 27.11: старая рамка #DCE4E2 и тёмно-серая #566273 у карточек, панелей, меток – один контур #BCDDE2 (DS §0) */
+html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
 </body>
 </html>
@@ -33724,9 +33820,11 @@ html body :is(#ui .stages>.stg,#ui .sw>button,#ui .tabs>button,#ui .ro-w5-seg>bu
 html body #ui .ro-w5-seg>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important}
 /* на светлом поле холста (2D/3D) заливка не видна – там выбранный белый, как правило «белый на светлом» */
 html body #ui .sw>button[aria-pressed=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#FFFFFF!important;box-shadow:0 1px 2px rgba(21,42,75,.1)!important}
-/* вкладки панели «Параметры / ИИ-помощник» – на всю ширину, сегменты поровну */
-html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
-html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 0!important;min-width:0!important;padding:0 12px!important}
+/* этапы и вкладки панели занимают прежние 48 по высоте (сегмент 40 по центру) – иначе на «Смете» вся страница прыгала на 4–8 px */
+html body :is(#ui .stages,#ui .tabs):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){min-height:48px!important;height:48px!important;align-items:center!important}
+/* вкладки панели «Параметры / ИИ-помощник» – по ширине слова, отступ 12 с обеих сторон (Алина 27.11: заливка должна ровно обнимать слово) */
+html body #ui .tabs:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important;justify-content:flex-start!important}
+html body #ui .tabs>button:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:0 0 auto!important;min-width:0!important;padding:0 12px!important}
 @media (max-width:767px){
 html body #ui .stages:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){display:flex!important;width:100%!important}
 html body #ui .stages>.stg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){flex:1 1 auto!important;min-width:0!important;padding:0 8px!important;font-size:14px!important;line-height:20px!important}
@@ -33739,6 +33837,28 @@ html body :is(#ui .empty,#ui .gate,.status-panel,.shop .cart-empty,#transaction 
 html body :is(#ui .gate .note,#ui .gate .ro-gwarn,.cart-empty-icon):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#fff!important}
 /* Поля: ошибка сильнее общего контура W4-4 (W3, 26.11 23:00) – 1 px #A32637 */
 html body :is(input,select,textarea,.field,.room-trigger,.dd-trigger)[aria-invalid=true]:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#A32637!important;box-shadow:none!important}
+/* 27.11 08:21 – замечания Алины */
+/* галочка: градиент не повторяется под прозрачной рамкой (был «квадрат в квадрате») */
+html body input[type=checkbox]:checked:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background-origin:border-box!important;background-clip:border-box!important;background-repeat:no-repeat!important}
+/* бирюзовая кнопка внутри поля («Найти», «Отправить» помощника) – без внешней тени, она вылезала под поле */
+html body :is(form.search,form.gsearch,#ui .cmp) :is(button,.btn,.go,.button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important}
+/* счётчик − 1 +: при вводе числа – без тёмного квадрата; фокус – контур всего счётчика #006B79 */
+html body :is(.cart-stepper,#ui .qty) input:is(:focus,:focus-visible):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){box-shadow:none!important;outline:0!important;border-color:transparent!important;background:transparent!important}
+html body :is(.cart-stepper,#ui .qty):focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6):not(#z7):not(#z8):not(#z9):not(#z10){border-color:#006B79!important}
+/* «Артикул для конструктора» – поле как все: контур #BCDDE2 */
+html body .tryon-code-row:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important;border-width:1px!important;border-radius:10px!important}
+html body .tryon-code-row:focus-within:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#006B79!important}
+/* выбранная карточка-вариант (адрес, «Как привезти», оплата, окна): заливка #EDF6F7 + контур 1 px #19CBD8 вместо толстой тёмной рамки; галочка #006B79 */
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EDF6F7!important;border-width:1px!important;border-style:solid!important;border-color:#19CBD8!important;box-shadow:none!important}
+html body .shop :is(#saved-addrs,.pay-options) .pay-option:has(input:checked):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){padding:16px!important}
+html body .shop :is(.pay-option,.delivery-choice,.win-opt):not(:has(input:checked)):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+/* статус заказа (Отменён, Оплачен…) – блок-сообщение */
+html body .ord-card.ord-status:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){background:#EEF5F6!important;border-color:#EEF5F6!important;box-shadow:none!important}
+/* «Ничего не нашлось» в поиске конструктора – блок-сообщение */
+html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!important;padding:24px!important;border-radius:16px!important;background:#EEF5F6!important;color:#152A4B!important;font-size:16px!important;line-height:24px!important}
+/* аудит 27.11: старая рамка #DCE4E2 и тёмно-серая #566273 у карточек, панелей, меток – один контур #BCDDE2 (DS §0) */
+html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
+html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
 </body></html></script>
 

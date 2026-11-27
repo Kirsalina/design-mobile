@@ -8847,7 +8847,7 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
 <style id="ro-w2-home-css">
-/* W2 v15 (27.11): блок главной «Готовые интерьеры» – свой hero (Алина 07:41: как «Примерьте отделку до покупки», ниже ростом). Стиль «Смесь 2»: фон #EEF5F6, r16. */
+/* W2 v16 (27.11): блок главной «Готовые интерьеры» – свой hero (Алина 07:41: как «Примерьте отделку до покупки», ниже ростом). Стиль «Смесь 2»: фон #EEF5F6, r16. */
 #design-app .ro-w2-banner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:center;margin:24px 0 0;padding:40px;border-radius:16px;background:#EEF5F6}
 #design-app .ro-w2-hcopy{min-width:0}
 #design-app .ro-w2-heyebrow{display:inline-block;font-size:14px;line-height:21px;font-weight:600;color:#006B79;letter-spacing:.02em}
@@ -8907,6 +8907,20 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
 @media (max-width:700px){
  #design-app .ro-w2-hnav{top:12px;right:12px;bottom:auto}
  #design-app .ro-w2-hcard{max-width:none}}
+
+/* 27.11 15:56: тег «Популярное», плавная смена слайда */
+#design-app .ro-w2-htag{align-self:flex-start;margin-bottom:4px;padding:2px 10px;border-radius:999px;background:linear-gradient(180deg,#22D2DE,#13B4D3);color:#fff;font-size:12px;line-height:18px;font-weight:700}
+#design-app .ro-w2-hslide{position:relative;display:grid}
+#design-app .ro-w2-hslide>.ro-w2-hshow{grid-area:1/1;transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .4s ease}
+#design-app .ro-w2-hslide>.from-r{transform:translateX(40px);opacity:0}
+#design-app .ro-w2-hslide>.from-l{transform:translateX(-40px);opacity:0}
+#design-app .ro-w2-hslide>.is-gone{pointer-events:none}
+#design-app .ro-w2-hslide>.to-l{transform:translateX(-40px);opacity:0}
+#design-app .ro-w2-hslide>.to-r{transform:translateX(40px);opacity:0}
+#design-app .ro-w2-hshow{height:360px}
+@media (max-width:1100px){#design-app .ro-w2-hshow{height:320px}}
+@media (max-width:700px){#design-app .ro-w2-hshow{height:auto}}
+@media (prefers-reduced-motion:reduce){#design-app .ro-w2-hslide>.ro-w2-hshow{transition:none}}
 </style>
 <script id="ro-w2-home">
 (function(){
@@ -8923,21 +8937,32 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
  var POP={"Гостиная": "Популярная гостиная", "Кухня": "Популярная кухня", "Спальня": "Популярная спальня", "Ванная": "Популярная ванная"};
  var chev='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m9 6 6 6-6 6"/></svg>';
  function show(i){var d=F[i];return '<a class="ro-w2-hshow" href="#" data-w2-path="/design/'+d.id+'" aria-label="'+esc(d.n)+', '+rub(d.t)+' за все материалы"><img src="'+d.i+'" alt="" loading="lazy">'+
-  '<span class="ro-w2-hcard"><span class="ro-w2-hroom">'+esc(POP[d.f]||d.f)+', '+num(d.a)+'\u00A0м²</span><b>'+esc(d.n)+'</b>'+
+  '<span class="ro-w2-hcard"><span class="ro-w2-htag">Популярное</span><span class="ro-w2-hroom">'+esc(d.f)+', '+num(d.a)+'\u00A0м²</span><b>'+esc(d.n)+'</b>'+
   '<span class="ro-w2-hprice"><strong>'+rub(d.t)+'</strong> за все материалы</span></span></a>'}
  function html(){return '<div class="ro-w2-hcopy"><span class="ro-w2-heyebrow">Готовые интерьеры</span><h2 id="ro-w2-bt">Ремонт как с картинки\u00A0–<br>в\u00A0вашей квартире</h2>'+
-  '<p class="ro-w2-hlead">Стильные интерьеры, где стены, пол и потолок уже подобраны друг к другу. Примерьте понравившийся на свою квартиру – мы рассчитаем количество, учтём клей и грунтовку и составим смету.</p>'+
-  '<ul class="ro-w2-hlist"><li>'+check+'Типовые планировки домов Тольятти уже в базе</li><li>'+check+'Размеры подскажет ИИ-помощник</li><li>'+check+'Смета со всеми материалами – сразу</li></ul>'+
+  '<p class="ro-w2-hlead">Выберите интерьер, который нравится, и примерьте его на свою квартиру. Сколько и каких материалов нужно – посчитаем сами.</p>'+
+  '<ul class="ro-w2-hlist"><li>'+check+'Планировка вашего дома уже в базе</li><li>'+check+'Размерами займётся ИИ-помощник</li><li>'+check+'Готовая смета – за пару минут</li></ul>'+
   '<div class="ro-w2-hact"><a href="#" data-w2-path="/designs" class="v-btn v-theme--desiign bg-primary v-btn--density-default elevation-0 rounded-lg v-btn--size-default v-btn--variant-flat button"><span class="v-btn__overlay"></span><span class="v-btn__underlay"></span><span class="v-btn__content">Смотреть интерьеры '+arrow+'</span></a></div></div>'+
   '<div class="ro-w2-hvis" role="region" aria-roledescription="карусель" aria-label="Популярные интерьеры"><div class="ro-w2-hslide" aria-live="polite">'+show(cur)+'</div>'+
   '<div class="ro-w2-hnav"><button type="button" class="ro-w2-harr is-prev" data-w2-step="-1" aria-label="Предыдущий интерьер">'+chev+'</button><span class="ro-w2-hpos">'+(cur+1)+' / '+F.length+'</span><button type="button" class="ro-w2-harr" data-w2-step="1" aria-label="Следующий интерьер">'+chev+'</button></div></div>'}
+ /* аккуратная смена слайда: старый уезжает и гаснет, новый приезжает с другой стороны (без анимации при «уменьшить движение») */
+ function slide(b,dir){var box=b.querySelector('.ro-w2-hslide'),old=box.firstElementChild,red=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  b.querySelector('.ro-w2-hpos').textContent=(cur+1)+' / '+F.length;
+  var t=document.createElement('div');t.innerHTML=show(cur);var nw=t.firstElementChild;
+  [].slice.call(box.querySelectorAll('.is-gone')).forEach(function(x){x.remove()});old=box.firstElementChild;
+  if(red||!old){box.innerHTML='';box.appendChild(nw);return}
+  nw.classList.add(dir>0?'from-r':'from-l');old.classList.add('is-gone',dir>0?'to-l':'to-r');box.appendChild(nw);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){nw.classList.remove('from-r','from-l')})});
+  setTimeout(function(){if(old.parentNode)old.remove()},420)}
+ var sx=null;document.addEventListener('touchstart',function(e){if(e.target.closest&&e.target.closest('.ro-w2-hslide'))sx=e.touches[0].clientX},{passive:true});
+ document.addEventListener('touchend',function(e){if(sx==null)return;var dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)<50)return;var b=e.target.closest&&e.target.closest('.ro-w2-banner');if(!b)return;var dir=dx<0?1:-1;cur=(cur+dir+F.length)%F.length;slide(b,dir)},{passive:true});
  function put(){var h=[].slice.call(document.querySelectorAll('#design-app .founder-hero')).find(function(x){return x.getClientRects().length});if(!h)return;
   var after=h.nextElementSibling&&h.nextElementSibling.classList.contains('project-area')?h.nextElementSibling:h;
   if(after.nextElementSibling&&after.nextElementSibling.classList.contains('ro-w2-banner'))return;
   var s=document.createElement('section');s.className='ro-w2-banner';s.setAttribute('aria-labelledby','ro-w2-bt');s.innerHTML=html();after.after(s)}
  new MutationObserver(put).observe(document.documentElement,{childList:true,subtree:true});put();
  document.addEventListener('click',function(e){var t=e.target.closest&&e.target.closest('.ro-w2-banner [data-w2-step]');
-  if(t){cur=(cur+(+t.getAttribute('data-w2-step'))+F.length)%F.length;var b=t.closest('.ro-w2-banner');b.querySelector('.ro-w2-hslide').innerHTML=show(cur);b.querySelector('.ro-w2-hpos').textContent=(cur+1)+' / '+F.length;return}
+  if(t){var dir=+t.getAttribute('data-w2-step');cur=(cur+dir+F.length)%F.length;var b=t.closest('.ro-w2-banner');slide(b,dir);return}
   var a=e.target.closest&&e.target.closest('.ro-w2-banner [data-w2-path]');if(!a)return;e.preventDefault();e.stopImmediatePropagation();
   try{parent.postMessage({ro:1,type:'nav',path:a.getAttribute('data-w2-path')},'*')}catch(x){}},true);
 })();
@@ -17990,6 +18015,80 @@ html body #ro-w2>.catalog-location{margin-top:24px!important}
 #detail .ro-w2-gal .gallery-thumb{border:1px solid #BCDDE2!important;border-radius:10px!important;box-shadow:none!important}
 #detail .ro-w2-gal .gallery-thumb[aria-current=true]{border:2px solid #19CBD8!important;box-shadow:none!important;outline:0!important}
 @media (hover:hover){#detail .ro-w2-gal .gallery-thumb:hover{border-color:#7FB9C2!important}}
+/* ===== 27.11 15:56 ===== */
+/* карточки интерьеров: без резерва второй строки под название (у W4 – 2 строки во всех карточках) */
+html body .shop .card.ro-w2-card .card-head h3:not(#ro-w2-a):not(#ro-w2-b):not(#ro-w2-c){min-height:0!important}
+/* раздел: баннер ниже, шаги внутри баннера */
+#ro-w2 .ro-w2-hero{padding:32px 40px}
+#ro-w2 .ro-w2-hero h1{font-size:36px;line-height:44px}
+#ro-w2 .ro-w2-mosaic{height:280px}
+#ro-w2 .ro-w2-hsteps{list-style:none;counter-reset:h;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+#ro-w2 .ro-w2-hsteps li{counter-increment:h;display:flex;align-items:center;gap:12px;font-size:16px;line-height:24px;color:#152A4B}
+#ro-w2 .ro-w2-hsteps li::before{content:counter(h);flex:none;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;background:linear-gradient(180deg,#22D2DE,#13B4D3)}
+/* популярное – карусель, ниже ростом */
+#ro-w2 .ro-w2-feat{transition:opacity .18s ease}
+#ro-w2 .ro-w2-feat.is-out{opacity:0}
+#ro-w2 .ro-w2-fimg2{min-height:340px;max-height:380px}
+#ro-w2 .ro-w2-fbody{padding:28px 32px;gap:6px}
+#ro-w2 .ro-w2-mlist{gap:6px;margin-top:8px}
+#ro-w2 .ro-w2-mlist a{display:flex;align-items:center;gap:12px;color:#152A4B;text-decoration:none;border-radius:10px}
+@media (hover:hover){#ro-w2 .ro-w2-mlist a:hover{color:#006B79}}
+#ro-w2 .ro-w2-mlist a:focus-visible{outline:1px solid #006B79;outline-offset:2px}
+#ro-w2 .ro-w2-mlist .ro-w2-sw{width:36px;height:36px}
+#ro-w2 .ro-w2-fbuy{padding-top:16px}
+#ro-w2 .ro-w2-fnav{display:flex;align-items:center;gap:4px;padding:4px;border:1px solid #BCDDE2;border-radius:999px;font-size:14px;line-height:21px;color:#566273;font-variant-numeric:tabular-nums}
+#ro-w2 .ro-w2-fnav span{min-width:40px;text-align:center}
+#ro-w2 .ro-w2-farr{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:0;border-radius:50%;background:transparent;color:#152A4B;cursor:pointer}
+#ro-w2 .ro-w2-farr svg{width:20px;height:20px}
+#ro-w2 .ro-w2-farr.is-prev svg{transform:rotate(180deg)}
+@media (hover:hover){#ro-w2 .ro-w2-farr:hover{background:#EEF5F6}}
+#ro-w2 .ro-w2-farr:focus-visible{outline:1px solid #006B79}
+/* интерьер: короче и плотнее */
+#detail .ro-w2-hint2{margin:0;font-size:14px;line-height:21px;color:#566273}
+#detail .ro-w2-about{margin-top:16px}
+#detail .detail-info a.ro-w2-row{grid-template-columns:48px minmax(0,1fr) auto;padding:10px 14px;gap:12px;align-items:center}
+#detail .ro-w2-rm{width:48px;height:48px}
+#detail .ro-w2-rn b{font-size:15px;line-height:22px}
+#detail .ro-w2-rn .meta,#detail .ro-w2-rq .meta{font-size:13px;line-height:19px}
+#detail .ro-w2-rq strong{font-size:15px;line-height:22px}
+#detail .ro-w2-grp{margin-top:10px}
+/* миниатюры галереи – без контура, выбранная яркая, остальные приглушены */
+#detail .ro-w2-gal .gallery-thumb{border:0!important;outline:0!important;box-shadow:none!important;border-radius:10px!important;opacity:.55;transition:opacity .15s ease}
+#detail .ro-w2-gal .gallery-thumb[aria-current=true]{border:0!important;opacity:1}
+@media (hover:hover){#detail .ro-w2-gal .gallery-thumb:hover{opacity:1}}
+#detail .ro-w2-gal .gallery-thumb:focus-visible{outline:1px solid #006B79!important;outline-offset:2px}
+/* увеличение фото */
+#detail .ro-w2-zoom{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in;position:relative}
+#detail .ro-w2-zi{position:absolute;right:12px;top:12px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid #BCDDE2;display:flex;align-items:center;justify-content:center;color:#152A4B}
+#detail .ro-w2-zi svg{width:20px;height:20px}
+#detail .ro-w2-zoom:focus-visible{outline:1px solid #006B79;outline-offset:2px}
+.ro-w2-lb{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:rgba(14,24,40,.94);color:#fff}
+.ro-w2-lb::backdrop{background:rgba(14,24,40,.6)}
+.ro-w2-lbbar{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;z-index:2}
+.ro-w2-lbpos{font-size:14px;line-height:21px;opacity:.85}
+.ro-w2-lbx{width:44px;height:44px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.ro-w2-lbst{position:absolute;inset:64px 72px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ro-w2-lbst img{max-width:100%;max-height:100%;object-fit:contain;cursor:zoom-in;transition:transform .25s ease;user-select:none}
+.ro-w2-lbst.is-big img{transform:scale(2);cursor:zoom-out}
+.ro-w2-lba{position:absolute;top:50%;left:16px;transform:translateY(-50%);width:48px;height:48px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ro-w2-lba:not(.is-prev){left:auto;right:16px}
+.ro-w2-lba svg{width:24px;height:24px}
+.ro-w2-lba.is-prev svg{transform:rotate(180deg)}
+.ro-w2-lbx:focus-visible,.ro-w2-lba:focus-visible{outline:1px solid #fff;outline-offset:2px}
+@media (max-width:700px){
+ #ro-w2 .ro-w2-hero{padding:24px 16px}
+ #ro-w2 .ro-w2-hero h1{font-size:28px;line-height:35px}
+ #ro-w2 .ro-w2-fimg2{min-height:0;max-height:none}
+ #ro-w2 .ro-w2-fbody{padding:20px 16px}
+ #ro-w2 .ro-w2-fbuy{flex-direction:row;align-items:center}
+ .ro-w2-lbst{inset:64px 0 72px}
+ .ro-w2-lba{top:auto;bottom:12px;transform:none}}
+@media (prefers-reduced-motion:reduce){#ro-w2 .ro-w2-feat,.ro-w2-lbst img,#detail .ro-w2-gal .gallery-thumb{transition:none}}
+#ro-w2 .ro-w2-mosaic{grid-template-rows:minmax(0,1fr) minmax(0,1fr);overflow:hidden}
+#ro-w2 .ro-w2-mosaic img{min-height:0}
+@media (max-width:700px){#ro-w2 .ro-w2-mosaic{grid-template-rows:auto;height:auto}}
+#ro-w2 .ro-w2-badge2{background:linear-gradient(180deg,#22D2DE,#13B4D3)!important;color:#fff!important;font-size:12px!important;line-height:18px!important;font-weight:700!important}
+.ro-w2-lb{background:#0E1828!important}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -18028,7 +18127,7 @@ html body #ro-w2>.catalog-location{margin-top:24px!important}
   ['ent-oak','entry','Прихожая «Дуб»',5.9,'1,7 × 3,5',2.7,['ent2','ent1'],[['Стены',22.1,[['OB-D06',5]]],['Пол',5.9,[['LM-201',3]]],['Потолок',5.9,[['NT-D02',5.9]]]]]
  ].map(function(r){return{id:r[0],folder:r[1],name:r[2],area:r[3],size:r[4],h:r[5],img:r[6],groups:r[7]}});
  /* Описание интерьера (Алина 26.11 15:53: «продать» интерьер; источник – админка, поле «Описание», D7) */
- var DESC={"liv-olive": "Глубокий оливковый на стенах и тёплый светлый дуб под ногами – сочетание из природной палитры, которое сейчас в тренде у скандинавских дизайнеров. Днём комната наполнена мягким светом, вечером становится уютной, как загородный дом. Белый матовый потолок не спорит со стенами и визуально поднимает комнату.", "liv-light": "Молочные обои с лёгким шёлковым блеском ловят свет из окна, а белёный дуб добавляет воздуха. Интерьер для тех, кто любит простор: даже небольшая комната выглядит больше. Хорошая база под любую мебель – от светлого дивана до тёмного дерева.", "liv-oak": "Спокойный серый на стенах и глубокий дымчатый дуб – приём современной классики: светлый верх и тёмный низ делают комнату собранной и уютной. Сатиновый потолок мягко отражает вечерний свет ламп.", "liv-graphite": "Графитовые стены и тёплый орех – смелый контраст для солнечной стороны. Тёмный цвет делает гостиную камерной и дорогой на вид, а светлый потолок оставляет её лёгкой.", "kit-white": "Белая плитка с белой затиркой и пол под светлый известняк – чистая кухня в духе скандинавского минимализма. Светлые поверхности отражают свет, поэтому кухня кажется больше, а по светлой плитке легко ухаживать.", "kit-sage": "Плитка цвета шалфея и стены в тон – один из самых модных оттенков последних сезонов. Пол под светлый бетон добавляет современности, а зелёный успокаивает и хорошо смотрится с деревом и белым.", "kit-stone": "Плитка под песчаник и пол под серый сланец дают кухне фактуру натурального камня – тепло и надёжно. Белые стены держат баланс, чтобы камень не утяжелял комнату.", "bed-calm": "Песочные обои и тёплый дуб – мягкая палитра, в которой глазу не за что зацепиться перед сном. Спальня в духе японди: тихо, тепло, ничего лишнего.", "bed-canvas": "Обои с фактурой холста и светлый ясень – лёгкая спальня в скандинавском духе. Фактура стен видна при боковом свете и добавляет уюта без рисунка.", "kid-mint": "Мятные стены успокаивают, а практичный пол под дерево не боится игр и машинок. Детская, которая будет нравиться и в 5, и в 12 лет.", "kid-sky": "Небесно-синие стены и светлый дуб – яркая, но не утомляющая детская. Жемчужный потолок мягко рассеивает свет, комната выглядит выше.", "bath-stone": "Светлая плитка «Соль» и пол под сланец – ванная в светлом камне, где не видны капли и разводы. Сдержанная палитра, которая не надоест через пару лет.", "bath-sand": "Тёплый песчаник на стенах и известняк на полу – ванная, похожая на спа. Бежевые тона делают маленькую комнату уютной, а не тесной.", "ent-light": "Белые стены и медовый дуб – прихожая, которая встречает теплом и визуально становится больше. Светлый пол не так заметно пачкается, как кажется.", "ent-oak": "Льняные обои и натуральный дуб – уютная прихожая с природной фактурой. Лён прощает мелкие следы, дуб – классика, которая не устареет."};
+ var DESC={"liv-olive": "Глубокий оливковый на стенах и тёплый светлый дуб – природная палитра, которая сейчас в тренде. Днём комната полна мягкого света, вечером уютна, как загородный дом.", "liv-light": "Молочные обои с лёгким шёлковым блеском и белёный дуб – максимум света и воздуха. Даже небольшая комната выглядит просторной, а мебель подойдёт любая.", "liv-oak": "Спокойный серый на стенах и глубокий дымчатый дуб – приём современной классики. Светлый верх и тёмный низ делают гостиную собранной и уютной.", "liv-graphite": "Графитовые стены и тёплый орех – смелый контраст для солнечной стороны. Тёмный цвет делает комнату камерной, а светлый потолок оставляет её лёгкой.", "kit-white": "Белая плитка с белой затиркой и пол под светлый известняк – кухня в духе скандинавского минимализма. Светлые поверхности отражают свет и легко моются.", "kit-sage": "Плитка цвета шалфея и стены в тон – один из самых модных оттенков сезона. Пол под светлый бетон добавляет современности, зелёный успокаивает.", "kit-stone": "Плитка под песчаник и пол под серый сланец – кухня с фактурой натурального камня. Белые стены держат баланс, чтобы камень не утяжелял комнату.", "bed-calm": "Песочные обои и тёплый дуб – мягкая палитра, где глазу не за что зацепиться перед сном. Спальня в духе японди: тихо, тепло, ничего лишнего.", "bed-canvas": "Обои с фактурой холста и светлый ясень – лёгкая спальня в скандинавском духе. Фактура видна при боковом свете и добавляет уюта без рисунка.", "kid-mint": "Мятные стены успокаивают, а практичный пол под дерево не боится игр и машинок. Детская, которая будет нравиться и в 5, и в 12 лет.", "kid-sky": "Небесно-синие стены и светлый дуб – яркая, но не утомляющая детская. Жемчужный потолок мягко рассеивает свет, и комната кажется выше.", "bath-stone": "Светлая плитка «Соль» и пол под сланец – ванная в светлом камне, где не видны капли и разводы. Сдержанная палитра, которая не надоест.", "bath-sand": "Тёплый песчаник на стенах и известняк на полу – ванная, похожая на спа. Бежевые тона делают маленькую комнату уютной, а не тесной.", "ent-light": "Белые стены и медовый дуб – прихожая, которая встречает теплом и кажется больше. Светлый пол пачкается заметно меньше, чем кажется.", "ent-oak": "Льняные обои и натуральный дуб – уютная прихожая с природной фактурой. Лён прощает мелкие следы, а дуб не выйдет из моды."};
  function sum(d){var s=0;d.groups.forEach(function(g){g[2].forEach(function(x){var p=P(x[0]);if(p)s+=Math.round(p.price*x[1])})});return s}
  /* Вспомогательные (Алина 25.11 22:25): в цене интерьера – отделка + «Нужно для …», «Рекомендуем» отдельно (A2).
     Комплекты KIT и замены ALT – копия из ro-kit-cat каталога (логика C7, владелец W1), считаются так же: area – по площади поверхности ×1,1, perim – по периметру комнаты. */
@@ -18072,27 +18171,34 @@ html body #ro-w2>.catalog-location{margin-top:24px!important}
    swatches(d)+
    '<div class="card-bottom"><p class="offer-price"><strong class="price">'+rub(s)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p></div></div></article>'}
  var PLURAL={living:'Гостиные',kitchen:'Кухни',bed:'Спальни',kids:'Детские',bath:'Ванные',entry:'Прихожие'};
+ var POPS=['liv-olive','kit-white','bed-calm','bath-stone']; /* «Популярное» – по одному на комнату, отметка в админке (D7) */
+ function feat(id,n){var F=D.filter(function(d){return d.id===id})[0];if(!F)return '';var first=(DESC[F.id]||'').split('. ')[0];
+  return '<a class="ro-w2-fimg2" href="#design='+F.id+'" data-route tabindex="-1" aria-hidden="true"><img src="'+img(F.img[0])+'" alt="" loading="lazy"></a>'+
+   '<div class="ro-w2-fbody"><span class="ro-w2-badge2">Популярное</span><h2 id="ro-w2-ft"><a href="#design='+F.id+'" data-route>'+esc(F.name)+'</a></h2><p class="meta">'+esc(folderName(F.folder))+', '+nb(num(F.area)+' м²')+'</p>'+
+   (first?'<p class="ro-w2-fdesc">'+esc(first.replace(/\.$/,''))+'.</p>':'')+
+   '<ul class="ro-w2-mlist">'+mats(F).map(function(m){return '<li><a href="#product='+m.p.sku+'" data-route><span class="ro-w2-sw">'+productVisual(m.p)+'</span><span><b>'+esc(m.s)+'</b> '+esc(m.p.name)+'</span></a></li>'}).join('')+'</ul>'+
+   '<div class="ro-w2-fbuy"><p class="offer-price"><strong class="price">'+rub(total(F))+'</strong><span class="price-note">за материалы на '+nb(num(F.area)+' м²')+'</span></p>'+
+   '<div class="ro-w2-fnav"><button type="button" class="ro-w2-farr is-prev" data-w2-pop="-1" aria-label="Предыдущий интерьер">'+icon('right')+'</button><span>'+(n+1)+' / '+POPS.length+'</span><button type="button" class="ro-w2-farr" data-w2-pop="1" aria-label="Следующий интерьер">'+icon('right')+'</button></div></div></div>'}
+ var popI=0;
  var PICK='liv-olive'; /* «Популярное» – в админке отметка (D7) */
  function drawHome(){var F=D.filter(function(d){return d.id===PICK})[0]||D[0];
   var hero=['liv-olive','bath-stone','kit-stone'].map(function(id){var d=D.filter(function(x){return x.id===id})[0];return d?img(d.img[0]):''});
   page.innerHTML=loc('','')+
    '<div class="ro-w2-hero"><div class="ro-w2-hcopy"><h1 id="ro-w2-t" tabindex="-1">Готовые интерьеры</h1>'+
-    '<p class="ro-w2-lead">Стильные интерьеры для любой комнаты, где стены, пол и потолок уже подобраны друг к другу. Примерьте понравившийся на свою квартиру – количество и смету рассчитаем сами.</p>'+
+    '<p class="ro-w2-lead">Выберите понравившийся и примерьте на свою квартиру – материалы и смету посчитаем сами.</p>'+
+    '<ol class="ro-w2-hsteps"><li>Выберите интерьер</li><li>Примерьте на свою квартиру</li><li>Получите смету и оформите заказ</li></ol>'+
     '</div>'+
     '<div class="ro-w2-mosaic" aria-hidden="true">'+hero.map(function(src,i){return '<img class="m'+i+'" src="'+src+'" alt="" loading="'+(i?'lazy':'eager')+'">'}).join('')+'</div></div>'+
-   '<section class="ro-w2-feat" aria-labelledby="ro-w2-ft"><a class="ro-w2-fimg2" href="#design='+F.id+'" data-route tabindex="-1" aria-hidden="true"><img src="'+img(F.img[0])+'" alt="" loading="lazy"></a>'+
-    '<div class="ro-w2-fbody"><span class="ro-w2-badge2">Популярное</span><h2 id="ro-w2-ft"><a href="#design='+F.id+'" data-route>'+esc(F.name)+'</a></h2><p class="meta">'+esc(folderName(F.folder))+', '+sizeLine(F)+'</p>'+
-    (DESC[F.id]?'<p class="ro-w2-fdesc">'+esc(DESC[F.id])+'</p>':'')+
-    '<ul class="ro-w2-mlist">'+mats(F).map(function(m){return '<li><span class="ro-w2-sw">'+productVisual(m.p)+'</span><span><b>'+esc(m.s)+'</b> '+esc(m.p.name)+'</span></li>'}).join('')+'</ul>'+
-    '<div class="ro-w2-fbuy"><p class="offer-price"><strong class="price">'+rub(total(F))+'</strong><span class="price-note">за материалы на '+nb(num(F.area)+' м²')+'</span></p><a class="button" href="#design='+F.id+'" data-route>Смотреть интерьер</a></div></div></section>'+
-   '<ol class="ro-w2-steps" aria-label="Как это работает">'+
-    '<li><b>Выберите интерьер</b><span>Стены, пол и потолок уже подобраны друг к другу.</span></li>'+
-    '<li><b>Примерьте на свою квартиру</b><span>Найдите свою типовую планировку или нарисуйте комнату. Размеры подскажет ИИ-помощник.</span></li>'+
-    '<li><b>Оформите заказ</b><span>Мы рассчитаем количество всех материалов – вместе с клеем и грунтовкой – и составим смету.</span></li></ol>'+
+   '<section class="ro-w2-feat" aria-roledescription="карусель" aria-label="Популярные интерьеры">'+feat(POPS[0],0)+'</section>'+
+
+
    FOLDERS.map(function(f){var L=inFolder(f[0]);if(!L.length)return '';
     return '<section class="ro-w2-sec" id="ro-w2-s-'+f[0]+'" aria-labelledby="ro-w2-h-'+f[0]+'"><div class="ro-w2-shead"><h2 id="ro-w2-h-'+f[0]+'">'+esc(PLURAL[f[0]])+'</h2>'+
      '<a class="ro-w2-all" href="#designs='+f[0]+'" data-route>Все '+esc(PLURAL[f[0]].toLowerCase())+icon('right')+'</a></div>'+
      '<div class="product-grid ro-w2-grid">'+L.slice(0,4).map(card).join('')+'</div></section>'}).join('');
+  var fs=page.querySelector('.ro-w2-feat');popI=0;
+  fs.addEventListener('click',function(e){var b=e.target.closest('[data-w2-pop]');if(!b)return;popI=(popI+(+b.getAttribute('data-w2-pop'))+POPS.length)%POPS.length;
+   var red=matchMedia('(prefers-reduced-motion: reduce)').matches;fs.classList.add('is-out');setTimeout(function(){fs.innerHTML=feat(POPS[popI],popI);fs.classList.remove('is-out');var nb2=fs.querySelector('[data-w2-pop="'+b.getAttribute('data-w2-pop')+'"]');if(nb2)nb2.focus()},red?0:180)});
  }
  function drawFolder(k){var L=inFolder(k),n=folderName(k);
   page.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<span aria-current="page">'+esc(n)+'</span>','designs=1')+
@@ -18100,18 +18206,32 @@ html body #ro-w2>.catalog-location{margin-top:24px!important}
    '<div class="product-grid ro-w2-grid">'+L.map(card).join('')+'</div>';
  }
  function rowHTML(p,q,sumv){var out=p.availability==='out';return '<a class="ro-w2-row'+(out?' is-out':'')+'" href="#product='+p.sku+'" data-route><span class="ro-w2-rm" aria-hidden="true">'+productVisual(p)+'</span><span class="ro-w2-rn"><b>'+esc(p.name)+'</b><span class="meta">'+esc([p.variant,p.pack].filter(Boolean).join(', '))+', <span class="nw">'+p.sku+'</span></span>'+(out?'<span class="row-badge ro-w2-badge">Нет в наличии</span>':'')+'</span><span class="ro-w2-rq"><strong>'+rub(sumv)+'</strong><span class="meta">'+qtyText(p,q)+'</span></span></a>'}
+ /* Увеличение фото интерьера (Алина 27.11): на весь экран, стрелки / свайп / клавиши, Esc и × закрывают, повторный клик по фото – приближение ×2 */
+ function zoom(d,start){var k=start||0,big=false,prevFocus=document.activeElement;
+  var dl=document.createElement('dialog');dl.className='ro-w2-lb';dl.setAttribute('aria-label','Фото интерьера «'+d.name+'»');
+  dl.innerHTML='<div class="ro-w2-lbbar"><span class="ro-w2-lbpos"></span><button type="button" class="ro-w2-lbx" aria-label="Закрыть">×</button></div><div class="ro-w2-lbst"><img alt="" draggable="false"></div>'+
+   (d.img.length>1?'<button type="button" class="ro-w2-lba is-prev" aria-label="Предыдущее фото">'+icon('right')+'</button><button type="button" class="ro-w2-lba" aria-label="Следующее фото">'+icon('right')+'</button>':'');
+  document.querySelector('.shop').appendChild(dl);var im=dl.querySelector('img'),st=dl.querySelector('.ro-w2-lbst');
+  function go(n){k=(n+d.img.length)%d.img.length;big=false;st.classList.remove('is-big');im.src=img(d.img[k]);im.alt=d.name+', фото '+(k+1)+' из '+d.img.length;dl.querySelector('.ro-w2-lbpos').textContent=(k+1)+' / '+d.img.length}
+  function close(){dl.close();dl.remove();if(prevFocus&&prevFocus.focus)prevFocus.focus()}
+  dl.querySelector('.ro-w2-lbx').onclick=close;dl.addEventListener('cancel',function(e){e.preventDefault();close()});
+  dl.querySelectorAll('.ro-w2-lba').forEach(function(b){b.onclick=function(){go(k+(b.classList.contains('is-prev')?-1:1))}});
+  im.addEventListener('click',function(e){big=!big;st.classList.toggle('is-big',big);if(big){var r=im.getBoundingClientRect();im.style.transformOrigin=((e.clientX-r.left)/r.width*100)+'% '+((e.clientY-r.top)/r.height*100)+'%'}});
+  dl.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')go(k-1);else if(e.key==='ArrowRight')go(k+1)});
+  var x0=null;st.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});st.addEventListener('touchend',function(e){if(x0==null||big)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>50)go(k+(dx<0?1:-1));x0=null});
+  go(k);dl.showModal();dl.querySelector('.ro-w2-lbx').focus()}
  function drawDesign(d){var f=sum(d),A=aux(d),t=f+A.need;
   detail.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<a href="#designs='+d.folder+'" data-route>'+esc(folderName(d.folder))+'</a>','designs='+d.folder)+
   '<div class="detail-grid ro-w2-detail">'+
    '<header class="product-heading"><h1 tabindex="-1">'+esc(d.name)+'</h1><p class="meta">'+esc(folderName(d.folder))+', '+sizeLine(d)+', потолок '+nb(num(d.h)+' м')+'</p></header>'+
-   '<div class="product-media product-gallery ro-w2-gal" role="region" aria-label="Фотографии интерьера"><div class="gallery-stage"><div class="gallery-frame" data-multiple="'+(d.img.length>1)+'"><img class="gallery-main-image ro-w2-main" alt="'+esc(d.name)+'" src="'+img(d.img[0])+'" draggable="false"></div>'+
+   '<div class="product-media product-gallery ro-w2-gal" role="region" aria-label="Фотографии интерьера"><div class="gallery-stage"><div class="gallery-frame" data-multiple="'+(d.img.length>1)+'"><button type="button" class="ro-w2-zoom" data-w2-zoom aria-label="Увеличить фото"><img class="gallery-main-image ro-w2-main" alt="'+esc(d.name)+'" src="'+img(d.img[0])+'" draggable="false"><span class="ro-w2-zi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2M11 8.5v5M8.5 11h5"/></svg></span></button></div>'+
     (d.img.length>1?'<div class="gallery-nav"><button type="button" class="icon-button gallery-control gallery-prev" data-w2-step="-1" aria-label="Предыдущее фото">'+icon('right')+'</button><button type="button" class="icon-button gallery-control gallery-next" data-w2-step="1" aria-label="Следующее фото">'+icon('right')+'</button><span class="gallery-position" aria-hidden="true">1 / '+d.img.length+'</span></div>':'')+'</div>'+
     (d.img.length>1?'<div class="gallery-thumbs" role="group" aria-label="Выбор фотографии">'+d.img.map(function(k,i){return '<button type="button" class="gallery-thumb" data-w2-slide="'+i+'" aria-current="'+(i===0)+'" aria-label="Фото '+(i+1)+' из '+d.img.length+'"><img src="'+img(k)+'" alt="" draggable="false"></button>'}).join('')+'</div>':'')+'</div>'+
    '<div class="detail-copy"><div class="ro-w2-sum"><p class="offer-price"><strong class="price">'+rub(t)+'</strong><span class="price-note">за материалы на '+nb(num(d.area)+' м²')+'</span></p>'+
     '<dl class="ro-w2-split"><div><dt>Отделка</dt><dd>'+rub(f)+'</dd></div><div><dt>Для монтажа</dt><dd>'+rub(A.need)+'</dd></div>'+(A.rec?'<div class="is-rec"><dt>Подготовка, рекомендуем</dt><dd>'+rub(A.rec)+'</dd></div>':'')+'</dl>'+
-    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button></div>'+
+    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Открыть в конструкторе</button><p class="ro-w2-hint2">Примерьте на свою квартиру – пересчитаем материалы под ваши размеры</p></div>'+
     '<div class="ro-w2-about">'+(DESC[d.id]?'<p>'+esc(DESC[d.id])+'</p>':'')+'</div>'+
-    '<div class="ro-w2-how"><b>От просмотра до покупки – 2 шага</b><ol><li>Откройте интерьер на своей квартире: типовая планировка Тольятти или нарисованная комната. Размеры подскажет ИИ-помощник.</li><li>Мы пересчитаем все материалы под ваши размеры и составим смету – останется оформить заказ.</li></ol></div>'+
+    ''+
     '<section class="detail-info ro-w2-mat" aria-labelledby="ro-w2-mt"><h2 id="ro-w2-mt">Материалы</h2>'+
     d.groups.map(function(g){return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);return p?rowHTML(p,x[1],Math.round(p.price*x[1])):''}).join('')+'</div></div>'}).join('')+
     (function(){var M={need:{},rec:{}};A.groups.forEach(function(X){['need','rec'].forEach(function(r){X[r].forEach(function(x){var o=M[r][x.p.sku];if(o){o.q+=x.q;o.sum+=x.sum}else M[r][x.p.sku]={p:x.p,q:x.q,sum:x.sum}})})});
@@ -18122,6 +18242,7 @@ html body #ro-w2>.catalog-location{margin-top:24px!important}
     '</section></div></div>';
   var i=0,main=detail.querySelector('.ro-w2-main'),pos=detail.querySelector('.gallery-position'),th=[].slice.call(detail.querySelectorAll('[data-w2-slide]'));
   function show(n){i=(n+d.img.length)%d.img.length;main.src=img(d.img[i]);if(pos)pos.textContent=(i+1)+' / '+d.img.length;th.forEach(function(b,j){b.setAttribute('aria-current',String(j===i))})}
+  var zb=detail.querySelector('[data-w2-zoom]');if(zb)zb.addEventListener('click',function(){zoom(d,i)});
   detail.querySelectorAll('[data-w2-step]').forEach(function(b){b.addEventListener('click',function(){show(i+Number(b.dataset.w2Step))})});
   th.forEach(function(b){b.addEventListener('click',function(){show(Number(b.dataset.w2Slide))})});
  }

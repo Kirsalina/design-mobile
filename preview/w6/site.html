@@ -26975,6 +26975,26 @@ html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc.ro-b8>.btn.ro-w6-try{gr
 @media (hover:none){html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc.ro-b8:hover{box-shadow:none!important}}
 /* кнопки ответа под карточками – с тем же шагом */
 html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc.ro-b8~.ao:not(.col){margin-top:4px!important}
+
+/* W6-4: строки примерки в чате – классы примерки W1 (.ro-tl / .ro-tr), здесь только раскладка */
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-tl{margin-top:4px}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-row[aria-disabled=true]{cursor:default}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-tl .ro-tn{display:block;min-width:0}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .ro-w6-nm{display:inline;max-width:100%;margin:0;padding:0;border:0;background:none;box-shadow:none;font:inherit;color:inherit;text-align:left;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:top;transition:color .15s ease}
+@media (hover:hover){html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .ro-w6-nm:hover{color:#006B79}}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .ro-w6-nm:focus-visible{outline:none;color:#006B79;box-shadow:inset 0 -1px 0 #006B79}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-all{margin-top:4px;min-height:24px}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-ao{display:flex!important;flex-direction:column!important;gap:8px!important;margin-top:4px!important}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .ro-w6-ao>.btn{width:100%!important}
+/* название в карточке товара ответа – бирюзовое при наведении, как ссылка (вся карточка открывает товар) */
+@media (hover:hover){html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc[data-act=ai-pdet] .b8-t:hover{color:#006B79!important}}
+
+/* телефон: пока идёт примерка из чата, окно помощника опускается до половины – вариант на плане виден над ним */
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b).dev-m:not(.dev-t) .sheet[aria-label="ИИ-помощник"]:has(.ro-w6-row[aria-pressed=true]){top:46%!important}
+
+/* планшет: окно помощника – на всю высоту холста (было низким окном, ответы не помещались); слева остаётся план */
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b).dev-t .sheet[aria-label="ИИ-помощник"]{top:268px!important;bottom:93px!important;max-height:none!important;height:auto!important;display:flex!important;flex-direction:column!important}
+html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b).dev-t .sheet[aria-label="ИИ-помощник"] .chat{flex:1 1 auto!important;min-height:0!important;max-height:none!important;overflow-y:auto!important}
 </style>
 <script id="ro-w6-ai">
 /* W6-1/W6-2 (26.11): ИИ-помощник.
@@ -26998,15 +27018,21 @@ html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc.ro-b8~.ao:not(.col){mar
  function wrapRender(){try{if(render.__w6)return;var _r=render;render=function(){var r=_r.apply(this,arguments);try{hook()}catch(x){}return r};render.__w6=1}catch(e){}}
 
  /* вспомогательные: подписи кнопок и грамматика – меняем в данных, чтобы и ответ человека в чате был тем же словом */
- function fixKit(E){if(!E||!E.chat)return;var m=E.chat[E.chat.length-1];if(!m||!m.o||!m.o.some(function(x){return /^kitadd:/.test(x[1])}))return;
+ function fixKit(E){if(!E||!E.chat)return;var m=E.chat[E.chat.length-1];if(!m||!m.o||!m.o.some(function(x){return /^kitadd:/.test(x[1])}))return;if(m.__w6k)return;m.__w6k=1;
   m.o.forEach(function(x){if(/^kitadd:/.test(x[1]))x[0]='Добавить в смету';else if(/^kitno:/.test(x[1]))x[0]='Оставить как есть'});
-  if(m.c){m.c.o=m.o;var t=String(m.c.title||'');t=t.replace(/ понадобятся ([^\s,.]+)\./,function(a,w){return ' понадобится '+w+'.'});m.c.title=m.t=t}}
+  if(m.c){m.c.o=m.o;var t=String(m.c.title||'');t=t.replace(/^(К [а-яё]+) понадоб[а-яё]+ (.+?)\. Добавить в смету\? \+(.+)$/,function(a,to,names,sum){var x=MTO[to];if(!x)return a;m.__mto=x[0];return 'Нужно для '+x[1]+': '+names+', '+sum+'. Добавить в смету?'});m.c.title=m.t=t}}
  /* ответ после выбора: подпись нажатой кнопки в пузыре человека, текст без «их/они» для одного товара */
  function kitPre(s,key){var k=String(key||'');if(!/^kit(add|no):/.test(k)||!s||!s.E)return '';var m=s.E.chat[s.E.chat.length-1],o=m&&m.o&&m.o.filter(function(x){return x[1]===k})[0];if(o)window.__aLab=o[0];return k.slice(3,5)}
  function kitPost(E,n0,kind){for(var i=n0;i<E.chat.length;i++){var m=E.chat[i];if(m.w!=='a')continue;var t=String((m.c&&m.c.title)||m.t||'');
-   t=t.replace(/\. Их видно в смете под отделкой, в списке «Понадобится»\./,'. Смотрите в смете под отделкой, в списке «Понадобится».').replace(/^Хорошо\. Если понадобятся, они есть в смете под отделкой, в списке «Понадобится»\./,'Хорошо, оставил как есть. Если понадобится, всё есть в смете под отделкой, в списке «Понадобится».');
+   var mt=(lastKit(E)||{}).__mto||'Материалы к покрытию';
+   t=t.replace(/\. Их видно в смете под отделкой, в списке «Понадобится»\./,'. Смотрите в смете, раздел «'+mt+'».').replace(/^Хорошо\. Если понадобятся, они есть в смете под отделкой, в списке «Понадобится»\./,'Хорошо, оставил как есть. Всё нужное есть в смете, раздел «'+mt+'».');
    if(m.c)m.c.title=t;m.t=t}}
- function wrapF(name){var f=window[name];if(typeof f!=='function'||f.__w6)return;var g=function(s,key){var E=s&&s.E,n0=E&&E.chat?E.chat.length:0,kd=name==='aiOpt'?kitPre(s,key):'';var r=f.apply(this,arguments);try{if(kd)kitPost(E,n0,kd);fixKit(s&&s.E)}catch(x){}window.__aLab=null;return r};g.__w6=1;window[name]=g}
+ /* «Положил краска «Базис», белая на стену 3» → «Положил краску «Базис» (белая) на стену 3» */
+ var ACC={'краска':'краску','плитка':'плитку','полотно':'полотно'};
+ function gram(E,n0){if(!E||!E.chat)return;for(var i=Math.max(0,n0-1);i<E.chat.length;i++){var m=E.chat[i];if(m.w!=='a')continue;var t=String((m.c&&m.c.title)||m.t||''),t0=t;
+   t=t.replace(/(Положил|Поставил|Заменил на|Убрал) (краска|плитка) /g,function(a,v,w){return v+' '+ACC[w]+' '}).replace(/(«[^»]+»), ([а-яё][а-яё ]*?) (на |вместо |к |со |с )/g,'$1 ($2) $3').replace(/^Отменил: ([^:.]+): /,'Отменил $1: ');
+   if(t!==t0){if(m.c)m.c.title=t;m.t=t}}}
+ function wrapF(name){var f=window[name];if(typeof f!=='function'||f.__w6)return;var g=function(s,key){var E=s&&s.E,n0=E&&E.chat?E.chat.length:0,kd=name==='aiOpt'?kitPre(s,key):'';var r=f.apply(this,arguments);try{if(kd)kitPost(E,n0,kd);fixKit(s&&s.E);gram(E,n0)}catch(x){}window.__aLab=null;return r};g.__w6=1;window[name]=g}
 
  /* Отделка: просят товар не для выбранной поверхности («покажи все обои», выбран пол) – не «Не выполнено», а уточнение: для какой стены */
  function wrapFin(){try{if(finX.__w6)return;var f=finX;finX=function(s,raw,t){try{var E=s.E,F=E.fin,sf=aSurf(E,t),cat=(ACAT.find(function(x){return t.indexOf(x[0])>=0})||[])[1];
@@ -27019,11 +27045,57 @@ html body #ui#ui:not(#ro-w6-a):not(#ro-w6-b) .acard .apc.ro-b8~.ao:not(.col){mar
    if((cat||surf)&&(cat?/подбер|покаж|хочу|нужн|постав|полож|поклей|покрас|сделай|на пол|на стен|на потол|светл|темн|т[её]мн|бел/.test(t)||surf:/подбер|покаж|хочу|постав|полож|поклей|покрас|сделай|светл|темн|т[её]мн|бел/.test(t))&&!/дешев|дорож|аналог|замен|стои|сумм|итог|корзин|сколько|смет|расч|убер|удали|верни/.test(t)){aUser(E,raw);
     aSay(E,'conf','Покрытия выбираются на этапе «Отделка». Перейти туда и подобрать покрытие?',{o:[['Перейти в «Отделку»','go:fin:'+raw],['Остаться здесь','no']]});return true}}catch(x){}
    return f.apply(this,arguments)};estX.__w6=1}catch(e){}}
+
+ /* ===== W6-4 (27.11, Алина 08:11): подбор покрытия в чате = примерка, как в «Отделке» (W1) =====
+    Варианты – строки примерки (фото 48, название, количество, сумма за поверхность), до 5; первый сразу на плане (проба, комната не изменена).
+    Нажатие на строку – этот вариант на плане, чат не закрывается. Под списком: «Применить к стене» (бирюзовая), «Применить к другим стенам /
+    в других комнатах», «Все обои в каталоге (N)», «Оставить как есть». Название товара – ссылка на карточку (бирюзовое при наведении). */
+ var CATN={'Обои':'обои','Краска':'краски','Плитка':'плитку','Ламинат':'ламинат','Керамогранит':'керамогранит','Линолеум':'линолеум','Натяжной':'натяжные потолки'};
+ var KTO={wall:'к стене',floor:'к полу',ceil:'к потолку'},KON={wall:'на стене',floor:'на полу',ceil:'на потолке'};
+ var short=function(n){return String(n).replace(/^(Обои|Краска|Плитка|Ламинат|Керамогранит|Линолеум|Натяжной потолок)\s+/,'')};
+ function lastW6(E){for(var i=E.chat.length-1;i>=0;i--){var m=E.chat[i];if(m.w==='a')return m.c&&m.c.w6?m:null}return null}
+ function tryW6(E,k,id){var F=E.fin;if(F.surf!==k){F.surf=k;F.zform=null}F.target='base';F.mode='try';F.tryMat=id;F.tryDir=null;F.dirOpen=false;F.recBase=id;
+  E.status='Примерка: '+MAT[id].name+'. Комната пока не изменена.';if(E.view==='3d'&&k[0]==='w'&&typeof faceWall==='function')faceWall(E,+k.slice(1))}
+ function wrapOffer(){try{if(finOffer.__w6)return;finOffer=function(E,ids,say,k){var all=ids.length,L=ids.slice(0,5),cat=MAT[L[0]]&&MAT[L[0]].cat;E.fin.target='base';
+   var more=all>L.length?all:0;
+   var b0=String(say).replace(/\s*Показываю \d+ из \d+[^.]*\./,'').replace(/\s*(Какой примерить|Примерить)\?\s*$/,'').trim();if(b0&&!/[.!?]$/.test(b0))b0+='.';
+   aSay(E,'ask',(b0?b0+' ':'')+(L.length>1?'Первый уже на плане. Какой ещё показать?':'Он уже на плане. Применить?'),{w6:{k:k,ids:L,all:more,cat:cat,sel:L[0]}});
+   tryW6(E,k,L[0]);E.rtab='ai'};finOffer.__w6=1}catch(e){}}
+ function rowsHTML(m,last){var w=m.c.w6,E=S.E,F=E.fin,k=w.k,kind=surfKind(k),cur=sm(E,k).base,on=last&&F.mode==='try'&&F.surf===k?F.tryMat:(last?w.sel:null);
+  var h='<div class="ro-tl ro-w6-tl" role="group" aria-label="Варианты для примерки">'+w.ids.map(function(id,j){var c=cost(E,id,k,'base'),pr=on===id;
+   var nm='<button type="button" class="ro-w6-nm" data-act="ai-pdet" data-id="'+id+'" title="'+esc(MAT[id].name)+'">'+esc(short(MAT[id].name))+'</button>';
+   return '<div class="ro-tr ro-w6-row"'+(last?' role="button" tabindex="0" data-act="w6-try" data-id="'+id+'" aria-pressed="'+pr+'"':' aria-disabled="true"')+'>'+
+    '<span class="ro-tth" aria-hidden="true">'+pthumb(id,'w6'+m.__i+'_'+j,48)+'</span><span class="ro-tt"><span class="ro-tn">'+nm+'</span><span class="ro-tq">'+esc(c.qty)+(id===cur?', '+KON[kind]:'')+'</span></span><span class="ro-tp">'+rub(c.sum)+'</span></div>'}).join('')+'</div>';
+  if(!last)return h;
+  if(w.all)h+='<button type="button" class="ro-tall ro-w6-all" data-act="w6-cat">Все '+esc(CATN[w.cat]||String(w.cat||'').toLowerCase())+' в каталоге ('+w.all+')</button>';
+  h+='<div class="ao ro-w6-ao"><button type="button" class="btn s48 pri" data-act="w6-ap">Применить '+KTO[kind]+'</button>'+
+   (kind!=='ceil'?'<button type="button" class="btn s48" data-act="w6-cp">'+(kind==='wall'?'Применить к другим стенам':'Применить в других комнатах')+'</button>':'')+
+   '<button type="button" class="btn s48" data-act="w6-no">Оставить как есть</button></div>';
+  return h}
+ function selOf(E,m){var F=E.fin,w=m.c.w6;return F.mode==='try'&&F.surf===w.k&&w.ids.indexOf(F.tryMat)>=0?F.tryMat:w.sel}
+ function apply(E,m,lab){var w=m.c.w6,id=selOf(E,m),n0=E.chat.length;tryW6(E,w.k,id);aiOpt(S,'ftry:'+id);var u=E.chat[n0];if(u&&u.w==='u')u.t=lab;E.rtab='ai'}
+ function wrapAct(){try{if(act.__w6)return;var _a=act;act=function(a,el,ev){var E=S.E,d=el&&el.dataset||{},m=E&&lastW6(E);
+   if(/^w6-/.test(a)&&E&&m){var w=m.c.w6,F=E.fin,kind=surfKind(w.k);
+    if(a==='w6-try'&&MAT[d.id]){w.sel=d.id;tryW6(E,w.k,d.id);E.rtab='ai';render();var b=document.querySelector('#ui .ro-w6-row[data-id="'+d.id+'"]');if(b)b.focus({preventScroll:true});return}
+    if(a==='w6-ap'){apply(E,m,'Применить '+KTO[kind]);render();chatEnd();return}
+    if(a==='w6-cp'){apply(E,m,kind==='wall'?'Применить к другим стенам':'Применить в других комнатах');E.cp={sel:{},open:{}};F.copied=null;render();return}
+    if(a==='w6-no'){var was=F.mode==='try'&&F.surf===w.k;if(was&&typeof rejectTry==='function')rejectTry(E);aUser(E,'Оставить как есть');aText(E,'Хорошо, '+surfName(w.k).toLowerCase()+' без изменений.');w.done=1;render();chatEnd();return}
+    if(a==='w6-cat'){if(F.surf!==w.k)F.surf=w.k;F.target='base';if(F.mode==='try'&&typeof rejectTry==='function')rejectTry(E);if(typeof openCat==='function')openCat(E,'base');F.cat=w.cat;F.mode='catalog';E.rtab='params';if(S.dev==='m')E.sheet='params';render();return}
+   }
+   return _a.apply(this,arguments)};act.__w6=1}catch(e){}}
+ function chatEnd(){setTimeout(function(){document.querySelectorAll('#ui .chat').forEach(function(c){c.scrollTop=c.scrollHeight})},30)}
+ /* строка – по Enter и пробелу, как кнопка */
+ document.addEventListener('keydown',function(e){var r=e.target&&e.target.classList&&e.target.classList.contains('ro-w6-row')?e.target:null;if(r&&(e.key==='Enter'||e.key===' ')){e.preventDefault();r.click()}});
+
+ /* материалы к покрытию – словами сметы: «Материалы к ламинату», «Нужно для укладки», «Рекомендуем» */
+ var MTO={'К обоям':['Материалы к обоям','поклейки'],'К краске':['Материалы к краске','покраски'],'К плитке':['Материалы к плитке','укладки'],'К керамограниту':['Материалы к керамограниту','укладки'],'К ламинату':['Материалы к ламинату','укладки'],'К линолеуму':['Материалы к линолеуму','укладки']};
+ function lastKit(E){for(var i=E.chat.length-1;i>=0;i--){var m=E.chat[i];if(m.w==='a'&&m.o&&m.o.some(function(x){return /^kitadd:/.test(x[1])}))return m}return null}
  /* обёртки ставим после всех блоков страницы (ro-kit и другие подключаются по DOMContentLoaded) – наши снаружи */
- function setup(){wrapF('ai');wrapF('aiOpt');wrapCard();wrapRender();wrapFin();wrapEst();hook()}
+ function setup(){wrapF('ai');wrapF('aiOpt');wrapCard();wrapRender();wrapFin();wrapEst();wrapOffer();wrapAct();hook()}
 
  /* разметка карточки: «Примерить» – бирюзовая S 40; в подтверждении главная кнопка – бирюзовая */
  function wrapCard(){try{if(cardHTML.__w6)return;var _c=cardHTML;cardHTML=function(m,idx,last){var h=_c.apply(this,arguments);try{
+  if(m&&m.c&&m.c.w6){m.__i=idx;var live=last&&!m.c.w6.done;var e=h.lastIndexOf('</div>');if(e>0)h=h.slice(0,e)+rowsHTML(m,live)+h.slice(e)}
   h=h.replace(/class="btn ro-b8btn"/g,'class="btn pri ro-w6-try"');
   if(h.indexOf('ro-w6-try')>=0){var d=document.createElement('div');d.innerHTML=h;d.querySelectorAll('.apc.ro-b8').forEach(function(c){var b=c.querySelector('.b8-row>.ro-w6-try');if(b)c.appendChild(b)});h=d.innerHTML}
   if(m&&m.c&&(m.c.k==='conf'||m.c.k==='ask')&&last&&m.o&&m.o.length===2&&!m.o.some(function(x){return x[3]})&&/^(no|kitno:)/.test(m.o[1][1]))
