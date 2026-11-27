@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W2 – вход в «Готовые интерьеры» и шаги 1-2-3: варианты</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:#152A4B;font:400 16px/24px Manrope,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+.wrap{max-width:1120px;margin:0 auto;padding:32px 20px 64px}
+h1{font-size:28px;line-height:35px;margin:0 0 4px;letter-spacing:-.02em}
+.sub{color:#566273;margin:0 0 32px}
+h2{font-size:22px;line-height:30px;margin:48px 0 8px}
+.opt{border:1px solid #BCDDE2;border-radius:16px;padding:20px;margin-top:16px}
+.opt h3{margin:0 0 4px;font-size:18px;line-height:25px}
+.why{margin:0 0 16px;font-size:14px;line-height:21px;color:#566273}
+.rec{display:inline-flex;align-items:center;height:28px;padding:0 10px;margin-left:8px;border:1px solid #BCDDE2;border-radius:8px;color:#006B79;font-size:14px;font-weight:700;vertical-align:2px}
+.no{color:#A32637}
+/* шапка ПК */
+.hdr{display:flex;align-items:center;gap:8px;padding:12px 16px;border:1px solid #BCDDE2;border-radius:12px;background:#fff;overflow-x:auto}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px;margin-right:16px;white-space:nowrap}
+.logo i{width:28px;height:28px;border-radius:50%;background:linear-gradient(180deg,#22D2DE,#13B4D3);display:inline-block}
+.nav{display:flex;gap:4px}
+.nav span{padding:8px 12px;border-radius:12px;font-weight:600;white-space:nowrap;font-size:15px}
+.nav .cur{background:#EEF5F6}
+.nav .new{outline:2px solid #19CBD8;outline-offset:-2px;background:#fff}
+.right{margin-left:auto;display:flex;gap:16px;color:#566273;font-size:14px;white-space:nowrap}
+/* телефон */
+.phones{display:flex;gap:24px;flex-wrap:wrap}
+.ph{width:300px;border:1px solid #BCDDE2;border-radius:24px;padding:16px;background:#fff}
+.ph .bar{display:flex;align-items:center;gap:8px;font-weight:800;margin-bottom:12px}
+.mi{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;font-weight:600}
+.mi+.mi{margin-top:2px}
+.mi.feat{background:#EEF5F6;outline:2px solid #19CBD8;outline-offset:-2px}
+.mi img,.mi .ph-img{width:48px;height:40px;border-radius:8px;object-fit:cover;background:#ddd}
+.mi small{display:block;font-weight:400;color:#566273;font-size:13px;line-height:18px}
+/* подвал */
+.ftr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;padding:24px;border-radius:16px;background:#EEF5F6}
+.ftr b{display:block;margin-bottom:8px}
+.ftr a{display:block;color:#3B4A5E;font-size:14px;line-height:26px;text-decoration:none}
+.ftr .new{outline:2px solid #19CBD8;border-radius:12px;padding:8px;margin:-8px}
+/* создать свой интерьер */
+.ctor{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{border:1px solid #BCDDE2;border-radius:16px;padding:16px;font-size:14px;line-height:21px}
+.box b{display:block;font-size:16px;margin-bottom:4px}
+/* шаги на главной */
+.ban{display:grid;grid-template-columns:45fr 55fr;gap:32px;padding:40px;border-radius:16px;background:#EEF5F6}
+.kick{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin:0 0 16px}
+.ban h4{margin:0;font-size:32px;line-height:1.2;font-weight:600;letter-spacing:-.025em}
+.ban p{margin:20px 0 0}
+.steps{list-style:none;padding:0;margin:24px 0 28px;display:grid;gap:16px}
+.steps li{display:flex;gap:12px;align-items:flex-start}
+.steps svg{width:24px;height:24px;flex:none}
+.steps b{display:block;font-weight:600}
+.steps span{color:#566273;font-size:14px;line-height:21px}
+.btn{display:inline-flex;align-items:center;gap:12px;height:52px;padding:0 24px;border-radius:12px;background:#19CBD8;color:#152A4B;font-weight:700}
+.photo{border-radius:16px;background:url('../../assets/') center/cover,#d9cfc0;min-height:300px;position:relative;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0}
+.card{position:absolute;left:16px;bottom:16px;background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:12px 16px;font-size:14px}
+.card .t{display:inline-flex;height:28px;align-items:center;padding:0 10px;border:1px solid #BCDDE2;border-radius:8px;color:#006B79;font-weight:700}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:800px){.ftr,.ctor,.ban,.cmp{grid-template-columns:1fr}.ban{padding:24px}}
+</style></head><body><div class="wrap">
+<h1>Готовые интерьеры: где вход и шаги 1-2-3</h1>
+<p class="sub">Варианты для решения Алины, 27.11. Это схема, не готовый экран: показывает место и вид.</p>
+
+<h2>1. Где вход в «Готовые интерьеры» (D6)</h2>
+
+<div class="opt"><h3>А. Пункт в шапке <span class="rec">Рекомендую</span></h3>
+<p class="why">Видно с любой страницы, в один клик. На ПК 5 пунктов помещаются. Активен на разделе, папке и странице интерьера.</p>
+<div class="hdr"><span class="logo"><i></i>RemOnLine</span><div class="nav"><span>Главная</span><span>Каталог материалов</span><span class="new">Готовые интерьеры</span><span>Создать свой интерьер</span><span>Мои объекты</span></div><div class="right"><span>Войти</span><span>Корзина</span></div></div>
+</div>
+
+<div class="opt"><h3>Б. Меню телефона: первым пунктом, с фото <span class="rec">Рекомендую</span></h3>
+<p class="why">На телефоне шапка свёрнута в меню – без фото пункт теряется среди остальных.</p>
+<div class="phones">
+<div class="ph"><div class="bar">☰ RemOnLine</div>
+<div class="mi feat"><img src="../../assets/75fbbb6487de.webp" alt=""><div>Готовые интерьеры<small>15 интерьеров – примерьте у себя</small></div></div>
+<div class="mi">Главная</div><div class="mi">Каталог материалов</div><div class="mi">Создать свой интерьер</div><div class="mi">Мои объекты</div></div>
+<div class="ph"><div class="bar">☰ RemOnLine</div>
+<div class="mi">Главная</div><div class="mi">Каталог материалов</div><div class="mi">Готовые интерьеры</div><div class="mi">Создать свой интерьер</div><div class="mi">Мои объекты</div>
+<p class="why" style="margin:12px 0 0">Б2 – просто строкой, как остальные (спокойнее, но слабее зовёт).</p></div>
+</div></div>
+
+<div class="opt"><h3>В. Подвал: колонка «Готовые интерьеры» <span class="rec">Рекомендую</span></h3>
+<p class="why">Дёшево и привычно: кто долистал вниз, сразу видит комнаты.</p>
+<div class="ftr"><div><b>Каталог</b><a>Стены</a><a>Пол</a><a>Потолок</a></div><div class="new"><b>Готовые интерьеры</b><a>Гостиные</a><a>Кухни</a><a>Спальни</a><a>Детские</a><a>Ванные</a><a>Прихожие</a></div><div><b>Сервисы</b><a>Создать свой интерьер</a><a>Мои объекты</a><a>ИИ-помощник</a></div><div><b>Покупателям</b><a>Доставка</a><a>Оплата</a><a>Контакты</a></div></div>
+</div>
+
+<div class="opt"><h3>Г. Только внутри «Создать свой интерьер» <span class="no">– не рекомендую</span></h3>
+<p class="why">Спрятано за вторым кликом, а слово «создать» не обещает готового. Как дополнение к А – да (ссылка «или возьмите готовый интерьер»), как единственный вход – нет.</p>
+<div class="ctor"><div class="box"><b>Создать свой интерьер</b>Новая комната · планировка · ИИ-помощник</div><div class="box"><b>Не хочется с нуля?</b>Возьмите готовый интерьер и примерьте у себя →</div></div>
+</div>
+
+<h2>2. Шаги 1-2-3 – на главную, иконками как у помощника</h2>
+<p class="why">Вместо трёх пунктов-выгод в блоке «Готовые интерьеры» – три шага с теми же контурными иконками 24 и короткой подписью. Объясняет путь «от картинки до заказа» без отдельного блока.</p>
+<div class="cmp">
+<div><p class="why"><b>Сейчас</b> – три выгоды</p>
+<div class="ban" style="grid-template-columns:1fr;padding:24px"><div><p class="kick">Готовые интерьеры</p><h4>Ремонт как с картинки – в вашей квартире</h4>
+<ul class="steps"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><div>Примерьте на планировку вашего дома</div></li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg><div>Размерами займётся ИИ-помощник</div></li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg><div>Смета со всеми материалами – за пару минут</div></li></ul>
+<span class="btn">Смотреть интерьеры →</span></div></div></div>
+<div><p class="why"><b>Вариант</b> – три шага <span class="rec">Рекомендую</span></p>
+<div class="ban" style="grid-template-columns:1fr;padding:24px"><div><p class="kick">Готовые интерьеры</p><h4>Ремонт как с картинки – в вашей квартире</h4>
+<ul class="steps"><li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><div><b>1. Выберите интерьер</b><span>Стены, пол и потолок уже подобраны</span></div></li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><div><b>2. Примерьте на свою квартиру</b><span>Планировка дома или ИИ-помощник</span></div></li>
+<li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></svg><div><b>3. Получите смету и закажите</b><span>Количество всех материалов посчитаем сами</span></div></li></ul>
+<span class="btn">Смотреть интерьеры →</span></div></div></div>
+</div>
+</div></body></html>
