@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W1 – выбор A3 и A1</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F7FAFB;color:#152A4B;font:400 15px/22px Manrope,system-ui,sans-serif}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 20px 64px}
+h1{font:600 28px/36px Manrope,system-ui,sans-serif;margin:0 0 8px}
+h2{font:600 22px/30px Manrope,system-ui,sans-serif;margin:40px 0 4px}
+h3{font:600 16px/24px Manrope,system-ui,sans-serif;margin:0 0 4px}
+p.lead{margin:0 0 16px;color:#566273}
+.rec{display:inline-block;margin:0 0 4px;padding:2px 10px;border-radius:8px;background:#E6FAFB;border:1px solid #19CBD8;font:600 13px/20px Manrope,sans-serif;color:#006B79}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.var{background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:20px;box-shadow:0 1px 2px rgba(21,42,75,.04),0 10px 26px -18px rgba(21,42,75,.25)}
+.var.best{border-color:#19CBD8}
+.devs{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-top:12px}
+.dev{font:600 12px/16px Manrope,sans-serif;color:#7D8996;text-transform:none}
+.dev>span{display:block;margin-bottom:6px}
+.pan{width:330px;background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:16px}
+.pan.ph{width:358px;border-radius:16px 16px 0 0}
+.cvt{display:flex;justify-content:space-between;font:600 15px/22px Manrope,sans-serif;margin-bottom:12px;color:#152A4B}
+.cvt b{font-weight:600;color:#A32637;font-size:14px}
+.cvr{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;margin-bottom:12px;color:#152A4B}
+.sw{width:64px;height:64px;border-radius:10px;background:#BFC8B0;border:1px solid #BCDDE2}
+.cvr .n{font:600 15px/20px Manrope,sans-serif}
+.cvr .m{font-size:13px;line-height:18px;color:#566273}
+.cvr .pr{font:600 16px/22px Manrope,sans-serif;margin-top:4px}
+.btn{display:flex;align-items:center;justify-content:center;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #BCDDE2;background:#fff;font:600 15px/20px Manrope,sans-serif;color:#152A4B;box-shadow:0 1px 2px rgba(21,42,75,.06);white-space:nowrap}
+.col{display:grid;gap:8px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.note{margin:12px 0 0;font-size:14px;line-height:20px;color:#566273}
+.pro{color:#0B7A43}.con{color:#A32637}
+/* A1 строки */
+.list{background:#fff;border:1px solid #BCDDE2;border-radius:16px;padding:4px 16px;margin-top:12px}
+.li{display:grid;align-items:center;gap:12px;padding:12px 0;border-top:1px solid #E3EEF0}
+.li:first-child{border-top:0}
+.ph64{width:64px;height:64px;border-radius:10px;background:#E8DCC4;border:1px solid #BCDDE2}
+.ph52{width:52px;height:52px;border-radius:10px;background:#D9D2C2;border:1px solid #BCDDE2}
+.ph40{width:40px;height:40px;border-radius:8px;background:#D9D2C2;border:1px solid #BCDDE2}
+.t{font:600 15px/20px Manrope,sans-serif}
+.s{font-size:13px;line-height:18px;color:#566273}
+.sum{font:600 15px/20px Manrope,sans-serif;text-align:right;white-space:nowrap}
+.step{display:inline-grid;grid-template-columns:32px 32px 32px;align-items:center;height:36px;border:1px solid #BCDDE2;border-radius:10px;text-align:center;font-weight:600}
+.ck{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,#22D2DE,#13B4D3);display:grid;place-items:center;color:#fff;font-size:14px;font-weight:700}
+.qty{font:600 14px/20px Manrope,sans-serif;text-align:right;color:#566273;white-space:nowrap}
+.grp{border:1px solid #BCDDE2;border-radius:16px;padding:4px 16px}
+.lab{font:600 13px/18px Manrope,sans-serif;color:#7D8996;margin:4px 0 0}
+.choice{margin-top:40px;padding:20px;border-radius:16px;background:#EEF5F6;border:1px solid #BCDDE2}
+.choice ol{margin:8px 0 0;padding-left:20px}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.pan,.pan.ph{width:100%}}
+</style></head><body><div class="wrap">
+<h1>Что выбрать: A3 и A1</h1>
+<p class="lead">Нарисовано в стиле «Смесь 2», размеры как на сайте. Нужно два ответа – внизу страницы.</p>
+
+<h2>A3 – кнопки в карточке покрытия</h2>
+<p class="lead">Сейчас разнобой: на компьютере кнопки столбцом, на телефоне в ряд и текст переносится в 2 строки.</p>
+<div class="grid">
+ <div class="var best">
+  <span class="rec">Советую</span>
+  <h3>Вариант 1 – столбцом везде</h3>
+  <div class="devs">
+   <div class="dev"><span>Компьютер, правая панель</span>
+    <div class="pan"><div class="cvt">Покрытие стены 1<b>Убрать</b></div>
+     <div class="cvr"><div class="sw"></div><div><div class="n">Краска «Комфорт»</div><div class="m">Светлый шалфей, ведро 5 л</div><div class="pr">1 250 ₽</div></div></div>
+     <div class="col"><div class="btn">Заменить</div><div class="btn">На другие стены</div></div></div></div>
+   <div class="dev"><span>Телефон, шторка «Параметры»</span>
+    <div class="pan ph"><div class="cvt">Стена 1</div>
+     <div class="cvr"><div class="sw"></div><div><div class="n">Краска «Комфорт», светлый шалфей</div><div class="m">1 ведро, 1 250 ₽</div></div></div>
+     <div class="col"><div class="btn">Заменить</div><div class="btn">На другие стены</div></div></div></div>
+  </div>
+  <p class="note"><span class="pro">+</span> Одинаково везде, полные слова «На другие стены / В другие комнаты» – понятно, куда. Ничего не переносится.<br><span class="con">–</span> На телефоне шторка выше на 52 px.</p>
+ </div>
+ <div class="var">
+  <h3>Вариант 2 – в ряд, «Применить ещё»</h3>
+  <div class="devs">
+   <div class="dev"><span>Компьютер, правая панель</span>
+    <div class="pan"><div class="cvt">Покрытие стены 1<b>Убрать</b></div>
+     <div class="cvr"><div class="sw"></div><div><div class="n">Краска «Комфорт»</div><div class="m">Светлый шалфей, ведро 5 л</div><div class="pr">1 250 ₽</div></div></div>
+     <div class="row"><div class="btn">Заменить</div><div class="btn">Применить ещё</div></div></div></div>
+   <div class="dev"><span>Телефон, шторка «Параметры»</span>
+    <div class="pan ph"><div class="cvt">Стена 1</div>
+     <div class="cvr"><div class="sw"></div><div><div class="n">Краска «Комфорт», светлый шалфей</div><div class="m">1 ведро, 1 250 ₽</div></div></div>
+     <div class="row"><div class="btn">Заменить</div><div class="btn">Применить ещё</div></div></div></div>
+  </div>
+  <p class="note"><span class="pro">+</span> Компактнее, одна строка.<br><span class="con">–</span> «Применить ещё» не говорит, куда: на стены или в комнаты – узнаешь только в окне. На узком телефоне (360) кнопки впритык.</p>
+ </div>
+</div>
+
+<h2>A1 – строка товара в списках</h2>
+<p class="lead">Сейчас на сайте 4 разные строки одного и того же товара. Предлагаю одну основу (как в корзине) и только нужные отличия по месту.</p>
+<div class="grid">
+ <div class="var best"><span class="rec">Советую как основу</span><h3>А – как в корзине (W3)</h3>
+  <div class="list">
+   <div class="li" style="grid-template-columns:64px minmax(0,1fr) auto"><div class="ph64"></div><div><div class="t">Обои «Лён Светлый»</div><div class="s">1 490 ₽ за рулон</div></div><div><div class="step"><span>−</span><span>4</span><span>+</span></div><div class="sum" style="margin-top:6px">5 960 ₽</div></div></div>
+   <div class="li" style="grid-template-columns:64px minmax(0,1fr) auto"><div class="ph64" style="background:#E3E1DA"></div><div><div class="t">Клей для флизелиновых обоев</div><div class="s">590 ₽ за упаковку</div></div><div><div class="step"><span>−</span><span>1</span><span>+</span></div><div class="sum" style="margin-top:6px">590 ₽</div></div></div>
+  </div>
+  <p class="note">Фото 64, цена за единицу под названием, количество и сумма справа.</p></div>
+ <div class="var"><h3>Б – как в смете (W5)</h3>
+  <div class="list">
+   <div class="li" style="grid-template-columns:40px minmax(0,1fr) 72px 88px"><div class="ph40"></div><div><div class="t">Обои «Лён Светлый»</div><div class="s">Стена 1, 2</div></div><div class="qty">4 рулона</div><div class="sum">5 960 ₽</div></div>
+   <div class="li" style="grid-template-columns:40px minmax(0,1fr) 72px 88px"><div class="ph40" style="background:#E3E1DA"></div><div><div class="t">Клей для флизелиновых обоев</div><div class="s">Для поклейки</div></div><div class="qty">1 уп.</div><div class="sum">590 ₽</div></div>
+  </div>
+  <p class="note">Фото 40 (на телефоне 64), количество отдельной колонкой – удобно сравнивать строки таблицы.</p></div>
+ <div class="var"><h3>В – «Понадобится для работы» (W1, страница товара)</h3>
+  <div class="list">
+   <div class="li" style="grid-template-columns:22px 52px minmax(0,1fr) auto"><div class="ck">✓</div><div class="ph52" style="background:#E3E1DA"></div><div><div class="t">Клей для флизелиновых обоев</div><div class="s">1 уп. на 12 м²</div></div><div class="sum">590 ₽</div></div>
+   <div class="li" style="grid-template-columns:22px 52px minmax(0,1fr) auto"><div class="ck">✓</div><div class="ph52"></div><div><div class="t">Грунтовка глубокого проникновения</div><div class="s">1 канистра</div></div><div class="sum">450 ₽</div></div>
+  </div>
+  <p class="note">Галочка слева, фото 52, подпись прижата вниз.</p></div>
+ <div class="var"><h3>Г – материалы интерьера (W2)</h3>
+  <div class="grp" style="margin-top:12px">
+   <div class="li" style="grid-template-columns:64px minmax(0,1fr) auto"><div class="ph64"></div><div><div class="t">Обои «Лён Светлый»</div><div class="s">4 рулона</div></div><div class="sum">5 960 ₽</div></div>
+   <div class="li" style="grid-template-columns:64px minmax(0,1fr) auto"><div class="ph64" style="background:#E3E1DA"></div><div><div class="t">Клей для флизелиновых обоев</div><div class="s">1 уп.</div></div><div class="sum">590 ₽</div></div>
+  </div>
+  <p class="note">Фото 64, рамка вокруг всей группы, без галочек.</p></div>
+</div>
+<div class="var" style="margin-top:20px"><h3>Что предлагаю для A1: одна строка «А», отличия только по месту</h3>
+ <p class="note" style="margin-top:4px">Везде: фото 64 (в таблице сметы на компьютере – 40), название в 2 строки, под ним цена за единицу или количество, справа сумма. Отличия: в корзине – степпер; в «Понадобится» – галочка слева; в смете – количество колонкой; у интерьера – рамка вокруг группы. Шрифты, отступы и фото – одни и те же.</p></div>
+
+<div class="choice"><h3>Ответь двумя словами</h3>
+<ol><li><b>A3:</b> вариант 1 (столбцом) или 2 (в ряд, «Применить ещё»). Советую 1.</li>
+<li><b>A1:</b> «А как основа» или другой вариант (Б / В / Г). Советую «А как основа».</li></ol></div>
+</div></body></html>
