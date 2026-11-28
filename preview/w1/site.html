@@ -27582,6 +27582,33 @@ html body #ui .ro-fs-none:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){margin:0!
 html body :is(.unpaid-strip .unpaid-inner,aside.filter-panel,.gallery-frame,.ro-kc,#checkout-form.checkout-form,aside.order-summary,.ro-w2-chip,.ro-w2-feat,nav.cab-menu,a.ord-row,nav.acc-side,.info-layout aside.side,.track-card,.sum-card,.faq-list,#ui .pcard.cv,.hero-motion,.ai-video,.hero-play,.ai-play,.fld>button):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 html body :is(.stock-label,.availability-badge,.row-badge,.ord-badge):not(#z1):not(#z2):not(#z3):not(#z4):not(#z5){border-color:#BCDDE2!important}
 </style>
+<style id="ro-w1-10">
+/* W1-10: образец варианта – не переключатель W4-5 */
+html body #ui .pdet.ro-pd .pdet-vl>button>span.sw:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){display:block!important;flex:0 0 28px!important;width:28px!important;height:28px!important;min-height:0!important;max-height:28px!important;align-self:center!important;padding:0!important;gap:0!important;margin:0!important;background:none!important;box-shadow:none!important}
+html body #ui .pdet.ro-pd .pdet-vl>button>span.sw>svg{display:block;width:100%;height:100%}
+/* W1-10: увеличение в большом фото */
+.ro-lb{overflow:hidden}
+.ro-lb>img,.ro-lb>svg{cursor:zoom-in;transition:transform .2s ease,clip-path .2s ease;touch-action:none;user-select:none;-webkit-user-select:none}
+.ro-lb>[data-z="1"]{cursor:zoom-out;transform:scale(2.5)}
+@media (prefers-reduced-motion:reduce){.ro-lb>img,.ro-lb>svg{transition:none}}
+</style>
+<script>
+/* W1-10: клик/тап по фото – приблизить в этой точке; ведёшь мышью/пальцем – смотришь другую часть; ещё клик – обратно */
+(function(){function clip(m){if(m.dataset.z!=='1'){m.style.clipPath='';return}var r=m._r,k=2.5,q=1-1/k,ox=m._ox*r.width,oy=m._oy*r.height;
+ m.style.clipPath='inset('+(oy*q)+'px '+((r.width-ox)*q)+'px '+((r.height-oy)*q)+'px '+(ox*q)+'px round '+(16/k)+'px)'}
+ function org(m,x,y){var r=m._r||m.getBoundingClientRect();m._ox=Math.max(0,Math.min(1,(x-r.left)/r.width));m._oy=Math.max(0,Math.min(1,(y-r.top)/r.height));
+ m.style.transformOrigin=(m._ox*100)+'% '+(m._oy*100)+'%';clip(m)}
+ var drag=null;
+ document.addEventListener('pointerdown',function(e){var m=e.target.closest&&e.target.closest('.ro-lb>img,.ro-lb>svg');if(!m)return;drag={m:m,x:e.clientX,y:e.clientY,moved:false}},true);
+ document.addEventListener('pointermove',function(e){var m=e.target.closest&&e.target.closest('.ro-lb>img,.ro-lb>svg');
+  if(drag&&drag.m.dataset.z==='1'){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>6)drag.moved=true;if(drag.moved){org(drag.m,e.clientX,e.clientY);e.preventDefault()}return}
+  if(m&&m.dataset.z==='1'&&e.pointerType==='mouse')org(m,e.clientX,e.clientY)},true);
+ document.addEventListener('pointerup',function(e){var d=drag;drag=null;if(!d||d.moved)return;var m=d.m;
+  if(m.dataset.z==='1'){m.dataset.z='0';clip(m)}else{m._r=m.getBoundingClientRect();m.dataset.z='1';org(m,e.clientX,e.clientY)}},true);
+ document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.ro-lb>img,.ro-lb>svg')){e.stopPropagation()}},true);
+ document.addEventListener('keydown',function(e){var m=document.querySelector('.ro-lb>[data-z="1"]');if(m&&(e.key==='-'||e.key==='0')){m.dataset.z='0';clip(m)}});
+})();
+<%/script>
 </body></html></script>
 <script type="text/x-ro-module" id="mod-account"><!doctype html>
 <html lang="ru">
