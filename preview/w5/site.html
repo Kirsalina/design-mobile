@@ -20040,7 +20040,6 @@ html body #ui.ro-w5-est .ed .ctr>.empty:not(#z1):not(#z2):not(#z3):not(#z4):not(
  #ui .ro-w5-kh{column-gap:12px}
  #ui .ro-w5-k .ro-w5-r{padding-right:0}
  #ui .ro-w5-r{grid-template-columns:22px minmax(0,1fr) auto;column-gap:12px}
- #ui .ro-w5-r>.ro-w5-th{display:none}
  #ui .ro-w5-t{grid-column:2;grid-row:1/3}
  #ui .ro-w5-r .ro-w5-q{grid-column:2;grid-row:3}
  #ui .ro-w5-s{grid-column:3;grid-row:1/4;align-self:center}
@@ -20176,6 +20175,53 @@ html body #ui .estimate-list h4.eg>small{grid-column:2;text-align:right;white-sp
 #ui .ro-w5-rf .room-option>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #ui .ro-w5-miss .ro-miss-t{min-width:0;flex:1 1 auto}
 #ui .ro-w5-miss .ro-miss-t>*{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+/* W5-12 (28.11, Алина 11:38): уровни сметы – полоса группы («Стены») → покрытие → полоса «Материалы к …» → группа «Нужно для… / Рекомендуем»
+   (сдвинута вправо, 14/600 тёмный) → материал (ещё правее, миниатюра 32, 14/400 – меньше своего заголовка). Названия комнат режутся на 18 знаках.
+   Телефон: свободнее отступы (16 слева), вкладки ровно от левого до правого края, «Смета неполная» – спокойная белая плашка, не «ошибка». */
+@media (min-width:701px){
+ #ui .ro-w5-rh{grid-template-columns:22px 22px minmax(0,1fr) 120px 110px 40px!important}
+ #ui .ro-w5-rh>input{grid-column:2!important}
+ #ui .ro-w5-rh .t{grid-column:3/6!important}
+ #ui .ro-w5-r,#ui .ro-w5-k .ro-w5-r{grid-template-columns:56px 22px 32px minmax(0,1fr) 120px 110px 40px!important}
+ #ui .ro-w5-r>input{grid-column:2!important}
+ #ui .ro-w5-r>.ro-w5-th{grid-column:3}
+ #ui .ro-w5-t{grid-column:4!important}
+ #ui .ro-w5-r .ro-w5-q{grid-column:5!important}
+ #ui .ro-w5-s,#ui .ro-w5-r.off .ro-w5-s{grid-column:6!important}
+}
+@media (max-width:700px){
+ #ui .ro-w5-kh{padding:10px 12px 10px 16px!important}
+ #ui .ro-w5-rh{grid-template-columns:12px 22px minmax(0,1fr) 32px!important;padding-left:16px!important;padding-right:12px!important}
+ #ui .ro-w5-rh>input{grid-column:2!important}
+ #ui .ro-w5-rh .t{grid-column:3/5!important}
+ #ui .ro-w5-r,#ui .ro-w5-k .ro-w5-r{grid-template-columns:12px 22px 28px minmax(0,1fr) auto 32px!important;row-gap:2px;padding-left:16px!important;padding-right:12px!important}
+ #ui .ro-w5-r>input{grid-column:2!important;grid-row:1/3;align-self:center}
+ #ui .ro-w5-r>.ro-w5-th{grid-column:3;grid-row:1/3;align-self:center}
+ #ui .ro-w5-t{grid-column:4/7!important;grid-row:1}
+ #ui .ro-w5-r .ro-w5-q{grid-column:4!important;grid-row:2;text-align:left;align-self:center}
+ #ui .ro-w5-s,#ui .ro-w5-r.off .ro-w5-s{grid-column:5!important;grid-row:2!important;align-self:center}
+ /* свободнее: строки покрытий, полосы, «Выбрать всё» – 16 слева, 12 справа (колонки сумм и стрелок совпадают) */
+ html body #ui .estimate-list .estimate-row.r2:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){padding:12px 12px 12px 16px!important}
+ html body #ui .estimate-list h4.eg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){padding:12px 12px 12px 16px!important}
+ html body #ui .estimate-list .estimate-list-head:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){min-height:52px!important;padding:0 12px 0 16px!important}
+ html body #ui.ro-w5-est .ed .ctr:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){row-gap:16px!important;gap:16px!important}
+ /* вкладки – от левого до правого края, промежутки равные (как «Планировка … Смета») */
+ #ui .ro-w5-seg{display:flex!important;justify-content:space-between!important;gap:4px}
+ #ui .ro-w5-seg>button{flex:0 0 auto!important;padding:0 12px!important}
+ /* «Смета неполная» – спокойная белая плашка с контуром, по ширине текста; без синей подложки */
+ html body #ui.ro-w5-est .ed .ctr>.tb.estimate-toolbar>.ro-ew:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:none!important;border:0!important;padding:0!important;box-shadow:none!important}
+ html body #ui.ro-w5-est .ro-ew .ro-ew-b:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){display:inline-flex!important;align-items:center;gap:8px;height:40px;padding:0 14px!important;background:#fff!important;border:1px solid #BCDDE2!important;border-radius:10px!important;box-shadow:none!important;font:600 14px/21px Manrope,system-ui,sans-serif!important;color:#152A4B!important}
+ html body #ui.ro-w5-est .ro-ew .ro-ew-b svg:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){width:18px;height:18px;color:#006B79!important;stroke:#006B79!important}
+ @media (hover:hover){html body #ui.ro-w5-est .ro-ew .ro-ew-b:hover:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){border-color:#7FB9C2!important;background:#fff!important}}
+}
+#ui .ro-w5-th{display:block;width:32px;height:32px;border-radius:6px;overflow:hidden;border:1px solid #BCDDE2;box-sizing:border-box;background:#fff}
+#ui .ro-w5-th>*{width:100%!important;height:100%!important;display:block;object-fit:cover}
+@media (max-width:700px){#ui .ro-w5-th{width:28px;height:28px}}
+#ui .ro-w5-rh{min-height:40px;margin-top:6px}
+#ui .ro-w5-rh .t{font:600 14px/21px Manrope,system-ui,sans-serif!important;color:#152A4B!important}
+#ui .ro-w5-n{font:400 14px/21px Manrope,system-ui,sans-serif}
+#ui .ro-w5-w{font:400 12px/18px Manrope,system-ui,sans-serif;color:#566273}
+#ui .ro-w5-scope{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 </style>
 <script id="ro-w5-smeta">
 /* W5, S1 v5 (25.11, 22:40: фидбэк Алины 19:55 – улучшить в контексте конструктора, не «как корзина»).
@@ -20219,6 +20265,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var t=[M.v?pNb(M.v):'',M.pack?(typeof pPack==='function'?pPack(M.pack):M.pack):'',l.eff].filter(Boolean).join(', ');return t.charAt(0).toUpperCase()+t.slice(1)}
  function row(l){var tg=l.swapped?'<span class="pbadge">Аналог</span>':'';
   return '<div class="ro-w5-r'+(l.on?'':' off')+'"><input type="checkbox" id="eon-'+l.id+'" data-m="eon" data-k="'+l.id+'"'+(l.on?' checked':'')+' aria-label="В смету: '+esc(l.name)+'">'+
+   '<span class="ro-w5-th" aria-hidden="true">'+pthumb(l.eff,'w5'+sid(l.id),32)+'</span>'+
    '<div class="ro-w5-t"><button type="button" class="ro-w5-n" data-act="ro-kit-det" data-id="'+l.id+'">'+pNb(esc(l.name))+'</button><span class="ro-w5-w">'+kFor(l)+'</span>'+tg+'</div>'+
    '<span class="ro-w5-q">'+qtyH(l.buy)+'</span><b class="ro-w5-s"'+(l.on?'':' aria-label="Не в смете, добавит '+R0(l.sum)+'"')+'>'+(l.on?'':'+\u00a0')+R0(l.sum)+'</b></div>'}
  function grp(own,key,title,R){if(!R.length)return '';var on=R.filter(function(l){return l.on}).length,id='w5g-'+sid(own.id)+'-'+key;
@@ -20238,9 +20285,10 @@ document.addEventListener('DOMContentLoaded',function(){
   if(S._w5sc&&T&&T.w5room!=null&&o&&o.rooms[T.w5room]){var sv=T.rooms,r={};o.rooms.forEach(function(x,ri){if(ri!==T.w5room||sv[ri]===false)r[ri]=false});T.rooms=r;try{return _ec2.apply(this,arguments)}finally{T.rooms=sv}}
   return _ec2.apply(this,arguments)};
  function scoped(f){var was=S._w5sc;S._w5sc=true;try{return f()}finally{S._w5sc=was}}
- function roomName(ri){var o=S.objs[S.cur]||{rooms:[]};return (o.rooms[ri]||{}).name||''}
+ var RNMAX=18;function cutRoom(n){n=String(n||'');return n.length>RNMAX?n.slice(0,RNMAX-1).replace(/\s+$/,'')+'\u2026':n}
+ function roomName(ri){var o=S.objs[S.cur]||{rooms:[]};return cutRoom((o.rooms[ri]||{}).name||'')}
  function barHTML(T){var o=S.objs[S.cur]||{rooms:[]},cur=T.w5room==null?'Все комнаты':roomName(T.w5room),op=!!T.roomOpen;
-  var opts='';if(op){var it=[[null,'Все комнаты']];o.rooms.forEach(function(r,ri){if(T.rooms[ri]!==false)it.push([ri,r.name])});
+  var opts='';if(op){var it=[[null,'Все комнаты']];o.rooms.forEach(function(r,ri){if(T.rooms[ri]!==false)it.push([ri,cutRoom(r.name)])});
    opts='<div class="room-options" role="listbox" aria-label="Комната">'+it.map(function(x){var sel=(T.w5room==null?null:T.w5room)===x[0];return '<button type="button" class="room-option" role="option" data-act="ro-w5-ro" data-r="'+(x[0]==null?'':x[0])+'" aria-selected="'+sel+'"><span>'+esc(x[1])+'</span>'+(sel?I('check'):'')+'</button>'}).join('')+'</div>'}
   var dd='<div class="room-filter ro-w5-rf"><button type="button" class="room-trigger" data-act="ro-w5-rm" aria-haspopup="listbox" aria-expanded="'+op+'" aria-label="Комната: '+esc(cur)+'"><span>'+esc(cur)+'</span><span class="ic">'+I('down')+'</span></button>'+opts+'</div>';
   var seg=['','Стены','Пол','Потолок'].map(function(g){return '<button type="button" data-act="e-grp" data-g="'+g+'" aria-pressed="'+((T.grp||'')===g)+'"><span data-t="'+(g||'Все')+'">'+(g||'Все')+'</span></button>'}).join('');
@@ -20280,6 +20328,7 @@ document.addEventListener('DOMContentLoaded',function(){
   try{var CA=estCalc(S),cv=CA.lines.filter(function(l){return !l.kit});h=h.replace(/Выбрано[\s\u00a0]*\d+[\s\u00a0]*из[\s\u00a0]*\d+[\s\u00a0]*позици[а-я]*/,'Выбрано покрытий: '+cv.filter(function(l){return l.on}).length+' из '+cv.length)}catch(e){}
   var T=S.E.est;if(T.w5room!=null){var C1=scoped(function(){return estCalc(S)});h=h.replace('</p></div></div>','</p><p class="sm ro-w5-scope">'+esc(roomName(T.w5room))+': '+R0(C1.total)+'</p></div></div>')}
   /* «Без покрытия»: кликается только «Выбрать» (ссылка-действие), не вся строка */
+  try{var oo=S.objs[S.cur]||{rooms:[]};h=h.replace(/(<span class="ro-miss-t">\s*<span[^>]*>)([^<]*)(<\/span>)/g,function(m,a,n,b){return a+esc(cutRoom(n.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"')))+b})}catch(e){}
   h=h.replace(/<button type="button" class="tl ro-miss" data-act="e-go" data-ri="(\d+)" data-k="([^"]*)">(<span class="ro-miss-t">[\s\S]*?<\/span><\/span>)<span class="mut">Выбрать<\/span><\/button>/g,
    '<div class="ro-w5-miss">$3<button type="button" class="lnk" data-act="e-go" data-ri="$1" data-k="$2">Выбрать</button></div>');
   return h}}
