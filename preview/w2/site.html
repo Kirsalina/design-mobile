@@ -8847,7 +8847,7 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
 @media (prefers-reduced-motion:reduce){html body :is(.button,.btn,.v-btn,.icon-button,.cart-stepper):not(#ro-w4-a):not(#ro-w4-b):not(#ro-w4-c){transition:none!important}}
 </style>
 <style id="ro-w2-home-css">
-/* W2 v19 (27.11 19:40): блок «Готовые интерьеры» на главной – в одном варианте с блоком «ИИ-помощник» (.ai-section): фон #EEF5F6, r16, отступ 48 (тел. 24),
+/* W2 v20 (28.11 09:30): блок «Готовые интерьеры» на главной – в одном варианте с блоком «ИИ-помощник» (.ai-section): фон #EEF5F6, r16, отступ 48 (тел. 24),
    сетка 45/55, метка-строка 12 caps, заголовок 32 (тел. 28), описание 16/24, пункты с контурными иконками 24, кнопка 52. Справа – карусель популярных. */
 #design-app .ro-w2-banner{display:grid;grid-template-columns:minmax(0,45fr) minmax(0,55fr);column-gap:32px;align-items:start;margin:24px 0 0;padding:48px;border-radius:16px;background:#EEF5F6;color:#152A4B}
 #design-app .ro-w2-hhead{grid-column:1;grid-row:1}
@@ -8931,15 +8931,20 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
  #design-app .ro-w2-hinfo .ro-w2-hcard b{grid-area:name}
  #design-app .ro-w2-hinfo .ro-w2-hprice{grid-area:price;margin-top:2px}
  #design-app .ro-w2-hlist{margin:20px 0 24px;gap:12px}}
-/* 27.11 20:40: телефон – та же листалка, но спокойнее: фото + карточка одним блоком, под ним точки (как в лучших практиках), листается пальцем; стрелки только на ПК */
-#design-app .ro-w2-hdots{display:none}
-@media (max-width:700px){
- #design-app .ro-w2-hnav{display:none!important}
- #design-app .ro-w2-hdots{display:flex;justify-content:center;gap:6px;margin-top:12px}
- #design-app .ro-w2-hdot{width:8px;height:8px;padding:0;border:0;border-radius:4px;background:#BCDDE2;cursor:pointer;transition:width .2s ease,background .2s ease;position:relative}
- #design-app .ro-w2-hdot::after{content:"";position:absolute;inset:-14px -6px}
- #design-app .ro-w2-hdot[aria-current=true]{width:20px;background:#19CBD8}
- #design-app .ro-w2-hdot:focus-visible{outline:1px solid #006B79;outline-offset:3px}}
+/* 28.11: одна листалка на всех ширинах – полоса [‹ • • • ›] под фото (стили .ro-w2-cbar в ro-w2-css не видны модулю главной – дублируем) */
+#design-app .ro-w2-hnav{display:none!important}
+#design-app .ro-w2-cbar{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
+#design-app .ro-w2-hdots{display:flex;align-items:center;gap:6px}
+#design-app .ro-w2-hdot{position:relative;width:8px;height:8px;padding:0;border:0;border-radius:4px;background:#BCDDE2;cursor:pointer;transition:width .2s ease,background .2s ease}
+#design-app .ro-w2-hdot::after{content:"";position:absolute;inset:-14px -5px}
+#design-app .ro-w2-hdot[aria-current=true]{width:20px;background:#19CBD8}
+#design-app .ro-w2-hdot:focus-visible{outline:1px solid #006B79;outline-offset:3px}
+#design-app .ro-w2-cbar .ro-w2-harr{width:40px;height:40px;border:1px solid #BCDDE2;border-radius:10px;background:#fff}
+@media (hover:hover){#design-app .ro-w2-cbar .ro-w2-harr:hover{border-color:#7FB9C2;background:#fff}}
+/* пункты: иконка по центру строки, все в одну строку */
+#design-app .ro-w2-hlist li{align-items:center}
+#design-app .ro-w2-hlist li span{white-space:nowrap}
+@media (max-width:700px){#design-app .ro-w2-hlist li{font-size:15px}}
 @media (prefers-reduced-motion:reduce){#design-app .ro-w2-hdot{transition:none}}
 </style>
 <script id="ro-w2-home">
@@ -8960,14 +8965,14 @@ html body :is(.brand,.brand>span,.brand .wordmark):not(#ro-w4-a):not(#ro-w4-b):n
  function show(i){var d=F[i];return '<a class="ro-w2-hshow" href="#" data-w2-path="/design/'+d.id+'" aria-label="'+esc(d.n)+', '+rub(d.t)+' за все материалы"><img src="'+d.i+'" alt="" loading="lazy"></a>'}
  /* Вид как у блока «ИИ-помощник» на главной (Алина 27.11 18:02/18:06: один вариант баннера): метка-строка 12 caps, заголовок, описание, 3 пункта с контурными иконками, кнопка; справа – карусель вместо видео */
  function html(){return '<div class="ro-w2-hhead"><p class="ro-w2-hkicker">Готовые интерьеры</p><h2 id="ro-w2-bt">Ремонт как с картинки\u00A0–<br class="ro-w2-br"> в\u00A0вашей квартире</h2></div>'+
-  '<p class="ro-w2-hlead">Выберите интерьер, который нравится, и примерьте его на свою квартиру. Сколько и каких материалов нужно – посчитаем сами.</p>'+
+  '<p class="ro-w2-hlead">Интерьеры, где стены, пол и потолок уже подобраны друг к другу. Примерьте любой на свою квартиру – смета будет готова за пару минут.</p>'+
   '<div class="ro-w2-hvis" role="region" aria-roledescription="карусель" aria-label="Популярные интерьеры"><div class="ro-w2-hframe"><div class="ro-w2-hslide">'+show(cur)+'</div><div class="ro-w2-hinfo" aria-live="polite">'+card(cur)+'</div></div>'+
-  '<div class="ro-w2-hdots" role="group" aria-label="Выбор интерьера">'+F.map(function(d,k){return '<button type="button" class="ro-w2-hdot" data-w2-go="'+k+'" aria-label="'+esc(d.n)+'" aria-current="'+(k===cur)+'"></button>'}).join('')+'</div>'+'<div class="ro-w2-hnav"><button type="button" class="ro-w2-harr is-prev" data-w2-step="-1" aria-label="Предыдущий интерьер">'+chev+'</button><span class="ro-w2-hpos" aria-live="polite">'+(cur+1)+' / '+F.length+'</span><button type="button" class="ro-w2-harr" data-w2-step="1" aria-label="Следующий интерьер">'+chev+'</button></div></div>'+
-  '<ul class="ro-w2-hlist"><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>'+'<span>Примерьте на планировку вашего дома</span></li><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>'+'<span>Размерами займётся ИИ-помощник</span></li><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>'+'<span>Смета со всеми материалами – за пару минут</span></li></ul>'+
+  '<div class="ro-w2-cbar" role="group" aria-label="Листать интерьеры"><button type="button" class="ro-w2-harr is-prev" data-w2-step="-1" aria-label="Предыдущий интерьер">'+chev+'</button><span class="ro-w2-hdots">'+F.map(function(d,k){return '<button type="button" class="ro-w2-hdot" data-w2-go="'+k+'" aria-label="'+esc(d.n)+'" aria-current="'+(k===cur)+'"></button>'}).join('')+'</span><button type="button" class="ro-w2-harr" data-w2-step="1" aria-label="Следующий интерьер">'+chev+'</button></div></div>'+
+  '<ul class="ro-w2-hlist"><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>'+'<span>Планировка вашего дома уже в базе</span></li><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/></svg>'+'<span>Размеры возьмёт ИИ-помощник</span></li><li>'+'<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>'+'<span>Смета и заказ в пару кликов</span></li></ul>'+
   '<a href="#" data-w2-path="/designs" class="v-btn v-theme--desiign bg-primary v-btn--density-default elevation-0 rounded-lg v-btn--size-default v-btn--variant-flat button ro-w2-hgo"><span class="v-btn__overlay"></span><span class="v-btn__underlay"></span><span class="v-btn__content">Смотреть интерьеры '+arrow+'</span></a>'}
  /* аккуратная смена слайда: старый уезжает и гаснет, новый приезжает с другой стороны (без анимации при «уменьшить движение») */
  function slide(b,dir){var box=b.querySelector('.ro-w2-hslide'),old=box.firstElementChild,red=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  b.querySelector('.ro-w2-hpos').textContent=(cur+1)+' / '+F.length;b.querySelector('.ro-w2-hinfo').innerHTML=card(cur);b.querySelectorAll('.ro-w2-hdot').forEach(function(x){x.setAttribute('aria-current',String(+x.getAttribute('data-w2-go')===cur))});
+  b.querySelector('.ro-w2-hinfo').innerHTML=card(cur);b.querySelectorAll('.ro-w2-hdot').forEach(function(x){x.setAttribute('aria-current',String(+x.getAttribute('data-w2-go')===cur))});
   var t=document.createElement('div');t.innerHTML=show(cur);var nw=t.firstElementChild;
   [].slice.call(box.querySelectorAll('.is-gone')).forEach(function(x){x.remove()});old=box.firstElementChild;
   if(red||!old){box.innerHTML='';box.appendChild(nw);return}
@@ -18272,6 +18277,34 @@ html body #ro-w2-dlg .ro-w2-apt .ro-w2-ddw,html body #ro-w2-dlg .ro-w2-apt .ro-w
 /* карточки интерьеров: кнопка без значка корзины */
 html body .shop .ro-w2-card .product-card-actions .button svg,html body .shop .ro-w2-card .product-card-actions .button::before{display:none!important}
 @media (max-width:700px){#detail .ro-w2-how2 li{white-space:normal}}
+/* ===== 28.11 09:30 ===== */
+/* одна листалка везде: фото → под ним полоса [‹ • • • ›], на ПК и телефоне одинаково */
+.ro-w2-cbar{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px}
+.ro-w2-cbar .ro-w2-hdots{display:flex;align-items:center;gap:6px}
+.ro-w2-hdot{position:relative;width:8px;height:8px;padding:0;border:0;border-radius:4px;background:#BCDDE2;cursor:pointer;transition:width .2s ease,background .2s ease}
+.ro-w2-hdot::after{content:"";position:absolute;inset:-14px -5px}
+.ro-w2-hdot[aria-current=true]{width:20px;background:#19CBD8}
+.ro-w2-hdot:focus-visible{outline:1px solid #006B79;outline-offset:3px}
+.ro-w2-cbar .ro-w2-farr{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border:1px solid #BCDDE2;border-radius:10px;background:#fff;color:#152A4B;cursor:pointer}
+.ro-w2-cbar .ro-w2-farr svg{width:20px;height:20px}
+.ro-w2-cbar .ro-w2-farr.is-prev svg{transform:rotate(180deg)}
+@media (hover:hover){.ro-w2-cbar .ro-w2-farr:hover{border-color:#7FB9C2}}
+.ro-w2-cbar .ro-w2-farr:focus-visible{outline:1px solid #006B79;outline-offset:2px}
+#ro-w2 .ro-w2-fnav{display:none!important}
+#ro-w2 .ro-w2-fbuy{padding-right:0!important}
+@media (prefers-reduced-motion:reduce){.ro-w2-hdot{transition:none}}
+/* витрина: заголовки комнат и «Все … →» как на главной и в каталоге (20/28) */
+#ro-w2 .ro-w2-shead h2{font-size:20px!important;line-height:28px!important}
+#ro-w2 .ro-w2-all{line-height:28px}
+/* окно: «Новая комната» – отдельный вариант (бирюзовый пунктир), «или» перед ним; длинные названия объектов – в одну строку с «…» */
+#ro-w2-dlg .ro-w2-or{margin:4px 0;text-align:center;font-size:14px;line-height:21px;color:#566273}
+#ro-w2-dlg .pay-option:has(input[value=new]){border-style:dashed!important;border-color:#19CBD8!important}
+#ro-w2-dlg .pay-option:has(input[value=new]) b{color:#006B79}
+#ro-w2-dlg .pay-option b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ro-w2-dlg .pay-option>span{min-width:0;flex:1}
+html body .shop .ro-w2-cbar .ro-w2-farr{border:1px solid #BCDDE2!important;border-radius:10px!important;background:#fff!important;width:40px!important;height:40px!important}
+@media (max-width:700px){#ro-w2 .ro-w2-fbuy{margin-top:16px!important}#ro-w2 .ro-w2-mlist{min-height:0!important}}
+#ro-w2-dlg .ro-w2-s2 legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 <script id="ro-w2-img">window.RO_W2_IMG={"bath1": "../../assets/972574c2df2c.webp", "bath2": "../../assets/46f053a07089.webp", "bath3": "../../assets/4b0e4f082cf3.webp", "bed1": "../../assets/753c61eaf0e1.webp", "bed2": "../../assets/0c0ab3d38df6.webp", "ent1": "../../assets/b83c41478fb7.webp", "ent2": "../../assets/c119c242477c.webp", "ent3": "../../assets/34a8f50df3d1.webp", "kid1": "../../assets/6b1510b9ff0a.webp", "kid2": "../../assets/c706497259ec.webp", "kit1": "../../assets/2f6be14c1a94.webp", "kit2": "../../assets/b13cfe991feb.webp", "kit3": "../../assets/0b64cb4693cf.webp", "liv1": "../../assets/75fbbb6487de.webp", "liv2": "../../assets/97637cf44d3d.webp", "liv3": "../../assets/c8f12a628526.webp", "liv4": "../../assets/0991e2e588f1.webp"};<%/script>
 <script id="ro-w2">
@@ -18360,31 +18393,35 @@ html body .shop .ro-w2-card .product-card-actions .button svg,html body .shop .r
    '<div class="ro-w2-fbody"><span class="ro-w2-badge2">Популярное</span><h2 id="ro-w2-ft"><a href="#design='+F.id+'" data-route>'+esc(F.name)+'</a></h2><p class="meta">'+esc(folderName(F.folder))+', '+nb(num(F.area)+' м²')+'</p>'+
    (first?'<p class="ro-w2-fdesc">'+esc(first.replace(/\.$/,''))+'.</p>':'')+
    (function(){var M=mats(F),L=M.slice(0,3),more=M.length-L.length;return '<ul class="ro-w2-mlist">'+L.map(function(m){return '<li><a href="#product='+m.p.sku+'" data-route><span class="ro-w2-sw">'+productVisual(m.p)+'</span><span class="ro-w2-mt"><b>'+esc(m.s)+'</b> '+esc(m.p.name)+'</span></a></li>'}).join('')+'</ul>'+(more>0?'<a class="ro-w2-more" href="#design='+F.id+'" data-route>и ещё '+more+' '+pl(more,'материал','материала','материалов')+' в интерьере</a>':'<span class="ro-w2-more" aria-hidden="true"></span>')})()+
-   '<div class="ro-w2-fbuy"><p class="offer-price"><strong class="price">'+rub(total(F))+'</strong><span class="price-note">за материалы на '+nb(num(F.area)+' м²')+'</span></p>'+
+   '<div class="ro-w2-fbuy"><p class="offer-price"><strong class="price">'+rub(total(F))+'</strong><span class="price-note">за все материалы</span></p>'+
    '</div></div>'}
- var popI=0;
+ var popI=0;var arrowR='<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
  var PICK='liv-olive'; /* «Популярное» – в админке отметка (D7) */
  function drawHome(){var F=D.filter(function(d){return d.id===PICK})[0]||D[0];
   var hero=['liv-olive','bath-stone','kit-stone'].map(function(id){var d=D.filter(function(x){return x.id===id})[0];return d?img(d.img[0]):''});
   page.innerHTML=loc('','')+
    '<div class="ro-w2-hero"><div class="ro-w2-hcopy"><h1 id="ro-w2-t" tabindex="-1">Готовые интерьеры</h1>'+
-    '<p class="ro-w2-lead">Выберите понравившийся и примерьте на свою квартиру – материалы и смету посчитаем сами.</p>'+
+    '<p class="ro-w2-lead">Стены, пол и потолок уже подобраны друг к другу. Примерьте любой интерьер на свою квартиру – смета будет готова за пару минут.</p>'+
     '</div>'+
     '<div class="ro-w2-mosaic" aria-hidden="true">'+hero.map(function(src,i){return '<img class="m'+i+'" src="'+src+'" alt="" loading="'+(i?'lazy':'eager')+'">'}).join('')+'</div></div>'+
-   '<section class="ro-w2-feat" aria-roledescription="карусель" aria-label="Популярные интерьеры"><div class="ro-w2-fslide">'+feat(POPS[0],0)+'</div><div class="ro-w2-fnav"><button type="button" class="ro-w2-farr is-prev" data-w2-pop="-1" aria-label="Предыдущий интерьер">'+icon('right')+'</button><span class="ro-w2-fpos" aria-live="polite">1 / '+POPS.length+'</span><button type="button" class="ro-w2-farr" data-w2-pop="1" aria-label="Следующий интерьер">'+icon('right')+'</button></div></section>'+
+   '<section class="ro-w2-feat" aria-roledescription="карусель" aria-label="Популярные интерьеры"><div class="ro-w2-fslide">'+feat(POPS[0],0)+'</div></section><div class="ro-w2-cbar" role="group" aria-label="Листать интерьеры"><button type="button" class="ro-w2-farr is-prev" data-w2-pop="-1" aria-label="Предыдущий интерьер">'+icon('right')+'</button><span class="ro-w2-hdots">'+POPS.map(function(id,k){var x=D.filter(function(d){return d.id===id})[0];return '<button type="button" class="ro-w2-hdot" data-w2-popgo="'+k+'" aria-label="'+esc(x?x.name:'')+'" aria-current="'+(k===0)+'"></button>'}).join('')+'</span><button type="button" class="ro-w2-farr" data-w2-pop="1" aria-label="Следующий интерьер">'+icon('right')+'</button></div>'+
 
 
    FOLDERS.map(function(f){var L=inFolder(f[0]);if(!L.length)return '';
     return '<section class="ro-w2-sec" id="ro-w2-s-'+f[0]+'" aria-labelledby="ro-w2-h-'+f[0]+'"><div class="ro-w2-shead"><h2 id="ro-w2-h-'+f[0]+'">'+esc(PLURAL[f[0]])+'</h2>'+
-     '<a class="ro-w2-all" href="#designs='+f[0]+'" data-route>Все '+esc(PLURAL[f[0]].toLowerCase())+icon('right')+'</a></div>'+
+     '<a class="ro-w2-all" href="#designs='+f[0]+'" data-route>Все '+esc(PLURAL[f[0]].toLowerCase())+' '+arrowR+'</a></div>'+
      '<div class="product-grid ro-w2-grid">'+L.slice(0,4).map(card).join('')+'</div></section>'}).join('');
   var fs=page.querySelector('.ro-w2-feat');popI=0;
   /* спокойный сдвиг: новый интерьер въезжает сбоку, старый уезжает, без мигания; высота блока не меняется */
-  fs.addEventListener('click',function(e){var b=e.target.closest('[data-w2-pop]');if(!b)return;var dir=+b.getAttribute('data-w2-pop');popI=(popI+dir+POPS.length)%POPS.length;
+  function popTo(nx,dir){if(nx===popI)return;popI=nx;
    var red=matchMedia('(prefers-reduced-motion: reduce)').matches,old=fs.querySelector('.ro-w2-fslide:not(.is-gone)'),nw=document.createElement('div');nw.className='ro-w2-fslide';nw.innerHTML=feat(POPS[popI],popI);
    fs.querySelectorAll('.is-gone').forEach(function(x){x.remove()});
    if(red||!old){fs.innerHTML='';fs.appendChild(nw)}else{nw.classList.add(dir>0?'from-r':'from-l');old.classList.add('is-gone',dir>0?'to-l':'to-r');fs.appendChild(nw);requestAnimationFrame(function(){requestAnimationFrame(function(){nw.classList.remove('from-r','from-l')})});setTimeout(function(){if(old.parentNode)old.remove()},450)}
-   fs.querySelector('.ro-w2-fpos').textContent=(popI+1)+' / '+POPS.length});
+   bar.querySelectorAll('[data-w2-popgo]').forEach(function(x){x.setAttribute('aria-current',String(+x.getAttribute('data-w2-popgo')===popI))})}
+  var bar=fs.nextElementSibling;
+  bar.addEventListener('click',function(e){var b=e.target.closest('[data-w2-pop]');if(b){var dir=+b.getAttribute('data-w2-pop');popTo((popI+dir+POPS.length)%POPS.length,dir);return}
+   var g=e.target.closest('[data-w2-popgo]');if(g){var nx=+g.getAttribute('data-w2-popgo');popTo(nx,nx>popI?1:-1)}});
+  var px=null;fs.addEventListener('touchstart',function(e){px=e.touches[0].clientX},{passive:true});fs.addEventListener('touchend',function(e){if(px==null)return;var dx=e.changedTouches[0].clientX-px;px=null;if(Math.abs(dx)<50)return;var dir=dx<0?1:-1;popTo((popI+dir+POPS.length)%POPS.length,dir)},{passive:true});
  }
  function drawFolder(k){var L=inFolder(k),n=folderName(k);
   page.innerHTML=loc('<a href="#designs=1" data-route>Готовые интерьеры</a>'+icon('right')+'<span aria-current="page">'+esc(n)+'</span>','designs=1')+
@@ -18417,7 +18454,7 @@ html body .shop .ro-w2-card .product-card-actions .button svg,html body .shop .r
     (d.img.length>1?'<div class="gallery-thumbs" role="group" aria-label="Выбор фотографии">'+d.img.map(function(k,i){return '<button type="button" class="gallery-thumb" data-w2-slide="'+i+'" aria-current="'+(i===0)+'" aria-label="Фото '+(i+1)+' из '+d.img.length+'"><img src="'+img(k)+'" alt="" draggable="false"></button>'}).join('')+'</div>':'')+'</div>'+
    '<div class="detail-copy">'+(DESC[d.id]?'<p class="ro-w2-story">'+esc(DESC[d.id])+'</p>':'')+'<div class="ro-w2-sum"><p class="ro-w2-buyl">Все материалы для комнаты '+nb(num(d.area)+' м²')+'</p><p class="offer-price"><strong class="price">'+rub(t)+'</strong></p>'+
     '<dl class="ro-w2-split"><div><dt>Отделка</dt><dd>'+rub(f)+'</dd></div><div><dt>Для монтажа</dt><dd>'+rub(A.need)+'</dd></div>'+''+'</dl>'+
-    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Примерить у себя</button><ol class="ro-w2-how2"><li>Выберите объект и комнату</li><li>Посмотрите интерьер, поправьте, если нужно</li><li>Посчитаем материалы и составим смету</li></ol></div>'+
+    '<button type="button" class="button ro-w2-open" data-w2-open="'+d.id+'">Примерить у себя</button><ol class="ro-w2-how2"><li>Примерьте на планировку своего дома</li><li>Посмотрите, как будет, поправьте под себя</li><li>Получите смету и закажите в один клик</li></ol></div>'+
     ''+
     '<section class="detail-info ro-w2-mat" aria-labelledby="ro-w2-mt"><h2 id="ro-w2-mt">Материалы</h2><p class="ro-w2-msub">Количество посчитано на комнату '+nb(num(d.area)+' м²')+'. Для вашей комнаты пересчитаем в конструкторе.</p>'+
     d.groups.map(function(g){return '<div class="ro-w2-grp"><h3>'+esc(g[0])+'<span class="meta">'+nb(num(g[1])+' м²')+'</span></h3><div class="ro-w2-rows">'+g[2].map(function(x){var p=P(x[0]);return p?rowHTML(p,x[1],Math.round(p.price*x[1])):''}).join('')+'</div></div>'}).join('')+
@@ -18518,7 +18555,7 @@ html body .shop .ro-w2-card .product-card-actions .button svg,html body .shop .r
    else if(o&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();var n=e.key==='ArrowDown'?o.nextElementSibling:o.previousElementSibling;if(n)n.focus()}
    else if(!o&&e.key==='ArrowDown'){e.preventDefault();ddOpen(w)}});
   /* схема типовой планировки – копия схем конструктора (aptScheme, W1), чтобы человек узнал свою квартиру */
-  function scheme(){var v=aptVal();return v&&APTSVG[v]?APTSVG[v].replace('</figure>','<figcaption>Проверьте, что это ваша квартира</figcaption></figure>'):''}
+  function scheme(){var v=aptVal();return v&&APTSVG[v]?APTSVG[v]:''}
   function objVal(){return O.length?(f.querySelector('input[name=obj]:checked')||{}).value:'new'}
   function roomVal(){var r=f.querySelector('input[name=room]:checked');return r?r.value:'new'}
   function objName(){var v=objVal();return v==='new'?((f.elements.objName||{}).value||'').trim()||'Новый объект':O[+v].name}
@@ -18528,12 +18565,12 @@ html body .shop .ro-w2-card .product-card-actions .button svg,html body .shop .r
    label()}
   function drawRooms(){var v=objVal(),box=f.querySelector('.ro-w2-roomsbox'),h;
    if(v==='new'){var R=aptRooms()||[],want=MATCH[d.folder]||[],pick=R.findIndex(function(r){return want.indexOf(r[1])>=0});
-    h=R.map(function(r,k){return row('room',k,r[0],nb(num(r[2])+' м²'),k===pick)}).join('')+row('room','new','Новая комната',nb(num(d.area)+' м²'),pick<0)}
+    h=R.map(function(r,k){return row('room',k,r[0],nb(num(r[2])+' м²'),k===pick)}).join('')+'<p class="ro-w2-or">или</p>'+row('room','new','Новая комната',nb(num(d.area)+' м²')+' – по размерам интерьера',pick<0)}
    else{var o=O[+v],full=!user&&o.rooms.length>=GUEST_ROOMS;
-    h=o.rooms.map(function(n,k){return row('room',k,n,'',false)}).join('')+row('room','new','Новая комната',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':nb(num(d.area)+' м²'),true)}
+    h=o.rooms.map(function(n,k){return row('room',k,n,'',false)}).join('')+(o.rooms.length?'<p class="ro-w2-or">или</p>':'')+row('room','new','Новая комната',full?'Нужен вход: без входа до '+GUEST_ROOMS+' комнат':nb(num(d.area)+' м²')+' – по размерам интерьера',true)}
    box.innerHTML='<fieldset class="ro-w2-fs"><legend>Комната</legend><div class="pay-options ro-w2-rooms">'+h+'</div></fieldset>'}
   function setStep(n){step=n;s1.hidden=n!==1;s2.hidden=n!==2;
-   dlg.querySelector('.ro-w2-back2').hidden=n!==2;dlg.querySelector('#ro-w2-dt').textContent=n===1?'Где примерить интерьер?':'Комната в «'+objName()+'»';
+   dlg.querySelector('.ro-w2-back2').hidden=n!==2;dlg.querySelector('#ro-w2-dt').textContent=n===1?'Где примерить интерьер?':'Выберите комнату';
    if(n===2){drawRooms();var r=f.querySelector('input[name=room]:checked');if(r)r.focus()}
    else{var c=f.querySelector('input[name=obj]:checked')||f.elements.objName;if(c)c.focus()}
    label()}
