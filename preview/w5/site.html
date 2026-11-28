@@ -20004,6 +20004,8 @@ html body #ui.ro-w5-est .sub .crumbs.ro-w5-cr>:not(.ro-w5-rf):not(.saved){displa
 #ui .ro-w5-seg button>span::after{content:attr(data-t);font-weight:600;height:0;overflow:hidden;visibility:hidden;pointer-events:none}
 /* пусто по комнате / группе */
 html body #ui.ro-w5-est .ctr>.empty{order:3;flex:1 1 100%;margin:0!important;text-align:left;align-items:flex-start}
+/* блок-сообщение лежит на поле #EEF5F6 – на нём он белый, иначе не виден (передано W4) */
+html body #ui.ro-w5-est .ed .ctr>.empty:not(#z1):not(#z2):not(#z3):not(#z4):not(#z5):not(#z6){background:#fff!important}
 #ui.ro-w5-est .ctr>.empty h3{margin:0}
 #ui.ro-w5-est .ctr>.empty p{margin:0}
 #ui .ro-w5-empty .t{margin:0 0 4px;font:600 20px/28px Manrope,system-ui,sans-serif;color:#152A4B}
@@ -20200,8 +20202,12 @@ document.addEventListener('DOMContentLoaded',function(){
  function emptyHTML(T){var what=T.w5room!=null&&T.grp?esc(roomName(T.w5room))+', '+T.grp.toLowerCase():T.w5room!=null?esc(roomName(T.w5room)):T.grp;
   return '<div class="empty ro-w5-empty"><h3>Здесь пока нет покрытий</h3><p class="mut">'+what+': покрытие ещё не выбрано.</p><button type="button" class="btn" data-act="ro-w5-all">Показать всю смету</button></div>'}
 
- var _ce=estCenter;estCenter=function(){var T=S.E.est;if(T.w5room!=null&&!(S.objs[S.cur]||{rooms:[]}).rooms[T.w5room])T.w5room=null;
+ var _ce=estCenter;estCenter=function(){var T=S.E.est,o0=S.objs[S.cur]||{rooms:[]};if(T.w5room!=null&&!o0.rooms[T.w5room])T.w5room=null;
+  /* W5-10: отметок «комната не в смете» больше не задаёт ни один экран – старые отметки снимаем, иначе смета пуста без способа это исправить */
+  if(T.rooms&&!S._w5sc)Object.keys(T.rooms).forEach(function(k){if(T.rooms[k]===false)delete T.rooms[k]});
   var h=scoped(function(){return _ce.apply(this,arguments)});
+  /* объект без комнат: вместо «Комнаты не выбраны… в списке «Комнаты»» (такого списка нет) – понятное сообщение и путь дальше */
+  if(!o0.rooms.length&&h.indexOf('Комнаты не выбраны')>=0){h=h.replace(/<div class="empty"[^>]*>[\s\S]*$/,'<div class="empty ro-w5-empty"><h3>В объекте пока нет комнат</h3><p class="mut">Нарисуйте комнату на этапе «Планировка» и выберите покрытия на «Отделке» – смета соберётся сама.</p><button type="button" class="btn pri" data-act="stage" data-s="0">Перейти к планировке</button></div>');return h.replace(/(<\/div>)(\s*<div class="empty)/,'$1'+barHTML(T)+'$2')}
   /* телефон: нижняя строка «итог + В корзину» – всегда по всему объекту, как итог справа на ПК */
   if(T.w5room!=null&&h.indexOf('class="est-foot"')>=0){var hu=_ce.apply(this,arguments),re=/<div class="est-foot">[\s\S]*?<\/button><\/div>/,fu=hu.match(re);if(fu)h=h.replace(re,fu[0])}
   if(T.mode==='cmp'||T.mode==='kdet'||T.mode==='kalt')return h;
