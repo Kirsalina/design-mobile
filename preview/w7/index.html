@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W7 Города – предпросмотр</title>
+<style>
+html,body{margin:0;height:100%;background:#EEF1F3;font:600 14px/20px Manrope,system-ui,sans-serif;color:#152A4B;overflow:hidden}
+.bar{position:fixed;top:0;left:0;right:0;height:48px;z-index:10;display:flex;align-items:center;gap:4px;padding:0 12px;background:#152A4B;color:#fff;overflow-x:auto}
+.bar b{margin-right:8px;white-space:nowrap}
+.bar button{height:32px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#C9D3DD;font:inherit;cursor:pointer;white-space:nowrap}
+.bar button[aria-pressed=true]{background:#fff;color:#152A4B}
+.stage{position:absolute;top:48px;left:0;right:0;bottom:0;overflow:auto}
+.box{margin:8px auto;position:relative;overflow:hidden;background:#fff;box-shadow:0 8px 24px rgba(21,42,75,.12)}
+iframe{border:0;background:#fff;display:block;transform-origin:top left;position:absolute;top:0;left:0}
+.full .box{margin:0;width:100%!important;height:100%!important;box-shadow:none}
+.full iframe{width:100%!important;height:100%!important;transform:none!important}
+</style></head><body>
+<div class="bar"><b>W7 Города</b><button data-w="0">Компьютер</button><button data-w="768">Планшет</button><button data-w="390">Телефон</button></div>
+<div class="stage" id="st"><div class="box" id="bx"><iframe id="fr" title="Сайт"></iframe></div></div>
+<script>
+var fr=document.getElementById('fr'),st=document.getElementById('st'),bx=document.getElementById('bx'),W=0;
+try{W=+(localStorage.getItem('ro-pv-w7')||0)}catch(_){}
+if([0,768,390].indexOf(W)<0)W=0;
+fr.src='site.html'+location.hash;
+function fit(){document.querySelectorAll('.bar button[data-w]').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.w===W))});
+ st.classList.toggle('full',!W);if(!W)return;
+ var H={768:1024,390:844}[W],k=Math.min(1,(st.clientWidth-16)/W),h=Math.max(H,Math.floor((st.clientHeight-16)/k));
+ fr.style.width=W+'px';fr.style.height=h+'px';fr.style.transform='scale('+k+')';
+ bx.style.width=Math.round(W*k)+'px';bx.style.height=Math.round(h*k)+'px'}
+document.querySelector('.bar').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;W=+b.dataset.w;try{localStorage.setItem('ro-pv-w7',W)}catch(_){}fit()});
+addEventListener('resize',fit);fit();
+function noBars(w){try{var d=w.document;if(!d.getElementById('pv-nb')){var s=d.createElement('style');s.id='pv-nb';s.textContent='html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{width:0;height:0}';(d.head||d.documentElement).appendChild(s)}
+ for(var i=0;i<w.frames.length;i++)noBars(w.frames[i])}catch(_){}}
+setInterval(function(){if(W)noBars(fr.contentWindow)},800);
+fr.addEventListener('load',function(){try{fr.contentWindow.addEventListener('hashchange',function(){history.replaceState(null,'',fr.contentWindow.location.hash)})}catch(_){}});
+</script></body></html>
